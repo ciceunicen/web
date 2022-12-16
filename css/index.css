@@ -1,0 +1,292 @@
+/* color: 74AC24 (light green)
+color: 496D17 (dark green)
+CCCCCC (grey)
+0190E0 (light blue) 
+EAF7D8 (background color)*/
+
+nav{
+    background-color: #74AC24;
+    width:100%;
+    height:100px;
+    display: grid;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: 1fr 1fr 1fr 4fr;
+}
+
+nav img{
+    width: 120px;
+    height:90px;
+    margin-left:30px;
+}
+
+nav button{
+    background-color: transparent;
+    border:none;
+    color:#FFFFFF;
+    font-weight: bold;
+    width:120px; 
+}
+
+nav div{
+    justify-content: end;
+    display: flex;
+}
+
+body{
+    margin: 0px;
+}
+button{
+    border-radius:5px;
+    border:none;
+}
+.closeSession{
+    justify-content: end;
+    margin-right: 30px;
+}
+
+.saveBtn{
+    background-color: #0190E0;
+    color: #FFFFFF; 
+    width: 100px;
+    height:20px;
+    font-weight: bold;
+}
+
+.mainBtns{
+    display: grid;
+    grid-template-columns: 1fr 1fr 4fr;
+    margin: 30px 0px 0px 60px;
+    justify-content: space-around;
+   
+}
+
+.mainBtns div{
+    display: flex;
+    justify-content: end; 
+    margin: 0px 60px 0px 60px;
+   
+}
+
+.mainBtn, .selectBtn, .mainBtnClicked{
+    background-color: #74AC24;
+    color:white;
+    height:20px;
+    font-weight: bold;
+}
+
+.generalSave{
+    display: grid;
+    grid-template-columns: 1fr 1fr 4fr;
+    margin: 0px 0px 0px 60px;
+    justify-content: space-around;
+}
+
+.selectBtn{
+    width: 150px;
+    background-color: #74AC24;
+    color: #FFFFFF; 
+    height:20px;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 1px 6px 1px 6px;
+
+}
+.mainBtnClicked, #datos{
+    background-color: #496D17;
+    color:white;
+    height:20px;
+    font-weight: bold;
+}
+
+.projectLoading{
+    display: flex;
+    flex-direction: column;
+    background-color: #EAF7D8;
+    margin: 0px 60px 0px 60px;
+    padding: 30px;
+}
+
+input, textarea, #archivoAdjunto{
+    border-radius: 5px;
+    border: 1px solid #74AC24;
+}
+
+#title, #description{
+    width:97%;
+    padding: 10px;
+    display: inline-block
+}
+
+
+#description{
+    max-width: 97%;
+}
+
+input, .necesidades, .asistencias, .estadios{
+    margin-bottom: 10px;
+}
+
+.necesidades,.asistencias, .estadios{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.otraOpcion{
+    border-radius: 5px;
+   
+}
+
+.necesidades_checks, .asistencias_checks, .estadios_checks{
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.necesidades_checks .saveBtn, .asistencias_checks .saveBtn, .adjuntos .saveBtn, .estadios_checks .saveBtn{
+    background-color: #74AC24;
+}
+
+label{
+   color: #74AC24;
+   margin-top:10px;
+}
+
+.adjuntos{
+    margin-top:30px;
+    display: flex;
+    flex-direction: column;
+}
+
+#archivoAdjunto{
+ background-color: #FFFFFF;
+}
+
+
+
+.error{
+    margin-top:0px;
+    font-size: small;
+    
+}
+
+form i {
+    position: absolute;
+    padding: 10px; 
+  }
+
+.success-icon,
+.failure-icon {
+    right: 105px;
+    opacity: 0;
+    display:flex;
+    align-items: center;
+}
+
+.failure-icon,
+.error {
+    color: red;
+}
+
+.success-icon {
+    color: green;
+}
+  
+.adjuntos #archivoAdjunto, .adjuntos #file-upload-button{
+    background-color: #74AC24;
+} 
+
+.inputfile {
+    width: 0px;
+    height: 0px;
+}
+
+.inputfile + label {
+    max-width: 50%; 
+    font-weight: bold;
+    display: inline-block;
+    padding: 5px;
+}
+
+.inputfile + label svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+    margin-top: -0.25em;
+    margin-right: 0.25em;
+}
+
+.iborrainputfile {
+    font-weight:bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 0.5px solid #74AC24;
+    border-radius: 5px;
+}
+
+.inputfile-7 + label {
+    color: #74AC24;
+    border-radius: 5px;
+
+}
+
+.inputfile-7 + label {
+    background-color: #fff;
+    padding: 0px;
+}
+
+.inputfile-7:focus + label,
+.inputfile-7.has-focus + label,
+.inputfile-7 + label:hover {
+    border-color: #496D17;
+}
+
+.inputfile-7 + label span,
+.inputfile-7 + label strong {
+     padding: 0.625rem 1.25rem; 
+}
+
+
+.inputfile-7 + label span {
+    width: 200px;
+    min-height: 1em;
+    
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.inputfile-7 + label strong {
+    height: 100%;
+    color: #fff;
+    background-color: #74AC24;
+    display: inline-block;
+    padding: 5px;
+}
+
+.inputfile-7:focus + label strong,
+.inputfile-7.has-focus + label strong,
+.inputfile-7 + label:hover strong {
+    background-color: #496D17;
+    margin: 0px;
+}
+
+
+.datosDelEmprendedor{
+    font-size: medium;
+    font-weight: bold;
+    color: #74AC24;
+}
+
+
+
+
+
+.adjuntos label{
+    margin-top: 5px;
+}
+
+
+

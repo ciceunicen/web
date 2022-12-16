@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous"/>
+    <title>CICE</title>
+</head>
+<nav> 
+    <img src="../front/img/logo.png" alt="Logo CICE">
+    <button>Proyectos</button>
+    <button>Emprendedores</button>
+    <div>
+        <button class="closeSession">Cerrar sesión</button>
+    </div>
+</nav>
+<body>
+    <div class="mainBtns">
+        <button class="mainBtn" id="datos">Datos</button>
+        <button class="mainBtn" id="diagnostico">Diagnóstico</button>
+        <div>
+            <button class="mainBtn" id="encargadoDeCarga">Juana Gonzalez</button>
+        </div>
+    </div>
+    <div class="projectLoading">
+        <div>
+            <h3 class="datosDelEmprendedor">Datos del emprendedor</h3>
+            <!-- <h3>Nombre: </h3>
+            <h3>Apellido: </h3>
+            <h3>DNI:</h3>
+            <h3>Email:</h3> -->
+        </div>
+        <form>
+            <label for="title" required>Título *</label>
+            <div>
+                <input type="text" name="title" id="title" placeholder="titulo">
+                <i class="fas fa-exclamation-circle failure-icon"></i>
+                <i class="far fa-check-circle success-icon"></i>
+                <h3 class="error" id="titleError"></h3>
+            </div>
+            <label for="description" required>Descripción *</label>
+            <div>
+                <textarea type="text" name="description" id="description" placeholder="descripción"></textarea>
+                <i class="fas fa-exclamation-circle failure-icon"></i>
+                <i class="far fa-check-circle success-icon"></i>
+                <h3 class="error" id="descriptionError"></h3>
+            </div>
+            <label for="necesidades" class="necesidades">Necesidades</label>
+            <div class="necesidades_checks">
+                <input type="checkbox" id="asistenciaTecnica" name="necesidadesCheckboxes" value="asistenciaTecnica">
+                <label for="asistenciaTecnica">Asistencia Técnica</label>
+                <input type="checkbox" id="capacitacion" name="necesidadesCheckboxes" value="capacitacion">
+                <label for="capacitacion">Capacitación</label> 
+                <input type="checkbox" id="networking" name="necesidadesCheckboxes" name="networking" value="networking">
+                <label for="networking">Networking</label>
+                <input type="checkbox" id="financiamiento" name="necesidadesCheckboxes"  name="financiamiento" value="financiamiento">
+                <label for="financiamiento">Financiamiento</label>
+                <div>
+                    <label for="otra" class="otraOpcion">Otra</label>
+                    <input type="text" name="otraNecesidad" id="otraNecesidad" value="">    
+                    <button class="saveBtn">Guardar</button>
+                </div>
+            </div>
+            <label for="asistencias" class="asistencias">Asistencias</label>
+            <div class="asistencias_checks">
+                <label for="tecnica">Técnica</label>
+                <input type="checkbox" id="tecnica" name="asistenciaCheckboxes" id="tecnica" value="tecnica">
+                <label for="lineasFinanciamiento">Aplicación de lineas de financiamiento</label>
+                <input type="checkbox" id="lineasFinanciamiento" name="asistenciaCheckboxes" value="lineasFinanciamiento">
+                <label for="convocatoria">Presentación a convocatoria</label>
+                <input type="checkbox" id="convocatoria" name="asistenciaCheckboxes" value="convocatoria">
+                <div>
+                    <label for="otra" class="otraOpcion">Otra</label>
+                    <input type="text" name="otraAsistencia" id="otraAsistencia" value="">    
+                    <button class="saveBtn">Guardar</button>
+                </div>
+            </div>
+            <label for="estadios" class="estadios">Estadios</label>
+            <div class="estadios_checks">
+                <label for="ideaNegocio">Idea negocio</label>
+                <input type="checkbox" id="ideaNegocio" name="estadiosCheckboxes" id="ideaNegocio" value="ideaNegocio">
+                <label for="puestaEnMarcha">Puesta en marcha - Iniciación</label>
+                <input type="checkbox" id="puestaEnMarcha" name="estadiosCheckboxes" value="puestaEnMarcha">
+                <label for="formulacionPuestaEnMarcha">Formulación de puesta en marcha</label>
+                <input type="checkbox" id="formulacionPuestaEnMarcha" name="estadiosCheckboxes" value="formulacionPuestaEnMarcha">
+                <label for="consolidacion">Consolidación - Expansión“</label>
+                <input type="checkbox" id="consolidacion" name="estadiosCheckboxes" id="consolidacion" value="consolidacion">
+                <label for="especificación">Especificación</label>
+                <input type="checkbox" id="especificación" name="estadiosCheckboxes" id="especificación" value="especificación">
+                <div>
+                    <label for="otra" class="otraOpcion">Otra</label>
+                    <input type="text" name="otraAsistencia" id="otraAsistencia" value="">    
+                    <button class="saveBtn">Guardar</button>
+                </div>
+            </div>
+            <div class="adjuntos">
+               <label for="otra" >Adjuntar archivos</label>
+               <input type="file" name="file-7" id="file-7" class="inputfile inputfile-7" data-multiple-caption="{count} archivos seleccionados" multiple />
+                <label for="file-7" class="iborrainputfile">
+                    <strong class="iborrainputfile">
+                        Seleccionar archivo/s
+                    </strong>
+                </label>         
+            </div>
+        </form>
+    </div>
+    <div class="generalSave">
+        <button class="saveBtn" id="save">Guardar</button>
+    </div> 
+</body>
+<script src="./js/index.js"></script>
+</html>
