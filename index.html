@@ -32,7 +32,7 @@
             <h3>DNI:</h3>
             <h3>Email:</h3> -->
         </div>
-        <form>
+        <form action="http://localhost:8080/Project" method="post">
             <label for="title" required>Título *</label>
             <div>
                 <input type="text" name="title" id="title" placeholder="titulo">
@@ -85,8 +85,8 @@
                 <input type="checkbox" id="puestaEnMarcha" name="estadiosCheckboxes" value="puestaEnMarcha">
                 <label for="formulacionPuestaEnMarcha">Formulación de puesta en marcha</label>
                 <input type="checkbox" id="formulacionPuestaEnMarcha" name="estadiosCheckboxes" value="formulacionPuestaEnMarcha">
-                <label for="consolidacion">Consolidación - Expansión“</label>
-                <input type="checkbox" id="consolidacion" name="estadiosCheckboxes" id="consolidacion" value="consolidacion">
+                <label for="consolidacion">Consolidación - Expansión</label>
+                <input type="checkbox" id="consolidacion" name="estadiosCheckboxes" id="consolidacion" value="consolidacionExpansion">
                 <label for="especificación">Especificación</label>
                 <input type="checkbox" id="especificación" name="estadiosCheckboxes" id="especificación" value="especificación">
                 <div>
@@ -102,6 +102,7 @@
                     <strong class="iborrainputfile">
                         Seleccionar archivo/s
                     </strong>
+                    <span class="selectedFiles"></span>
                 </label>         
             </div>
         </form>
