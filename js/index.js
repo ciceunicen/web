@@ -28,9 +28,7 @@ document.getElementById("save").addEventListener("click", (e) => {
   e.preventDefault();
   engine(title, 0, "Ingrese un título al proyecto");
   engine(description, 1, "Ingrese una descripción al proyecto");
-  console.log(title.value);
   title=title.value;
-  console.log(description.value);
   description=description.value;
   let necesidadesCheckboxes = document.querySelectorAll('input[name="necesidadesCheckboxes"]:checked');
   necesidadesCheckboxes.forEach((checkbox) => {
@@ -57,7 +55,7 @@ document.getElementById("save").addEventListener("click", (e) => {
     "id_ProjectManager":2,
     "title":title,
     "description":description,
-    "stage":estadiosAProbar, ///deberia ser un array?o solo se puede elegir un estadio?--> se esta quedando con el último seleccionado, deberia no permitir elegir otro, deberia desmarcar la opcion anterio
+    "stage":estadiosAProbar, 
     "assitanceType":
         asistencias,
     "files":
@@ -101,6 +99,7 @@ function saveAttachments(){
         }
         } else
 				  fileName = e.target.value.split( '\\' ).pop();
+          attachments.push(fileName);
 			  if( fileName ){
 				  label.querySelector('span').innerHTML = fileName;
         }
@@ -110,11 +109,18 @@ function saveAttachments(){
 	});
 }
 
+document.querySelector("#saveNecesidad").addEventListener("click", ()=>{
+  event.preventDefault();
+  // console.log(document.querySelector("#otraNecesidad").value);
+  necesidades.push(document.querySelector("#otraNecesidad").value);
+})
 
+document.querySelector("#saveAsistencia").addEventListener("click", ()=>{
+  event.preventDefault();
+  // console.log(document.querySelector("#otraAsistencia").value);
+  necesidades.push(document.querySelector("#otraAsistencia").value);
+})
 //POST
-
-
-
 async function saveProject(datos){
   await fetch("http://localhost:8080/Project",{
     method: "POST",
