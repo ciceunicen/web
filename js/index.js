@@ -111,15 +111,16 @@ function saveAttachments(){
 
 document.querySelector("#saveNecesidad").addEventListener("click", ()=>{
   event.preventDefault();
-  // console.log(document.querySelector("#otraNecesidad").value);
   necesidades.push(document.querySelector("#otraNecesidad").value);
+  console.log(necesidades);
 })
 
 document.querySelector("#saveAsistencia").addEventListener("click", ()=>{
   event.preventDefault();
-  // console.log(document.querySelector("#otraAsistencia").value);
-  necesidades.push(document.querySelector("#otraAsistencia").value);
+  asistencias.push(document.querySelector("#otraAsistencia").value);
+  console.log(asistencias);
 })
+
 //POST
 async function saveProject(datos){
   await fetch("http://localhost:8080/Project",{
@@ -134,3 +135,15 @@ async function saveProject(datos){
   //.catch(err => console.log(err));
 }
 
+
+
+let checkedStage = null;
+for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')){
+	CheckBox.onclick = function(){
+  	if(checkedStage!=null){
+      checkedStage.checked = false;
+      checkedStage = CheckBox;
+    }
+    checkedStage = CheckBox;
+  }
+}
