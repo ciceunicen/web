@@ -54,12 +54,26 @@ button{
     font-weight: bold;
 }
 
+
 .mainBtns{
     display: grid;
-    grid-template-columns: 1fr 1fr 4fr;
-    margin: 30px 0px 0px 60px;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 0px 60px 0px 60px;
     justify-content: space-around;
-   
+}
+
+.projectTitle{
+    display: grid;
+    background-color: #6B9E22;
+    margin: 30px 60px 0px 60px;
+    border-radius: 5px 5px 0px 0px; 
+    justify-content: center;
+}
+
+.projectTitle h2{
+    color:#FFFFFF;
+    text-transform: uppercase;
+
 }
 
 .mainBtns div{
@@ -69,6 +83,9 @@ button{
    
 }
 
+.mainBtn{
+    border-radius: 0px;
+}
 .mainBtn, .selectBtn, .mainBtnClicked{
     background-color: #74AC24;
     color:white;
