@@ -77,7 +77,7 @@ document.getElementById("save").addEventListener("click", (e) => {
         document.querySelector("#asistenciasError").innerHTML="Seleccione al menos un tipo de asistencia";
       }
       if(estadio==null){
-        document.querySelector("#estadioError").innerHTML+="Seleccione un estadio";
+        document.querySelector("#estadioError").innerHTML="Seleccione un estadio";
       }
     }
 });
