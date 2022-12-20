@@ -62,18 +62,50 @@ button{
     justify-content: space-around;
 }
 
-.projectTitle{
+.projectTitle, .projectResponsible, .projectHistory{
     display: grid;
     background-color: #6B9E22;
     margin: 30px 60px 0px 60px;
     border-radius: 5px 5px 0px 0px; 
     justify-content: center;
+    margin: 10px 60px 0px 60px;
+    padding: 0px;
 }
 
-.projectTitle h2{
+.projectResponsible, .projectHistory{
+    justify-content: left;
+}
+
+.projectResponsible a, .projectHistory a{
+    display: flex;
+    background-color: transparent;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.projectResponsible a img, .projectHistory a img{
+    width: 20px;
+    height:20px;
+}
+
+.projectResponsible{
+    display: flex;
+    flex-direction: row;
+}
+
+.projectResponsible p,.projectHistory p {
+    padding: 10px 30px 10px 30px;
+    font-weight: bold;
+}
+.projectTitle, .projectResponsible, .projectHistory p{
     color:#FFFFFF;
     text-transform: uppercase;
+    
+}
 
+.projectResponsible, .projectHistory{
+    border-radius: 5px 5px 5px 5px; 
+    display: flex;
 }
 
 .mainBtns div{
@@ -110,13 +142,17 @@ button{
     padding: 1px 6px 1px 6px;
 
 }
-.mainBtnClicked, #datos{
+.mainBtnClicked, #datos, #navProjects{
     background-color: #496D17;
     color:white;
     height:20px;
     font-weight: bold;
 }
 
+#navProjects{
+    height: 100%;
+    border-radius: 0px;
+}
 .projectLoading{
     display: flex;
     flex-direction: column;
@@ -306,5 +342,24 @@ form i {
     justify-content: center;
     align-items: center;
 
+}
+
+.hiddenData {
+    display: none;
+    flex-direction: column;
+border: 1px solid blue;
+} 
+
+.showProjectManagerData, .projectDataHistory {
+    background-color: #EAF7D8;
+    color: black;
+    margin: 0px 60px 30px 60px;
+    padding-top:30px;
+    padding-bottom: 30px;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.showProjectManagerData p{
+    padding: 10px 30px 10px 30px;
 }
 

@@ -147,3 +147,80 @@ for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')){
     checkedStage = CheckBox;
   }
 }
+
+
+// //GET
+
+// document.querySelector("#slideUp").addEventListener("click", getProjectManager());
+//  function getProjectManager(){
+//  fetch("https://localhost:8080/ProjectManager/getProjectManager/1")
+//     .then((response) => response.json())
+//     .then((data) => console.log(data));
+  
+// })
+// .then(response => response.json())
+// .then(json => console.log(json));
+
+// fetch('http://example.com/movies.json')
+//   .then((response) => response.json())
+//   .then((data) => console.log(data));
+//   const response= await fetch("https://localhost:8080/ProjectManager/getProjectManager/1");
+//   const manager=response.json();
+//   document.querySelector("#showProjectManager").innerHTML+=
+//                           "<div>"
+//                          +"<h3>Nombre: " + manager.name+"</h3>"
+//                         //   <h3>Teléfono: </h3>
+//                         //   <h3>Localidad:</h3>
+//                         //   <h3>Email:</h3>
+//                         //   <h3>Ocupación:</h3>
+//                         //   <h3>Vinculación con UNICEN</h3>
+//                         //   <h3>Facultad a la que pertenece:</h3>
+//                         //   <h3>Medio de conocimiento del CICE:</h3>
+//                         //   <h3>Organización asociativa</h3>
+//                         // </div>"
+   
+// }
+
+//}
+
+
+// document.querySelector("#slideUp").addEventListener("click",(event)=>{
+ 
+//   if(!event.target.matches('.drop-button')) {
+//     var dropdowns = document.getElementsByClassName("dropdown-content");
+//     var i;
+//     for (i = 0;  i < dropdowns.length; i++) {
+//       var openDropdown = dropdowns[i];
+//       //Busca dentro de drop-content los elementos con la clase show
+//       if (openDropdown.classList.contains('show')){
+//         //elimina la clase show de los elementos dentro de drop-content
+//         openDropdown.classList.remove('show');
+//       }
+//     }
+//   }
+// });
+
+
+
+document.querySelector('.slideDownResponsible').addEventListener('click', ()=>{
+  let btn = document.getElementById('projectManagerData')
+  if (btn.className === 'hiddenData') {
+    btn.className = 'showProjectManagerData';
+    document.querySelector(".slideDownResponsible").innerHTML="<img src='img/icons8-flecha-contraer-50.png' class='slideDown'/>";
+  } else {
+      document.querySelector(".slideDownResponsible").innerHTML="<img src='img/expandir.png' class='slideDown'/>";
+      btn.className = 'hiddenData';
+  }
+});
+
+
+document.querySelector('.slideDownHistory').addEventListener('click', ()=>{
+  let btn = document.getElementById('projectDataHistory')
+  if (btn.className === 'hiddenData') {
+    btn.className = 'showProjectManagerData';
+    document.querySelector(".slideDownHistory").innerHTML="<img src='img/icons8-flecha-contraer-50.png' class='slideDown'/>";
+  } else {
+      document.querySelector(".slideDownHistory").innerHTML="<img src='img/expandir.png' class='slideDown'/>";
+      btn.className = 'hiddenData';
+  }
+});
