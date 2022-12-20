@@ -19,71 +19,60 @@ let convocatoria=document.querySelector("#convocatoria");
 let otraAsistencia=document.querySelector("#otraAsistencia");
 let necesidades=[];
 let asistencias = [];
-let estadios = [];
-let estadiosAProbar=null;
+//  let estadios = [];
+// let estadiosAProbar=null;
    
 let attachments=[];
   
 document.getElementById("save").addEventListener("click", (e) => {
   e.preventDefault();
-  engine(title, 0, "Ingrese un título al proyecto");
-  engine(description, 1, "Ingrese una descripción al proyecto");
-  title=title.value;
-  description=description.value;
   let necesidadesCheckboxes = document.querySelectorAll('input[name="necesidadesCheckboxes"]:checked');
   necesidadesCheckboxes.forEach((checkbox) => {
       necesidades.push(checkbox.value);
-      //console.log(necesidades);
   });
   let asistenciasCheckboxes = document.querySelectorAll('input[name="asistenciaCheckboxes"]:checked');
   asistenciasCheckboxes.forEach((checkbox) => {
       asistencias.push(checkbox.value);
-     // console.log(asistencias);
   });
-    estadiosAProbar = document.querySelector('input[name="estadiosCheckboxes"]:checked').value;
-  // let estadiosCheckboxes = document.querySelectorAll('input[name="estadiosCheckboxes"]:checked');
-
-  // estadiosCheckboxes.forEach((checkbox) => {
-  //     estadios.push(checkbox.value);
-  //     console.log(estadios);
-  // });
+  let estadio= document.querySelector('input[name="estadiosCheckboxes"]:checked').value;
   saveAttachments();
-  // attachments.forEach((attachment)=>{
-  //   console.log(attachment);
-  // })
-  let datos={
-    "id_ProjectManager":2,
-    "title":title,
-    "description":description,
-    "stage":estadiosAProbar, 
-    "assitanceType":
-        asistencias,
-    "files":
-        attachments,
-    "needs":
-        necesidades,
-    "id_Admin":1
-  }
-  saveProject(datos);
-         
+  if((title.value!="" && title.value!="undefined")&&(description.value!="" && description.value!="undefined")){
+    document.querySelector("#titleError").innerHTML ="";
+    document.querySelector("#descriptionError").innerHTML ="";
+    let successImg=document.getElementsByClassName("success-icon");
+    successImg[0].style.opacity = "1";
+    successImg[1].style.opacity = "1";
+    let datos={
+      "id_ProjectManager":2,
+      "title":title.value,
+      "description":description.value,
+      "stage":estadio, 
+      "assitanceType":
+          asistencias,
+      "files":
+          attachments,
+      "needs":
+          necesidades,
+      "id_Admin":1
+    }      
+    saveProject(datos);
+    }else{
+      if(title.value=="" || title.value=="undefined"){
+        document.querySelector("#titleError").innerHTML ="Ingrese un título al proyecto";
+        document.querySelector("#descriptionError").innerHTML ="";
+      }
+      if(description.value=="" || description.value=="undefined"){
+        document.querySelector("#titleError").innerHTML ="";
+        document.querySelector("#descriptionError").innerHTML ="Ingrese una descripción al proyecto";
+      }
+      if((title.value=="" || title.value=="undefined") && (description.value=="" || description.value=="undefined")){
+        document.querySelector("#titleError").innerHTML ="Ingrese un título al proyecto";
+        document.querySelector("#descriptionError").innerHTML ="Ingrese una descripción al proyecto";
+      }
+    }
 });
 
-let engine = (id, serial, message) => {
-  if (id.value.trim() === "") {
-    errorMsg[serial].innerHTML = message;
-    id.style.border = "2px solid red";
-    // icons
-    failureIcon[serial].style.opacity = "1";
-    successIcon[serial].style.opacity = "0";
-  } else {
-    errorMsg[serial].innerHTML = "";
-    id.style.border = "2px solid green";
-     // icons
-     failureIcon[serial].style.opacity = "0";
-     successIcon[serial].style.opacity = "1";
-  }
-};
-
+//GUARDAR ARCHIVOS ADJUNTOS
 document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
 function saveAttachments(){
   let inputs = document.getElementsByClassName("inputfile");
@@ -109,12 +98,14 @@ function saveAttachments(){
 	});
 }
 
+//GUARDAR NECESIDADES
 document.querySelector("#saveNecesidad").addEventListener("click", ()=>{
   event.preventDefault();
   necesidades.push(document.querySelector("#otraNecesidad").value);
   console.log(necesidades);
 })
 
+//GUARDAR ASISTENCIAS
 document.querySelector("#saveAsistencia").addEventListener("click", ()=>{
   event.preventDefault();
   asistencias.push(document.querySelector("#otraAsistencia").value);
@@ -123,6 +114,7 @@ document.querySelector("#saveAsistencia").addEventListener("click", ()=>{
 
 //POST
 async function saveProject(datos){
+  console.log(datos);
   await fetch("http://localhost:8080/Project",{
     method: "POST",
     mode: 'cors',
@@ -135,8 +127,7 @@ async function saveProject(datos){
   //.catch(err => console.log(err));
 }
 
-
-
+//SELECCIONAR SOLO UN ESTADIO
 let checkedStage = null;
 for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')){
 	CheckBox.onclick = function(){
@@ -151,12 +142,12 @@ for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')){
 
 // //GET
 
-// document.querySelector("#slideUp").addEventListener("click", getProjectManager());
-//  function getProjectManager(){
-//  fetch("https://localhost:8080/ProjectManager/getProjectManager/1")
+//  document.querySelector(".slideDownResponsible").addEventListener("click", getProjectManager());
+//  async function getProjectManager(){
+//  await fetch("http://localhost:8080/ProjectManager/getProjectManager/1")
 //     .then((response) => response.json())
 //     .then((data) => console.log(data));
-  
+//  }
 // })
 // .then(response => response.json())
 // .then(json => console.log(json));
@@ -184,24 +175,7 @@ for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')){
 //}
 
 
-// document.querySelector("#slideUp").addEventListener("click",(event)=>{
- 
-//   if(!event.target.matches('.drop-button')) {
-//     var dropdowns = document.getElementsByClassName("dropdown-content");
-//     var i;
-//     for (i = 0;  i < dropdowns.length; i++) {
-//       var openDropdown = dropdowns[i];
-//       //Busca dentro de drop-content los elementos con la clase show
-//       if (openDropdown.classList.contains('show')){
-//         //elimina la clase show de los elementos dentro de drop-content
-//         openDropdown.classList.remove('show');
-//       }
-//     }
-//   }
-// });
-
-
-
+//MOSTRAR RESPONSABLE
 document.querySelector('.slideDownResponsible').addEventListener('click', ()=>{
   let btn = document.getElementById('projectManagerData')
   if (btn.className === 'hiddenData') {
@@ -213,7 +187,7 @@ document.querySelector('.slideDownResponsible').addEventListener('click', ()=>{
   }
 });
 
-
+//MOSTRAR HISTORIAL
 document.querySelector('.slideDownHistory').addEventListener('click', ()=>{
   let btn = document.getElementById('projectDataHistory')
   if (btn.className === 'hiddenData') {

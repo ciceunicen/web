@@ -19,7 +19,7 @@
 </nav>
 <body>
     <div class="projectResponsible">
-        <p> Responsable del proyecto</p>
+        <p> Responsable del proyecto | Agustín Fernandez</p>
         <a href="#" class="slideDownResponsible"><img src="img/expandir.png" class="slideDown"/></a>  
     </div>
     <div class="hiddenData" id="projectManagerData">
@@ -34,7 +34,7 @@
         <p>Organización asociativa:</p>
     </div> 
     <div class="projectHistory">
-        <p>Historial administración</p>
+        <p>Historial administración  |  Última modificación: Camila Perez</p>
         <a href="#" class="slideDownHistory"><img src="img/expandir.png" class="slideDown"/></a>  
     </div>
     <div class="hiddenData" id="projectDataHistory">
@@ -60,14 +60,14 @@
         <form action="http://localhost:8080/Project" method="post">
             <label for="title" required>Título *</label>
             <div>
-                <input type="text" name="title" id="title" placeholder="titulo" required onchange=saveTitle()>
+                <input type="text" name="title" id="title" placeholder="titulo" required >
                 <i class="fas fa-exclamation-circle failure-icon"></i>
                 <i class="far fa-check-circle success-icon"></i>
                 <p class="error" id="titleError"></p>
             </div>
             <label for="description" required>Descripción *</label>
             <div>
-                <textarea type="text" name="description" id="description" placeholder="descripción" required onchange=saveDescription()></textarea>
+                <textarea type="text" name="description" id="description" placeholder="descripción" required></textarea>
                 <i class="fas fa-exclamation-circle failure-icon"></i>
                 <i class="far fa-check-circle success-icon"></i>
                 <p class="error" id="descriptionError"></p>
