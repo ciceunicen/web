@@ -1,4 +1,3 @@
-
 let id = (id) => document.getElementById(id);
 let classes = (classes) => document.getElementsByClassName(classes);
 let title = id("title"),
@@ -19,8 +18,6 @@ let convocatoria=document.querySelector("#convocatoria");
 let otraAsistencia=document.querySelector("#otraAsistencia");
 let necesidades=[];
 let asistencias = [];
-//  let estadios = [];
-// let estadiosAProbar=null;
    
 let attachments=[];
   
@@ -124,7 +121,6 @@ async function saveProject(datos){
   })
   .then(response => response.json())
   .then(json => showSucess(datos));
-  //.catch(err => console.log(err));
 }
 
 function showSucess(datos){
@@ -154,45 +150,36 @@ for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')){
 }
 
 
-// //GET
-
-//  document.querySelector(".slideDownResponsible").addEventListener("click", getProjectManager());
-//  async function getProjectManager(){
-//  await fetch("http://localhost:8080/ProjectManager/getProjectManager/1")
-//     .then((response) => response.json())
-//     .then((data) => console.log(data));
-//  }
-// })
-// .then(response => response.json())
-// .then(json => console.log(json));
-
-// fetch('http://example.com/movies.json')
-//   .then((response) => response.json())
-//   .then((data) => console.log(data));
-//   const response= await fetch("https://localhost:8080/ProjectManager/getProjectManager/1");
-//   const manager=response.json();
-//   document.querySelector("#showProjectManager").innerHTML+=
-//                           "<div>"
-//                          +"<h3>Nombre: " + manager.name+"</h3>"
-//                         //   <h3>Teléfono: </h3>
-//                         //   <h3>Localidad:</h3>
-//                         //   <h3>Email:</h3>
-//                         //   <h3>Ocupación:</h3>
-//                         //   <h3>Vinculación con UNICEN</h3>
-//                         //   <h3>Facultad a la que pertenece:</h3>
-//                         //   <h3>Medio de conocimiento del CICE:</h3>
-//                         //   <h3>Organización asociativa</h3>
-//                         // </div>"
-   
-// }
-
-//}
-
+//GET
+function getProjectManager(){
+  fetch("http://localhost:8080/ProjectManager/getProjectManager/1")
+    .then((response) => response.json())
+    .then(json =>readDomProductManager(json));
+     
+}
+//FUNCION PARA MOSTRAR DATOS EN HTML
+function readDomProductManager(json){
+ let divProductManager = document.querySelector("#projectManagerData");
+ divProductManager.innerHTML = "";
+ divProductManager.innerHTML+=
+                       "<div>"
+                        +"<h3> Nombre: " + json.name + " " + json.surname +"</h3>" 
+                        +"<h3> Teléfono: "+ json.phone+ "</h3>"
+                        + "<h3> Localidad: agregar en entidad </h3>"
+                        + "<h3> Email: " +json.email+ "</h3>"
+                        + "<h3> Ocupación: agregar en entidad </h3>"
+                        + "<h3> Vinculación con UNICEN: agregar en entidad </h3>"
+                        + "<h3> Facultad a la que pertenece: </h3>"
+                        + "<h3> Medio de conocimiento del CICE: " + json.medioConocimientoCice + "</h3>"
+                        + "<h3> Organización asociativa: agregar en entidad </h3>"
+                        + "</div>" ;
+}
 
 //MOSTRAR RESPONSABLE
 document.querySelector('.slideDownResponsible').addEventListener('click', ()=>{
   let btn = document.getElementById('projectManagerData')
   if (btn.className === 'hiddenData') {
+    getProjectManager();
     btn.className = 'showProjectManagerData';
     document.querySelector(".slideDownResponsible").innerHTML="<img src='img/icons8-flecha-contraer-50.png' class='slideDown'/>";
   } else {
