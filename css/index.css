@@ -52,6 +52,7 @@ button{
     width: 100px;
     height:20px;
     font-weight: bold;
+    padding: 2px;
 }
 
 
@@ -127,9 +128,15 @@ button{
 
 .generalSave{
     display: grid;
-    grid-template-columns: 1fr 1fr 4fr;
+    grid-template-columns: 1fr 2fr  4fr;
     margin: 0px 0px 0px 60px;
     justify-content: space-around;
+}
+
+.generalSave p{
+    color: #496D17;
+    font-weight: bold;
+    margin: 0px;
 }
 
 .selectBtn{
