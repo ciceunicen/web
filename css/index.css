@@ -350,7 +350,8 @@ form i {
 border: 1px solid blue;
 } 
 
-.showProjectManagerData, .projectDataHistory {
+.showProjectManagerData{
+    display: flex;
     background-color: #EAF7D8;
     color: black;
     margin: 0px 60px 30px 60px;
@@ -359,7 +360,54 @@ border: 1px solid blue;
     border-radius: 0px 0px 5px 5px;
 }
 
-.showProjectManagerData p{
+.showProjectManagerData p, .showDataHistory p{
     padding: 10px 30px 10px 30px;
 }
 
+#projectManagerData{
+    flex-direction: column;
+    
+}
+.showProjectManagerData div, .showDataHistory div{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+} 
+
+#projectDataHistory p{
+    color:#496D17;
+    display: flex;
+    justify-content: center;
+}
+
+hr{
+    width:90%;
+    height:1px;
+    background-color: #496D17;
+}
+
+
+.showDataHistory{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-row: 3;
+    background-color: #EAF7D8;
+    color: black;
+    margin: 0px 60px 30px 60px;
+    padding-top:30px;
+    padding-bottom: 30px;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.showDataHistory hr{
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+
+.showDataHistory div{
+    display: flex;
+    align-items: center;
+    grid-column-start: 1;
+    grid-column-end: 5;
+    margin-top: 200px;
+}

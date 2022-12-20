@@ -217,7 +217,7 @@ document.querySelector('.slideDownResponsible').addEventListener('click', ()=>{
 document.querySelector('.slideDownHistory').addEventListener('click', ()=>{
   let btn = document.getElementById('projectDataHistory')
   if (btn.className === 'hiddenData') {
-    btn.className = 'showProjectManagerData';
+    btn.className = 'showDataHistory';
     document.querySelector(".slideDownHistory").innerHTML="<img src='img/icons8-flecha-contraer-50.png' class='slideDown'/>";
   } else {
       document.querySelector(".slideDownHistory").innerHTML="<img src='img/expandir.png' class='slideDown'/>";
