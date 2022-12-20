@@ -123,8 +123,22 @@ async function saveProject(datos){
     headers: {"Content-type": "application/json; charset=UTF-8",}
   })
   .then(response => response.json())
-  .then(json => console.log(json));
+  .then(json => showSucess(datos));
   //.catch(err => console.log(err));
+}
+
+function showSucess(datos){
+  document.querySelector(".projectLoading").innerHTML= 
+        "<div class='showData'>"
+        +  "<p class='title'>Datos cargados<p>"
+        +  "<p>Título del proyecto: "+ datos.title+ "</p>"
+        +  "<p>Descripción: " +datos.description+"</p>"
+        +  "<p>Necesidades: " + datos.needs+"</p>"
+        +  "<p>Asistencias: " + datos.assitanceType+"</p>"
+        +  "<p>Estadio: " + datos.stage+"</p>"
+        +  "<p>Adjuntos: " + datos.files+"</p>"
+        + "</div>";
+ 
 }
 
 //SELECCIONAR SOLO UN ESTADIO

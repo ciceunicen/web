@@ -411,3 +411,24 @@ hr{
     grid-column-end: 5;
     margin-top: 200px;
 }
+
+
+.showData{
+    display: flex;
+    flex-direction: column;
+    background-color: #EAF7D8;
+    color: black;
+    margin: 0px 60px 30px 60px;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.showData p{
+    font-weight: bold;
+}
+
+.showData .title{
+    display: flex;
+    justify-content: center;
+    color: #496D17;
+    font-size: 16px;
+}
