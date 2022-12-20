@@ -79,6 +79,7 @@
                     <input type="text" name="otraNecesidad" id="otraNecesidad" value="">    
                     <button class="saveBtn" id="saveNecesidad">Guardar</button>
                 </div>
+                <p class="error" id="necesidadesError"></p>
             </div>
             <label for="asistencias" class="asistencias">Asistencias</label>
             <div class="asistencias_checks">
@@ -93,6 +94,7 @@
                     <input type="text" name="otraAsistencia" id="otraAsistencia" value="">    
                     <button class="saveBtn" id="saveAsistencia">Guardar</button>
                 </div>
+                <p class="error" id="asistenciasError"></p>
             </div>
             <label for="estadios" class="estadios">Estadios</label>
             <div class="estadios_checks">
@@ -106,7 +108,10 @@
                 <label for="consolidacion">Consolidación - Expansión</label>
                 <input type="checkbox" class="estadiosCheckboxes" id="especificación" name="estadiosCheckboxes" id="especificación" value="especificación">
                 <label for="especificación">Especificación</label>
+                <p class="error" id="estadioError"></p>
+                
             </div>
+          
             <div class="adjuntos">
                <label for="otra" >Adjuntar archivos</label>
                <input type="file" name="file-7" id="file-7" class="inputfile inputfile-7" data-multiple-caption="{count} archivos seleccionados" multiple />

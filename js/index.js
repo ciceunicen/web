@@ -31,11 +31,15 @@ document.getElementById("save").addEventListener("click", (e) => {
   asistenciasCheckboxes.forEach((checkbox) => {
       asistencias.push(checkbox.value);
   });
-  let estadio= document.querySelector('input[name="estadiosCheckboxes"]:checked').value;
+  let estadio= document.querySelector('input[name="estadiosCheckboxes"]:checked');
   saveAttachments();
-  if((title.value!="" && title.value!="undefined")&&(description.value!="" && description.value!="undefined")){
+  if((title.value!="" && title.value!="undefined")&&(description.value!="" && description.value!="undefined")&&necesidades.length>0&&
+  asistencias.length>0 && estadio!=null){
     document.querySelector("#titleError").innerHTML ="";
     document.querySelector("#descriptionError").innerHTML ="";
+    document.querySelector("#necesidadesError").innerHTML="";
+    document.querySelector("#asistenciasError").innerHTML="";
+    document.querySelector("#estadioError").innerHTML="";
     let successImg=document.getElementsByClassName("success-icon");
     successImg[0].style.opacity = "1";
     successImg[1].style.opacity = "1";
@@ -43,7 +47,7 @@ document.getElementById("save").addEventListener("click", (e) => {
       "id_ProjectManager":2,
       "title":title.value,
       "description":description.value,
-      "stage":estadio, 
+      "stage":estadio.value, 
       "assitanceType":
           asistencias,
       "files":
@@ -65,6 +69,15 @@ document.getElementById("save").addEventListener("click", (e) => {
       if((title.value=="" || title.value=="undefined") && (description.value=="" || description.value=="undefined")){
         document.querySelector("#titleError").innerHTML ="Ingrese un título al proyecto";
         document.querySelector("#descriptionError").innerHTML ="Ingrese una descripción al proyecto";
+      }
+      if(necesidades.length==0){
+        document.querySelector("#necesidadesError").innerHTML="Seleccione al menos una necesidad";
+      }
+      if(asistencias.length==0){
+        document.querySelector("#asistenciasError").innerHTML="Seleccione al menos un tipo de asistencia";
+      }
+      if(estadio==null){
+        document.querySelector("#estadioError").innerHTML+="Seleccione un estadio";
       }
     }
 });
