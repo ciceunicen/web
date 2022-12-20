@@ -162,7 +162,7 @@ function readDomProductManager(json){
  let divProductManager = document.querySelector("#projectManagerData");
  divProductManager.innerHTML = "";
  divProductManager.innerHTML+=
-                       "<div>"
+                       " <div class='showProjectManagerData' id='projectManagerData'>"
                         +"<h3> Nombre: " + json.name + " " + json.surname +"</h3>" 
                         +"<h3> Teléfono: "+ json.phone+ "</h3>"
                         + "<h3> Localidad: agregar en entidad </h3>"
