@@ -60,24 +60,28 @@ document.getElementById("save").addEventListener("click", (e) => {
     }else{
       if(title.value=="" || title.value=="undefined"){
         document.querySelector("#titleError").innerHTML ="Ingrese un título al proyecto";
-        document.querySelector("#descriptionError").innerHTML ="";
+      }else{
+        document.querySelector("#titleError").innerHTML ="";
       }
       if(description.value=="" || description.value=="undefined"){
-        document.querySelector("#titleError").innerHTML ="";
         document.querySelector("#descriptionError").innerHTML ="Ingrese una descripción al proyecto";
-      }
-      if((title.value=="" || title.value=="undefined") && (description.value=="" || description.value=="undefined")){
-        document.querySelector("#titleError").innerHTML ="Ingrese un título al proyecto";
-        document.querySelector("#descriptionError").innerHTML ="Ingrese una descripción al proyecto";
+      }else{
+        document.querySelector("#descriptionError").innerHTML ="";
       }
       if(necesidades.length==0){
         document.querySelector("#necesidadesError").innerHTML="Seleccione al menos una necesidad";
+      }else{
+        document.querySelector("#necesidadesError").innerHTML="";
       }
       if(asistencias.length==0){
         document.querySelector("#asistenciasError").innerHTML="Seleccione al menos un tipo de asistencia";
+      }else{
+        document.querySelector("#asistenciasError").innerHTML="";
       }
       if(estadio==null){
         document.querySelector("#estadioError").innerHTML="Seleccione un estadio";
+      }else{
+        document.querySelector("#estadioError").innerHTML="";
       }
     }
 });
