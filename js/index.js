@@ -20,7 +20,11 @@ let necesidades=[];
 let asistencias = [];
    
 let attachments=[];
-  
+
+
+const getURLProjectManager="http://localhost:8080/projectmanagers";
+const postURLProject="http://localhost:8080/projects";
+
 document.getElementById("save").addEventListener("click", (e) => {
   e.preventDefault();
   let necesidadesCheckboxes = document.querySelectorAll('input[name="necesidadesCheckboxes"]:checked');
@@ -129,7 +133,7 @@ document.querySelector("#saveAsistencia").addEventListener("click", ()=>{
 //POST
 async function saveProject(datos){
   console.log(datos);
-  await fetch("http://localhost:8080/Project",{
+  await fetch(postURLProject,{
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(datos),
@@ -161,7 +165,7 @@ for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')){
 
 //GET
 function getProjectManager(){
-  fetch("http://localhost:8080/ProjectManager/getProjectManager/1")
+  fetch(getURLProjectManager+ "/1")
     .then((response) => response.json())
     .then(json =>readDomProductManager(json));
      
