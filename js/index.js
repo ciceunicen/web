@@ -22,8 +22,8 @@ let asistencias = [];
 let attachments=[];
 
 
-const getURLProjectManager="http://localhost:8080/projectmanagers";
-const postURLProject="http://localhost:8080/projects";
+const URLProjectManager="http://localhost:8080/projectmanagers";
+const URLProject="http://localhost:8080/projects";
 
 document.getElementById("save").addEventListener("click", (e) => {
   e.preventDefault();
@@ -133,7 +133,7 @@ document.querySelector("#saveAsistencia").addEventListener("click", ()=>{
 //POST
 async function saveProject(datos){
   console.log(datos);
-  await fetch(postURLProject,{
+  await fetch(URLProject,{
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(datos),
@@ -165,7 +165,7 @@ for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')){
 
 //GET
 function getProjectManager(){
-  fetch(getURLProjectManager+ "/1")
+  fetch(URLProjectManager+ "/1")
     .then((response) => response.json())
     .then(json =>readDomProductManager(json));
      
