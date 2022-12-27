@@ -3,8 +3,26 @@ color: 496D17 (dark green)
 CCCCCC (grey)
 0190E0 (light blue) 
 EAF7D8 (background color)*/
-
-nav{
+.navbar-nav, .navbar-collapse{
+    height: 100%;
+}
+.nav-item{
+    margin-right: 40px;
+    margin-left: 40px;
+}
+.nav-link{
+    color: white !important;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-left: 20px;
+}
+.nav-item:active{
+    background-color: #496D17;
+    color:white;
+    width: 160px;
+    font-weight: bold;
+}
+nav, .container-fluid{
     background-color: #74AC24;
     width:100%;
     height:100px;
@@ -14,14 +32,19 @@ nav{
     justify-content: center;
     grid-template-columns: 1fr 1fr 1fr 4fr;
 }
-
+.mainBtn, .selectBtn, .mainBtnClicked{
+    background-color: #74AC24;
+    color:white;
+    height:20px;
+    font-weight: bold;
+}
 nav img{
     width: 120px;
     height:90px;
     margin-left:30px;
 }
 
-nav button{
+nav button, .nav-item{
     background-color: transparent;
     border:none;
     color:#FFFFFF;
@@ -149,14 +172,17 @@ button{
     padding: 1px 6px 1px 6px;
 
 }
-.mainBtnClicked, #datos, #navProjects{
+.mainBtnClicked, #datos, #navEmprendedores, #navProject{
     background-color: #496D17;
     color:white;
     height:20px;
     font-weight: bold;
 }
-
-#navProjects{
+#navEmprendedores a, #navProjects a{
+    color: white;
+    text-decoration: none;
+}
+#navEmprendedores, #navProject{
     height: 100%;
     border-radius: 0px;
 }
@@ -438,4 +464,15 @@ hr{
     justify-content: center;
     color: #496D17;
     font-size: 16px;
+}
+
+.header-list-projects, .footer-list-projects{
+    background-color: #EAF7D8;
+}
+.list-projects{
+    margin-top: 10px;
+}
+.cointaint-list{
+    margin-left: 40px;
+    margin-right: 40px;
 }
