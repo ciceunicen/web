@@ -27,6 +27,7 @@ function mostrarProyectos() {
       response.text().then(
     function(texto){
       document.querySelector(".main-container").innerHTML = texto;
+      //funcionalidad boton ver mas de la lista
     }
   );
     }
