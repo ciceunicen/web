@@ -1,0 +1,19 @@
+.header-list-projects, .footer-list-projects{
+    background-color: #EAF7D8;
+}
+.list-projects{
+    margin-top: 10px;
+}
+.cointaint-list{
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+/*SECCIÓN DE FILTROS*/
+.filter-projects{
+    display: flex;
+}
+
+.filter-projects>select{
+    margin: 2px;
+}

@@ -1,0 +1,67 @@
+/*seción datos del emprendedor y historial del proyeccto*/
+
+/*HISTORIAL ADMINISTRADOR*/
+/*Tabla historial de administrador*/
+    .div_table_admin_history{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .div_table_admin_history>table{
+        text-align: center;
+        width: 1000px;
+    }
+/*Divs títulos seciones*/
+    .projectResponsible, .projectHistory{
+        display: flex;
+        background-color: #6B9E22;
+        border-radius: 5px;
+        margin: 10px 60px 0px 60px;
+        color:#FFFFFF;
+        text-transform: uppercase;
+    }
+
+    .projectTitle{
+        display: flex;
+        justify-content: center;
+        border-radius: 5px 5px 0 0;
+        background-color: #6B9E22;
+        margin: 10px 60px 0px 60px;
+
+        color:#FFFFFF;
+        text-transform: uppercase;
+    }
+
+/*contenedor flecha desplegar*/
+.projectResponsible a, .projectHistory a{
+    display: flex;
+    align-items: center;
+}
+/*flecha desplegar*/
+.projectResponsible a img, .projectHistory a img{
+    width: 20px;
+    height:20px;
+}
+/*parrafos titulos de seciones*/
+.projectResponsible p,.projectHistory p {
+    padding: 10px 30px 10px 30px;
+    font-weight: bold;
+}
+
+/*mostrar div con datos, se maneja desde javascript*/
+.showDataHistory{
+    background-color: #EAF7D8;
+    margin: 0px 60px 30px 60px;
+    padding-bottom: 10px;
+    border-radius: 0px 0px 5px 5px;
+}
+
+/*mostrar div con datos, se maneja desde javascript*/
+.showProjectManagerData{
+    background-color: #EAF7D8;
+    color: black;
+    margin: 0px 60px 30px 60px;
+    border-radius: 0px 0px 5px 5px;
+    padding-bottom: 1px 0 1px 0;
+}
+
