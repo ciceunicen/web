@@ -41,12 +41,25 @@ function mostrarCargaProyecto() {
       response.text().then(
     function(texto){
       document.querySelector(".main-container").innerHTML = texto;
-      document.querySelector('.slideDownResponsible').addEventListener("click", mostrarResponsableProyecto);
-      document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
       document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
       inicializarCargaProyecto();
       document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
       document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
+      partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor");
+    }
+  );
+    }
+  );
+}
+
+function partialRendercargaDatosEmprendedorYHistorial(div){
+  fetch("html/datosEmprendedor.html").then(
+    function(response){
+      response.text().then(
+    function(texto){
+      document.querySelector(div).innerHTML = texto;
+      document.querySelector('.slideDownResponsible').addEventListener("click", mostrarResponsableProyecto);
+      document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
     }
   );
     }
@@ -225,15 +238,15 @@ function readDomProductManager(json){
  divProductManager.innerHTML = "";
  divProductManager.innerHTML+=
                        " <div class='showProjectManagerData' id='projectManagerData'>"
-                        +"<h3> Nombre: " + json.name + " " + json.surname +"</h3>" 
-                        +"<h3> Teléfono: "+ json.phone+ "</h3>"
-                        + "<h3> Localidad: agregar en entidad </h3>"
-                        + "<h3> Email: " +json.email+ "</h3>"
-                        + "<h3> Ocupación: agregar en entidad </h3>"
-                        + "<h3> Vinculación con UNICEN: agregar en entidad </h3>"
-                        + "<h3> Facultad a la que pertenece: </h3>"
-                        + "<h3> Medio de conocimiento del CICE: " + json.medioConocimientoCice + "</h3>"
-                        + "<h3> Organización asociativa: agregar en entidad </h3>"
+                        +"<p> Nombre: " + json.name + " " + json.surname +"</p>" 
+                        +"<p> Teléfono: "+ json.phone+ "</p>"
+                        + "<p> Localidad: agregar en entidad </p>"
+                        + "<p> Email: " +json.email+ "</p>"
+                        + "<p> Ocupación: agregar en entidad </p>"
+                        + "<p> Vinculación con UNICEN: agregar en entidad </p>"
+                        + "<p> Facultad a la que pertenece: </p>"
+                        + "<p> Medio de conocimiento del CICE: " + json.medioConocimientoCice + "</p>"
+                        + "<p> Organización asociativa: agregar en entidad </p>"
                         + "</div>" ;
 }
 

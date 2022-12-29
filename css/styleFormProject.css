@@ -1,0 +1,118 @@
+/*Se usa !important para que pise el estilo de bootstrap*/
+
+/*Div que contiene Botones de formulario de secciones datos, Diagnóstico y Registro de Encuentros*/
+    .mainBtns{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin: 0px 60px 0px 60px;
+        justify-content: space-around;
+    }
+    .mainBtns>button{
+        border-radius: 0px !important;
+    }
+
+
+
+/*FORMULARIO*/
+    /*labels generales, todos*/
+    label{
+        color: #74AC24;
+        margin-top:10px;
+    }
+    /*Borde de inputs*/
+    input, textarea{
+        border: 1px solid #74AC24 !important;
+    }
+    /*Div que contiene todo el formulario de cargar proyecto*/
+    .projectLoading{
+        display: flex;
+        flex-direction: column;
+        background-color: #EAF7D8;
+        margin: 0px 60px 60px 60px;
+        padding: 30px;
+        border-radius: 5px;
+    }
+
+    /*Div que contiene inputs de crear necesidades o asistencias*/
+        .div_input_other{
+            display: flex;
+            margin: 2% auto;
+        }
+        /*input para ingresar otra nesesidad o asistencia*/
+        .input_other{
+            width: 30% !important;
+            margin: auto 2%;
+        }
+
+/*mensajes error de feedback*/
+.error{
+    font-size: small;
+    color: red;
+}
+
+/*icono tilde de guardado y de falla de guardado*/
+    .success-icon, .failure-icon {
+        position: absolute;
+        margin: auto auto 1px auto;
+        right: 105px;
+        opacity: 0;
+    }
+
+    .failure-icon {
+        color: red;
+    }
+
+    .success-icon {
+        color: green;
+    }
+/*INPUT FILE*/
+    /*div que contiene input file*/
+    .adjuntos{
+        display: flex;
+        flex-direction: column;
+    }
+
+    /*Oculta select del archivo que viene por defecto*/
+    /*Para poder aplicar estilo en otro que apunta a este*/
+    .inputfile {
+        display: none;
+        width: 0px;
+        height: 0px;
+    }
+
+    /*lavel que contiene spam que muestra texto de que archivos se adjuntaron y strong que se usa como botón de adjuntar*/
+    .iborrainputfile {
+        font-weight:bold;
+        border-radius: 5px;
+        background-color: #fff;
+        padding: 5px 0px;
+        margin-bottom: 2%;
+        width: 40%;
+        border: 1px solid #74AC24 !important;
+    }
+    /*Texto donde se muestra archivos que se adjuntaron*/
+    .iborrainputfile span{
+        margin: auto auto auto 2%;
+    }
+
+    /*Botón de selecion de archivos "Selecionar archivo/s"*/
+    .iborrainputfile strong {
+        color: #fff;
+        background-color: #74AC24;
+        padding: 6px;
+    }
+    /*Botón de selecion de archivos "Selecionar archivo/s"*/
+    .iborrainputfile strong:hover {
+        background-color: #496D17;
+    }
+
+
+
+
+
+
+
+
+
+
+
