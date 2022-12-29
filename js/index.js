@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded",function(){
       response.text().then(
     function(texto){
       document.querySelector(".navbar").innerHTML = texto;
-      document.querySelector(".proyectos").addEventListener("click", mostrarProyectos);
+      document.querySelector(".proyectos").addEventListener("click", getAllProjects);
       document.querySelector(".emprendedores").addEventListener("click", mostrarCargaProyecto);
       mostrarCargaProyecto();
     }
@@ -21,12 +21,18 @@ document.addEventListener("DOMContentLoaded",function(){
 })
 
 
-function mostrarProyectos() {
+function mostrarProyectos(json) {
   fetch("html/listProjects.html").then(
     function(response){
       response.text().then(
     function(texto){
       document.querySelector(".main-container").innerHTML = texto;
+      let array=json.content;
+      array.forEach(element => {
+        console.log(element);
+        document.querySelector(".list").innerHTML+="<tr><td>" + element.title +  "</td><td>"+ element.projectManager +"</td><td>" +element.stage + "<td><button class='verMas'>Ver más</button></td></tr>";
+      });    
+    ;
       //funcionalidad boton ver mas de la lista
     }
   );
@@ -262,3 +268,11 @@ function mostrarHistorialProyecto(){
   }
 }
   
+
+//OBTENER UN PROYECTO EN PARTICULAR
+ function getAllProjects(page){
+   fetch(URLProject + "/page/" + 1)
+  .then(response => response.json())
+  .then(json => mostrarProyectos(json));
+}
+

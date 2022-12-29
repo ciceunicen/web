@@ -142,11 +142,12 @@ button{
 .mainBtn{
     border-radius: 0px;
 }
-.mainBtn, .selectBtn, .mainBtnClicked{
+.mainBtn, .selectBtn, .mainBtnClicked, .verMas{
     background-color: #74AC24;
     color:white;
     height:20px;
     font-weight: bold;
+    align-items: center;
 }
 
 .generalSave{
@@ -170,6 +171,7 @@ button{
     font-weight: bold;
     border-radius: 5px;
     padding: 1px 6px 1px 6px;
+    align-items: center;
 
 }
 .mainBtnClicked, #datos, #navEmprendedores, #navProject{
@@ -475,4 +477,13 @@ hr{
 .cointaint-list{
     margin-left: 40px;
     margin-right: 40px;
+}
+
+.verMas{
+    display: flex;
+    justify-content: end;
+}
+
+table{
+    justify-content: center;
 }
