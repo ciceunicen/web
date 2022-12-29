@@ -28,6 +28,13 @@ function mostrarProyectos() {
     function(texto){
       document.querySelector(".main-container").innerHTML = texto;
       //funcionalidad boton ver mas de la lista
+      //cargo los selects de filtrados
+      //loadSelectOption(url, 'needs');
+      //loadSelectOption(url, 'assists');
+      //loadSelectOption(url, 'stadiums');
+      new MultiSelectTag('needs');
+      new MultiSelectTag('assists');
+      new MultiSelectTag('stadiums');
     }
   );
     }
