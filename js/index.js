@@ -4,6 +4,7 @@ const URLProject="http://localhost:8080/projects";
 let necesidades=[];
 let asistencias = [];
 let attachments=[];
+let page=1;
 
 document.addEventListener("DOMContentLoaded",function(){
   fetch("html/navbar.html").then(
@@ -20,26 +21,66 @@ document.addEventListener("DOMContentLoaded",function(){
   );
 })
 
-
 function mostrarProyectos(json) {
   fetch("html/listProjects.html").then(
     function(response){
       response.text().then(
-    function(texto){
-      document.querySelector(".main-container").innerHTML = texto;
-      let array=json.content;
-      array.forEach(element => {
-        console.log(element);
-        document.querySelector(".list").innerHTML+="<tr><td>" + element.title +  "</td><td>"+ element.projectManager +"</td><td>" +element.stage + "<td><button class='verMas'>Ver más</button></td></tr>";
-      });    
-    ;
-      //funcionalidad boton ver mas de la lista
-    }
+        function(texto){
+          document.querySelector(".main-container").innerHTML = texto;
+        
+            fetch("html/pagination.html").then(
+              function(response){
+                response.text().then(
+                  function(texto){
+                    document.querySelector(".pagination").innerHTML=texto;
+                    if(page==1){
+                      document.querySelector(".previousPage").ariaDisabled;
+                      document.querySelector(".previousPage").style.color="grey"; 
+                    }
+                    let pages=json.pageable.pageSize;
+                    document.querySelector(".nextPage").addEventListener("click", ()=>{
+                      page++;
+                      if(page>pages){ 
+                        document.querySelector(".nextPage").ariaDisabled;
+                        document.querySelector(".nextPage").style.color="grey";
+                      }else{
+                        getAllProjects();
+                      
+                      }
+                    });
+                    document.querySelector(".previousPage").addEventListener("click",()=>{
+                      page--;
+                      if(page<1){
+                        document.querySelector(".previousPage").ariaDisabled;
+                        document.querySelector(".previousPage").style.color="grey";
+                      }else{
+                        getAllProjects(page);
+                      }
+                      
+                    });
+              }
+              
+            );
+         }); 
+          let array=json.content;
+          array.forEach(element => {
+          document.querySelector(".list").innerHTML+="<tr><td>" + element.title +  "</td><td>"+ element.projectManager +"</td><td>" +element.stage + "<td><button class='btn_save_green verMas'>Ver más</button></td></tr>";
+            
+      }
   );
     }
   );
+});
 }
 
+//necesito que la paginacion se cargue solo la primera vez
+
+//OBTENER UN PROYECTO EN PARTICULAR
+function getAllProjects(){
+  fetch(URLProject + "/page/" + page)
+ .then(response => response.json())
+ .then(json => mostrarProyectos(json));
+}
 
 function mostrarCargaProyecto() {
   fetch("html/cargarProjects.html").then(
@@ -282,10 +323,16 @@ function mostrarHistorialProyecto(){
 }
   
 
-//OBTENER UN PROYECTO EN PARTICULAR
- function getAllProjects(page){
-   fetch(URLProject + "/page/" + 1)
-  .then(response => response.json())
-  .then(json => mostrarProyectos(json));
-}
 
+function getPaginacion(){
+  fetch("html/pagination.html").then(
+    function(response){
+      response.text().then(
+        function(texto){
+          document.querySelector(".pagination").innerHTML=texto;
+          //document.querySelector('.nextPage').addEventListener("click", getAllProjects(page));
+          //document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
+        }
+      );
+  })
+}
