@@ -30,18 +30,20 @@ nav, .container-fluid{
     justify-content: center;
     grid-template-columns: 1fr 1fr 1fr 4fr;
 }
+/*revisar si se usa*/
 .mainBtn, .selectBtn, .mainBtnClicked{
     background-color: #74AC24;
     color:white;
     height:20px;
     font-weight: bold;
 }
+/*revisar si se usa*/
 nav img{
     width: 120px;
     height:90px;
     margin-left:30px;
 }
-
+/*revisar si se usa*/
 nav button, .nav-item{
     background-color: transparent;
     border:none;
@@ -49,12 +51,12 @@ nav button, .nav-item{
     font-weight: bold;
     width:120px; 
 }
-
+/*revisar si se usa*/
 nav div{
     justify-content: end;
     display: flex;
 }
-
+/*revisar si se usa*/
 .closeSession{
     justify-content: end;
     margin-right: 30px;
