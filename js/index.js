@@ -1,6 +1,8 @@
 //VARIABLES GLOBALES
 const URLProjectManager="http://localhost:8080/projectmanagers";
 const URLProject="http://localhost:8080/projects";
+const URLNeeds = "http://localhost:8080/needs";
+const URLAssitances = "http://localhost:8080/assitances";
 let necesidades=[];
 let asistencias = [];
 let attachments=[];
@@ -28,18 +30,43 @@ function mostrarProyectos() {
     function(texto){
       document.querySelector(".main-container").innerHTML = texto;
       //funcionalidad boton ver mas de la lista
-      //cargo los selects de filtrados
-      //loadSelectOption(url, 'needs');
-      //loadSelectOption(url, 'assists');
-      //loadSelectOption(url, 'stadiums');
-      new MultiSelectTag('needs');
-      new MultiSelectTag('assists');
+      //Traigo de la base de datos y muestro en el DOM las necesidades, asistencias y estadios existentes
+      //le paso la url y el Id del DOM donde se van a mostrar los elementos
+      getAllBaseURL(URLNeeds, 'needs');
+      getAllBaseURL(URLAssitances, 'assists');
+      //No se resuelve los estadios
       new MultiSelectTag('stadiums');
     }
   );
     }
   );
 }
+
+//GET All reutilizable del Filtro para Necesidades,Asistencias y Estadios
+  function getAllBaseURL(url, elementDOM){
+    fetch(url)
+      .then((response) => response.json())
+      .then(json => createOptionsSelectDOM(json, elementDOM) );
+  }
+
+  function createOptionsSelectDOM(json, elementDOM){
+    innerHTML(json, elementDOM);
+    new MultiSelectTag(elementDOM);
+  }
+
+  function innerHTML(json, elementDOM){
+    let select = document.getElementById(elementDOM);
+    if(elementDOM == 'needs'){
+      for (e of json) {
+        select.innerHTML+= "<option value="+e.id_Need+">"+e.needType+"</option>";
+      }
+    }
+    if(elementDOM == 'assists'){
+      for (e of json) {
+        select.innerHTML+= "<option value="+e.id_Assitance+">"+e.type+"</option>";
+      }
+    }
+  }
 
 
 function mostrarCargaProyecto() {
