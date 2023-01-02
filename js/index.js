@@ -32,7 +32,8 @@ function mostrarProyectos(json) {
               function(response){
                 response.text().then(
                   function(texto){
-                    document.querySelector(".pagination").innerHTML=texto;
+                    document.querySelector(".footer-list-projects").innerHTML=texto;
+                    document.querySelector(".pageNumber").innerHTML=page;
                     if(page==1){
                       document.querySelector(".previousPage").ariaDisabled;
                       document.querySelector(".previousPage").style.color="grey"; 
@@ -45,7 +46,7 @@ function mostrarProyectos(json) {
                         document.querySelector(".nextPage").style.color="grey";
                       }else{
                         getAllProjects();
-                      
+                        document.querySelector(".pageNumber").innerHTML=page;
                       }
                     });
                     document.querySelector(".previousPage").addEventListener("click",()=>{
@@ -329,7 +330,7 @@ function getPaginacion(){
     function(response){
       response.text().then(
         function(texto){
-          document.querySelector(".pagination").innerHTML=texto;
+          document.querySelector(".footer-list-projects").innerHTML=texto;
           //document.querySelector('.nextPage').addEventListener("click", getAllProjects(page));
           //document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
         }
