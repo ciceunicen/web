@@ -3,6 +3,7 @@ const URLProjectManager="http://localhost:8080/projectmanagers";
 const URLProject="http://localhost:8080/projects";
 const URLNeeds = "http://localhost:8080/needs";
 const URLAssitances = "http://localhost:8080/assitances";
+const URLStages = "http://localhost:8080/stages";
 let necesidades=[];
 let asistencias = [];
 let attachments=[];
@@ -38,8 +39,7 @@ function mostrarProyectos() {
         //le paso la url y el Id del DOM donde se van a mostrar los elementos
         getAllBaseURL(URLNeeds, 'needs');
         getAllBaseURL(URLAssitances, 'assists');
-        //No se resuelve los estadios
-        new MultiSelectTag('stadiums','btn_reset_filter');
+        getAllBaseURL(URLStages, 'stadiums');
 
         document.querySelector("#btn_filter").addEventListener("click", ()=>{
           captureSelectedOptions();
@@ -69,6 +69,14 @@ function captureSelectedOptions(){
       json_filters.assitences.push(option.value);
     }
   }
+  //capturo que Estadios fueron seleccionados
+  let assitemcesStadiums = document.querySelector("#stadiums");
+  json_filters.stadiums = []
+  for (var option of assitemcesStadiums.options) {
+    if(option.selected){
+      json_filters.stadiums.push(option.value);
+    }
+  }
 
   console.log(json_filters);
 }
@@ -95,6 +103,11 @@ function captureSelectedOptions(){
     if(elementDOM == 'assists'){
       for (e of json) {
         select.innerHTML+= "<option value="+e.id_Assitance+">"+e.type+"</option>";
+      }
+    }
+    if(elementDOM == 'stadiums'){
+      for (e of json) {
+        select.innerHTML+= "<option value="+e.id_Stage+">"+e.stage_type+"</option>";
       }
     }
   }
