@@ -10,7 +10,7 @@ let attachments=[];
 let page=1;
 
 //Para guardar los id por lo que se va a filtrar
-var json_filters = {needs:[], assitences: [], stadiums:[]};
+var json_filters = {};
 
 document.addEventListener("DOMContentLoaded",function(){
   fetch("html/navbar.html").then(
@@ -58,7 +58,7 @@ function mostrarProyectos(json) {
                       document.querySelector("#previousPage").setAttribute("disabled", "true");
                     }
                     let pages=json.totalPages;
-                    console.log(json);
+                   // console.log(json);
                     if(page==pages){
                         document.querySelector("#nextPage").style.color="grey";
                         document.querySelector("#nextPage").setAttribute("disabled", "true");
@@ -85,8 +85,8 @@ function mostrarProyectos(json) {
          }); 
           let array=json.content;
           array.forEach(element => {
-            console.log(element.projectManager);
-            console.log(element.stage);
+           // console.log(element.projectManager);
+           // console.log(element.stage);
           document.querySelector(".list").innerHTML+="<tr><td>" + element.title +  "</td><td>"+ element.projectManager.name + " "+ element.projectManager.surname +"</td><td>" +element.stage.stage_type + "<td><button class='btn_save_green verMas'>Ver más</button></td></tr>";
             
       }
@@ -98,32 +98,33 @@ function mostrarProyectos(json) {
 }
 
 function captureSelectedOptions(){
+  json_filters = {filters:[]};
   //capturo que necesidades fueron seleccionadas
   let needsOptions = document.querySelector("#needs");
-  json_filters.needs = [];
+  //json_filters.needs = [];
   for (var option of needsOptions.options) {
     if(option.selected){
-      json_filters.needs.push(option.value);
+      json_filters.filters.push(option.label);
     }
   }
   //capturo que asistencias fueron seleccionadas
   let assitemcesOptions = document.querySelector("#assists");
-  json_filters.assitences = []
+  //json_filters.assitences = []
   for (var option of assitemcesOptions.options) {
     if(option.selected){
-      json_filters.assitences.push(option.value);
+      json_filters.filters.push(option.label);
     }
   }
   //capturo que Estadios fueron seleccionados
   let assitemcesStadiums = document.querySelector("#stadiums");
-  json_filters.stadiums = []
+  //json_filters.stadiums = []
   for (var option of assitemcesStadiums.options) {
     if(option.selected){
-      json_filters.stadiums.push(option.value);
+      json_filters.filters.push(option.label);
     }
   }
-
-  console.log(json_filters);
+  getFilterProjects(json_filters);
+  //console.log(json_filters);
 }
 
 //GET All reutilizable del Filtro para Necesidades,Asistencias y Estadios
@@ -156,7 +157,21 @@ function captureSelectedOptions(){
       }
     }
   }
-
+//GET filtro de proyectos
+function getFilterProjects(datos){
+  console.log(JSON.stringify(datos));
+  console.log(URLProject + "/filters/page/" + page);
+  fetch(URLProject + "/filters/page/" + page,{
+    method: "GET",
+    mode: 'cors',
+    body: JSON.stringify(datos),
+    headers: {"Access-Control-Allow-Origin":"*" ,},
+    headers: {"Content-type": "application/json; charset=UTF-8",}
+  })
+  .then(response => response.json())
+  .then(json => mostrarProyectos(json))
+  .catch(error => console.log(error));
+}
 
 //OBTENER PROYECTOS
 function getAllProjects(){
