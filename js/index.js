@@ -41,7 +41,7 @@ function mostrarProyectos(json) {
         getAllBaseURL(URLAssitances, 'assists');
         getAllBaseURL(URLStages, 'stadiums');
 
-        document.querySelector("#btn_filter").addEventListener("click", ()=>{
+        document.querySelector("#btn_filter").addEventListener("click", function(){
           captureSelectedOptions();
           //Acá hacer fetch a la API pidiendo los proyectos filtrados, usando JSON "json_filters"
           //...
@@ -159,18 +159,11 @@ function captureSelectedOptions(){
   }
 //GET filtro de proyectos
 function getFilterProjects(datos){
-  console.log(JSON.stringify(datos));
-  console.log(URLProject + "/filters/page/" + page);
-  fetch(URLProject + "/filters/page/" + page,{
-    method: "GET",
-    mode: 'cors',
-    body: JSON.stringify(datos),
-    headers: {"Access-Control-Allow-Origin":"*" ,},
-    headers: {"Content-type": "application/json; charset=UTF-8",}
-  })
+  let url = new URL(URLProject + "/filters/page/" + page);
+  let params = new URLSearchParams(datos);
+  fetch(url+"?"+params)
   .then(response => response.json())
-  .then(json => mostrarProyectos(json))
-  .catch(error => console.log(error));
+  .then(json => mostrarProyectos(json));
 }
 
 //OBTENER PROYECTOS
