@@ -334,12 +334,12 @@ async function saveProject(datos){
   })
   .then(response => response.json())
   .then(json => showSucess());
-  setTimeout(mostrarCargaProyecto,8000)
+  //setTimeout(mostrarCargaProyecto,8000)
 }
 
 function showSucess(datos){
-  document.querySelector(".generalSave").innerHTML+= 
-        "<p> Se han cargado los datos exitosamente<p>";
+  document.querySelector(".generalSave").innerHTML= 
+        "<p> Se han cargado los datos exitosamente</p>";
 }
 
 //SELECCIONAR SOLO UN ESTADIO
