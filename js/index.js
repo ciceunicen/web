@@ -27,7 +27,6 @@ function mostrarProyectos(json) {
       response.text().then(
         function(texto){
           document.querySelector(".main-container").innerHTML = texto;
-        
             fetch("html/pagination.html").then(
               function(response){
                 response.text().then(
@@ -37,24 +36,25 @@ function mostrarProyectos(json) {
                     if(page==1){
                       document.querySelector(".previousPage").ariaDisabled;
                       document.querySelector(".previousPage").style.color="grey"; 
+                      document.querySelector(".previousPage").setAttribute("disabled", "true");
                     }
                     let pages=json.pageable.pageSize;
+                    if(page==pages){
+                        document.querySelector(".nextPage").style.color="grey";
+                        document.querySelector(".nextPage").setAttribute("disabled", "true");
+                        document.querySelector(".nextPage").ariaDisabled;
+                       
+                    }
                     document.querySelector(".nextPage").addEventListener("click", ()=>{
                       page++;
-                      if(page>pages){ 
-                        document.querySelector(".nextPage").ariaDisabled;
-                        document.querySelector(".nextPage").style.color="grey";
-                      }else{
-                        getAllProjects();
-                        document.querySelector(".pageNumber").innerHTML=page;
+                      if(page<=pages){
+                          getAllProjects(page);
                       }
+                    
                     });
                     document.querySelector(".previousPage").addEventListener("click",()=>{
                       page--;
-                      if(page<1){
-                        document.querySelector(".previousPage").ariaDisabled;
-                        document.querySelector(".previousPage").style.color="grey";
-                      }else{
+                      if(page>=1){
                         getAllProjects(page);
                       }
                       
@@ -74,9 +74,8 @@ function mostrarProyectos(json) {
 });
 }
 
-//necesito que la paginacion se cargue solo la primera vez
 
-//OBTENER UN PROYECTO EN PARTICULAR
+//OBTENER PROYECTOS
 function getAllProjects(){
   fetch(URLProject + "/page/" + page)
  .then(response => response.json())
@@ -324,16 +323,3 @@ function mostrarHistorialProyecto(){
 }
   
 
-
-function getPaginacion(){
-  fetch("html/pagination.html").then(
-    function(response){
-      response.text().then(
-        function(texto){
-          document.querySelector(".footer-list-projects").innerHTML=texto;
-          //document.querySelector('.nextPage').addEventListener("click", getAllProjects(page));
-          //document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
-        }
-      );
-  })
-}
