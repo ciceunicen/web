@@ -66,7 +66,9 @@ function mostrarProyectos(json) {
          }); 
           let array=json.content;
           array.forEach(element => {
-          document.querySelector(".list").innerHTML+="<tr><td>" + element.title +  "</td><td>"+ element.projectManager +"</td><td>" +element.stage + "<td><button class='btn_save_green verMas'>Ver más</button></td></tr>";
+            console.log(element.projectManager);
+            console.log(element.stage);
+          document.querySelector(".list").innerHTML+="<tr><td>" + element.title +  "</td><td>"+ element.projectManager.name + " "+ element.projectManager.surname +"</td><td>" +element.stage.stage_type + "<td><button class='btn_save_green verMas'>Ver más</button></td></tr>";
             
       }
   );
