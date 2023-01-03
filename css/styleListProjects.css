@@ -8,3 +8,21 @@
     margin-left: 40px;
     margin-right: 40px;
 }
+
+/*SECCIÓN DE FILTROS*/
+/* .filter-projects{
+    display: flex;
+} */
+
+.filter-projects>select{
+    margin: 2px;
+}
+
+.verMas{
+    color:#FFFFFF;
+}
+
+.pagination{
+    justify-content: center;
+}
+

@@ -106,10 +106,22 @@
         background-color: #496D17;
     }
 
+    .generalSave{
+        margin: 0px 0px 0px 60px;
+        justify-content: space-around;
+    }
 
 
+    .generalSave p{
+        color: #496D17;
+        font-weight: bold;
+        margin-top: 5px;
+        
+    }
 
-
+    .saveContainer{
+        display: flex;
+    }
 
 
 

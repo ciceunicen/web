@@ -7,6 +7,7 @@ const URLStages = "http://localhost:8080/stages";
 let necesidades=[];
 let asistencias = [];
 let attachments=[];
+let page=1;
 
 //Para guardar los id por lo que se va a filtrar
 var json_filters = {needs:[], assitences: [], stadiums:[]};
@@ -17,7 +18,7 @@ document.addEventListener("DOMContentLoaded",function(){
       response.text().then(
     function(texto){
       document.querySelector(".navbar").innerHTML = texto;
-      document.querySelector(".proyectos").addEventListener("click", mostrarProyectos);
+      document.querySelector(".proyectos").addEventListener("click", getAllProjects);
       document.querySelector(".emprendedores").addEventListener("click", mostrarCargaProyecto);
       mostrarCargaProyecto();
     }
@@ -26,14 +27,13 @@ document.addEventListener("DOMContentLoaded",function(){
   );
 })
 
-
-function mostrarProyectos() {
+function mostrarProyectos(json) {
   fetch("html/listProjects.html").then(
     function(response){
       response.text().then(
-    function(texto){
-      document.querySelector(".main-container").innerHTML = texto;
-      //funcionalidad boton ver mas de la lista
+        function(texto){
+          document.querySelector(".main-container").innerHTML = texto;
+          //funcionalidad boton ver mas de la lista
       //FILTROS
         //Traigo de la base de datos y muestro en el DOM las necesidades, asistencias y estadios existentes
         //le paso la url y el Id del DOM donde se van a mostrar los elementos
@@ -46,10 +46,55 @@ function mostrarProyectos() {
           //Acá hacer fetch a la API pidiendo los proyectos filtrados, usando JSON "json_filters"
           //...
         });
-    }
+            fetch("html/pagination.html").then(
+              function(response){
+                response.text().then(
+                  function(texto){
+                    document.querySelector(".footer-list-projects").innerHTML=texto;
+                    document.querySelector("#pageNumber").innerHTML=page;
+                    if(page==1){
+                      document.querySelector("#previousPage").ariaDisabled;
+                      document.querySelector("#previousPage").style.color="grey"; 
+                      document.querySelector("#previousPage").setAttribute("disabled", "true");
+                    }
+                    let pages=json.totalPages;
+                    console.log(json);
+                    if(page==pages){
+                        document.querySelector("#nextPage").style.color="grey";
+                        document.querySelector("#nextPage").setAttribute("disabled", "true");
+                        document.querySelector("#nextPage").ariaDisabled;
+                       
+                    }
+                    document.querySelector("#nextPage").addEventListener("click", ()=>{
+                      page++;
+                      if(page<=pages){
+                          getAllProjects(page);
+                      }
+                    
+                    });
+                    document.querySelector("#previousPage").addEventListener("click",()=>{
+                      page--;
+                      if(page>=1){
+                        getAllProjects(page);
+                      }
+                      
+                    });
+              }
+              
+            );
+         }); 
+          let array=json.content;
+          array.forEach(element => {
+            console.log(element.projectManager);
+            console.log(element.stage);
+          document.querySelector(".list").innerHTML+="<tr><td>" + element.title +  "</td><td>"+ element.projectManager.name + " "+ element.projectManager.surname +"</td><td>" +element.stage.stage_type + "<td><button class='btn_save_green verMas'>Ver más</button></td></tr>";
+            
+      }
+   
   );
     }
   );
+});
 }
 
 function captureSelectedOptions(){
@@ -112,6 +157,13 @@ function captureSelectedOptions(){
     }
   }
 
+
+//OBTENER PROYECTOS
+function getAllProjects(){
+  fetch(URLProject + "/page/" + page)
+ .then(response => response.json())
+ .then(json => mostrarProyectos(json));
+}
 
 function mostrarCargaProyecto() {
   fetch("html/cargarProjects.html").then(
@@ -282,12 +334,12 @@ async function saveProject(datos){
   })
   .then(response => response.json())
   .then(json => showSucess());
-  setTimeout(mostrarCargaProyecto,8000)
+  //setTimeout(mostrarCargaProyecto,8000)
 }
 
 function showSucess(datos){
-  document.querySelector(".generalSave").innerHTML+= 
-        "<p> Se han cargado los datos exitosamente<p>";
+  document.querySelector(".generalSave").innerHTML= 
+        "<p> Se han cargado los datos exitosamente</p>";
 }
 
 //SELECCIONAR SOLO UN ESTADIO
@@ -353,3 +405,4 @@ function mostrarHistorialProyecto(){
   }
 }
   
+
