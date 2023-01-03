@@ -2,7 +2,7 @@
 // Email: habibmhamadi@gmail.com
 
 
-function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
+function MultiSelectTag (el,id_btn_reset_filter ,customs = {shadow: false, rounded:true}) {
     var element = null
     var options = null
     var customSelectContainer = null
@@ -16,6 +16,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
     var drawer = null
     var ul = null
     var domParser = new DOMParser()
+    var btn_reset_filter = null;
     init()
 
     function init() {
@@ -47,14 +48,18 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
                 removeTag(child.dataset.value)
                 setValues()
             }
-            
         })
-        
-        window.addEventListener('click', (e) => {   
+
+        window.addEventListener('click', (e) => {
             if (!customSelectContainer.contains(e.target)){
                 drawer.classList.add('hidden')
             }
         });
+
+        btn_reset_filter = document.getElementById(id_btn_reset_filter)
+        btn_reset_filter.addEventListener("click", ()=>{
+            resetOptions();
+        })
 
     }
 
@@ -80,15 +85,16 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         if(customs.rounded) {
             body.classList.add('rounded')
         }
-        
+
         // .input-container
         inputContainer = document.createElement('div')
         inputContainer.classList.add('input-container')
-
-        // input
+/* */
+        // input search
         input = document.createElement('input')
         input.classList.add('input')
         input.placeholder = `${customs.placeholder || 'Search...'}`
+        input.classList.add('hidden')
 
         inputBody = document.createElement('inputBody')
         inputBody.classList.add('input-body')
@@ -121,7 +127,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         if(customs.rounded) {
             drawer.classList.add('rounded')
         }
-        drawer.append(inputBody)
+       // drawer.append(inputBody)
         ul = document.createElement('ul');
         
         drawer.appendChild(ul)
@@ -142,7 +148,15 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         ul.innerHTML = ''
         for (var option of options) {
             if (option.selected) {
-                !isTagSelected(option.value) && createTag(option)
+                if(option.value == 0){
+                    for(var option2 of options){
+                        option2.selected = true;
+                    }
+                    option.selected = false
+                }
+                if(option.value != 0){
+                    !isTagSelected(option.value) && createTag(option)
+                }
             }
             else {
                 const li = document.createElement('li')
@@ -161,7 +175,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
     }
 
     function createTag(option) {
-        // Create and show selected item as tag
+    // Create and show selected item as tag
         const itemDiv = document.createElement('div');
         itemDiv.classList.add('item-container');
         const itemLabel = document.createElement('div');
@@ -172,7 +186,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>`, 'image/svg+xml').documentElement
- 
+
         itemClose.addEventListener('click', (e) => {
             const unselectOption = options.find((op) => op.value == option.value)
             unselectOption.selected = false
@@ -180,10 +194,12 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
             initOptions()
             setValues()
         })
-    
+
         itemDiv.appendChild(itemLabel)
         itemDiv.appendChild(itemClose)
         inputContainer.append(itemDiv)
+
+
     }
 
     function enableItemSelection() {
@@ -232,5 +248,12 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
                 selected: op.selected,
             }
         })
+    }
+    function resetOptions(){
+        for (var option of options) {
+            option.selected = false
+            removeTag(option.value)
+            setValues()
+        }
     }
 }

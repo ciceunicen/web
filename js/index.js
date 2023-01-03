@@ -7,6 +7,9 @@ let necesidades=[];
 let asistencias = [];
 let attachments=[];
 
+//Para guardar los id por lo que se va a filtrar
+var json_filters = {needs:[], assitences: [], stadiums:[]};
+
 document.addEventListener("DOMContentLoaded",function(){
   fetch("html/navbar.html").then(
     function(response){
@@ -30,28 +33,56 @@ function mostrarProyectos() {
     function(texto){
       document.querySelector(".main-container").innerHTML = texto;
       //funcionalidad boton ver mas de la lista
-      //Traigo de la base de datos y muestro en el DOM las necesidades, asistencias y estadios existentes
-      //le paso la url y el Id del DOM donde se van a mostrar los elementos
-      getAllBaseURL(URLNeeds, 'needs');
-      getAllBaseURL(URLAssitances, 'assists');
-      //No se resuelve los estadios
-      new MultiSelectTag('stadiums');
+      //FILTROS
+        //Traigo de la base de datos y muestro en el DOM las necesidades, asistencias y estadios existentes
+        //le paso la url y el Id del DOM donde se van a mostrar los elementos
+        getAllBaseURL(URLNeeds, 'needs');
+        getAllBaseURL(URLAssitances, 'assists');
+        //No se resuelve los estadios
+        new MultiSelectTag('stadiums','btn_reset_filter');
+
+        document.querySelector("#btn_filter").addEventListener("click", ()=>{
+          captureSelectedOptions();
+          //Acá hacer fetch a la API pidiendo los proyectos filtrados, usando JSON "json_filters"
+          //...
+        });
     }
   );
     }
   );
 }
 
+function captureSelectedOptions(){
+  //capturo que necesidades fueron seleccionadas
+  let needsOptions = document.querySelector("#needs");
+  json_filters.needs = [];
+  for (var option of needsOptions.options) {
+    if(option.selected){
+      json_filters.needs.push(option.value);
+    }
+  }
+  //capturo que asistencias fueron seleccionadas
+  let assitemcesOptions = document.querySelector("#assists");
+  json_filters.assitences = []
+  for (var option of assitemcesOptions.options) {
+    if(option.selected){
+      json_filters.assitences.push(option.value);
+    }
+  }
+
+  console.log(json_filters);
+}
+
 //GET All reutilizable del Filtro para Necesidades,Asistencias y Estadios
   function getAllBaseURL(url, elementDOM){
     fetch(url)
       .then((response) => response.json())
-      .then(json => createOptionsSelectDOM(json, elementDOM) );
+      .then(json => createOptionsSelectDOM(json, elementDOM));
   }
 
   function createOptionsSelectDOM(json, elementDOM){
     innerHTML(json, elementDOM);
-    new MultiSelectTag(elementDOM);
+    new MultiSelectTag(elementDOM, 'btn_reset_filter')
   }
 
   function innerHTML(json, elementDOM){
