@@ -51,28 +51,28 @@ function mostrarProyectos(json) {
                 response.text().then(
                   function(texto){
                     document.querySelector(".footer-list-projects").innerHTML=texto;
-                    document.querySelector(".pageNumber").innerHTML=page;
+                    document.querySelector("#pageNumber").innerHTML=page;
                     if(page==1){
-                      document.querySelector(".previousPage").ariaDisabled;
-                      document.querySelector(".previousPage").style.color="grey"; 
-                      document.querySelector(".previousPage").setAttribute("disabled", "true");
+                      document.querySelector("#previousPage").ariaDisabled;
+                      document.querySelector("#previousPage").style.color="grey"; 
+                      document.querySelector("#previousPage").setAttribute("disabled", "true");
                     }
                     let pages=json.totalPages;
                     console.log(json);
                     if(page==pages){
-                        document.querySelector(".nextPage").style.color="grey";
-                        document.querySelector(".nextPage").setAttribute("disabled", "true");
-                        document.querySelector(".nextPage").ariaDisabled;
+                        document.querySelector("#nextPage").style.color="grey";
+                        document.querySelector("#nextPage").setAttribute("disabled", "true");
+                        document.querySelector("#nextPage").ariaDisabled;
                        
                     }
-                    document.querySelector(".nextPage").addEventListener("click", ()=>{
+                    document.querySelector("#nextPage").addEventListener("click", ()=>{
                       page++;
                       if(page<=pages){
                           getAllProjects(page);
                       }
                     
                     });
-                    document.querySelector(".previousPage").addEventListener("click",()=>{
+                    document.querySelector("#previousPage").addEventListener("click",()=>{
                       page--;
                       if(page>=1){
                         getAllProjects(page);
