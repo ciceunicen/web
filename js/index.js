@@ -1,10 +1,16 @@
 //VARIABLES GLOBALES
 const URLProjectManager="http://localhost:8080/projectmanagers";
 const URLProject="http://localhost:8080/projects";
+const URLNeeds = "http://localhost:8080/needs";
+const URLAssitances = "http://localhost:8080/assitances";
+const URLStages = "http://localhost:8080/stages";
 let necesidades=[];
 let asistencias = [];
 let attachments=[];
 let page=1;
+
+//Para guardar los id por lo que se va a filtrar
+var json_filters = {needs:[], assitences: [], stadiums:[]};
 
 document.addEventListener("DOMContentLoaded",function(){
   fetch("html/navbar.html").then(
@@ -27,6 +33,19 @@ function mostrarProyectos(json) {
       response.text().then(
         function(texto){
           document.querySelector(".main-container").innerHTML = texto;
+          //funcionalidad boton ver mas de la lista
+      //FILTROS
+        //Traigo de la base de datos y muestro en el DOM las necesidades, asistencias y estadios existentes
+        //le paso la url y el Id del DOM donde se van a mostrar los elementos
+        getAllBaseURL(URLNeeds, 'needs');
+        getAllBaseURL(URLAssitances, 'assists');
+        getAllBaseURL(URLStages, 'stadiums');
+
+        document.querySelector("#btn_filter").addEventListener("click", ()=>{
+          captureSelectedOptions();
+          //Acá hacer fetch a la API pidiendo los proyectos filtrados, usando JSON "json_filters"
+          //...
+        });
             fetch("html/pagination.html").then(
               function(response){
                 response.text().then(
@@ -71,11 +90,72 @@ function mostrarProyectos(json) {
           document.querySelector(".list").innerHTML+="<tr><td>" + element.title +  "</td><td>"+ element.projectManager.name + " "+ element.projectManager.surname +"</td><td>" +element.stage.stage_type + "<td><button class='btn_save_green verMas'>Ver más</button></td></tr>";
             
       }
+   
   );
     }
   );
 });
 }
+
+function captureSelectedOptions(){
+  //capturo que necesidades fueron seleccionadas
+  let needsOptions = document.querySelector("#needs");
+  json_filters.needs = [];
+  for (var option of needsOptions.options) {
+    if(option.selected){
+      json_filters.needs.push(option.value);
+    }
+  }
+  //capturo que asistencias fueron seleccionadas
+  let assitemcesOptions = document.querySelector("#assists");
+  json_filters.assitences = []
+  for (var option of assitemcesOptions.options) {
+    if(option.selected){
+      json_filters.assitences.push(option.value);
+    }
+  }
+  //capturo que Estadios fueron seleccionados
+  let assitemcesStadiums = document.querySelector("#stadiums");
+  json_filters.stadiums = []
+  for (var option of assitemcesStadiums.options) {
+    if(option.selected){
+      json_filters.stadiums.push(option.value);
+    }
+  }
+
+  console.log(json_filters);
+}
+
+//GET All reutilizable del Filtro para Necesidades,Asistencias y Estadios
+  function getAllBaseURL(url, elementDOM){
+    fetch(url)
+      .then((response) => response.json())
+      .then(json => createOptionsSelectDOM(json, elementDOM));
+  }
+
+  function createOptionsSelectDOM(json, elementDOM){
+    innerHTML(json, elementDOM);
+    new MultiSelectTag(elementDOM, 'btn_reset_filter')
+  }
+
+  function innerHTML(json, elementDOM){
+    let select = document.getElementById(elementDOM);
+    if(elementDOM == 'needs'){
+      for (e of json) {
+        select.innerHTML+= "<option value="+e.id_Need+">"+e.needType+"</option>";
+      }
+    }
+    if(elementDOM == 'assists'){
+      for (e of json) {
+        select.innerHTML+= "<option value="+e.id_Assitance+">"+e.type+"</option>";
+      }
+    }
+    if(elementDOM == 'stadiums'){
+      for (e of json) {
+        select.innerHTML+= "<option value="+e.id_Stage+">"+e.stage_type+"</option>";
+      }
+    }
+  }
 
 
 //OBTENER PROYECTOS
