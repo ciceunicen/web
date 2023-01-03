@@ -38,7 +38,8 @@ function mostrarProyectos(json) {
                       document.querySelector(".previousPage").style.color="grey"; 
                       document.querySelector(".previousPage").setAttribute("disabled", "true");
                     }
-                    let pages=json.pageable.pageSize;
+                    let pages=json.totalPages;
+                    console.log(json);
                     if(page==pages){
                         document.querySelector(".nextPage").style.color="grey";
                         document.querySelector(".nextPage").setAttribute("disabled", "true");
