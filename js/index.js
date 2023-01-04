@@ -84,14 +84,27 @@ function mostrarProyectos(json) {
             );
          }); 
           let array=json.content;
-          array.forEach(element => {
-           // console.log(element.projectManager);
-           // console.log(element.stage);
-          document.querySelector(".list").innerHTML+="<tr><td>" + element.title +  "</td><td>"+ element.projectManager.name + " "+ element.projectManager.surname +"</td><td>" +element.stage.stage_type + "<td><button class='btn_save_green verMas'>Ver más</button></td></tr>";
-            
-      }
-   
-  );
+          let container = document.querySelector(".list");
+          container.innerHTML="";
+          for (let i = array.length-1; i >=0 ; i--) {
+            const proyecto = array[i];
+            console.log(proyecto);
+            var input = document.createElement("input");
+            input.setAttribute("type", "button");
+            input.setAttribute("value", "Ver más");
+            input.setAttribute("id", proyecto.id_Project);
+            input.setAttribute("class", "btn_save_green verMas");
+            var row = container.insertRow(0);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            cell1.innerHTML = proyecto.title;
+            cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
+            cell3.innerHTML = proyecto.stage.stage_type;
+            cell4.appendChild(input);
+            document.querySelector(".verMas").addEventListener("click", getProyecto);
+          }
     }
   );
 });
@@ -411,6 +424,50 @@ function mostrarHistorialProyecto(){
       document.querySelector(".slideDownHistory").innerHTML="<img src='img/expandir.png' class='slideDown'/>";
       btn.className = 'hiddenData';
   }
+}
+
+
+//MOSTRAR PROYECTO
+function mostrarProyecto(proyecto){
+  console.log(proyecto);
+  fetch("html/proyecto.html").then(
+    function(response){
+      response.text().then(
+    function(texto){
+      document.querySelector(".main-container").innerHTML = texto;
+      document.querySelector("#titulo").innerHTML+=proyecto.title;
+      document.querySelector("#descripcion").innerHTML+=proyecto.description;
+      document.querySelector("#estadio").innerHTML+=proyecto.stage.stage_type;
+      mostrarArray("#asistencia",proyecto.assitances,"elemento.type");
+      mostrarArray("#necesidades",proyecto.needs,"elemento.needType");
+      document.querySelector("#pm").innerHTML+=proyecto.projectManager.name + " " + proyecto.projectManager.surname;
+    
+    }
+  );
+    }
+  );
+  
+}
+
+
+//PASAR ARRAY A LISTA()
+function mostrarArray(contenedor,arreglo,dato){
+  for (let i = 0; i < arreglo.length; i++) {
+    var elemento=arreglo[i];
+    if(i==arreglo.length-1){
+      document.querySelector(contenedor).innerHTML+=eval(dato)+"."; 
+    }else{
+      document.querySelector(contenedor).innerHTML+=eval(dato) + ", ";
+    }
+  }
+}
+
+//GET PROYECTO
+function getProyecto(){
+  let id = this.id;
+  fetch(URLProject+"/"+id)
+  .then(response => response.json())
+  .then(json => mostrarProyecto(json));
 }
   
 
