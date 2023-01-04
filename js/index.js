@@ -88,7 +88,6 @@ function mostrarProyectos(json) {
           container.innerHTML="";
           for (let i = array.length-1; i >=0 ; i--) {
             const proyecto = array[i];
-            console.log(proyecto);
             var input = document.createElement("input");
             input.setAttribute("type", "button");
             input.setAttribute("value", "Ver más");
@@ -186,6 +185,7 @@ function getAllProjects(){
  .then(json => mostrarProyectos(json));
 }
 
+//MUESTRA FORMULARIO CARGA PROYECTOS
 function mostrarCargaProyecto() {
   fetch("html/cargarProjects.html").then(
     function(response){
@@ -196,20 +196,23 @@ function mostrarCargaProyecto() {
       inicializarCargaProyecto();
       document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
       document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
-      partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor");
+      let id_emprendedor=1;
+      partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",id_emprendedor);
     }
   );
     }
   );
 }
 
-function partialRendercargaDatosEmprendedorYHistorial(div){
+function partialRendercargaDatosEmprendedorYHistorial(div,id_emprendedor){
   fetch("html/datosEmprendedor.html").then(
     function(response){
       response.text().then(
     function(texto){
       document.querySelector(div).innerHTML = texto;
-      document.querySelector('.slideDownResponsible').addEventListener("click", mostrarResponsableProyecto);
+      document.querySelector('.slideDownResponsible').addEventListener("click",()=>{
+        mostrarResponsableProyecto(id_emprendedor);
+      });
       document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
     }
   );
@@ -377,8 +380,8 @@ for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')){
 
 
 //GET
-function getProjectManager(){
-  fetch(URLProjectManager+ "/1")
+function getProjectManager(id){
+  fetch(URLProjectManager+ "/"+id)
     .then((response) => response.json())
     .then(json =>readDomProductManager(json));
      
@@ -402,10 +405,10 @@ function readDomProductManager(json){
 }
 
 //MOSTRAR RESPONSABLE
-function mostrarResponsableProyecto(){
+function mostrarResponsableProyecto(id){
     let btn = document.getElementById('projectManagerData')
     if (btn.className === 'hiddenData') {
-      getProjectManager();
+      getProjectManager(id);
       btn.className = 'showProjectManagerData';
       document.querySelector(".slideDownResponsible").innerHTML="<img src='img/icons8-flecha-contraer-50.png' class='slideDown'/>";
     } else {
@@ -429,7 +432,6 @@ function mostrarHistorialProyecto(){
 
 //MOSTRAR PROYECTO
 function mostrarProyecto(proyecto){
-  console.log(proyecto);
   fetch("html/proyecto.html").then(
     function(response){
       response.text().then(
@@ -440,7 +442,8 @@ function mostrarProyecto(proyecto){
       document.querySelector("#estadio").innerHTML+=proyecto.stage.stage_type;
       mostrarArray("#asistencia",proyecto.assitances,"elemento.type");
       mostrarArray("#necesidades",proyecto.needs,"elemento.needType");
-      document.querySelector("#pm").innerHTML+=proyecto.projectManager.name + " " + proyecto.projectManager.surname;
+      partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
+      mostrarArray("#files",proyecto.files,"elemento.file");
     
     }
   );
