@@ -1,3 +1,7 @@
+.click{
+    background-color: #496D17;
+}
+
 .container-fluid{
     background-color: #74AC24;
     width:100%;
@@ -22,7 +26,7 @@
     padding-top: 20% !important;
 }
 .nav-item:hover, .closeSession:hover{
-    background-color: #496D17;
+    background-color: #5b881d;
 }
 .nav_img{
     width: 70%;

@@ -18,15 +18,35 @@ document.addEventListener("DOMContentLoaded",function(){
       response.text().then(
     function(texto){
       document.querySelector(".navbar").innerHTML = texto;
-      document.querySelector(".proyectos").addEventListener("click", getAllProjects);
-      document.querySelector(".emprendedores").addEventListener("click", mostrarCargaProyecto);
-      mostrarCargaProyecto();
+      document.querySelector("#proyectos").addEventListener("click", ()=>{
+        drawClickNav("proyectos");
+        getAllProjects();
+      });
+      document.querySelector("#emprendedores").addEventListener("click", ()=>{
+        drawClickNav("emprendedores");
+        mostrarCargaProyecto();
+      });
+      //HOME TEMPORAL
+      document.querySelector("#emprendedores").click();
     }
   );
     }
   );
 })
-
+//Pinta de color verde obscuro el botón del navegador en el que se encuentra la página.
+function drawClickNav(click_nav){
+  //traiigo del DOM todos los botones de la barra de navegación
+  let link_nav = document.querySelectorAll(".click_nav");
+  //los recorro
+  link_nav.forEach(link => {
+    //aplico clase si es en el que se hizo click
+    if(link.id == click_nav){
+      link.classList.add("click");
+    }else{//remuevo clase si no se le hizo click
+      link.classList.remove("click");
+    }
+  });
+}
 function mostrarProyectos(json) {
   fetch("html/listProjects.html").then(
     function(response){
