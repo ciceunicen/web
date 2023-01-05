@@ -39,3 +39,9 @@
     height: 25%;
     width: auto;
 }
+
+@media screen and (min-width: 1366px){
+    .nav-item{
+        width: 15%;
+    }
+}

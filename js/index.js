@@ -80,13 +80,21 @@ function mostrarProyectos(json) {
                       
                     });
               }
-              
             );
+            mostrarTabla(json);
          }); 
-          let array=json.content;
-          let container = document.querySelector(".list");
-          container.innerHTML="";
-          for (let i = array.length-1; i >=0 ; i--) {
+          
+    }
+  );
+});
+}
+
+//Mostrar tabla de proyectos
+function mostrarTabla(json){
+  let array=json.content;
+  let container = document.querySelector(".list");
+  container.innerHTML="";
+  for (let i = array.length-1; i >=0 ; i--) {
             const proyecto = array[i];
             var input = document.createElement("input");
             input.setAttribute("type", "button");
@@ -103,10 +111,7 @@ function mostrarProyectos(json) {
             cell3.innerHTML = proyecto.stage.stage_type;
             cell4.appendChild(input);
             document.querySelector(".verMas").addEventListener("click", getProyecto);
-          }
-    }
-  );
-});
+  }
 }
 
 function captureSelectedOptions(){
@@ -175,7 +180,7 @@ function getFilterProjects(datos){
   let params = new URLSearchParams(datos);
   fetch(url+"?"+params)
   .then(response => response.json())
-  .then(json => mostrarProyectos(json));
+  .then(json => mostrarTabla(json));
 }
 
 //OBTENER PROYECTOS
