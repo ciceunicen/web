@@ -80,13 +80,21 @@ function mostrarProyectos(json) {
                       
                     });
               }
-              
             );
+            mostrarTabla(json);
          }); 
-          let array=json.content;
-          let container = document.querySelector(".list");
-          container.innerHTML="";
-          for (let i = array.length-1; i >=0 ; i--) {
+          
+    }
+  );
+});
+}
+
+//Mostrar tabla de proyectos
+function mostrarTabla(json){
+  let array=json.content;
+  let container = document.querySelector(".list");
+  container.innerHTML="";
+  for (let i = array.length-1; i >=0 ; i--) {
             const proyecto = array[i];
             var input = document.createElement("input");
             input.setAttribute("type", "button");
@@ -103,10 +111,7 @@ function mostrarProyectos(json) {
             cell3.innerHTML = proyecto.stage.stage_type;
             cell4.appendChild(input);
             document.querySelector(".verMas").addEventListener("click", getProyecto);
-          }
-    }
-  );
-});
+  }
 }
 
 function captureSelectedOptions(){
@@ -175,7 +180,7 @@ function getFilterProjects(datos){
   let params = new URLSearchParams(datos);
   fetch(url+"?"+params)
   .then(response => response.json())
-  .then(json => mostrarProyectos(json));
+  .then(json => mostrarTabla(json));
 }
 
 //OBTENER PROYECTOS
@@ -390,9 +395,9 @@ function getProjectManager(id){
 function readDomProductManager(json){
  let divProductManager = document.querySelector("#projectManagerData");
  divProductManager.innerHTML = "";
- divProductManager.innerHTML+=
-                       " <div class='showProjectManagerData' id='projectManagerData'>"
-                        +"<p> Nombre: " + json.name + " " + json.surname +"</p>" 
+ divProductManager.innerHTML=
+                        " <div id='projectManagerData'>"
+                        +"<p> Nombre: " + json.name + " " + json.surname +"</p>"
                         +"<p> Teléfono: "+ json.phone+ "</p>"
                         + "<p> Localidad: agregar en entidad </p>"
                         + "<p> Email: " +json.email+ "</p>"
@@ -457,10 +462,11 @@ function mostrarProyecto(proyecto){
 function mostrarArray(contenedor,arreglo,dato){
   for (let i = 0; i < arreglo.length; i++) {
     var elemento=arreglo[i];
-    if(i==arreglo.length-1){
-      document.querySelector(contenedor).innerHTML+=eval(dato)+"."; 
-    }else{
-      document.querySelector(contenedor).innerHTML+=eval(dato) + ", ";
+    if(contenedor == "#files"){//para adjuntos
+      document.querySelector(contenedor).innerHTML+="<p class='p_file'>"+eval(dato)+"</p>";
+    }else{//para necesidades y asistencias
+      document.querySelector(contenedor).innerHTML+="<p><i class='fa fa-check-circle' aria-hidden='true'></i>"+eval(dato)+"</p>";
+
     }
   }
 }
