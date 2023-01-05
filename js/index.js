@@ -390,9 +390,9 @@ function getProjectManager(id){
 function readDomProductManager(json){
  let divProductManager = document.querySelector("#projectManagerData");
  divProductManager.innerHTML = "";
- divProductManager.innerHTML+=
-                       " <div class='showProjectManagerData' id='projectManagerData'>"
-                        +"<p> Nombre: " + json.name + " " + json.surname +"</p>" 
+ divProductManager.innerHTML=
+                        " <div id='projectManagerData'>"
+                        +"<p> Nombre: " + json.name + " " + json.surname +"</p>"
                         +"<p> Teléfono: "+ json.phone+ "</p>"
                         + "<p> Localidad: agregar en entidad </p>"
                         + "<p> Email: " +json.email+ "</p>"
@@ -457,10 +457,11 @@ function mostrarProyecto(proyecto){
 function mostrarArray(contenedor,arreglo,dato){
   for (let i = 0; i < arreglo.length; i++) {
     var elemento=arreglo[i];
-    if(i==arreglo.length-1){
-      document.querySelector(contenedor).innerHTML+=eval(dato)+"."; 
-    }else{
-      document.querySelector(contenedor).innerHTML+=eval(dato) + ", ";
+    if(contenedor == "#files"){//para adjuntos
+      document.querySelector(contenedor).innerHTML+="<p class='p_file'>"+eval(dato)+"</p>";
+    }else{//para necesidades y asistencias
+      document.querySelector(contenedor).innerHTML+="<p><i class='fa fa-check-circle' aria-hidden='true'></i>"+eval(dato)+"</p>";
+
     }
   }
 }

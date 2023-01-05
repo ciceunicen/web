@@ -27,18 +27,23 @@
         border-radius: 5px 5px 0 0;
         background-color: #6B9E22;
         margin: 10px 60px 0px 60px;
-
+        padding-top: 1%;
         color:#FFFFFF;
         text-transform: uppercase;
     }
 
+/*titulo de seccion desplegable*/
+.projectResponsible>p, .projectHistory>p{
+    margin: auto 0;
+
+}
 /*contenedor flecha desplegar*/
-.projectResponsible a, .projectHistory a{
+.projectResponsible>a, .projectHistory>a{
     display: flex;
     align-items: center;
 }
 /*flecha desplegar*/
-.projectResponsible a img, .projectHistory a img{
+.projectResponsible>a>img, .projectHistory>a>img{
     width: 20px;
     height:20px;
 }
@@ -62,6 +67,6 @@
     color: black;
     margin: 0px 60px 30px 60px;
     border-radius: 0px 0px 5px 5px;
-    padding-bottom: 1px 0 1px 0;
+    padding: 2%  2% 1% 2%;
 }
 
