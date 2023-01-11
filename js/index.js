@@ -2,7 +2,7 @@
 const URLProjectManager="http://localhost:8080/projectmanagers";
 const URLProject="http://localhost:8080/projects";
 const URLNeeds = "http://localhost:8080/needs";
-const URLAssitances = "http://localhost:8080/assitances";
+const URLAssitances = "http://localhost:8080/assistances";
 const URLStages = "http://localhost:8080/stages";
 let necesidades=[];
 let asistencias = [];
@@ -173,19 +173,19 @@ function captureSelectedOptions(){
 
   function createOptionsSelectDOM(json, elementDOM){
     innerHTML(json, elementDOM);
-    new MultiSelectTag(elementDOM, 'btn_reset_filter')
+    new MultiSelectTag(elementDOM, 'btn_reset_filter');
   }
 
   function innerHTML(json, elementDOM){
     let select = document.getElementById(elementDOM);
-    if(elementDOM == 'needs'){
+    if(elementDOM == 'needs' || elementDOM == 'needs_created'){
       for (e of json) {
         select.innerHTML+= "<option value="+e.id_Need+">"+e.needType+"</option>";
       }
     }
-    if(elementDOM == 'assists'){
+    if(elementDOM == 'assists' || elementDOM ==  'assistances_created'){
       for (e of json) {
-        select.innerHTML+= "<option value="+e.id_Assitance+">"+e.type+"</option>";
+        select.innerHTML+= "<option value="+e.id_Assistance+">"+e.type+"</option>";
       }
     }
     if(elementDOM == 'stadiums'){
@@ -223,6 +223,12 @@ function mostrarCargaProyecto() {
       document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
       let id_emprendedor=1;
       partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",id_emprendedor);
+      
+      
+      //Configuro Dropdown de necesidades
+      getAllBaseURL(URLNeeds, 'needs_created');
+      //Configuro Dropdown de asistencias
+      getAllBaseURL(URLAssitances, 'assistances_created');
     }
   );
     }

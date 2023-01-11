@@ -20,7 +20,7 @@
         margin-top:10px;
     }
     /*Borde de inputs*/
-    input, textarea{
+    input, textarea, .input-group-text{
         border: 1px solid #74AC24 !important;
     }
     /*Div que contiene todo el formulario de cargar proyecto*/
@@ -37,11 +37,11 @@
         .div_input_other{
             display: flex;
             margin: 2% auto;
+            /*align-items: flex-end;*/
         }
-        /*input para ingresar otra nesesidad o asistencia*/
-        .input_other{
-            width: 30% !important;
-            margin: auto 2%;
+
+        .div_input_other>.div_cont_selects{
+            margin: 0% 2% 0% 0%;
         }
 
 /*mensajes error de feedback*/
@@ -116,13 +116,25 @@
         color: #496D17;
         font-weight: bold;
         margin-top: 5px;
-        
     }
 
     .saveContainer{
         display: flex;
     }
 
+    .input-group-text{
+        background-color: #fff !important;
+        color: #74AC24 !important;
+    }
+
+    .input-group>button{
+        border-radius: 0 5px 5px 0 !important;
+    }
+
+    .div_cont_input_other{
+        margin-top: 2.2%;
+        width: 65%;
+    }
 
 
 
