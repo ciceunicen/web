@@ -57,9 +57,11 @@ function MultiSelectTag (el,id_btn_reset_filter ,customs = {shadow: false, round
         });
 
         btn_reset_filter = document.getElementById(id_btn_reset_filter)
-        btn_reset_filter.addEventListener("click", ()=>{
-            resetOptions();
-        })
+        if(btn_reset_filter != null){
+            btn_reset_filter.addEventListener("click", ()=>{
+                resetOptions();
+            })
+        }
 
     }
 

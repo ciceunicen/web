@@ -31,9 +31,19 @@
             <input type="checkbox" id="financiamiento" name="necesidadesCheckboxes"  name="Financiamiento" value="4">
             <label for="financiamiento">Financiamiento</label>
             <div class="div_input_other">
-                <label for="otra" class="otraOpcion">Otra</label>
-                <input class="form-control input_other" type="text" name="otraNecesidad" id="otraNecesidad" value="">    
-                <button class="btn btn-success btn_save_green" id="saveNecesidad">Guardar</button>
+                <div class="div_cont_selects">
+                    <p>Creadas</p>
+                    <select name="needs" id="needs_created" multiple>
+                        <option value="0">Selecionar Todo</option>
+                    </select>
+                </div>
+                <div class="div_cont_input_other">
+                    <div class="input-group">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Nueva</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                        <button class="btn btn-success btn_save_green" id="saveNecesidad">Guardar</button>
+                    </div>
+                </div>
             </div>
             <p class="error" id="necesidadesError"></p>
         </div>
@@ -46,14 +56,24 @@
             <input type="checkbox" id="convocatoria" name="asistenciaCheckboxes" value="3">
             <label for="convocatoria">Presentación a convocatoria</label>
             <div class="div_input_other">
-                <label for="otraAsistencia" class="otraOpcion">Otra</label>
-                <input class="form-control input_other" type="text" name="otraAsistencia" id="otraAsistencia" value="">    
-                <button class="btn btn-success btn_save_green" id="saveAsistencia">Guardar</button>
+                <div class="div_cont_selects">
+                    <p>Creadas</p>
+                    <select name="assistances" id="assistances_created" multiple>
+                        <option value="0">Selecionar Todo</option>
+                    </select>
+                </div>
+                <div class="div_cont_input_other">
+                    <div class="input-group">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Nueva</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                        <button class="btn btn-success btn_save_green" id="saveAsistencia">Guardar</button>
+                    </div>
+                </div>
             </div>
             <p class="error" id="asistenciasError"></p>
         </div>
         <label for="estadios" class="estadios">Estadios *</label>
-        <div class="estadios_checks">
+        <div class="estadios_checks" >
             <input type="checkbox" class="estadiosCheckboxes" id="ideaNegocio" name="estadiosCheckboxes" value="1">
             <label for="ideaNegocio">Idea negocio</label>
             <input type="checkbox" class="estadiosCheckboxes" id="puestaEnMarcha" name="estadiosCheckboxes" value="2">
