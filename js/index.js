@@ -193,6 +193,12 @@ function captureSelectedOptions(){
         select.innerHTML+= "<option value="+e.id_Stage+">"+e.stage_type+"</option>";
       }
     }
+    if(elementDOM = 'estadios_checks'){
+      for (e of json) {
+        select.innerHTML+="<input type='checkbox' class='estadiosCheckboxes' value="+e.id_Stage+" name='estadiosCheckboxes' />";
+        select.innerHTML+= "<label for='ideaNegocio' class='label_estadios'>"+e.stage_type+"</label>";
+      }
+    }
   }
 //GET filtro de proyectos
 function getFilterProjects(datos){
@@ -223,8 +229,8 @@ function mostrarCargaProyecto() {
       document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
       let id_emprendedor=1;
       partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",id_emprendedor);
-      
-      
+      //Configuro Ckeckboxs dinamico de estadios
+      getAllBaseURL(URLStages, 'estadios_checks');
       //Configuro Dropdown de necesidades
       getAllBaseURL(URLNeeds, 'needs_created');
       //Configuro Dropdown de asistencias
