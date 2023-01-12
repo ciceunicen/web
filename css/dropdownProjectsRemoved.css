@@ -1,0 +1,56 @@
+.div_dropdown_projects_removed{
+    position: absolute;
+    background-color: #BADEA9;
+    width: fit-content;
+    height: 100px;
+    display: flex;
+    border-radius: 0 5px 5px 0;
+    margin-top: 10px;
+    z-index: 9999999;
+}
+
+.btn_cont_p_dropdown_projects_removed{
+    padding: 1%;
+    background-color: #BADEA9;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.p_icono_trash, .p_text{
+    margin-bottom: 0% !important;
+    text-align: center;
+}
+
+.p_icono_trash>i{
+    font-size: 30px;
+}
+
+.btn_arrow_left_section_projects_removed{
+    background-color: #BADEA9;
+}
+
+.widtDropdown{
+    width: 0px;
+}
+
+.widtDropdownON{
+    width: 146.132px
+}
+
+.animate_dropdown_on{
+    animation: dropdown_right 0.5s ;
+}
+
+.animate_dropdown_off{
+    animation: dropdown_left 0.5s ;
+}
+
+@keyframes dropdown_right {
+    0%{width: 0px}
+    100% {width: 146.132px}
+}
+
+@keyframes dropdown_left {
+    0%{width: 146.132px}
+    100% {width: 0px}
+}

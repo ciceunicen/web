@@ -1,4 +1,5 @@
     <article class="cointaint-list">
+        <!----SELECTS DE FILTROS-->
         <section class="filter-projects">
             <div class="div_cont_cont_selects">
                 <div class="div_cont_selects">
@@ -24,34 +25,33 @@
                 <button class="btn btn-success btn_save_green" id="btn_filter">Filtrar</button>
                 <button class="btn btn-success btn_save_green" id="btn_reset_filter">Reset</button>
             </div>
-
+        
         </section>
+        
+        <div class="div_cont_dropdown_section_removed_and_table_project">
+            <!---DIV DONDE SE CARGA EL DROPDOWN PARA CAMBIAR A LA PANTALLA DE PROYECTOS ELIMINADOS-->
+            <div id="div_dropdown_projects_removed"></div>
+            
 
-        <div>
-            <button id="btn_projects_removed">Proyectos eliminados</button>
+            <div class="div_cont_table_projects">
+                <section class="list-projects">
+                    <table class="table table-hover">
+                        <thead class="header-list-projects">
+                            <tr>
+                                <th scope="col">Título</th>
+                                <th scope="col">Responsable del proyecto</th>
+                                <th scope="col">Estadio</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="list-projects list">
+                          <!-- muestra de como se veria la lista de proyectos -->
+                        </tbody>
+                        <!-- <tfoot class="footer-list-projects">
+                        </tfoot> -->
+                    </table>
+                </section>
+                <section class="footer-list-projects"></section>
+            </div>
         </div>
-
-        <section class="list-projects">
-            <table class="table table-hover">
-                <thead class="header-list-projects">
-                    <tr>
-                        <th scope="col">Título</th>
-                        <th scope="col">Responsable del proyecto</th>
-                        <th scope="col">Estadio</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody class="list-projects list">
-                    <!-- muestra de como se veria la lista de proyectos -->
-           
-                </tbody>
-                <!-- <tfoot class="footer-list-projects">
-                 
-                </tfoot> -->
-   
-            </table>
-        </section>
-        <section class="footer-list-projects">
-       
-        </section>
     </article>

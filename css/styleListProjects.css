@@ -1,3 +1,12 @@
+.div_cont_dropdown_section_removed_and_table_project{
+    display: flex;
+}
+
+.div_cont_table_projects{
+    width: 100%;
+    margin-left: 40px;
+}
+
 .header-list-projects, .footer-list-projects{
     background-color: #EAF7D8;
 }
