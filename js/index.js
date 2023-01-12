@@ -371,16 +371,30 @@ function saveAttachments(){
 
 //GUARDAR NECESIDADES
 function guardarNecesidades(){
-  event.preventDefault();
-  necesidades.push(document.querySelector("#otraNecesidad").value);
-  console.log(necesidades);
+  let json = {"type":document.getElementById('new_need').value};
+  fetch(URLNeeds,{
+    method: "POST",
+    mode: 'cors',
+    body: JSON.stringify(json),
+    headers: {"Access-Control-Allow-Origin":"*" ,},
+    headers: {"Content-type": "application/json; charset=UTF-8",}
+  })
+  .then(response => response.json())
+  .then(json => getAllBaseURL(URLAssitances, 'needs_created'));
 }
 
 //GUARDAR ASISTENCIAS
  function guardarAsistencias(){
-  event.preventDefault();
-  asistencias.push(document.querySelector("#otraAsistencia").value);
-  console.log(asistencias);
+  let json = {"type":document.getElementById('new_assistance').value};
+  fetch(URLAssitances,{
+    method: "POST",
+    mode: 'cors',
+    body: JSON.stringify(json),
+    headers: {"Access-Control-Allow-Origin":"*" ,},
+    headers: {"Content-type": "application/json; charset=UTF-8",}
+  })
+  .then(response => response.json())
+  .then(json => getAllBaseURL(URLAssitances, 'assistances_created'));
 }
 
 //POST
