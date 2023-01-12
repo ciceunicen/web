@@ -131,6 +131,15 @@ function mostrarTabla(json){
             cell3.innerHTML = proyecto.stage.stage_type;
             cell4.appendChild(input);
             document.querySelector(".verMas").addEventListener("click", getProyecto);
+            //creo botón de borrar para cada proyecto
+            var btn_delete = document.createElement("input");
+            btn_delete.setAttribute("type", "button");
+            btn_delete.setAttribute("value", "Borrar");
+            btn_delete.setAttribute("id", proyecto.id_Project);
+            btn_delete.setAttribute("class", "btn_save_green");
+            //le agrego el evento al botón de eliminar
+            btn_delete.addEventListener("click", ()=>{console.log("Click butoon delete project id:"+proyecto.id_Project)});
+            cell4.appendChild(btn_delete);
   }
 }
 
