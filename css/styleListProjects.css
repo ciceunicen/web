@@ -18,9 +18,15 @@
     margin: 2px;
 }
 
-.verMas{
+.verMas, .btn_borrar{
     color:#FFFFFF;
+    border-radius: 5px;
 }
+
+.verMas{
+    margin-right: 10%;
+}
+
 
 .pagination{
     justify-content: center;

@@ -33,6 +33,19 @@ document.addEventListener("DOMContentLoaded",function(){
     }
   );
 })
+//Cambio de pantalla a proyectos eliminados
+function showTableProjectsRemoved(){
+  //listProjectsRemoved.html
+  fetch("html/listProjectsRemoved.html").then(
+    function(response){
+      response.text().then(
+    function(texto){
+      document.querySelector(".main-container").innerHTML = texto;
+    }
+  );
+    }
+  );
+}
 //Pinta de color verde obscuro el botón del navegador en el que se encuentra la página.
 function drawClickNav(click_nav){
   //traiigo del DOM todos los botones de la barra de navegación
@@ -53,6 +66,13 @@ function mostrarProyectos(json) {
       response.text().then(
         function(texto){
           document.querySelector(".main-container").innerHTML = texto;
+
+          //cambio de pantalla a proyectos eliminados
+        document.getElementById('btn_projects_removed').addEventListener("click",()=>{
+          showTableProjectsRemoved();
+        });
+
+
           //funcionalidad boton ver mas de la lista
       //FILTROS
         //Traigo de la base de datos y muestro en el DOM las necesidades, asistencias y estadios existentes
@@ -135,8 +155,7 @@ function mostrarTabla(json){
             var btn_delete = document.createElement("input");
             btn_delete.setAttribute("type", "button");
             btn_delete.setAttribute("value", "Borrar");
-            btn_delete.setAttribute("id", proyecto.id_Project);
-            btn_delete.setAttribute("class", "btn_save_green");
+            btn_delete.setAttribute("class", "btn_save_green btn_borrar");
             //le agrego el evento al botón de eliminar
             btn_delete.addEventListener("click", ()=>{console.log("Click butoon delete project id:"+proyecto.id_Project)});
             cell4.appendChild(btn_delete);
