@@ -178,12 +178,12 @@ function captureSelectedOptions(){
 
   function innerHTML(json, elementDOM){
     let select = document.getElementById(elementDOM);
-    if(elementDOM == 'needs' || elementDOM == 'needs_created'){
+    if(elementDOM == 'needs'){
       for (e of json) {
         select.innerHTML+= "<option value="+e.id_Need+">"+e.needType+"</option>";
       }
     }
-    if(elementDOM == 'assists' || elementDOM ==  'assistances_created'){
+    if(elementDOM == 'assists'){
       for (e of json) {
         select.innerHTML+= "<option value="+e.id_Assistance+">"+e.type+"</option>";
       }
@@ -193,10 +193,32 @@ function captureSelectedOptions(){
         select.innerHTML+= "<option value="+e.id_Stage+">"+e.stage_type+"</option>";
       }
     }
-    if(elementDOM = 'estadios_checks'){
+    if(elementDOM == 'estadios_checks'){
       for (e of json) {
         select.innerHTML+="<input type='checkbox' class='estadiosCheckboxes' value="+e.id_Stage+" name='estadiosCheckboxes' />";
-        select.innerHTML+= "<label for='ideaNegocio' class='label_estadios'>"+e.stage_type+"</label>";
+        select.innerHTML+= "<label for="+e.stage_type+" class='label_estadios'>"+e.stage_type+"</label>";
+      }
+    }
+    if(elementDOM == 'assistances_created'){
+      for (e of json){
+        if(e.default){
+          document.getElementById('asistencias_checks').innerHTML+= 
+          "<input type='checkbox' class='estadiosCheckboxes' value="+e.id_Assistance+" name='asistenciaCheckboxes' />"
+          +"<label for="+e.type+" class='label_estadios'>"+e.type+"</label>";
+        }else{
+          select.innerHTML+= "<option value="+e.id_Assistance+">"+e.type+"</option>";
+        }
+      }
+    }
+    if(elementDOM == 'needs_created'){
+      for (e of json){
+        if(e.default){
+          document.getElementById('necesidades_checks').innerHTML+= 
+          "<input type='checkbox' class='necesidadesCheckboxes' value="+e.id_Need+" name='asistenciaCheckboxes' />"
+          +"<label for="+e.needType+" class='label_estadios'>"+e.needType+"</label>";
+        }else{
+          select.innerHTML+= "<option value="+e.id_Need+">"+e.needType+"</option>";
+        }
       }
     }
   }
@@ -371,7 +393,7 @@ function saveAttachments(){
 
 //GUARDAR NECESIDADES
 function guardarNecesidades(){
-  let json = {"type":document.getElementById('new_need').value};
+  let json = {"needType":document.getElementById('new_need').value};
   fetch(URLNeeds,{
     method: "POST",
     mode: 'cors',
@@ -380,7 +402,7 @@ function guardarNecesidades(){
     headers: {"Content-type": "application/json; charset=UTF-8",}
   })
   .then(response => response.json())
-  .then(json => getAllBaseURL(URLAssitances, 'needs_created'));
+  .then(json => mostrarCargaProyecto());
 }
 
 //GUARDAR ASISTENCIAS
@@ -394,7 +416,7 @@ function guardarNecesidades(){
     headers: {"Content-type": "application/json; charset=UTF-8",}
   })
   .then(response => response.json())
-  .then(json => getAllBaseURL(URLAssitances, 'assistances_created'));
+  .then(json => mostrarCargaProyecto());
 }
 
 //POST
