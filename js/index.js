@@ -255,16 +255,11 @@ function mostrarCargaProyecto() {
       inicializarCargaProyecto();
       cargaRenderNecesidades();
       cargaRenderAsistencia();
-      //document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
-      //document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
+
       let id_emprendedor=1;
       partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",id_emprendedor);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
-      //Configuro Dropdown de necesidades
-      //getAllBaseURL(URLNeeds, 'needs_created');
-      //Configuro Dropdown de asistencias
-      //getAllBaseURL(URLAssitances, 'assistances_created');
     }
   );
     }
