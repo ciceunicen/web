@@ -176,7 +176,8 @@ function mostrarTabla(json){
             btn_delete.setAttribute("value", "Borrar");
             btn_delete.setAttribute("class", "btn_save_green btn_borrar");
             //le agrego el evento al botón de eliminar
-            btn_delete.addEventListener("click", ()=>{console.log("Click butoon delete project id:"+proyecto.id_Project)});
+            let id_Admin=proyecto.administrador;
+            btn_delete.addEventListener("click", ()=>{borrarProyecto(proyecto.id_Project, id_Admin)});
             cell4.appendChild(btn_delete);
   }
 }
@@ -560,4 +561,15 @@ function getProyecto(){
   .then(json => mostrarProyecto(json));
 }
   
+//BORRAR UN PROYECTO EN PARTICULAR
+function borrarProyecto(id_Project,id_Admin){
+  console.log(id_Project, id_Admin);
+  fetch(URLProject + "/idProject/" + id_Project + "/idAdmin/" + id_Admin,{
+    method: 'DELETE',
+    headers: {"Access-Control-Allow-Origin":"*" ,},
+    headers: {"Content-type": "application/json; charset=UTF-8",}
+  })
+  .then(response=>response.json())
+  .then(getAllProjects);
 
+}
