@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded",function(){
     }
   );
 })
+
+
 //Pinta de color verde obscuro el botón del navegador en el que se encuentra la página.
 function drawClickNav(click_nav){
   //traiigo del DOM todos los botones de la barra de navegación
@@ -53,6 +55,9 @@ function mostrarProyectos(json) {
       response.text().then(
         function(texto){
           document.querySelector(".main-container").innerHTML = texto;
+          //AGREGO DROPDOWN DE PROYECTOS ELIMINADOS Y EVENTOS DE CAMBIOS DE PANTALLA
+          configDropdowProjectsRemoved();
+
           //funcionalidad boton ver mas de la lista
       //FILTROS
         //Traigo de la base de datos y muestro en el DOM las necesidades, asistencias y estadios existentes
@@ -109,6 +114,40 @@ function mostrarProyectos(json) {
 });
 }
 
+function configDropdowProjectsRemoved (){
+  //Agrego Dropdown de sección de proyectos eliminados
+  //clase que guarda funciones del dropdown
+  let sectionDelete = new DropdownBtnSectionProjectsDelete();
+  //renderizo el dropdown (es un partialrender)
+  sectionDelete.showDropdown('div_dropdown_projects_removed');
+  //ocupo setTimeout ya que desde la clase después de un fetch no me toma las finciones propias de la clase, no reconoce el this.
+  setTimeout(()=>{
+    //busco del DOM botón que cambia de pantalla
+    let btn_section_projects_removed = document.getElementById('btn_section_projects_removed');
+    //agrego eventos de animación de dropdown
+    sectionDelete.addEventListenerArrowRight(btn_section_projects_removed);
+    //cambio de pantalla a proyectos eliminados
+    btn_section_projects_removed.addEventListener("click",()=>{
+      //cambio de pantalla a proyectos eliminados(es un partialrender)
+      sectionDelete.showTableProjectsRemoved();
+      //pinto otra vez el dropdown (es un partialrender)
+      sectionDelete.showDropdown('div_dropdown_projects_removed');
+      //espero a que se pinte el dropdown y agrego eventos, no los toma sino.
+      setTimeout(()=>{
+        //////////////////////////////
+        //ACÁ AGREGAR FETCH PARA TRAER PROYECTOS ELIMINADOS Y CARGARLOS EN LA TABLA.
+        ///////////////////////////////
+        //cambio que botón de cambio de pantalla se muestra, muestro uno que lleve a la tabla de proyectos
+        sectionDelete.changeBtnScreenProjectsRemoved()
+        //Agrego animaciones al dropdown
+        sectionDelete.addEventListenerArrowRight(btn_section_projects);
+        //busco del DOM botón que cambia de pantalla
+        //evento que cambia de pantalla a tabla proyectos
+        document.getElementById('btn_section_projects').addEventListener("click",()=>{getAllProjects();});
+      }, 500);
+    });
+  }, 500);
+}
 //Mostrar tabla de proyectos
 function mostrarTabla(json){
   let array=json.content;
@@ -131,6 +170,14 @@ function mostrarTabla(json){
             cell3.innerHTML = proyecto.stage.stage_type;
             cell4.appendChild(input);
             document.querySelector(".verMas").addEventListener("click", getProyecto);
+            //creo botón de borrar para cada proyecto
+            var btn_delete = document.createElement("input");
+            btn_delete.setAttribute("type", "button");
+            btn_delete.setAttribute("value", "Borrar");
+            btn_delete.setAttribute("class", "btn_save_green btn_borrar");
+            //le agrego el evento al botón de eliminar
+            btn_delete.addEventListener("click", ()=>{console.log("Click butoon delete project id:"+proyecto.id_Project)});
+            cell4.appendChild(btn_delete);
   }
 }
 
@@ -173,7 +220,9 @@ function captureSelectedOptions(){
 
   function createOptionsSelectDOM(json, elementDOM){
     innerHTML(json, elementDOM);
-    new MultiSelectTag(elementDOM, 'btn_reset_filter');
+    if(elementDOM != 'estadios_checks'){//este if evita que se quiera generar un dropdown de estadios en el formulario de carga de un proyecto
+      new MultiSelectTag(elementDOM, 'btn_reset_filter');
+    }
   }
 
   function innerHTML(json, elementDOM){
