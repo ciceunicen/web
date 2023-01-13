@@ -54,3 +54,11 @@
 *Pasa un array a lista*
 
 21. getProyecto()
+
+22. actualizacionSelectNecesidades(json)
+
+23. actualizacionSelectAsistencias(json)
+
+24. cargaRenderNecesidades()
+
+25. cargaRenderAsistencia()
