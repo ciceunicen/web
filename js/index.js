@@ -253,16 +253,18 @@ function mostrarCargaProyecto() {
       document.querySelector(".main-container").innerHTML = texto;
       document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
       inicializarCargaProyecto();
-      document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
-      document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
+      cargaRenderNecesidades();
+      cargaRenderAsistencia();
+      //document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
+      //document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
       let id_emprendedor=1;
       partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",id_emprendedor);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
       //Configuro Dropdown de necesidades
-      getAllBaseURL(URLNeeds, 'needs_created');
+      //getAllBaseURL(URLNeeds, 'needs_created');
       //Configuro Dropdown de asistencias
-      getAllBaseURL(URLAssitances, 'assistances_created');
+      //getAllBaseURL(URLAssitances, 'assistances_created');
     }
   );
     }
@@ -571,4 +573,29 @@ function actualizacionSelectAsistencias(json){
   option.selected = true;
   select.appendChild(option);
   creacion.updateSelect(json.id_Assistance);
+}
+
+function cargaRenderNecesidades(){
+  fetch('html/cargaDeNecesidades.html').then(
+    function(response){
+      response.text().then(
+    function(texto){
+      document.querySelector(".datosNecesidades").innerHTML = texto;
+      document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
+      //Configuro Dropdown de necesidades
+      getAllBaseURL(URLNeeds, 'needs_created');
+    });
+  });  
+}
+function cargaRenderAsistencia(){
+  fetch('html/cargaDeAsistencias.html').then(
+    function(response){
+      response.text().then(
+    function(texto){
+      document.querySelector(".datosAsistencias").innerHTML = texto;
+      document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
+      //Configuro Dropdown de asistencias
+      getAllBaseURL(URLAssitances, 'assistances_created');
+    });
+  });   
 }
