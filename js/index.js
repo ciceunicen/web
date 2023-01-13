@@ -530,6 +530,6 @@ function borrarProyecto(id_Project,id_Admin){
     headers: {"Content-type": "application/json; charset=UTF-8",}
   })
   .then(response=>response.json())
-  .then(getAllProjects());
+  .then(getAllProjects);
 
 }
