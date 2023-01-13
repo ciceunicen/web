@@ -170,10 +170,16 @@ function captureSelectedOptions(){
       .then((response) => response.json())
       .then(json => createOptionsSelectDOM(json, elementDOM));
   }
-
+  let creacion; 
   function createOptionsSelectDOM(json, elementDOM){
     innerHTML(json, elementDOM);
-    new MultiSelectTag(elementDOM, 'btn_reset_filter');
+    if(elementDOM == 'needs_created'){
+      creacion = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveNecesidad');
+    }else if(elementDOM == 'assistances_created'){
+      creacion = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveAsistencia');
+    }else if(elementDOM != 'estadios_checks'){
+      new MultiSelectTag(elementDOM, 'btn_reset_filter');
+    }
   }
 
   function innerHTML(json, elementDOM){
@@ -217,7 +223,7 @@ function captureSelectedOptions(){
           "<input type='checkbox' class='necesidadesCheckboxes' value="+e.id_Need+" name='asistenciaCheckboxes' />"
           +"<label for="+e.needType+" class='label_estadios'>"+e.needType+"</label>";
         }else{
-          select.innerHTML+= "<option value="+e.id_Need+">"+e.needType+"</option>";
+          select.innerHTML+= "<option value="+e.id_Need+">"+e.needType+"</option>";         
         }
       }
     }
@@ -402,7 +408,7 @@ function guardarNecesidades(){
     headers: {"Content-type": "application/json; charset=UTF-8",}
   })
   .then(response => response.json())
-  .then(json => mostrarCargaProyecto());
+  .then(json => actualizacionSelectNecesidades(json));
 }
 
 //GUARDAR ASISTENCIAS
@@ -416,7 +422,7 @@ function guardarNecesidades(){
     headers: {"Content-type": "application/json; charset=UTF-8",}
   })
   .then(response => response.json())
-  .then(json => mostrarCargaProyecto());
+  .then(json => actualizacionSelectAsistencias(json));
 }
 
 //POST
@@ -547,4 +553,22 @@ function getProyecto(){
   .then(json => mostrarProyecto(json));
 }
   
+function actualizacionSelectNecesidades(json){
+  let select = document.getElementById('needs_created');
+  let option = document.createElement('option');
+  option.setAttribute('value', json.id_Need);
+  option.setAttribute('label', json.needType);
+  option.selected = true;
+  select.appendChild(option);
+  creacion.updateSelect(json.id_Need);
+}
 
+function actualizacionSelectAsistencias(json){
+  let select = document.getElementById('assistances_created');
+  let option = document.createElement('option');
+  option.setAttribute('value', json.id_Assistance);
+  option.setAttribute('label', json.type);
+  option.selected = true;
+  select.appendChild(option);
+  creacion.updateSelect(json.id_Assistance);
+}
