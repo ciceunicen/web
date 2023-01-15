@@ -267,16 +267,9 @@ function MultiSelectTag (el,id_btn_reset_filter, id_btn_save ,customs = {shadow:
 
     function updateSelect(id){
         options = getOptions();
-        for (var option of options){
-            if(option.value == id){
-                option.selected = true
-                setValues()
-               // input.focus()
-            }
-            
-           removeTag(option.value)
-        }
-        
+        initOptions()
+        enableItemSelection()
+        setValues()
     }
     return {'updateSelect':updateSelect};
 }

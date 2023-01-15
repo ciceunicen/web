@@ -11,6 +11,9 @@ let page=1;
 
 //Para guardar los id por lo que se va a filtrar
 var json_filters = {};
+//variables que guardan comportamiento de multiselects
+var multiSelectsNeedsCreated;
+var multiSelectsAssistancesCreated;
 
 document.addEventListener("DOMContentLoaded",function(){
   fetch("html/navbar.html").then(
@@ -170,13 +173,13 @@ function captureSelectedOptions(){
       .then((response) => response.json())
       .then(json => createOptionsSelectDOM(json, elementDOM));
   }
-  let creacion; 
+
   function createOptionsSelectDOM(json, elementDOM){
     innerHTML(json, elementDOM);
     if(elementDOM == 'needs_created'){
-      creacion = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveNecesidad');
+      multiSelectsNeedsCreated = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveNecesidad');
     }else if(elementDOM == 'assistances_created'){
-      creacion = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveAsistencia');
+      multiSelectsAssistancesCreated = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveAsistencia');
     }else if(elementDOM != 'estadios_checks'){
       new MultiSelectTag(elementDOM, 'btn_reset_filter');
     }
@@ -557,7 +560,7 @@ function actualizacionSelectNecesidades(json){
   option.setAttribute('label', json.needType);
   option.selected = true;
   select.appendChild(option);
-  creacion.updateSelect(json.id_Need);
+  multiSelectsNeedsCreated.updateSelect(json.id_Need);
 }
 
 function actualizacionSelectAsistencias(json){
@@ -567,7 +570,7 @@ function actualizacionSelectAsistencias(json){
   option.setAttribute('label', json.type);
   option.selected = true;
   select.appendChild(option);
-  creacion.updateSelect(json.id_Assistance);
+  multiSelectsAssistancesCreated.updateSelect(json.id_Assistance);
 }
 
 function cargaRenderNecesidades(){
