@@ -2,7 +2,7 @@
 // Email: habibmhamadi@gmail.com
 
 
-function MultiSelectTag (el,id_btn_reset_filter ,customs = {shadow: false, rounded:true}) {
+function MultiSelectTag (el,id_btn_reset_filter, id_btn_save ,customs = {shadow: false, rounded:true}) {
     var element = null
     var options = null
     var customSelectContainer = null
@@ -17,6 +17,7 @@ function MultiSelectTag (el,id_btn_reset_filter ,customs = {shadow: false, round
     var ul = null
     var domParser = new DOMParser()
     var btn_reset_filter = null;
+    var btn_save = null;
     init()
 
     function init() {
@@ -62,7 +63,12 @@ function MultiSelectTag (el,id_btn_reset_filter ,customs = {shadow: false, round
                 resetOptions();
             })
         }
-
+      /*  btn_save = document.getElementById(id_btn_save)
+        if(btn_save != null){
+            btn_save.addEventListener("click", ()=>{
+                updateSelect();
+            })
+        }*/
     }
 
     function createElements() {
@@ -258,4 +264,12 @@ function MultiSelectTag (el,id_btn_reset_filter ,customs = {shadow: false, round
             setValues()
         }
     }
+
+    function updateSelect(id){
+        options = getOptions();
+        initOptions()
+        enableItemSelection()
+        setValues()
+    }
+    return {'updateSelect':updateSelect};
 }
