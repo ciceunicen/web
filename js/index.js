@@ -11,6 +11,9 @@ let page=1;
 
 //Para guardar los id por lo que se va a filtrar
 var json_filters = {};
+//variables que guardan comportamiento de multiselects
+var multiSelectsNeedsCreated;
+var multiSelectsAssistancesCreated;
 
 document.addEventListener("DOMContentLoaded",function(){
   fetch("html/navbar.html").then(
@@ -221,19 +224,23 @@ function captureSelectedOptions(){
 
   function createOptionsSelectDOM(json, elementDOM){
     innerHTML(json, elementDOM);
-    if(elementDOM != 'estadios_checks'){//este if evita que se quiera generar un dropdown de estadios en el formulario de carga de un proyecto
+    if(elementDOM == 'needs_created'){
+      multiSelectsNeedsCreated = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveNecesidad');
+    }else if(elementDOM == 'assistances_created'){
+      multiSelectsAssistancesCreated = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveAsistencia');
+    }else if(elementDOM != 'estadios_checks'){
       new MultiSelectTag(elementDOM, 'btn_reset_filter');
     }
   }
 
   function innerHTML(json, elementDOM){
     let select = document.getElementById(elementDOM);
-    if(elementDOM == 'needs' || elementDOM == 'needs_created'){
+    if(elementDOM == 'needs'){
       for (e of json) {
         select.innerHTML+= "<option value="+e.id_Need+">"+e.needType+"</option>";
       }
     }
-    if(elementDOM == 'assists' || elementDOM ==  'assistances_created'){
+    if(elementDOM == 'assists'){
       for (e of json) {
         select.innerHTML+= "<option value="+e.id_Assistance+">"+e.type+"</option>";
       }
@@ -243,10 +250,32 @@ function captureSelectedOptions(){
         select.innerHTML+= "<option value="+e.id_Stage+">"+e.stage_type+"</option>";
       }
     }
-    if(elementDOM = 'estadios_checks'){
+    if(elementDOM == 'estadios_checks'){
       for (e of json) {
         select.innerHTML+="<input type='checkbox' class='estadiosCheckboxes' value="+e.id_Stage+" name='estadiosCheckboxes' />";
-        select.innerHTML+= "<label for='ideaNegocio' class='label_estadios'>"+e.stage_type+"</label>";
+        select.innerHTML+= "<label for="+e.stage_type+" class='label_estadios'>"+e.stage_type+"</label>";
+      }
+    }
+    if(elementDOM == 'assistances_created'){
+      for (e of json){
+        if(e.default){
+          document.getElementById('asistencias_checks').innerHTML+= 
+          "<input type='checkbox' class='estadiosCheckboxes' value="+e.id_Assistance+" name='asistenciaCheckboxes' />"
+          +"<label for="+e.type+" class='label_estadios'>"+e.type+"</label>";
+        }else{
+          select.innerHTML+= "<option value="+e.id_Assistance+">"+e.type+"</option>";
+        }
+      }
+    }
+    if(elementDOM == 'needs_created'){
+      for (e of json){
+        if(e.default){
+          document.getElementById('necesidades_checks').innerHTML+= 
+          "<input type='checkbox' class='necesidadesCheckboxes' value="+e.id_Need+" name='asistenciaCheckboxes' />"
+          +"<label for="+e.needType+" class='label_estadios'>"+e.needType+"</label>";
+        }else{
+          select.innerHTML+= "<option value="+e.id_Need+">"+e.needType+"</option>";         
+        }
       }
     }
   }
@@ -422,15 +451,31 @@ function saveAttachments(){
 //GUARDAR NECESIDADES
 function guardarNecesidades(){
   event.preventDefault();
-  necesidades.push(document.querySelector("#otraNecesidad").value);
-  console.log(necesidades);
+  let json = {"needType":document.getElementById('new_need').value};
+  fetch(URLNeeds,{
+    method: "POST",
+    mode: 'cors',
+    body: JSON.stringify(json),
+    headers: {"Access-Control-Allow-Origin":"*" ,},
+    headers: {"Content-type": "application/json; charset=UTF-8",}
+  })
+  .then(response => response.json())
+  .then(json => actualizacionSelectNecesidades(json));
 }
 
 //GUARDAR ASISTENCIAS
  function guardarAsistencias(){
   event.preventDefault();
-  asistencias.push(document.querySelector("#otraAsistencia").value);
-  console.log(asistencias);
+  let json = {"type":document.getElementById('new_assistance').value};
+  fetch(URLAssitances,{
+    method: "POST",
+    mode: 'cors',
+    body: JSON.stringify(json),
+    headers: {"Access-Control-Allow-Origin":"*" ,},
+    headers: {"Content-type": "application/json; charset=UTF-8",}
+  })
+  .then(response => response.json())
+  .then(json => actualizacionSelectAsistencias(json));
 }
 
 //POST
@@ -571,5 +616,23 @@ function borrarProyecto(id_Project,id_Admin){
   })
   .then(response=>response.json())
   .then(getAllProjects);
+}
+function actualizacionSelectNecesidades(json){
+  let select = document.getElementById('needs_created');
+  let option = document.createElement('option');
+  option.setAttribute('value', json.id_Need);
+  option.setAttribute('label', json.needType);
+  option.selected = true;
+  select.appendChild(option);
+  multiSelectsNeedsCreated.updateSelect(json.id_Need);
+}
 
+function actualizacionSelectAsistencias(json){
+  let select = document.getElementById('assistances_created');
+  let option = document.createElement('option');
+  option.setAttribute('value', json.id_Assistance);
+  option.setAttribute('label', json.type);
+  option.selected = true;
+  select.appendChild(option);
+  multiSelectsAssistancesCreated.updateSelect(json.id_Assistance);
 }
