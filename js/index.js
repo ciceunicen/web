@@ -399,6 +399,7 @@ function saveAttachments(){
 
 //GUARDAR NECESIDADES
 function guardarNecesidades(){
+  event.preventDefault();
   let json = {"needType":document.getElementById('new_need').value};
   fetch(URLNeeds,{
     method: "POST",
@@ -413,6 +414,7 @@ function guardarNecesidades(){
 
 //GUARDAR ASISTENCIAS
  function guardarAsistencias(){
+  event.preventDefault();
   let json = {"type":document.getElementById('new_assistance').value};
   fetch(URLAssitances,{
     method: "POST",
