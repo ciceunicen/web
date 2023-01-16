@@ -163,7 +163,6 @@ function getAllBaseURL(url, elementDOM) {
         }
       }
     }
-  }
 }
 
 
@@ -172,24 +171,25 @@ function inicializarCargaProyecto() {
   let id = (id) => document.getElementById(id);
   let classes = (classes) => document.getElementsByClassName(classes);
   let title = id("title"),
-    description = id("description"), errorMsg = document.getElementsByClassName("error"),
-    successIcon = classes("success-icon"),
-    failureIcon = classes("failure-icon");
-  let asistenciaTecnica = document.querySelector("#asistenciaTecnica");
-  let capacitacion = document.querySelector("#capacitacion");
-  let networking = document.querySelector("#networking");
-  let financiamiento = document.querySelector("#financiamiento");
-  let otraNecesidad = document.querySelector("#otraNecesidad");
-  let tecnica = document.querySelector("#tecnica");
-  let aplicacionFinanciamiento = document.querySelector("#lineasFinanciamiento");
-  let convocatoria = document.querySelector("#convocatoria");
-  let otraAsistencia = document.querySelector("#otraAsistencia");
+  description = id("description"), errorMsg = document.getElementsByClassName("error"),
+  successIcon = classes("success-icon"),
+  failureIcon = classes("failure-icon");
   document.getElementById("save").addEventListener("click", (e) => {
     e.preventDefault();
     let necesidadesCheckboxes = document.querySelectorAll('input[name="necesidadesCheckboxes"]:checked');
+    console.log(necesidadesCheckboxes);
     necesidadesCheckboxes.forEach((checkbox) => {
+      
       necesidades.push(checkbox.value);
     });
+    
+    let otraNecesidad = document.querySelector("#needs_created");
+    for (var option of otraNecesidad.options) {  
+      if (option.selected) {
+        necesidades.push(option.value);
+      }
+    }
+    console.log(necesidades);
     let asistenciasCheckboxes = document.querySelectorAll('input[name="asistenciaCheckboxes"]:checked');
     asistenciasCheckboxes.forEach((checkbox) => {
       asistencias.push(checkbox.value);
@@ -360,38 +360,3 @@ function mostrarHistorialProyecto() {
 }
 
 
-
-function actualizacionSelectAsistencias(json){
-  let select = document.getElementById('assistances_created');
-  let option = document.createElement('option');
-  option.setAttribute('value', json.id_Assistance);
-  option.setAttribute('label', json.type);
-  option.selected = true;
-  select.appendChild(option);
-  multiSelectsAssistancesCreated.updateSelect(json.id_Assistance);
-}
-
-function cargaRenderNecesidades(){
-  fetch('html/cargaDeNecesidades.html').then(
-    function(response){
-      response.text().then(
-    function(texto){
-      document.querySelector(".datosNecesidades").innerHTML = texto;
-      document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
-      //Configuro Dropdown de necesidades
-      getAllBaseURL(URLNeeds, 'needs_created');
-    });
-  });  
-}
-function cargaRenderAsistencia(){
-  fetch('html/cargaDeAsistencias.html').then(
-    function(response){
-      response.text().then(
-    function(texto){
-      document.querySelector(".datosAsistencias").innerHTML = texto;
-      document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
-      //Configuro Dropdown de asistencias
-      getAllBaseURL(URLAssitances, 'assistances_created');
-    });
-  });   
-}

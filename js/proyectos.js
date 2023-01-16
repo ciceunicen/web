@@ -189,5 +189,27 @@ function readDomProductManager(json){
                          + "</div>" ;
  }
 
+//ACTUALIZA EL DROPDOWN DE CREACION DE PROYECTOS CUANDO CREAS UNA NUEVA NECESIDAD
+ function actualizacionSelectNecesidades(json){
+  let select = document.getElementById('needs_created');
+  let option = document.createElement('option');
+  option.setAttribute('value', json.id_Need);
+  option.setAttribute('label', json.needType);
+  option.selected = true;
+  select.appendChild(option);
+  multiSelectsNeedsCreated.updateSelect(json.id_Need);
+}
+
+//ACTUALIZA EL DROPDOWN DE CREACION DE PROYECTOS CUANDO CREAS UNA NUEVA ASISTENCIA
+function actualizacionSelectAsistencias(json){
+  let select = document.getElementById('assistances_created');
+  let option = document.createElement('option');
+  option.setAttribute('value', json.id_Assistance);
+  option.setAttribute('label', json.type);
+  option.selected = true;
+  select.appendChild(option);
+  multiSelectsAssistancesCreated.updateSelect(json.id_Assistance);
+}
+
 
 

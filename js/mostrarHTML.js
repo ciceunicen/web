@@ -83,16 +83,12 @@ function mostrarCargaProyecto() {
       document.querySelector(".main-container").innerHTML = text;
       document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
       inicializarCargaProyecto();
-      document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
-      document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
+      cargaRenderNecesidades();
+      cargaRenderAsistencia();
       let id_emprendedor=1;
       partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",id_emprendedor);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
-      //Configuro Dropdown de necesidades
-      getAllBaseURL(URLNeeds, 'needs_created');
-      //Configuro Dropdown de asistencias
-      getAllBaseURL(URLAssitances, 'assistances_created');
   });
 }
 
@@ -104,4 +100,22 @@ function partialRendercargaDatosEmprendedorYHistorial(div,id_emprendedor){
     });
     document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
   });
+}
+
+function cargaRenderNecesidades(){
+  mostrarArchivoHTML("html/cargaDeNecesidades.html").then(text =>{
+    document.querySelector(".datosNecesidades").innerHTML = text;
+    document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
+    //Configuro Dropdown de necesidades
+    getAllBaseURL(URLNeeds, 'needs_created');
+  });
+}
+
+function cargaRenderAsistencia(){
+  mostrarArchivoHTML("html/cargaDeAsistencias.html").then(text =>{
+    document.querySelector(".datosAsistencias").innerHTML = text;
+    document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
+    //Configuro Dropdown de asistencias
+    getAllBaseURL(URLAssitances, 'assistances_created');
+  });  
 }
