@@ -225,9 +225,9 @@ function captureSelectedOptions(){
   function createOptionsSelectDOM(json, elementDOM){
     innerHTML(json, elementDOM);
     if(elementDOM == 'needs_created'){
-      multiSelectsNeedsCreated = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveNecesidad');
+      multiSelectsNeedsCreated = MultiSelectTag(elementDOM, 'btn_reset_filter');
     }else if(elementDOM == 'assistances_created'){
-      multiSelectsAssistancesCreated = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveAsistencia');
+      multiSelectsAssistancesCreated = MultiSelectTag(elementDOM, 'btn_reset_filter');
     }else if(elementDOM != 'estadios_checks'){
       new MultiSelectTag(elementDOM, 'btn_reset_filter');
     }
