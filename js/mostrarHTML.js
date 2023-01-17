@@ -10,6 +10,7 @@ function mostrarHome(){
       document.querySelector(".navbar").innerHTML = text;
       document.querySelector("#proyectos").addEventListener("click", ()=>{
         drawClickNav("proyectos");
+        page=1;
         getAllProjects().then(json=>mostrarProyectos(json));
       });
       document.querySelector("#emprendedores").addEventListener("click", ()=>{
@@ -24,8 +25,12 @@ function mostrarHome(){
 //Cambio de pantalla a proyectos eliminados
 function showTableProjectsRemoved(){
     mostrarArchivoHTML("html/listProjectsRemoved.html").then(text =>{
-                    document.querySelector(".main-container").innerHTML = text;
-                    getAllDeleteProjects().then(json => mostrarTabla(json,true));
+      document.querySelector(".main-container").innerHTML = text;
+      page=1;
+      getAllDeleteProjects(page).then(json => {
+        mostrarTabla(json,true);
+        mostrarPaginado(json.totalPages,"proyectosEliminados");
+      });
     });
 }
 
@@ -43,22 +48,21 @@ function mostrarProyectos(json) {
     getAllBaseURL(URLAssitances, 'assists');
     getAllBaseURL(URLStages, 'stadiums');
     document.querySelector("#btn_filter").addEventListener("click", function(){
-    captureSelectedOptions();
+      captureSelectedOptions();
     //Acá hacer fetch a la API pidiendo los proyectos filtrados, usando JSON "json_filters"
     //...
     });
-    mostrarPaginado(json.totalPages);
-    let container= document.querySelector(".list");
-    mostrarTabla(json,false,container);
+    mostrarPaginado(json.totalPages,"proyectos");
+    mostrarTabla(json,false);
   });
 }
 
 //muestra la seccion del paginado
-function mostrarPaginado(pages){
+function mostrarPaginado(pages,tablaUtilizada,datosFiltro = []){
   mostrarArchivoHTML("html/pagination.html").then(text =>{
     document.querySelector(".footer-list-projects").innerHTML=text;
     document.querySelector("#pageNumber").innerHTML=page;
-    comportamientoPaginado(pages);
+    comportamientoPaginado(pages,datosFiltro,tablaUtilizada);
   });
 }
 
