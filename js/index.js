@@ -97,5 +97,3 @@ function getProjectManager(id) {
     .then(json => readDomProductManager(json));
 
 }
-
-
