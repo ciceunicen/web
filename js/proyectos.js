@@ -25,6 +25,7 @@ function borrarProyecto(id_Project,id_Admin){
     headers: {"Content-type": "application/json; charset=UTF-8",}
   })
   .then(response=>getAllProjects().then(lista=>{
+    console.log(lista.totalPages);
     mostrarPaginado(lista.totalPages,"proyectos");
     mostrarTabla(lista,false);
   }));
@@ -104,6 +105,7 @@ function cambiarNumeroPaginado(datosFiltro,tablaUtilizada,pages){
 
 //Activa o desactiva los botones de paginado
 function comportamientoBotonesPaginado(pages){
+  console.log(page + " " + pages);
   if(page==1){
     document.querySelector("#previousPage").ariaDisabled;
     document.querySelector("#previousPage").style.color="grey"; 
@@ -113,7 +115,7 @@ function comportamientoBotonesPaginado(pages){
       document.querySelector("#previousPage").style.color= "#0d6efd"; 
       document.querySelector("#previousPage").removeAttribute("disabled");
     }
-  if(page==pages){
+  if(page==pages|| pages==0){
       document.querySelector("#nextPage").style.color="grey";
       document.querySelector("#nextPage").setAttribute("disabled", "true");
       document.querySelector("#nextPage").ariaDisabled;
