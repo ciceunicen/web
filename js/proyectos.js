@@ -105,7 +105,6 @@ function cambiarNumeroPaginado(datosFiltro,tablaUtilizada,pages){
 
 //Activa o desactiva los botones de paginado
 function comportamientoBotonesPaginado(pages){
-  console.log(page + " " + pages);
   if(page==1){
     document.querySelector("#previousPage").ariaDisabled;
     document.querySelector("#previousPage").style.color="grey"; 
