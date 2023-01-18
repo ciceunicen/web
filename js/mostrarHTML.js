@@ -26,6 +26,9 @@ function mostrarHome(){
 function showTableProjectsRemoved(){
     mostrarArchivoHTML("html/listProjectsRemoved.html").then(text =>{
       document.querySelector(".main-container").innerHTML = text;
+      //configuro dropdown que lleva a sección de tabla de todos los proyectos
+      let id_btn_change_screen = 'btn_section_projects';
+      configDropdown(id_btn_change_screen, "projects")
       page=1;
       getAllDeleteProjects(page).then(json => {
         mostrarTabla(json,true);
@@ -39,7 +42,8 @@ function mostrarProyectos(json) {
   mostrarArchivoHTML("html/listProjects.html").then(text =>{
     document.querySelector(".main-container").innerHTML = text;
     //AGREGO DROPDOWN DE PROYECTOS ELIMINADOS Y EVENTOS DE CAMBIOS DE PANTALLA
-    configDropdowProjectsRemoved();
+    let id_btn_change_screen = 'btn_section_projects_removed';
+    configDropdown(id_btn_change_screen, "projects_removed");
     //funcionalidad boton ver mas de la lista
     //FILTROS
     //Traigo de la base de datos y muestro en el DOM las necesidades, asistencias y estadios existentes
@@ -56,6 +60,7 @@ function mostrarProyectos(json) {
     mostrarTabla(json,false);
   });
 }
+
 
 //muestra la seccion del paginado
 function mostrarPaginado(pages,tablaUtilizada,datosFiltro = []){

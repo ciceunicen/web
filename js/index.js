@@ -34,44 +34,6 @@ function drawClickNav(click_nav) {
   });
 }
 
-//AGREGA EL DESPLEGABLE PARA ENTRAR EN LOS PROYECTOS BORRADOS
-function configDropdowProjectsRemoved() {
-  //Agrego Dropdown de sección de proyectos eliminados
-  //clase que guarda funciones del dropdown
-  let sectionDelete = new DropdownBtnSectionProjectsDelete();
-  //renderizo el dropdown (es un partialrender)
-  sectionDelete.showDropdown('div_dropdown_projects_removed');
-  //ocupo setTimeout ya que desde la clase después de un fetch no me toma las finciones propias de la clase, no reconoce el this.
-  setTimeout(() => {
-    //busco del DOM botón que cambia de pantalla
-    let btn_section_projects_removed = document.getElementById('btn_section_projects_removed');
-    //agrego eventos de animación de dropdown
-    sectionDelete.addEventListenerArrowRight(btn_section_projects_removed);
-    //cambio de pantalla a proyectos eliminados
-    btn_section_projects_removed.addEventListener("click", () => {
-      //cambio de pantalla a proyectos eliminados(es un partialrender)
-      showTableProjectsRemoved();
-      //pinto otra vez el dropdown (es un partialrender)
-      sectionDelete.showDropdown('div_dropdown_projects_removed');
-      //espero a que se pinte el dropdown y agrego eventos, no los toma sino.
-      setTimeout(() => {
-        //////////////////////////////
-        //ACÁ AGREGAR FETCH PARA TRAER PROYECTOS ELIMINADOS Y CARGARLOS EN LA TABLA.
-        ///////////////////////////////
-        //cambio que botón de cambio de pantalla se muestra, muestro uno que lleve a la tabla de proyectos
-        sectionDelete.changeBtnScreenProjectsRemoved()
-        //Agrego animaciones al dropdown
-        sectionDelete.addEventListenerArrowRight(btn_section_projects);
-        //busco del DOM botón que cambia de pantalla
-        //evento que cambia de pantalla a tabla proyectos
-        document.getElementById('btn_section_projects').addEventListener("click", () => { page=1;getAllProjects().then(json => mostrarProyectos(json)); });
-      }, 500);
-    });
-  }, 500);
-}
-
-
-
 //GET All reutilizable del Filtro para Necesidades,Asistencias y Estadios
 function getAllBaseURL(url, elementDOM) {
   fetch(url)

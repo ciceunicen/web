@@ -11,3 +11,7 @@
 .header_table_projects_removed{
     background-color: #f3b1b1;
 }
+
+.pages_removed>.pagination{
+    background-color: #f3b1b1;
+}
