@@ -6,7 +6,8 @@
 .title_list{
     text-align: center;
     color: white;
-    height: 28px;
+    height: 35px;
+    font-size: 22px;
 }
 .div_cont_table_emprendedores{
     margin-left: 60px;
@@ -17,4 +18,5 @@
 }
 .manager-table{
     color: #496D17;
+    text-align: center;
 }
