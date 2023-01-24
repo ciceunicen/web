@@ -15,7 +15,8 @@ function mostrarHome(){
       });
       document.querySelector("#emprendedores").addEventListener("click", ()=>{
         drawClickNav("emprendedores");
-        mostrarCargaProyecto();
+        mostrarListaEmprendedores();
+        //mostrarCargaProyecto();
       });
       //HOME TEMPORAL
       document.querySelector("#emprendedores").click();
@@ -127,4 +128,9 @@ function cargaRenderAsistencia(){
     //Configuro Dropdown de asistencias
     getAllBaseURL(URLAssitances, 'assistances_created');
   });  
+}
+function mostrarListaEmprendedores(){//recibe un json por parametro
+  mostrarArchivoHTML("html/listProjectsManager.html").then(text =>{
+      document.querySelector(".main-container").innerHTML = text;
+  });
 }
