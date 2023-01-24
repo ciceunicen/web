@@ -90,7 +90,7 @@ function mostrarProyecto(proyecto){
 function mostrarCargaProyecto() {
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
-      document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
+      //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
       inicializarCargaProyecto();
       cargaRenderNecesidades();
       cargaRenderAsistencia();

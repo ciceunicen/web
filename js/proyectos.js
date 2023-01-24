@@ -318,6 +318,7 @@ function innerHTML(json, elementDOM){
 
 //COMPRUEBA LOS CAMPOS DE CARGA DE PROYECTOS
 function inicializarCargaProyecto() {
+  changeCountInputFile();//comportamiento de input file, siempre activo, cuenta cuantos archivos hay seleccionados
   let id = (id) => document.getElementById(id);
   let classes = (classes) => document.getElementsByClassName(classes);
   let title = id("title"),
@@ -348,7 +349,7 @@ function inicializarCargaProyecto() {
       }
     }
     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
-    saveAttachments();
+    
     if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
       asistencias.length > 0 && estadio != null) {
       document.querySelector("#titleError").innerHTML = "";
@@ -372,6 +373,7 @@ function inicializarCargaProyecto() {
           necesidades,
         "id_Admin": 1
       }
+      saveAttachments();
       saveProject(datos);
       necesidades=[];
       asistencias=[];
@@ -406,30 +408,7 @@ function inicializarCargaProyecto() {
   });
 }
 
-//GUARDAR ARCHIVOS ADJUNTOS
-function saveAttachments() {
-  let inputs = document.getElementsByClassName("inputfile");
-  Array.prototype.forEach.call(inputs, function (input) {
-    let label = input.nextElementSibling,
-      labelVal = label.innerHTML;
-    input.addEventListener('change', function (e) {
-      let fileName = " ";
-      if (this.files && this.files.length > 1) {
-        fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
-        for (let i = 0; i < this.files.length; i++) {
-          attachments.push(e.target.value.split('\\').pop());
-        }
-      } else
-        fileName = e.target.value.split('\\').pop();
-      attachments.push(fileName);
-      if (fileName) {
-        label.querySelector('span').innerHTML = fileName;
-      }
-      else
-        label.innerHTML = labelVal;
-    });
-  });
-}
+
 
 //GUARDAR NECESIDADES
 function guardarNecesidades(){

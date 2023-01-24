@@ -1,0 +1,2 @@
+#ignora contenido de la carpeta uploadFiles, para que no se suban imagenes y pdf que se suban de prueva.
+uploadFiles/
