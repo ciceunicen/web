@@ -62,6 +62,13 @@ function getFilterProjects(datos,pagina) {
     .then(json => {return json});
 }
 
+//GET HISTORIAL DE PROYECTO
+function getProjectHistory(id){
+  return fetch(URLProject+"/"+id+"/administrationRecords/page/"+page)
+  .then(response => response.json())
+  .then(json => {return json});
+}
+
 //TODO DE LA SECCION DE LISTA DE PROYECTOS
 
 //maneja el funcionamiento del paginado de la tabla de proyectos
@@ -492,6 +499,26 @@ function mostrarArray(contenedor,arreglo,dato){
       document.querySelector(contenedor).innerHTML+="<p><i class='fa fa-check-circle' aria-hidden='true'></i>"+eval(dato)+"</p>";
 
     }
+  }
+}
+
+//Generar tabla de proyectos
+function generarTablaHistorial(json){
+  let array=json.content;
+  let container= document.querySelector(".projectHistoryTable");
+  container.innerHTML="";
+  console.log(json);
+  for (let i = array.length-1; i >=0 ; i--) {
+            const historial = array[i];          
+            var row = container.insertRow(0);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            cell1.innerHTML=historial.id_admin;
+            cell2.innerHTML="Admin default";
+            cell3.innerHTML= historial.action;
+            cell4.innerHTML = historial.date;
   }
 }
 
