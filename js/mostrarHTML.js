@@ -82,7 +82,9 @@ function mostrarProyecto(proyecto){
     mostrarArray("#asistencia",proyecto.assistances,"elemento.type");
     mostrarArray("#necesidades",proyecto.needs,"elemento.needType");
     partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
-    mostrarArray("#files",proyecto.files,"elemento.file");
+    mostrarArray("#files",proyecto.files,"elemento.file", proyecto.title);
+    //evento para poder descargar todos sus archivos adjuntos
+    downloadAllAttachmentsByProject(proyecto.title);
   })
 }
 
