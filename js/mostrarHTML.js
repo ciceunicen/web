@@ -139,7 +139,6 @@ function partialRenderHistorialProject(div, id_project){
   mostrarArchivoHTML("html/ProjectHistory.html").then(text=>{
     document.querySelector(div).innerHTML = text;
     document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
-    console.log(this);
     page=1;
     getProjectHistory(id_project).then(json => generarTablaHistorial(json));
   });

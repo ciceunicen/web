@@ -507,7 +507,6 @@ function generarTablaHistorial(json){
   let array=json.content;
   let container= document.querySelector(".projectHistoryTable");
   container.innerHTML="";
-  console.log(json);
   for (let i = array.length-1; i >=0 ; i--) {
             const historial = array[i];          
             var row = container.insertRow(0);
@@ -516,9 +515,10 @@ function generarTablaHistorial(json){
             var cell3 = row.insertCell(2);
             var cell4 = row.insertCell(3);
             cell1.innerHTML=historial.id_admin;
+            //cambiar cuando este la entidad administrador, utilizar nombre y apellido
             cell2.innerHTML="Admin default";
             cell3.innerHTML= historial.action;
-            cell4.innerHTML = historial.date;
+            cell4.innerHTML= historial.date;
   }
 }
 
