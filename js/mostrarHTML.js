@@ -15,7 +15,8 @@ function mostrarHome(){
       });
       document.querySelector("#emprendedores").addEventListener("click", ()=>{
         drawClickNav("emprendedores");
-        mostrarCargaProyecto();
+        mostrarListaEmprendedores();
+        //mostrarCargaProyecto();
       });
       //HOME TEMPORAL
       document.querySelector("#emprendedores").click();
@@ -81,7 +82,8 @@ function mostrarProyecto(proyecto){
     document.querySelector("#estadio").innerHTML+=proyecto.stage.stage_type;
     mostrarArray("#asistencia",proyecto.assistances,"elemento.type");
     mostrarArray("#necesidades",proyecto.needs,"elemento.needType");
-    partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
+    partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
+    partialRenderHistorialProject(".historyProject", proyecto.id_project);
     mostrarArray("#files",proyecto.files,"elemento.file", proyecto.title);
     //evento para poder descargar todos sus archivos adjuntos
     downloadAllAttachmentsByProject(proyecto.title);
@@ -97,19 +99,19 @@ function mostrarCargaProyecto() {
       cargaRenderNecesidades();
       cargaRenderAsistencia();
       let id_emprendedor=1;
-      partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",id_emprendedor);
+      partialRendercargaDatosEmprendedor(".datosEmprendedor",id_emprendedor);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
   });
 }
 
-function partialRendercargaDatosEmprendedorYHistorial(div,id_emprendedor){
+function partialRendercargaDatosEmprendedor(div,id_emprendedor){
   mostrarArchivoHTML("html/datosEmprendedor.html").then(text=>{
     document.querySelector(div).innerHTML = text;
     document.querySelector('.slideDownResponsible').addEventListener("click",()=>{
       mostrarResponsableProyecto(id_emprendedor);
     });
-    document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
+    //document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
   });
 }
 
@@ -129,4 +131,16 @@ function cargaRenderAsistencia(){
     //Configuro Dropdown de asistencias
     getAllBaseURL(URLAssitances, 'assistances_created');
   });  
+}
+function mostrarListaEmprendedores(){//recibe un json por parametro
+  mostrarArchivoHTML("html/listProjectsManager.html").then(text =>{
+      document.querySelector(".main-container").innerHTML = text;
+  });
+}
+function partialRenderHistorialProject(div, id_project){
+  mostrarArchivoHTML("html/ProjectHistory.html").then(text=>{
+    document.querySelector(div).innerHTML = text;
+    document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
+  });
+  
 }
