@@ -84,7 +84,9 @@ function mostrarProyecto(proyecto){
     mostrarArray("#necesidades",proyecto.needs,"elemento.needType");
     partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
-    mostrarArray("#files",proyecto.files,"elemento.file");
+    mostrarArray("#files",proyecto.files,"elemento.file", proyecto.title);
+    //evento para poder descargar todos sus archivos adjuntos
+    downloadAllAttachmentsByProject(proyecto.title);
   })
 }
 
@@ -92,7 +94,7 @@ function mostrarProyecto(proyecto){
 function mostrarCargaProyecto() {
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
-      document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
+      //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
       inicializarCargaProyecto();
       cargaRenderNecesidades();
       cargaRenderAsistencia();
