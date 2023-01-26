@@ -296,7 +296,7 @@ function innerHTML(json, elementDOM){
     for (e of json){
       if(e.default){
         document.getElementById('asistencias_checks').innerHTML+= 
-        "<input type='checkbox' class='estadiosCheckboxes' value="+e.id_Assistance+" name='asistenciaCheckboxes' />"
+        "<input type='checkbox' class='asistenciasCheckboxes' value="+e.id_Assistance+" name='asistenciaCheckboxes' />"
         +"<label for="+e.type+" class='label_estadios'>"+e.type+"</label>";
       }else{
         select.innerHTML+= "<option value="+e.id_Assistance+">"+e.type+"</option>";
@@ -497,5 +497,29 @@ function mostrarArray(contenedor,arreglo,dato){
 
 
 
+//MODIFICAR DATOS DE UN PROYECTO
+
+//Hacer comunicación con el back para traer datos de un proyecto y 
+//mostrarlos en los inputs y desde ahí se modifican.
+function modificarProyecto(id_proyecto, proyecto){
+  event.preventDefault();
+  console.log(proyecto.id_Project);
+  fetch(URLProject +"/"+ id_proyecto,{
+  method: "PUT",
+  mode: 'cors',
+  body: JSON.stringify(proyecto),
+  headers: {"Access-Control-Allow-Origin":"*" ,},
+  headers: {"Content-type": "application/json; charset=UTF-8",}
+  })
+  .then(response => response.json())
+  .then(showSucess());
+  setTimeout(mostrarProyecto(proyecto),5000);
+}
 
 
+
+function cargarNecesidadesoAsistenciasCreadas(URL){
+  return fetch(URL)
+  .then(response => response.json())
+  .then(json => {return json});
+}
