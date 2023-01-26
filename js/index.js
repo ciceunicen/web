@@ -54,8 +54,20 @@ function createOptionsSelectDOM(json, elementDOM){
 
 //GET
 function getProjectManager(id) {
-  fetch(URLProjectManager + "/" + id)
+  return fetch(URLProjectManager + "/" + id)
     .then((response) => response.json())
-    .then(json => readDomProductManager(json));
+    .then(json => {return json});
 
+}
+
+function getAllProjectManagers(){
+  return fetch(URLProjectManager+"/page/"+page)
+  .then((response)=> response.json())
+  .then(json => {return json})
+}
+
+function getAllProjectsByProjectManager(idProjectManager){
+  return fetch(URLProjectManager+"/"+idProjectManager+"/projects/page/"+page)
+  .then((response)=> response.json())
+  .then(json => {return json})
 }

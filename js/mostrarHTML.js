@@ -64,9 +64,9 @@ function mostrarProyectos(json) {
 
 
 //muestra la seccion del paginado
-function mostrarPaginado(pages,tablaUtilizada,datosFiltro = []){
+function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list-projects"){
   mostrarArchivoHTML("html/pagination.html").then(text =>{
-    document.querySelector(".footer-list-projects").innerHTML=text;
+    document.querySelector(div).innerHTML=text;
     document.querySelector("#pageNumber").innerHTML=page;
     comportamientoPaginado(pages,datosFiltro,tablaUtilizada);
   });
@@ -132,11 +132,18 @@ function cargaRenderAsistencia(){
     getAllBaseURL(URLAssitances, 'assistances_created');
   });  
 }
+//MUESTRA LA LISTA DE EMPRENDEDORES
 function mostrarListaEmprendedores(){//recibe un json por parametro
   mostrarArchivoHTML("html/listProjectsManager.html").then(text =>{
       document.querySelector(".main-container").innerHTML = text;
+      page=1;
+      getAllProjectManagers().then(json => {
+        generarTablaEmprendedores(json);
+        mostrarPaginado(json.totalPages,"emprendedores",[],".footer-list-emprendedores")
+      });
   });
 }
+
 function partialRenderHistorialProject(div, id_project){
   mostrarArchivoHTML("html/ProjectHistory.html").then(text=>{
     document.querySelector(div).innerHTML = text;
@@ -144,5 +151,21 @@ function partialRenderHistorialProject(div, id_project){
     page=1;
     getProjectHistory(id_project).then(json => generarTablaHistorial(json));
   });
-  
+}
+
+//muestra un emprendedor
+function mostrarEmprendedor(emprendedor){
+  mostrarArchivoHTML("html/projectManager.html").then(text =>{
+    document.querySelector(".main-container").innerHTML=text;
+    document.querySelector("#fullName").innerHTML=emprendedor.name+" "+emprendedor.surname;
+    document.querySelector("#email").innerHTML=emprendedor.email;
+    document.querySelector("#linkUnicen").innerHTML=emprendedor.linkUnicen;
+    document.querySelector("#phone").innerHTML=emprendedor.phone;
+    document.querySelector("#medioConocimientoCice").innerHTML=emprendedor.medioConocimientoCice;
+    page=1;
+    getAllProjectsByProjectManager(emprendedor.id_ProjectManager).then(json=>{
+      mostrarTabla(json,false);
+      mostrarPaginado(json.totalPages,"proyectosEmprendedor",[emprendedor.id_ProjectManager]);
+    });
+  });
 }
