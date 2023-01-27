@@ -51,23 +51,3 @@ function createOptionsSelectDOM(json, elementDOM){
       new MultiSelectTag(elementDOM, 'btn_reset_filter');
     }
 }
-
-//GET
-function getProjectManager(id) {
-  return fetch(URLProjectManager + "/" + id)
-    .then((response) => response.json())
-    .then(json => {return json});
-
-}
-
-function getAllProjectManagers(){
-  return fetch(URLProjectManager+"/page/"+page)
-  .then((response)=> response.json())
-  .then(json => {return json})
-}
-
-function getAllProjectsByProjectManager(idProjectManager){
-  return fetch(URLProjectManager+"/"+idProjectManager+"/projects/page/"+page)
-  .then((response)=> response.json())
-  .then(json => {return json})
-}

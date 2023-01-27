@@ -1,0 +1,50 @@
+.name_project_manager, .table_projectManager, .div_cont_table_projects_project_manager, .title_table_projects_project_manager{
+    width: 94%;
+    margin: auto;
+}
+
+.name_project_manager{
+    background-color: #74AC24;
+    text-align: center;
+    margin-bottom: 0% !important;
+    padding: 1%;
+    border-radius: 5px 5px 0px 0px;
+    color: white;
+    text-transform: uppercase;
+}
+
+.block_data, .data{
+    padding: 1%;
+    border: 3px solid #b9d395;
+    width: 25%;
+    max-width: 320px;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.data{
+    background-color: white;
+}
+
+.block_data{
+    background-color: #d3e7b6;
+}
+
+.block_data_small{
+    width: 5%;
+}
+
+.block_data_medium{
+    width: 5%;
+}
+
+.title_table_projects_project_manager{
+    margin-top: 1%;
+}
+
+.title_table_projects_project_manager>p{
+    text-align: center;
+    flex-grow: 1;
+    margin-left: 6%;
+
+}

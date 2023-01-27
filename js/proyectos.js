@@ -228,19 +228,6 @@ function captureSelectedOptions() {
 //////////////////////////////////////////////////////////////////////////////////////
 //TODO DE CARGAR PROYECTOS
 
-//MOSTRAR RESPONSABLE DEL PROYECTO
-function mostrarResponsableProyecto(id) {
-  let btn = document.getElementById('projectManagerData')
-  if (btn.className === 'hiddenData') {
-    getProjectManager(id).then(json=>readDomProductManager(json));
-    btn.className = 'showProjectManagerData';
-    document.querySelector(".slideDownResponsible").innerHTML = "<img src='img/icons8-flecha-contraer-50.png' class='slideDown'/>";
-  } else {
-    document.querySelector(".slideDownResponsible").innerHTML = "<img src='img/expandir.png' class='slideDown'/>";
-    btn.className = 'hiddenData';
-  }
-}
-
 //MOSTRAR HISTORIAL DEL PROYECTO
 function mostrarHistorialProyecto() {
   let btn = document.getElementById('projectDataHistory')
@@ -253,23 +240,6 @@ function mostrarHistorialProyecto() {
   }
 }
 
-//FUNCION PARA GENERAR LOS DATOS DEL PROJECT MANAGER EN HTML
-function readDomProductManager(json){
-  let divProductManager = document.querySelector("#projectManagerData");
-  divProductManager.innerHTML = "";
-  divProductManager.innerHTML=
-                         " <div id='projectManagerData'>"
-                         +"<p> Nombre: " + json.name + " " + json.surname +"</p>"
-                         +"<p> Teléfono: "+ json.phone+ "</p>"
-                         + "<p> Localidad: agregar en entidad </p>"
-                         + "<p> Email: " +json.email+ "</p>"
-                         + "<p> Ocupación: agregar en entidad </p>"
-                         + "<p> Vinculación con UNICEN: agregar en entidad </p>"
-                         + "<p> Facultad a la que pertenece: </p>"
-                         + "<p> Medio de conocimiento del CICE: " + json.medioConocimientoCice + "</p>"
-                         + "<p> Organización asociativa: agregar en entidad </p>"
-                         + "</div>" ;
- }
 
 //ACTUALIZA EL DROPDOWN DE CREACION DE PROYECTOS CUANDO CREAS UNA NUEVA ASISTENCIA O UNA NUEVA NECESIDAD
 function actualizacionSelect(value,label,idElemento,funcion){
@@ -511,37 +481,3 @@ function generarTablaHistorial(json){
             cell4.innerHTML= historial.date;
   }
 }
-
-//TODO LISTA EMPRENDEDORES
-
-function generarTablaEmprendedores(json){
-  let array=json.content;
-  let container= document.querySelector(".projectManagersTable");
-  container.innerHTML="";
-  for (let i = array.length-1; i >=0 ; i--) {
-            const projectManager = array[i];          
-            var row = container.insertRow(0);
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
-            var cell5 = row.insertCell(4);
-            var input = document.createElement("input");
-            input.setAttribute("type", "button");
-            input.setAttribute("value", "Ver más");
-            input.setAttribute("id", projectManager.id_ProjectManager);
-            input.setAttribute("class", "btn_save_green verMas");
-            cell5.appendChild(input);
-            document.querySelector(".verMas").addEventListener("click", ()=>{getProjectManager(projectManager.id_ProjectManager).then(json=>mostrarEmprendedor(json))});
-            cell1.innerHTML=projectManager.name;
-            //cambiar cuando este la entidad administrador, utilizar nombre y apellido
-            cell2.innerHTML=projectManager.surname;
-            cell3.innerHTML= projectManager.email;
-            cell4.innerHTML= projectManager.phone;
-  }
-}
-
-
-
-
-

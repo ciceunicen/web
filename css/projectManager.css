@@ -1,31 +1,9 @@
-.name_project_manager{
-    background-color: #74AC24;
-    text-align: center;
-    margin-bottom: 0% !important;
-    width: 90%;
-    padding: 1%;
-    border-radius: 5px 5px 0px 0px;
-    margin: auto;
-    color: white;
-    text-transform: uppercase;
+.btn_add_project{
+    background-color: #496D17 !important;
+    border: none !important;
+    float: right;
 }
 
-.table_projectManager{
-    width: 90%;
-    margin: auto;
-}
-
-
-.block_data, .data{
-    padding: 1%;
-    border: 3px solid #D5ECB4;
-    border-collapse: collapse;
-}
-
-.block_data{
-    background-color: #EAF7D8;
-}
-
-.data{
-
+.btn_add_project:hover{
+    background-color: #37570b !important ;
 }

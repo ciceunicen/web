@@ -16,7 +16,6 @@ function mostrarHome(){
       document.querySelector("#emprendedores").addEventListener("click", ()=>{
         drawClickNav("emprendedores");
         mostrarListaEmprendedores();
-        //mostrarCargaProyecto();
       });
       //HOME TEMPORAL
       document.querySelector("#emprendedores").click();
@@ -91,14 +90,14 @@ function mostrarProyecto(proyecto){
 }
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
-function mostrarCargaProyecto() {
+function mostrarCargaProyecto(emprendedor) {
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
       //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
       inicializarCargaProyecto();
       cargaRenderNecesidades();
       cargaRenderAsistencia();
-      let id_emprendedor=1;
+      let id_emprendedor=emprendedor.id_ProjectManager;
       partialRendercargaDatosEmprendedor(".datosEmprendedor",id_emprendedor);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
@@ -157,15 +156,29 @@ function partialRenderHistorialProject(div, id_project){
 function mostrarEmprendedor(emprendedor){
   mostrarArchivoHTML("html/projectManager.html").then(text =>{
     document.querySelector(".main-container").innerHTML=text;
-    document.querySelector("#fullName").innerHTML=emprendedor.name+" "+emprendedor.surname;
-    document.querySelector("#email").innerHTML=emprendedor.email;
-    document.querySelector("#linkUnicen").innerHTML=emprendedor.linkUnicen;
-    document.querySelector("#phone").innerHTML=emprendedor.phone;
-    document.querySelector("#medioConocimientoCice").innerHTML=emprendedor.medioConocimientoCice;
+    //cargo tabla de datos del emprendedor
+    showDataProjectManager(emprendedor);
+    //evento cambio de pantalla a formulario de crear proyecto
+    document.getElementById("btn_add_project").addEventListener("click", ()=>{
+      mostrarCargaProyecto(emprendedor);
+    });
     page=1;
     getAllProjectsByProjectManager(emprendedor.id_ProjectManager).then(json=>{
       mostrarTabla(json,false);
       mostrarPaginado(json.totalPages,"proyectosEmprendedor",[emprendedor.id_ProjectManager]);
     });
+  });
+}
+
+function showDataProjectManager(projectManager){
+  //llamo a contenido donde se muestran los datos del emprendedor.
+  mostrarArchivoHTML("html/dataProjectManager.html").then(text_pm =>{
+    document.getElementById("projectManagerData").innerHTML=text_pm;
+    //Completo datos del emprendedor
+    document.querySelector("#fullName").innerHTML=projectManager.name+" "+projectManager.surname;
+    document.querySelector("#email").innerHTML=projectManager.email;
+    document.querySelector("#linkUnicen").innerHTML=projectManager.linkUnicen;
+    document.querySelector("#phone").innerHTML=projectManager.phone;
+    document.querySelector("#medioConocimientoCice").innerHTML=projectManager.medioConocimientoCice;
   });
 }
