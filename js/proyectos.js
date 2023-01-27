@@ -269,7 +269,6 @@ function actualizacionSelect(value,label,idElemento,funcion){
 
 //GENERA LAS OPCIONES DEL FORMULARIO DE CREACION DE PROYECTOS
 function innerHTML(json, elementDOM){
-  console.log(json);
   let select = document.getElementById(elementDOM);
   if(elementDOM == 'needs'){
     for (e of json) {
@@ -419,9 +418,11 @@ function saveAttachments() {
         fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
         for (let i = 0; i < this.files.length; i++) {
           attachments.push(e.target.value.split('\\').pop());
+          console.log(e.target.value);
         }
       } else
         fileName = e.target.value.split('\\').pop();
+        console.log(filename);
       attachments.push(fileName);
       if (fileName) {
         label.querySelector('span').innerHTML = fileName;

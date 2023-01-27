@@ -145,7 +145,6 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#title").value=proyecto.title;
     document.querySelector("#description").value=proyecto.description;
-    console.log(id_proyecto);
     selecionarSoloUnEstadio();
     cargarCheckboxes(URLStages, proyecto,'estadios_checks');
     mostrarArchivoHTML("html/cargaDeNecesidades.html").then(text =>{
@@ -242,7 +241,7 @@ function saveNewData(id_proyecto){
       }
     }
     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
-    let attachments=document.querySelector(".adjuntos");
+    //let attachments=document.querySelector(".adjuntos");
     saveAttachments();
     if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
       asistencias.length > 0 && estadio != null) {
@@ -254,18 +253,29 @@ function saveNewData(id_proyecto){
       let successImg = document.getElementsByClassName("success-icon");
       successImg[0].style.opacity = "1";
       successImg[1].style.opacity = "1";
-      let datos = {
-        "id_ProjectManager": 1,
-        "title": title.value,
+      let datos={
+        "title":  title.value,
         "description": description.value,
+        "files": [
+          attachments
+        ],
+        "assistances": [
+            asistencias,
+        ],
+        "needs": [
+            necesidades,
+        ],
         "stage": estadio.value,
-        "assistanceType":
-          asistencias,
-        "files":
-          attachments,
-        "needs":
-          necesidades,
-        "id_Admin": 1
+        "newFiles": [
+                    {
+                        "file": "holee",
+                        "type": "image/png"
+                    },
+                    {
+                        "file": "hola2",
+                        "type": "image/jpeg"
+                    }
+        ]
       }
       modificarProyecto(id_proyecto,datos);
       necesidades=[];
