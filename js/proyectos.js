@@ -473,26 +473,12 @@ function showSucess(datos) {
 function selecionarSoloUnEstadio(){
   let checkedStage = null;
   for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')) {
-    // console.log("checkbox "+CheckBox);
-    // console.log(document.querySelector("input[type=checkbox]").checked);
     CheckBox.onclick = function () {
-      event.preventDefault();
-      for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')) {
-        console.log("checkbox "+CheckBox.checked);
-        //let inputC=document.querySelector("input[type=checkbox]").checked;
-        console.log("checkedStage " +checkedStage);
-       // if(CheckBox.checked==true){
-          //CheckBox.click();
-          //CheckBox.checked = false;
-          
-          if (checkedStage != false) {
-           checkedStage.checked = false;
-            checkedStage = CheckBox;
-          }
-                checkedStage = CheckBox;
-       // }
-
+      if (checkedStage != null) {
+        checkedStage.checked = false;
+        checkedStage = CheckBox;
       }
+      checkedStage = CheckBox;
     }
   }
 }
@@ -533,20 +519,3 @@ function cargarNecesidadesoAsistenciasCreadas(URL){
   .then(response => response.json())
   .then(json => {return json});
 }
-
-
-// function selecionarSoloUnEstadioEditar(idStage=null){
-//   let checkedStage = null;
-//   for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')) {
-//     CheckBox.onclick = function () {
-//       if(document.querySelector('estadiosCheckboxes', "input[type=checkbox]:checked")){
-//         if (checkedStage != null && idStage!=null) {
-//           checkedStage.checked = false;
-//           checkedStage = CheckBox;
-//         }
-//         checkedStage = CheckBox;
-//       }
-//     }
-  
-//   }
-// }

@@ -146,11 +146,8 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
     document.querySelector("#title").value=proyecto.title;
     document.querySelector("#description").value=proyecto.description;
     console.log(id_proyecto);
-    //selecionarSoloUnEstadio();
+    selecionarSoloUnEstadio();
     cargarCheckboxes(URLStages, proyecto,'estadios_checks');
-   // console.log(proyecto.stage.id_Stage);
-    
-   
     mostrarArchivoHTML("html/cargaDeNecesidades.html").then(text =>{
       document.querySelector(".datosNecesidades").innerHTML = text;
       document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
@@ -191,29 +188,24 @@ function cargarCheckboxes(URL, proyecto,dato){
       checkboxes=document.querySelector('#estadios_checks').querySelectorAll('.estadiosCheckboxes, input[type=checkbox]');
     }
     checkboxes.forEach(checkbox => {
-      if(dato==="needs_created"){
+      if(dato=="needs_created"){
         for (let i = 0; i < proyecto.needs.length; i++) {
           if(proyecto.needs[i].id_Need==checkbox.value){
             checkbox.innerHTML+=proyecto.needs[i].type;
             checkbox.checked=true;
           }
         }
-      }else if("assistances_created"){
+      }else if(dato=="assistances_created"){
         for (let i = 0; i < proyecto.assistances.length; i++) {
           if(proyecto.assistances[i].id_Assistance==checkbox.value){
             checkbox.checked=true;
           }
         }
       }else{  
-        // console.log(proyecto.stage.id_Stage);
-        // selecionarSoloUnEstadio(proyecto.stage.id_Stage);
-        //for (let i = 0; i < proyecto.stage.length; i++) {
           if(proyecto.stage.id_Stage==checkbox.value){
-           // checkbox.click();
-            checkbox.checked=true;
+            checkbox.click();
           }
-        //}
-      }
+        }
     });
   });  
 }
@@ -250,6 +242,7 @@ function saveNewData(id_proyecto){
       }
     }
     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
+    let attachments=document.querySelector(".adjuntos");
     saveAttachments();
     if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
       asistencias.length > 0 && estadio != null) {
@@ -308,14 +301,3 @@ function saveNewData(id_proyecto){
   });
      
 }
-
-
-
- function getAllNeeds(){
-  return fetch(URLNeeds)
-        .then(response => response.json())
-        .then(json => {return json})   
-}
-
-
-//de cicedev-63
