@@ -164,7 +164,7 @@ function mostrarEmprendedor(emprendedor){
     document.querySelector("#medioConocimientoCice").innerHTML=emprendedor.medioConocimientoCice;
     page=1;
     getAllProjectsByProjectManager(emprendedor.id_ProjectManager).then(json=>{
-      mostrarTabla(json,false);
+      mostrarTabla(json,false,true);
       mostrarPaginado(json.totalPages,"proyectosEmprendedor",[emprendedor.id_ProjectManager]);
     });
   });
