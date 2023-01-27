@@ -51,11 +51,3 @@ function createOptionsSelectDOM(json, elementDOM){
       new MultiSelectTag(elementDOM, 'btn_reset_filter');
     }
 }
-
-//GET
-function getProjectManager(id) {
-  fetch(URLProjectManager + "/" + id)
-    .then((response) => response.json())
-    .then(json => readDomProductManager(json));
-
-}

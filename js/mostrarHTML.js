@@ -16,7 +16,6 @@ function mostrarHome(){
       document.querySelector("#emprendedores").addEventListener("click", ()=>{
         drawClickNav("emprendedores");
         mostrarListaEmprendedores();
-        //mostrarCargaProyecto();
       });
       //HOME TEMPORAL
       document.querySelector("#emprendedores").click();
@@ -64,9 +63,9 @@ function mostrarProyectos(json) {
 
 
 //muestra la seccion del paginado
-function mostrarPaginado(pages,tablaUtilizada,datosFiltro = []){
+function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list-projects"){
   mostrarArchivoHTML("html/pagination.html").then(text =>{
-    document.querySelector(".footer-list-projects").innerHTML=text;
+    document.querySelector(div).innerHTML=text;
     document.querySelector("#pageNumber").innerHTML=page;
     comportamientoPaginado(pages,datosFiltro,tablaUtilizada);
   });
@@ -91,14 +90,14 @@ function mostrarProyecto(proyecto){
 }
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
-function mostrarCargaProyecto() {
+function mostrarCargaProyecto(emprendedor) {
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
       //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
       inicializarCargaProyecto();
       cargaRenderNecesidades();
       cargaRenderAsistencia();
-      let id_emprendedor=1;
+      let id_emprendedor=emprendedor.id_ProjectManager;
       partialRendercargaDatosEmprendedor(".datosEmprendedor",id_emprendedor);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
@@ -132,11 +131,18 @@ function cargaRenderAsistencia(){
     getAllBaseURL(URLAssitances, 'assistances_created');
   });  
 }
+//MUESTRA LA LISTA DE EMPRENDEDORES
 function mostrarListaEmprendedores(){//recibe un json por parametro
   mostrarArchivoHTML("html/listProjectsManager.html").then(text =>{
       document.querySelector(".main-container").innerHTML = text;
+      page=1;
+      getAllProjectManagers().then(json => {
+        generarTablaEmprendedores(json);
+        mostrarPaginado(json.totalPages,"emprendedores",[],".footer-list-emprendedores")
+      });
   });
 }
+
 function partialRenderHistorialProject(div, id_project){
   mostrarArchivoHTML("html/ProjectHistory.html").then(text=>{
     document.querySelector(div).innerHTML = text;
@@ -144,5 +150,35 @@ function partialRenderHistorialProject(div, id_project){
     page=1;
     getProjectHistory(id_project).then(json => generarTablaHistorial(json));
   });
-  
+}
+
+//muestra un emprendedor
+function mostrarEmprendedor(emprendedor){
+  mostrarArchivoHTML("html/projectManager.html").then(text =>{
+    document.querySelector(".main-container").innerHTML=text;
+    //cargo tabla de datos del emprendedor
+    showDataProjectManager(emprendedor);
+    //evento cambio de pantalla a formulario de crear proyecto
+    document.getElementById("btn_add_project").addEventListener("click", ()=>{
+      mostrarCargaProyecto(emprendedor);
+    });
+    page=1;
+    getAllProjectsByProjectManager(emprendedor.id_ProjectManager).then(json=>{
+      mostrarTabla(json,false);
+      mostrarPaginado(json.totalPages,"proyectosEmprendedor",[emprendedor.id_ProjectManager]);
+    });
+  });
+}
+
+function showDataProjectManager(projectManager){
+  //llamo a contenido donde se muestran los datos del emprendedor.
+  mostrarArchivoHTML("html/dataProjectManager.html").then(text_pm =>{
+    document.getElementById("projectManagerData").innerHTML=text_pm;
+    //Completo datos del emprendedor
+    document.querySelector("#fullName").innerHTML=projectManager.name+" "+projectManager.surname;
+    document.querySelector("#email").innerHTML=projectManager.email;
+    document.querySelector("#linkUnicen").innerHTML=projectManager.linkUnicen;
+    document.querySelector("#phone").innerHTML=projectManager.phone;
+    document.querySelector("#medioConocimientoCice").innerHTML=projectManager.medioConocimientoCice;
+  });
 }

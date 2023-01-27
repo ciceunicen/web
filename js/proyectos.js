@@ -107,8 +107,17 @@ function cambiarNumeroPaginado(datosFiltro,tablaUtilizada,pages){
       mostrarTabla(json,true);
       comportamientoBotonesPaginado(pages);
     });
+  }else if(tablaUtilizada == "emprendedores"){
+    getAllProjectManagers(page).then(json =>{
+      generarTablaEmprendedores(json);
+      comportamientoBotonesPaginado(pages);
+    })
+  }else if(tablaUtilizada == "proyectosEmprendedor"){
+    getAllProjectsByProjectManager(datosFiltro[0]).then(json => {
+      mostrarTabla(json,false);
+      comportamientoBotonesPaginado(pages);
+    });
   }
-  
 }
 
 //Activa o desactiva los botones de paginado
@@ -122,7 +131,7 @@ function comportamientoBotonesPaginado(pages){
       document.querySelector("#previousPage").style.color= "#0d6efd"; 
       document.querySelector("#previousPage").removeAttribute("disabled");
     }
-  if(page==pages|| pages==0){
+  if(page==pages || pages==0){
       document.querySelector("#nextPage").style.color="grey";
       document.querySelector("#nextPage").setAttribute("disabled", "true");
       document.querySelector("#nextPage").ariaDisabled;
@@ -219,19 +228,6 @@ function captureSelectedOptions() {
 //////////////////////////////////////////////////////////////////////////////////////
 //TODO DE CARGAR PROYECTOS
 
-//MOSTRAR RESPONSABLE DEL PROYECTO
-function mostrarResponsableProyecto(id) {
-  let btn = document.getElementById('projectManagerData')
-  if (btn.className === 'hiddenData') {
-    getProjectManager(id);
-    btn.className = 'showProjectManagerData';
-    document.querySelector(".slideDownResponsible").innerHTML = "<img src='img/icons8-flecha-contraer-50.png' class='slideDown'/>";
-  } else {
-    document.querySelector(".slideDownResponsible").innerHTML = "<img src='img/expandir.png' class='slideDown'/>";
-    btn.className = 'hiddenData';
-  }
-}
-
 //MOSTRAR HISTORIAL DEL PROYECTO
 function mostrarHistorialProyecto() {
   let btn = document.getElementById('projectDataHistory')
@@ -244,23 +240,6 @@ function mostrarHistorialProyecto() {
   }
 }
 
-//FUNCION PARA GENERAR LOS DATOS DEL PROJECT MANAGER EN HTML
-function readDomProductManager(json){
-  let divProductManager = document.querySelector("#projectManagerData");
-  divProductManager.innerHTML = "";
-  divProductManager.innerHTML=
-                         " <div id='projectManagerData'>"
-                         +"<p> Nombre: " + json.name + " " + json.surname +"</p>"
-                         +"<p> Teléfono: "+ json.phone+ "</p>"
-                         + "<p> Localidad: agregar en entidad </p>"
-                         + "<p> Email: " +json.email+ "</p>"
-                         + "<p> Ocupación: agregar en entidad </p>"
-                         + "<p> Vinculación con UNICEN: agregar en entidad </p>"
-                         + "<p> Facultad a la que pertenece: </p>"
-                         + "<p> Medio de conocimiento del CICE: " + json.medioConocimientoCice + "</p>"
-                         + "<p> Organización asociativa: agregar en entidad </p>"
-                         + "</div>" ;
- }
 
 //ACTUALIZA EL DROPDOWN DE CREACION DE PROYECTOS CUANDO CREAS UNA NUEVA ASISTENCIA O UNA NUEVA NECESIDAD
 function actualizacionSelect(value,label,idElemento,funcion){
@@ -502,8 +481,3 @@ function generarTablaHistorial(json){
             cell4.innerHTML= historial.date;
   }
 }
-
-
-
-
-
