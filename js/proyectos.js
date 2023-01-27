@@ -269,6 +269,7 @@ function actualizacionSelect(value,label,idElemento,funcion){
 
 //GENERA LAS OPCIONES DEL FORMULARIO DE CREACION DE PROYECTOS
 function innerHTML(json, elementDOM){
+  console.log(json);
   let select = document.getElementById(elementDOM);
   if(elementDOM == 'needs'){
     for (e of json) {
@@ -472,12 +473,26 @@ function showSucess(datos) {
 function selecionarSoloUnEstadio(){
   let checkedStage = null;
   for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')) {
+    // console.log("checkbox "+CheckBox);
+    // console.log(document.querySelector("input[type=checkbox]").checked);
     CheckBox.onclick = function () {
-      if (checkedStage != null) {
-        checkedStage.checked = false;
-        checkedStage = CheckBox;
+      event.preventDefault();
+      for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')) {
+        console.log("checkbox "+CheckBox.checked);
+        //let inputC=document.querySelector("input[type=checkbox]").checked;
+        console.log("checkedStage " +checkedStage);
+       // if(CheckBox.checked==true){
+          //CheckBox.click();
+          //CheckBox.checked = false;
+          
+          if (checkedStage != false) {
+           checkedStage.checked = false;
+            checkedStage = CheckBox;
+          }
+                checkedStage = CheckBox;
+       // }
+
       }
-      checkedStage = CheckBox;
     }
   }
 }
@@ -495,16 +510,13 @@ function mostrarArray(contenedor,arreglo,dato){
   }
 }
 
-
-
 //MODIFICAR DATOS DE UN PROYECTO
-
-//Hacer comunicación con el back para traer datos de un proyecto y 
-//mostrarlos en los inputs y desde ahí se modifican.
-function modificarProyecto(id_proyecto, proyecto){
+async function modificarProyecto(id_proyecto, proyecto){
   event.preventDefault();
-  console.log(proyecto.id_Project);
-  fetch(URLProject +"/"+ id_proyecto,{
+  console.log(proyecto);
+ 
+    //tiene que traer el nombre, no el id
+ await fetch(URLProject +"/"+ id_proyecto,{
   method: "PUT",
   mode: 'cors',
   body: JSON.stringify(proyecto),
@@ -516,10 +528,25 @@ function modificarProyecto(id_proyecto, proyecto){
   setTimeout(mostrarProyecto(proyecto),5000);
 }
 
-
-
 function cargarNecesidadesoAsistenciasCreadas(URL){
   return fetch(URL)
   .then(response => response.json())
   .then(json => {return json});
 }
+
+
+// function selecionarSoloUnEstadioEditar(idStage=null){
+//   let checkedStage = null;
+//   for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')) {
+//     CheckBox.onclick = function () {
+//       if(document.querySelector('estadiosCheckboxes', "input[type=checkbox]:checked")){
+//         if (checkedStage != null && idStage!=null) {
+//           checkedStage.checked = false;
+//           checkedStage = CheckBox;
+//         }
+//         checkedStage = CheckBox;
+//       }
+//     }
+  
+//   }
+// }
