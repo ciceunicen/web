@@ -256,7 +256,6 @@ function actualizacionSelect(value,label,idElemento,funcion){
 
 //GENERA LAS OPCIONES DEL FORMULARIO DE CREACION DE PROYECTOS
 function innerHTML(json, elementDOM){
-  console.log(json);
   let select = document.getElementById(elementDOM);
   if(elementDOM == 'needs'){
     for (e of json) {
@@ -484,25 +483,23 @@ function generarTablaHistorial(json){
 }
 
 //MODIFICAR DATOS DE UN PROYECTO
-async function modificarProyecto(id_proyecto, proyecto){
-  event.preventDefault();
-  console.log(proyecto);
- 
-    //tiene que traer el nombre, no el id
+async function modificarProyecto(id_proyecto, datos){
  await fetch(URLProject +"/"+ id_proyecto,{
   method: "PUT",
   mode: 'cors',
-  body: JSON.stringify(proyecto),
+  body: JSON.stringify(datos),
   headers: {"Access-Control-Allow-Origin":"*" ,},
   headers: {"Content-type": "application/json; charset=UTF-8",}
   })
   .then(response => response.json())
   .then(showSucess());
-  setTimeout(mostrarProyecto(proyecto),5000);
+  setTimeout(mostrarProyecto(datos),5000);
 }
 
-function cargarNecesidadesoAsistenciasCreadas(URL){
+function getNecesidadesoAsistenciasCreadas(URL){
   return fetch(URL)
   .then(response => response.json())
   .then(json => {return json});
 }
+
+

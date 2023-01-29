@@ -193,7 +193,6 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#title").value=proyecto.title;
     document.querySelector("#description").value=proyecto.description;
-    console.log(id_proyecto);
     selecionarSoloUnEstadio();
     cargarCheckboxes(URLStages, proyecto,'estadios_checks');
     mostrarArchivoHTML("html/cargaDeNecesidades.html").then(text =>{
@@ -201,7 +200,7 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
       document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
       //Configuro Dropdown de necesidades
       cargarCheckboxes(URLNeeds, proyecto,'needs_created');
-      cargarNecesidadesoAsistenciasCreadas(URLNeeds);
+      getNecesidadesoAsistenciasCreadas(URLNeeds);
     
     });
     mostrarArchivoHTML("html/cargaDeAsistencias.html").then(text =>{
@@ -209,18 +208,19 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
       document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
       //Configuro Dropdown de asistencias
       cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
-      cargarNecesidadesoAsistenciasCreadas(URLAssitances);
+      getNecesidadesoAsistenciasCreadas(URLAssitances);
     });  
     mostrarAdjuntos(proyecto);
-    partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);  
-    saveNewData(id_proyecto);
+    partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
+    partialRenderHistorialProject(".historyProject", proyecto.id_Project);
+    saveNewData(id_proyecto, proyecto);
    
   })
 }
 
 function mostrarAdjuntos(proyecto){
   proyecto.files.forEach(element => {
-    document.querySelector(".editSelectedFiles").innerHTML+=element.file + " ";
+    document.querySelector(".selectedFiles").innerHTML+=element.file + " ";
   }); 
   
 }
@@ -259,7 +259,7 @@ function cargarCheckboxes(URL, proyecto,dato){
 }
 
 
-function saveNewData(id_proyecto){
+function saveNewData(id_proyecto, proyecto){
   let id = (id) => document.getElementById(id);
   let classes = (classes) => document.getElementsByClassName(classes);
   let title = id("title"),
@@ -290,8 +290,11 @@ function saveNewData(id_proyecto){
       }
     }
     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
-    let attachments=document.querySelector(".adjuntos");
-    saveAttachments();
+    let files=[];
+    proyecto.files.forEach(element => {
+      files.push(element.id_File.toString());   
+    });
+    saveAttachments(title);
     if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
       asistencias.length > 0 && estadio != null) {
       document.querySelector("#titleError").innerHTML = "";
@@ -302,19 +305,24 @@ function saveNewData(id_proyecto){
       let successImg = document.getElementsByClassName("success-icon");
       successImg[0].style.opacity = "1";
       successImg[1].style.opacity = "1";
-      let datos = {
-        "id_ProjectManager": 1,
-        "title": title.value,
+      let datos={
+        "title":  title.value,
         "description": description.value,
+        "files": [
+          files
+        ],
+        "assistances": [
+            asistencias,
+        ],
+        "needs": [
+            necesidades,
+        ],
         "stage": estadio.value,
-        "assistanceType":
-          asistencias,
-        "files":
-          attachments,
-        "needs":
-          necesidades,
-        "id_Admin": 1
+        "newFiles": [
+          attachments
+        ]
       }
+      console.log(datos);
       modificarProyecto(id_proyecto,datos);
       necesidades=[];
       asistencias=[];
