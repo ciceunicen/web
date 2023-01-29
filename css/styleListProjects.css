@@ -5,13 +5,14 @@
 .div_cont_table_projects{
     width: 100%;
     margin-left: 40px;
-    margin-top: 1%;
 }
 
 .header-list-projects, .footer-list-projects{
     background-color: #EAF7D8;
 }
-
+.list-projects{
+    margin-top: 10px;
+}
 .cointaint-list{
     margin-left: 40px;
     margin-right: 40px;

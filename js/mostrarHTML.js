@@ -63,9 +63,9 @@ function mostrarProyectos(json) {
 
 
 //muestra la seccion del paginado
-function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list-projects"){
+function mostrarPaginado(pages,tablaUtilizada,datosFiltro = []){
   mostrarArchivoHTML("html/pagination.html").then(text =>{
-    document.querySelector(div).innerHTML=text;
+    document.querySelector(".footer-list-projects").innerHTML=text;
     document.querySelector("#pageNumber").innerHTML=page;
     comportamientoPaginado(pages,datosFiltro,tablaUtilizada);
   });
@@ -93,14 +93,14 @@ function mostrarProyecto(proyecto){
 }
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
-function mostrarCargaProyecto(emprendedor) {
+function mostrarCargaProyecto() {
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
       //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
       inicializarCargaProyecto();
       cargaRenderNecesidades();
       cargaRenderAsistencia();
-      let id_emprendedor=emprendedor.id_ProjectManager;
+      let id_emprendedor=1;
       partialRendercargaDatosEmprendedor(".datosEmprendedor",id_emprendedor);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
@@ -134,7 +134,7 @@ function cargaRenderAsistencia(){
     getAllBaseURL(URLAssitances, 'assistances_created');
   });  
 }
-//MUESTRA LA LISTA DE EMPRENDEDORES
+
 function mostrarListaEmprendedores(){//recibe un json por parametro
   mostrarArchivoHTML("html/listProjectsManager.html").then(text =>{
       document.querySelector(".main-container").innerHTML = text;
@@ -187,6 +187,7 @@ function showDataProjectManager(projectManager){
 }
 
 
+//CHEQUEAR MI PARTE
 //MOSTRAR EDITAR PROYECTO
 function mostrarEditarProyecto(id_proyecto,proyecto){
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{

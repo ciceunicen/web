@@ -24,15 +24,14 @@
     .projectTitle{
         display: flex;
         justify-content: center;
-        align-items: center;
         border-radius: 5px 5px 0 0;
         background-color: #6B9E22;
         margin: 10px 60px 0px 60px;
+        padding-top: 1%;
         color:#FFFFFF;
         text-transform: uppercase;
-        padding: 0.5%;
     }
-    
+
 /*titulo de seccion desplegable*/
 .projectResponsible>p, .projectHistory>p{
     margin: auto 0;
@@ -68,6 +67,6 @@
     color: black;
     margin: 0px 60px 30px 60px;
     border-radius: 0px 0px 5px 5px;
-    padding: 1%;
+    padding: 2%  2% 1% 2%;
 }
 

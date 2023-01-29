@@ -10,11 +10,6 @@ body{
     margin: 0px;
 }
 
-p{
-    margin-top: 0% !important;
-    margin-bottom: 0% !important;
-}
-
 button{
     border-radius: 5px !important;/*si no le pongo !important nolo toma por boostrap*/
     border:none;

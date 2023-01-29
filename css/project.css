@@ -33,7 +33,7 @@
     padding: 1%;
 }
 
-.div_cont_needs_assitences>h6{
+.div_cont_needs_assitences>h6, .div_adjuntos>h6{
     text-transform: uppercase;
 }
 
@@ -52,55 +52,10 @@
     margin-left: 1%;
 }
 
-.div_cont_previews{
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-}
-
-.div_cont_title_adjuntos_btn_downloadAll{
-    display: flex;
-    text-transform: uppercase;
-    align-items: center;
-}
-
-.div_cont_title_adjuntos_btn_downloadAll>i{
-    margin-right: 2%;
-}
-
-.div_cont_title_adjuntos_btn_downloadAll>button, .btn_download{
-    background-color: #BADEA9 !important;
-    color: #4f800b;
-}
-
-.btn_download{
-    width: 100%;
-    border-radius: 5px;
-}
-
-.div_cont_title_adjuntos_btn_downloadAll>button:hover, .btn_download:hover{
-    background-color: #90bd7d !important;
-    color: white;
-}
-
-.div_preview{
+.p_file{
     background-color: #d5ebb7;
-    margin: 1%;
-    padding: 1% 1% 0.5% 1%;
     border-radius: 5px;
-    text-align: center;
-    height: fit-content;
-    word-wrap: break-word;
-}
-
-.img_preview{
-    width: 100px;
-    height: auto;
-}
-
-.p_name_img_preview{
-    text-align: center;
+    padding: 0.5% 0.5% 1% 1%;
+    margin-bottom: 1%;
     color: #4f800b;
-    margin: 2% 0% 0% 0% !important;
-    max-width: 100px;
 }

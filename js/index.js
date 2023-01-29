@@ -51,3 +51,4 @@ function createOptionsSelectDOM(json, elementDOM){
       new MultiSelectTag(elementDOM, 'btn_reset_filter');
     }
 }
+

@@ -20,7 +20,13 @@ if(section == "projects"){
 }
 
 function initDropdown(div_cont, id_btn_change_screen){
-    return mostrarArchivoHTML("html/dropdownRemoved.html").then(texto=> showDropdownHTML(texto, div_cont, id_btn_change_screen));
+    return getDropdownHTML().then(texto=> showDropdownHTML(texto, div_cont, id_btn_change_screen));
+}
+
+function getDropdownHTML(){
+    return fetch("html/dropdownRemoved.html")
+    .then((response) => response.text())
+    .then(texto => {return texto});
 }
 
 function showDropdownHTML(texto, div_cont, id_btn_change_screen){
