@@ -1,19 +1,20 @@
+.listEmprendedores, .div_cont_table_emprendedores{
+    width: 94%;
+    margin: auto;
+}
 .listEmprendedores{
-    margin: 10px 60px 0px 60px;
     background-color: #74AC24;
     border-radius: 5px;
-    padding-top: 5px;
+    padding: 0.5%;
+    margin-bottom: 1%;
 }
 .title_list{
     text-align: center;
     color: white;
-    height: 35px;
     font-size: 22px;
+    margin-bottom: 0%;
 }
-.div_cont_table_emprendedores{
-    margin-left: 60px;
-    margin-right: 60px;
-}
+
 .header-list-projects-manager, .footer-list-emprendedores{
     background-color: #EAF7D8;
 }
