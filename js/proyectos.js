@@ -1,5 +1,6 @@
 let page=1;
 const URLProject="http://localhost:8080/projects";
+let statusFile = true;//guarda si los archivos cargados tienen una estención válida.
 //METODOS DE ABM
 
 //POST
@@ -62,6 +63,13 @@ function getFilterProjects(datos,pagina) {
     .then(json => {return json});
 }
 
+//GET HISTORIAL DE PROYECTO
+function getProjectHistory(id){
+  return fetch(URLProject+"/"+id+"/administrationRecords/page/"+page)
+  .then(response => response.json())
+  .then(json => {return json});
+}
+
 //TODO DE LA SECCION DE LISTA DE PROYECTOS
 
 //maneja el funcionamiento del paginado de la tabla de proyectos
@@ -99,8 +107,17 @@ function cambiarNumeroPaginado(datosFiltro,tablaUtilizada,pages){
       mostrarTabla(json,true);
       comportamientoBotonesPaginado(pages);
     });
+  }else if(tablaUtilizada == "emprendedores"){
+  getAllProjectManagers(page).then(json =>{
+    generarTablaEmprendedores(json);
+    comportamientoBotonesPaginado(pages);
+  })
+  }else if(tablaUtilizada == "proyectosEmprendedor"){
+    getAllProjectsByProjectManager(datosFiltro[0]).then(json => {
+      mostrarTabla(json,false);
+      comportamientoBotonesPaginado(pages);
+    });
   }
-  
 }
 
 //Activa o desactiva los botones de paginado
@@ -211,19 +228,6 @@ function captureSelectedOptions() {
 //////////////////////////////////////////////////////////////////////////////////////
 //TODO DE CARGAR PROYECTOS
 
-//MOSTRAR RESPONSABLE DEL PROYECTO
-function mostrarResponsableProyecto(id) {
-  let btn = document.getElementById('projectManagerData')
-  if (btn.className === 'hiddenData') {
-    getProjectManager(id);
-    btn.className = 'showProjectManagerData';
-    document.querySelector(".slideDownResponsible").innerHTML = "<img src='img/icons8-flecha-contraer-50.png' class='slideDown'/>";
-  } else {
-    document.querySelector(".slideDownResponsible").innerHTML = "<img src='img/expandir.png' class='slideDown'/>";
-    btn.className = 'hiddenData';
-  }
-}
-
 //MOSTRAR HISTORIAL DEL PROYECTO
 function mostrarHistorialProyecto() {
   let btn = document.getElementById('projectDataHistory')
@@ -236,23 +240,6 @@ function mostrarHistorialProyecto() {
   }
 }
 
-//FUNCION PARA GENERAR LOS DATOS DEL PROJECT MANAGER EN HTML
-function readDomProductManager(json){
-  let divProductManager = document.querySelector("#projectManagerData");
-  divProductManager.innerHTML = "";
-  divProductManager.innerHTML=
-                         " <div id='projectManagerData'>"
-                         +"<p> Nombre: " + json.name + " " + json.surname +"</p>"
-                         +"<p> Teléfono: "+ json.phone+ "</p>"
-                         + "<p> Localidad: agregar en entidad </p>"
-                         + "<p> Email: " +json.email+ "</p>"
-                         + "<p> Ocupación: agregar en entidad </p>"
-                         + "<p> Vinculación con UNICEN: agregar en entidad </p>"
-                         + "<p> Facultad a la que pertenece: </p>"
-                         + "<p> Medio de conocimiento del CICE: " + json.medioConocimientoCice + "</p>"
-                         + "<p> Organización asociativa: agregar en entidad </p>"
-                         + "</div>" ;
- }
 
 //ACTUALIZA EL DROPDOWN DE CREACION DE PROYECTOS CUANDO CREAS UNA NUEVA ASISTENCIA O UNA NUEVA NECESIDAD
 function actualizacionSelect(value,label,idElemento,funcion){
@@ -318,6 +305,9 @@ function innerHTML(json, elementDOM){
 
 //COMPRUEBA LOS CAMPOS DE CARGA DE PROYECTOS
 function inicializarCargaProyecto() {
+  changeCountInputFile();//comportamiento de input file, siempre activo, cuenta cuantos archivos hay seleccionados
+  //validación de typo de archivos admitidos
+  validFileType();
   let id = (id) => document.getElementById(id);
   let classes = (classes) => document.getElementsByClassName(classes);
   let title = id("title"),
@@ -348,7 +338,6 @@ function inicializarCargaProyecto() {
       }
     }
     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
-    saveAttachments();
     if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
       asistencias.length > 0 && estadio != null) {
       document.querySelector("#titleError").innerHTML = "";
@@ -372,6 +361,7 @@ function inicializarCargaProyecto() {
           necesidades,
         "id_Admin": 1
       }
+      saveAttachments(title.value);
       saveProject(datos);
       necesidades=[];
       asistencias=[];
@@ -406,32 +396,7 @@ function inicializarCargaProyecto() {
   });
 }
 
-//GUARDAR ARCHIVOS ADJUNTOS
-function saveAttachments() {
-  let inputs = document.getElementsByClassName("inputfile");
-  Array.prototype.forEach.call(inputs, function (input) {
-    let label = input.nextElementSibling,
-      labelVal = label.innerHTML;
-    input.addEventListener('change', function (e) {
-      let fileName = " ";
-      if (this.files && this.files.length > 1) {
-        fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
-        for (let i = 0; i < this.files.length; i++) {
-          attachments.push(e.target.value.split('\\').pop());
-          console.log(e.target.value);
-        }
-      } else
-        fileName = e.target.value.split('\\').pop();
-        console.log(filename);
-      attachments.push(fileName);
-      if (fileName) {
-        label.querySelector('span').innerHTML = fileName;
-      }
-      else
-        label.innerHTML = labelVal;
-    });
-  });
-}
+
 
 //GUARDAR NECESIDADES
 function guardarNecesidades(){
@@ -494,6 +459,26 @@ function mostrarArray(contenedor,arreglo,dato){
       document.querySelector(contenedor).innerHTML+="<p><i class='fa fa-check-circle' aria-hidden='true'></i>"+eval(dato)+"</p>";
 
     }
+  }
+}
+
+//Generar tabla de proyectos
+function generarTablaHistorial(json){
+  let array=json.content;
+  let container= document.querySelector(".projectHistoryTable");
+  container.innerHTML="";
+  for (let i = array.length-1; i >=0 ; i--) {
+            const historial = array[i];          
+            var row = container.insertRow(0);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            cell1.innerHTML=historial.id_admin;
+            //cambiar cuando este la entidad administrador, utilizar nombre y apellido
+            cell2.innerHTML="Admin default";
+            cell3.innerHTML= historial.action;
+            cell4.innerHTML= historial.date;
   }
 }
 

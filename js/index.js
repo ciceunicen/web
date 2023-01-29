@@ -52,10 +52,3 @@ function createOptionsSelectDOM(json, elementDOM){
     }
 }
 
-//GET
-function getProjectManager(id) {
-  fetch(URLProjectManager + "/" + id)
-    .then((response) => response.json())
-    .then(json => readDomProductManager(json));
-
-}

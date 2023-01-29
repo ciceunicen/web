@@ -1,0 +1,9 @@
+.btn_add_project{
+    background-color: #496D17 !important;
+    border: none !important;
+    float: right;
+}
+
+.btn_add_project:hover{
+    background-color: #37570b !important ;
+}

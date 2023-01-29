@@ -82,8 +82,11 @@ function mostrarProyecto(proyecto){
     document.querySelector("#estadio").innerHTML+=proyecto.stage.stage_type;
     mostrarArray("#asistencia",proyecto.assistances,"elemento.type");
     mostrarArray("#necesidades",proyecto.needs,"elemento.needType");
-    partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
-    mostrarArray("#files",proyecto.files,"elemento.file");
+    partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
+    partialRenderHistorialProject(".historyProject", proyecto.id_Project);
+    mostrarArray("#files",proyecto.files,"elemento.file", proyecto.title);
+    //evento para poder descargar todos sus archivos adjuntos
+    downloadAllAttachmentsByProject(proyecto.title);
     document.querySelector("#editarProyecto").addEventListener("click", ()=>{
       mostrarEditarProyecto(proyecto.id_Project,proyecto);
     });
@@ -94,24 +97,24 @@ function mostrarProyecto(proyecto){
 function mostrarCargaProyecto() {
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
-      document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
+      //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
       inicializarCargaProyecto();
       cargaRenderNecesidades();
       cargaRenderAsistencia();
       let id_emprendedor=1;
-      partialRendercargaDatosEmprendedorYHistorial(".datosEmprendedor",id_emprendedor);
+      partialRendercargaDatosEmprendedor(".datosEmprendedor",id_emprendedor);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
   });
 }
 
-function partialRendercargaDatosEmprendedorYHistorial(div,id_emprendedor){
+function partialRendercargaDatosEmprendedor(div,id_emprendedor){
   mostrarArchivoHTML("html/datosEmprendedor.html").then(text=>{
     document.querySelector(div).innerHTML = text;
     document.querySelector('.slideDownResponsible').addEventListener("click",()=>{
       mostrarResponsableProyecto(id_emprendedor);
     });
-    document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
+    //document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
   });
 }
 
@@ -132,19 +135,67 @@ function cargaRenderAsistencia(){
     getAllBaseURL(URLAssitances, 'assistances_created');
   });  
 }
+
 function mostrarListaEmprendedores(){//recibe un json por parametro
   mostrarArchivoHTML("html/listProjectsManager.html").then(text =>{
       document.querySelector(".main-container").innerHTML = text;
+      page=1;
+      getAllProjectManagers().then(json => {
+        generarTablaEmprendedores(json);
+        mostrarPaginado(json.totalPages,"emprendedores",[],".footer-list-emprendedores")
+      });
+  });
+}
+
+function partialRenderHistorialProject(div, id_project){
+  mostrarArchivoHTML("html/ProjectHistory.html").then(text=>{
+    document.querySelector(div).innerHTML = text;
+    document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
+    page=1;
+    getProjectHistory(id_project).then(json => generarTablaHistorial(json));
+  });
+}
+
+//muestra un emprendedor
+function mostrarEmprendedor(emprendedor){
+  mostrarArchivoHTML("html/projectManager.html").then(text =>{
+    document.querySelector(".main-container").innerHTML=text;
+    //cargo tabla de datos del emprendedor
+    showDataProjectManager(emprendedor);
+    //evento cambio de pantalla a formulario de crear proyecto
+    document.getElementById("btn_add_project").addEventListener("click", ()=>{
+      mostrarCargaProyecto(emprendedor);
+    });
+    page=1;
+    getAllProjectsByProjectManager(emprendedor.id_ProjectManager).then(json=>{
+      mostrarTabla(json,false);
+      mostrarPaginado(json.totalPages,"proyectosEmprendedor",[emprendedor.id_ProjectManager]);
+    });
+  });
+}
+
+function showDataProjectManager(projectManager){
+  //llamo a contenido donde se muestran los datos del emprendedor.
+  mostrarArchivoHTML("html/dataProjectManager.html").then(text_pm =>{
+    document.getElementById("projectManagerData").innerHTML=text_pm;
+    //Completo datos del emprendedor
+    document.querySelector("#fullName").innerHTML=projectManager.name+" "+projectManager.surname;
+    document.querySelector("#email").innerHTML=projectManager.email;
+    document.querySelector("#linkUnicen").innerHTML=projectManager.linkUnicen;
+    document.querySelector("#phone").innerHTML=projectManager.phone;
+    document.querySelector("#medioConocimientoCice").innerHTML=projectManager.medioConocimientoCice;
   });
 }
 
 
+//CHEQUEAR MI PARTE
 //MOSTRAR EDITAR PROYECTO
 function mostrarEditarProyecto(id_proyecto,proyecto){
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#title").value=proyecto.title;
     document.querySelector("#description").value=proyecto.description;
+    console.log(id_proyecto);
     selecionarSoloUnEstadio();
     cargarCheckboxes(URLStages, proyecto,'estadios_checks');
     mostrarArchivoHTML("html/cargaDeNecesidades.html").then(text =>{
@@ -241,7 +292,7 @@ function saveNewData(id_proyecto){
       }
     }
     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
-    //let attachments=document.querySelector(".adjuntos");
+    let attachments=document.querySelector(".adjuntos");
     saveAttachments();
     if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
       asistencias.length > 0 && estadio != null) {
@@ -253,29 +304,18 @@ function saveNewData(id_proyecto){
       let successImg = document.getElementsByClassName("success-icon");
       successImg[0].style.opacity = "1";
       successImg[1].style.opacity = "1";
-      let datos={
-        "title":  title.value,
+      let datos = {
+        "id_ProjectManager": 1,
+        "title": title.value,
         "description": description.value,
-        "files": [
-          attachments
-        ],
-        "assistances": [
-            asistencias,
-        ],
-        "needs": [
-            necesidades,
-        ],
         "stage": estadio.value,
-        "newFiles": [
-                    {
-                        "file": "holee",
-                        "type": "image/png"
-                    },
-                    {
-                        "file": "hola2",
-                        "type": "image/jpeg"
-                    }
-        ]
+        "assistanceType":
+          asistencias,
+        "files":
+          attachments,
+        "needs":
+          necesidades,
+        "id_Admin": 1
       }
       modificarProyecto(id_proyecto,datos);
       necesidades=[];
