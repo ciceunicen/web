@@ -63,9 +63,9 @@ function mostrarProyectos(json) {
 
 
 //muestra la seccion del paginado
-function mostrarPaginado(pages,tablaUtilizada,datosFiltro = []){
+function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list-projects"){
   mostrarArchivoHTML("html/pagination.html").then(text =>{
-    document.querySelector(".footer-list-projects").innerHTML=text;
+    document.querySelector(div).innerHTML=text;
     document.querySelector("#pageNumber").innerHTML=page;
     comportamientoPaginado(pages,datosFiltro,tablaUtilizada);
   });
@@ -93,14 +93,14 @@ function mostrarProyecto(proyecto){
 }
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
-function mostrarCargaProyecto() {
+function mostrarCargaProyecto(emprendedor) {
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
       //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
       inicializarCargaProyecto();
       cargaRenderNecesidades();
       cargaRenderAsistencia();
-      let id_emprendedor=1;
+      let id_emprendedor=emprendedor.id_ProjectManager;
       partialRendercargaDatosEmprendedor(".datosEmprendedor",id_emprendedor);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
@@ -134,7 +134,7 @@ function cargaRenderAsistencia(){
     getAllBaseURL(URLAssitances, 'assistances_created');
   });  
 }
-
+//MUESTRA LA LISTA DE EMPRENDEDORES
 function mostrarListaEmprendedores(){//recibe un json por parametro
   mostrarArchivoHTML("html/listProjectsManager.html").then(text =>{
       document.querySelector(".main-container").innerHTML = text;
@@ -187,13 +187,13 @@ function showDataProjectManager(projectManager){
 }
 
 
-//CHEQUEAR MI PARTE
 //MOSTRAR EDITAR PROYECTO
 function mostrarEditarProyecto(id_proyecto,proyecto){
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#title").value=proyecto.title;
     document.querySelector("#description").value=proyecto.description;
+    console.log(id_proyecto);
     selecionarSoloUnEstadio();
     cargarCheckboxes(URLStages, proyecto,'estadios_checks');
     mostrarArchivoHTML("html/cargaDeNecesidades.html").then(text =>{
@@ -293,7 +293,8 @@ function saveNewData(id_proyecto, proyecto){
     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
     let files=[];
     proyecto.files.forEach(element => {
-      files.push(element.id_File.toString());   
+      files.push(element.id_File);
+      console.log(element.id_File);
     });
     saveAttachments(title);
     if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
@@ -323,7 +324,6 @@ function saveNewData(id_proyecto, proyecto){
           attachments
         ]
       }
-      console.log(datos);
       modificarProyecto(id_proyecto,datos);
       necesidades=[];
       asistencias=[];

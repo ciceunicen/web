@@ -108,10 +108,10 @@ function cambiarNumeroPaginado(datosFiltro,tablaUtilizada,pages){
       comportamientoBotonesPaginado(pages);
     });
   }else if(tablaUtilizada == "emprendedores"){
-  getAllProjectManagers(page).then(json =>{
-    generarTablaEmprendedores(json);
-    comportamientoBotonesPaginado(pages);
-  })
+    getAllProjectManagers(page).then(json =>{
+      generarTablaEmprendedores(json);
+      comportamientoBotonesPaginado(pages);
+    })
   }else if(tablaUtilizada == "proyectosEmprendedor"){
     getAllProjectsByProjectManager(datosFiltro[0]).then(json => {
       mostrarTabla(json,false);
@@ -131,7 +131,7 @@ function comportamientoBotonesPaginado(pages){
       document.querySelector("#previousPage").style.color= "#0d6efd"; 
       document.querySelector("#previousPage").removeAttribute("disabled");
     }
-  if(page==pages|| pages==0){
+  if(page==pages || pages==0){
       document.querySelector("#nextPage").style.color="grey";
       document.querySelector("#nextPage").setAttribute("disabled", "true");
       document.querySelector("#nextPage").ariaDisabled;
@@ -256,6 +256,7 @@ function actualizacionSelect(value,label,idElemento,funcion){
 
 //GENERA LAS OPCIONES DEL FORMULARIO DE CREACION DE PROYECTOS
 function innerHTML(json, elementDOM){
+  console.log(json);
   let select = document.getElementById(elementDOM);
   if(elementDOM == 'needs'){
     for (e of json) {
@@ -339,7 +340,7 @@ function inicializarCargaProyecto() {
     }
     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
     if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
-      asistencias.length > 0 && estadio != null) {
+      asistencias.length > 0 && estadio != null && statusFile) {
       document.querySelector("#titleError").innerHTML = "";
       document.querySelector("#descriptionError").innerHTML = "";
       document.querySelector("#necesidadesError").innerHTML = "";
@@ -450,11 +451,11 @@ function selecionarSoloUnEstadio(){
 }
 
 //CONVIERTE ARRAY A LISTA PARA MOSTRARLA EN LOS DATOS DEL PROYECTO
-function mostrarArray(contenedor,arreglo,dato){
+function mostrarArray(contenedor,arreglo,dato, proyecto_title){
   for (let i = 0; i < arreglo.length; i++) {
     var elemento=arreglo[i];
     if(contenedor == "#files"){//para adjuntos
-      document.querySelector(contenedor).innerHTML+="<p class='p_file'>"+eval(dato)+"</p>";
+      drawFileInProject(contenedor, arreglo[i], proyecto_title);
     }else{//para necesidades y asistencias
       document.querySelector(contenedor).innerHTML+="<p><i class='fa fa-check-circle' aria-hidden='true'></i>"+eval(dato)+"</p>";
 
@@ -483,17 +484,17 @@ function generarTablaHistorial(json){
 }
 
 //MODIFICAR DATOS DE UN PROYECTO
-async function modificarProyecto(id_proyecto, datos){
+async function modificarProyecto(id_proyecto, proyecto){
  await fetch(URLProject +"/"+ id_proyecto,{
   method: "PUT",
   mode: 'cors',
-  body: JSON.stringify(datos),
+  body: JSON.stringify(proyecto),
   headers: {"Access-Control-Allow-Origin":"*" ,},
   headers: {"Content-type": "application/json; charset=UTF-8",}
   })
   .then(response => response.json())
   .then(showSucess());
-  setTimeout(mostrarProyecto(datos),5000);
+  setTimeout(mostrarProyecto(proyecto),5000);
 }
 
 function getNecesidadesoAsistenciasCreadas(URL){
@@ -501,5 +502,3 @@ function getNecesidadesoAsistenciasCreadas(URL){
   .then(response => response.json())
   .then(json => {return json});
 }
-
-
