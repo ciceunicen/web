@@ -18,18 +18,26 @@ async function saveProject(datos){
 }
 
 //BORRAR UN PROYECTO EN PARTICULAR
-function borrarProyecto(id_Project,id_Admin){
+function borrarProyecto(id_Project,id_Admin,projectManager=0){
   page=1;
   fetch(URLProject + "/idProject/" + id_Project + "/idAdmin/" + id_Admin,{
     method: 'DELETE',
     headers: {"Access-Control-Allow-Origin":"*" ,},
     headers: {"Content-type": "application/json; charset=UTF-8",}
   })
-  .then(response=>getAllProjects().then(lista=>{
-    console.log(lista.totalPages);
-    mostrarPaginado(lista.totalPages,"proyectos");
-    mostrarTabla(lista,false);
-  }));
+  .then(response=>{
+    if(projectManager!=0){
+      getAllProjectsByProjectManager(projectManager).then(lista=>{
+        mostrarTabla(lista,false);
+        mostrarPaginado(lista.totalPages,"proyectosEmprendedor",[projectManager]);
+      })
+    }else{
+      getAllProjects().then(lista=>{
+        mostrarPaginado(lista.totalPages,"proyectos");
+        mostrarTabla(lista,false);
+      })
+    }
+  });
 }
 
 //GET PROYECTO
@@ -142,7 +150,7 @@ function comportamientoBotonesPaginado(pages){
     }
 }
 //Generar tabla de proyectos
-function mostrarTabla(json,borrados){
+function mostrarTabla(json,borrados,projectManager=false){
   let array=json.content;
   let container;
   if(borrados){
@@ -184,7 +192,11 @@ function mostrarTabla(json,borrados){
               btn_delete.setAttribute("class", "btn_save_green btn_borrar");
               //le agrego el evento al botón de eliminar
               let id_Admin=proyecto.administrador;
-              btn_delete.addEventListener("click", ()=>{borrarProyecto(proyecto.id_Project, id_Admin)});
+              if(projectManager){
+                btn_delete.addEventListener("click", ()=>{borrarProyecto(proyecto.id_Project, id_Admin,proyecto.projectManager.id_ProjectManager)});
+              }else{
+                btn_delete.addEventListener("click", ()=>{borrarProyecto(proyecto.id_Project, id_Admin)});
+              }
               cell4.appendChild(btn_delete);
             }
   }
