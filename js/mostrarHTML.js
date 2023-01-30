@@ -83,9 +83,13 @@ function mostrarProyecto(proyecto){
     mostrarArray("#necesidades",proyecto.needs,"elemento.needType");
     partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
-    mostrarArray("#files",proyecto.files,"elemento.file", proyecto.title);
-    //evento para poder descargar todos sus archivos adjuntos
-    downloadAllAttachmentsByProject(proyecto.title);
+    //carga sección de archivos adjuntos
+    mostrarArchivoHTML("html/files.html").then(text =>{
+      document.getElementById("div_adjuntos").innerHTML = text;
+      mostrarArray("#files",proyecto.files,"elemento.file", proyecto.title);
+      //evento para poder descargar todos sus archivos adjuntos
+      downloadAllAttachmentsByProject(proyecto.title);
+    });
     document.querySelector("#editarProyecto").addEventListener("click", ()=>{
       mostrarEditarProyecto(proyecto.id_Project,proyecto);
     });
@@ -93,15 +97,15 @@ function mostrarProyecto(proyecto){
 }
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
-function mostrarCargaProyecto(emprendedor) {
+function mostrarCargaProyecto(id_ProjectManager) {
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
       //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
-      inicializarCargaProyecto();
+      inicializarCargaProyecto(id_ProjectManager);
       cargaRenderNecesidades();
       cargaRenderAsistencia();
-      let id_emprendedor=emprendedor.id_ProjectManager;
-      partialRendercargaDatosEmprendedor(".datosEmprendedor",id_emprendedor);
+      console.log(id_ProjectManager);
+      partialRendercargaDatosEmprendedor(".datosEmprendedor",id_ProjectManager);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
   });
@@ -163,7 +167,7 @@ function mostrarEmprendedor(emprendedor){
     showDataProjectManager(emprendedor);
     //evento cambio de pantalla a formulario de crear proyecto
     document.getElementById("btn_add_project").addEventListener("click", ()=>{
-      mostrarCargaProyecto(emprendedor);
+      mostrarCargaProyecto(emprendedor.id_ProjectManager);
     });
     page=1;
     getAllProjectsByProjectManager(emprendedor.id_ProjectManager).then(json=>{
@@ -209,12 +213,19 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
       //Configuro Dropdown de asistencias
       cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
       //getNecesidadesoAsistenciasCreadas(URLAssitances);
-    });  
+    });
+    //carga sección de archivos adjuntos
+    mostrarArchivoHTML("html/filesEdit.html").then(text =>{
+      document.getElementById("div_adjuntos").innerHTML = text;
+      mostrarArray("#files_edit",proyecto.files,"elemento.file", proyecto.title);
+      //evento para poder eliminar todos sus archivos adjuntos
+      removedAllAttachmentsByProject(proyecto.title);
+    });
     mostrarAdjuntos(proyecto);
     partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
     saveNewData(id_proyecto, proyecto);
-    validFileType();  
+    validFileType();
   })
 }
 

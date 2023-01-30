@@ -132,11 +132,9 @@ function drawFileInProject(contenedor, file, proyecto_title){
 
   let p_name = document.createElement("p");
   p_name.innerHTML = file_name;
-  p_name.classList.add("p_name_img_preview"); //<i class="bi bi-download"></i>
+  p_name.classList.add("p_name_img_preview");
 
   let btn_download = document.createElement("button");
-  btn_download.innerHTML = "<i class="+" bi-download"+"></i>";
-  btn_download.classList.add("btn_download");
 
   let div = document.createElement("div");
   div.classList.add("div_preview");
@@ -144,7 +142,16 @@ function drawFileInProject(contenedor, file, proyecto_title){
   div.appendChild(p_name);
   div.appendChild(btn_download);
 
-  downloadEvent(btn_download, file_name, proyecto_title);
+  if(contenedor == "#files"){//pantalla que permite descargar adjuntos
+    btn_download.innerHTML = "<i class="+" bi-download"+"></i>";
+    btn_download.classList.add("btn_download");
+    downloadEvent(btn_download, file_name, proyecto_title);
+
+  }else if(contenedor == "#files_edit"){//pantalla que permite eliminar adjuntos
+    btn_download.innerHTML = "<i class="+" bi-trash3"+"></i>";
+    btn_download.classList.add("btn_remove_file");
+    deletedEvent(btn_download, file_name, proyecto_title);
+  }
 
   document.querySelector(contenedor).appendChild(div);
 }
@@ -169,6 +176,7 @@ function defineImgPreview(file, proyecto_title){
 */
 function downloadEvent(element, file_name, proyecto_title){
   element.addEventListener("click", ()=>{
+    event.preventDefault();
     let url = "uploadFiles/"+proyecto_title+"/"+file_name;
     runDownload(url, file_name)
   });
@@ -236,4 +244,23 @@ function removeZipFromSystem(filename){
   })
   .then(response => response.json())
   .then(json => {})
+}
+
+
+//continuar desarrollando
+function deletedEvent(element, file_name, proyecto_title){
+  element.addEventListener("click", ()=>{
+    event.preventDefault();
+    let url = "uploadFiles/"+proyecto_title+"/"+file_name;
+    //runRemoved(url, file_name)
+    console.log("estás intentando eliminar el archivo"+file_name);
+  });
+}
+//continuar desarrollando
+function removedAllAttachmentsByProject(proyecto_title){
+  let element = document.getElementById('removedAll');
+  element.addEventListener("click", ()=>{
+    event.preventDefault();
+    console.log("estás intentando eliminar todo del proyecto: "+ proyecto_title);
+  });
 }

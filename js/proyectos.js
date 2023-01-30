@@ -13,8 +13,10 @@ async function saveProject(datos){
     headers: {"Content-type": "application/json; charset=UTF-8",}
   })
   .then(response => response.json())
-  .then(json => showSucess());
-  setTimeout(mostrarCargaProyecto,5000);
+  .then(json => {
+    showSucess();
+    setTimeout(mostrarCargaProyecto(json.projectManager.id_ProjectManager),5000);
+  });
 }
 
 //BORRAR UN PROYECTO EN PARTICULAR
@@ -334,7 +336,7 @@ function innerHTML(json, elementDOM){
 }
 
 //COMPRUEBA LOS CAMPOS DE CARGA DE PROYECTOS
-function inicializarCargaProyecto() {
+function inicializarCargaProyecto(id_ProjectManager) {
   changeCountInputFile();//comportamiento de input file, siempre activo, cuenta cuantos archivos hay seleccionados
   //validación de typo de archivos admitidos
   validFileType();
@@ -379,7 +381,7 @@ function inicializarCargaProyecto() {
       successImg[0].style.opacity = "1";
       successImg[1].style.opacity = "1";
       let datos = {
-        "id_ProjectManager": 1,
+        "id_ProjectManager": id_ProjectManager,
         "title": title.value,
         "description": description.value,
         "stage": estadio.value,
@@ -480,11 +482,13 @@ function selecionarSoloUnEstadio(){
 }
 
 //CONVIERTE ARRAY A LISTA PARA MOSTRARLA EN LOS DATOS DEL PROYECTO
-function mostrarArray(contenedor,arreglo,dato, proyecto_title){
+function mostrarArray(contenedor,arreglo,dato, proyecto_title, action){
   for (let i = 0; i < arreglo.length; i++) {
     var elemento=arreglo[i];
-    if(contenedor == "#files"){//para adjuntos
+    if(contenedor == "#files" || contenedor == "#files_edit"){//para adjuntos
       drawFileInProject(contenedor, arreglo[i], proyecto_title);
+    //}else if(contenedor == "#files_edit"){
+      //drawEditFileInProject(contenedor, arreglo[i], proyecto_title);
     }else{//para necesidades y asistencias
       document.querySelector(contenedor).innerHTML+="<p><i class='fa fa-check-circle' aria-hidden='true'></i>"+eval(dato)+"</p>";
 
