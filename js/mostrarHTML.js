@@ -193,7 +193,6 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#title").value=proyecto.title;
     document.querySelector("#description").value=proyecto.description;
-    console.log(id_proyecto);
     selecionarSoloUnEstadio();
     cargarCheckboxes(URLStages, proyecto,'estadios_checks');
     mostrarArchivoHTML("html/cargaDeNecesidades.html").then(text =>{
@@ -201,7 +200,7 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
       document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
       //Configuro Dropdown de necesidades
       cargarCheckboxes(URLNeeds, proyecto,'needs_created');
-      getNecesidadesoAsistenciasCreadas(URLNeeds);
+      //getNecesidadesoAsistenciasCreadas(URLNeeds);
     
     });
     mostrarArchivoHTML("html/cargaDeAsistencias.html").then(text =>{
@@ -209,13 +208,13 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
       document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
       //Configuro Dropdown de asistencias
       cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
-      getNecesidadesoAsistenciasCreadas(URLAssitances);
+      //getNecesidadesoAsistenciasCreadas(URLAssitances);
     });  
     mostrarAdjuntos(proyecto);
     partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
     saveNewData(id_proyecto, proyecto);
-   
+    validFileType();  
   })
 }
 
@@ -226,135 +225,7 @@ function mostrarAdjuntos(proyecto){
   
 }
 
-function cargarCheckboxes(URL, proyecto,dato){
-  getAllBaseURL(URL, dato).then(()=>{
-    let checkboxes=[];
-    if(dato==="needs_created"){
-      checkboxes=document.querySelector('#necesidades_checks').querySelectorAll('.necesidadesCheckboxes, input[type=checkbox]');
-    }else if(dato=="assistances_created"){
-      checkboxes=document.querySelector('#asistencias_checks').querySelectorAll('.asistenciasCheckboxes, input[type=checkbox]');
-    }else{
-      checkboxes=document.querySelector('#estadios_checks').querySelectorAll('.estadiosCheckboxes, input[type=checkbox]');
-    }
-    checkboxes.forEach(checkbox => {
-      if(dato=="needs_created"){
-        for (let i = 0; i < proyecto.needs.length; i++) {
-          if(proyecto.needs[i].id_Need==checkbox.value){
-            checkbox.innerHTML+=proyecto.needs[i].type;
-            checkbox.checked=true;
-          }
-        }
-      }else if(dato=="assistances_created"){
-        for (let i = 0; i < proyecto.assistances.length; i++) {
-          if(proyecto.assistances[i].id_Assistance==checkbox.value){
-            checkbox.checked=true;
-          }
-        }
-      }else{  
-          if(proyecto.stage.id_Stage==checkbox.value){
-            checkbox.click();
-          }
-        }
-    });
-  });  
-}
 
 
-function saveNewData(id_proyecto, proyecto){
-  let id = (id) => document.getElementById(id);
-  let classes = (classes) => document.getElementsByClassName(classes);
-  let title = id("title"),
-  description = id("description"), errorMsg = document.getElementsByClassName("error"),
-  successIcon = classes("success-icon"),
-  failureIcon = classes("failure-icon");
-  document.getElementById("save").addEventListener("click", (e) => {
-    e.preventDefault();
-    let necesidadesCheckboxes = document.querySelectorAll('input[name="necesidadesCheckboxes"]:checked');
-    necesidadesCheckboxes.forEach((checkbox) => {
-      necesidades.push(checkbox.value);
-    });
 
-    let otraNecesidad = document.querySelector("#needs_created");
-    for (var option of otraNecesidad.options) {  
-      if (option.selected) {
-        necesidades.push(option.value);
-      }
-    }
-    let asistenciasCheckboxes = document.querySelectorAll('input[name="asistenciaCheckboxes"]:checked');
-    asistenciasCheckboxes.forEach((checkbox) => {
-      asistencias.push(checkbox.value);
-    });
-    let otraAsistencia = document.querySelector("#assistances_created");
-    for (var option of otraAsistencia.options) {  
-      if (option.selected) {
-        asistencias.push(option.value);
-      }
-    }
-    let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
-    let files=[];
-    proyecto.files.forEach(element => {
-      files.push(element.id_File);
-      console.log(element.id_File);
-    });
-    saveAttachments(title);
-    if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
-      asistencias.length > 0 && estadio != null) {
-      document.querySelector("#titleError").innerHTML = "";
-      document.querySelector("#descriptionError").innerHTML = "";
-      document.querySelector("#necesidadesError").innerHTML = "";
-      document.querySelector("#asistenciasError").innerHTML = "";
-      document.querySelector("#estadioError").innerHTML = "";
-      let successImg = document.getElementsByClassName("success-icon");
-      successImg[0].style.opacity = "1";
-      successImg[1].style.opacity = "1";
-      let datos={
-        "title":  title.value,
-        "description": description.value,
-        "files": [
-          files
-        ],
-        "assistances": [
-            asistencias,
-        ],
-        "needs": [
-            necesidades,
-        ],
-        "stage": estadio.value,
-        "newFiles": [
-          attachments
-        ]
-      }
-      modificarProyecto(id_proyecto,datos);
-      necesidades=[];
-      asistencias=[];
-      attachments=[];
-    } else {
-      if (title.value == "" || title.value == "undefined") {
-        document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
-      } else {
-        document.querySelector("#titleError").innerHTML = "";
-      }
-      if (description.value == "" || description.value == "undefined") {
-        document.querySelector("#descriptionError").innerHTML = "Ingrese una descripción al proyecto";
-      } else {
-        document.querySelector("#descriptionError").innerHTML = "";
-      }
-      if (necesidades.length == 0) {
-        document.querySelector("#necesidadesError").innerHTML = "Seleccione al menos una necesidad";
-      } else {
-        document.querySelector("#necesidadesError").innerHTML = "";
-      }
-      if (asistencias.length == 0) {
-        document.querySelector("#asistenciasError").innerHTML = "Seleccione al menos un tipo de asistencia";
-      } else {
-        document.querySelector("#asistenciasError").innerHTML = "";
-      }
-      if (estadio == null) {
-        document.querySelector("#estadioError").innerHTML = "Seleccione un estadio";
-      } else {
-        document.querySelector("#estadioError").innerHTML = "";
-      }
-    }
-  });
-     
-}
+

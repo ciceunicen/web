@@ -184,7 +184,6 @@ function downloadAllAttachmentsByProject(proyecto_title){
   element.addEventListener("click", ()=>{
     event.preventDefault();
     let formData = new FormData();
-
     let zip_name = proyecto_title+"_Adjuntos.zip";
     formData.append('zip_name',zip_name);
 

@@ -26,7 +26,6 @@ function borrarProyecto(id_Project,id_Admin){
     headers: {"Content-type": "application/json; charset=UTF-8",}
   })
   .then(response=>getAllProjects().then(lista=>{
-    console.log(lista.totalPages);
     mostrarPaginado(lista.totalPages,"proyectos");
     mostrarTabla(lista,false);
   }));
@@ -57,7 +56,6 @@ function getAllDeleteProjects(page=1){
 function getFilterProjects(datos,pagina) {
   let url = new URL(URLProject + "/filters/page/" + pagina);
   let params = new URLSearchParams(datos);
-  console.log(url + "?" + params);
   return fetch(url + "?" + params)
     .then(response => response.json())
     .then(json => {return json});
@@ -69,6 +67,25 @@ function getProjectHistory(id){
   .then(response => response.json())
   .then(json => {return json});
 }
+
+//MODIFICAR DATOS DE UN PROYECTO
+async function modificarProyecto(id_proyecto, proyecto){
+  await fetch(URLProject +"/"+ id_proyecto,{
+   method: "PUT",
+   mode: 'cors',
+   body: JSON.stringify(proyecto),
+   headers: {"Access-Control-Allow-Origin":"*" ,},
+   headers: {"Content-type": "application/json; charset=UTF-8",}
+   })
+   .then(response => {response.json().then(json=>mostrarProyecto(json))})
+ }
+ 
+ function getNecesidadesoAsistenciasCreadas(URL){
+   return fetch(URL)
+   .then(response => response.json())
+   .then(json => {return json});
+ }
+ 
 
 //TODO DE LA SECCION DE LISTA DE PROYECTOS
 
@@ -256,7 +273,6 @@ function actualizacionSelect(value,label,idElemento,funcion){
 
 //GENERA LAS OPCIONES DEL FORMULARIO DE CREACION DE PROYECTOS
 function innerHTML(json, elementDOM){
-  console.log(json);
   let select = document.getElementById(elementDOM);
   if(elementDOM == 'needs'){
     for (e of json) {
@@ -483,22 +499,145 @@ function generarTablaHistorial(json){
   }
 }
 
-//MODIFICAR DATOS DE UN PROYECTO
-async function modificarProyecto(id_proyecto, proyecto){
- await fetch(URLProject +"/"+ id_proyecto,{
-  method: "PUT",
-  mode: 'cors',
-  body: JSON.stringify(proyecto),
-  headers: {"Access-Control-Allow-Origin":"*" ,},
-  headers: {"Content-type": "application/json; charset=UTF-8",}
-  })
-  .then(response => response.json())
-  .then(showSucess());
-  setTimeout(mostrarProyecto(proyecto),5000);
+//TODO DE EDITAR PROYECTOS
+
+function saveNewData(id_proyecto, proyecto){
+  let id = (id) => document.getElementById(id);
+  let classes = (classes) => document.getElementsByClassName(classes);
+  let title = id("title"),
+  description = id("description"), errorMsg = document.getElementsByClassName("error"),
+  successIcon = classes("success-icon"),
+  failureIcon = classes("failure-icon");
+  document.getElementById("save").addEventListener("click", (e) => {
+    e.preventDefault();
+    let necesidadesCheckboxes = document.querySelectorAll('input[name="necesidadesCheckboxes"]:checked');
+    necesidadesCheckboxes.forEach((checkbox) => {
+      necesidades.push(checkbox.value);
+    });
+
+    let otraNecesidad = document.querySelector("#needs_created");
+    for (var option of otraNecesidad.options) {  
+      if (option.selected) {
+        necesidades.push(option.value);
+      }
+    }
+    let asistenciasCheckboxes = document.querySelectorAll('input[name="asistenciaCheckboxes"]:checked');
+    asistenciasCheckboxes.forEach((checkbox) => {
+      asistencias.push(checkbox.value);
+    });
+    let otraAsistencia = document.querySelector("#assistances_created");
+    for (var option of otraAsistencia.options) {  
+      if (option.selected) {
+        asistencias.push(option.value);
+      }
+    }
+    let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
+    let files=[];
+    proyecto.files.forEach(element => {
+      files.push(element.id_File);
+    });
+    if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
+      asistencias.length > 0 && estadio != null && statusFile) {
+      document.querySelector("#titleError").innerHTML = "";
+      document.querySelector("#descriptionError").innerHTML = "";
+      document.querySelector("#necesidadesError").innerHTML = "";
+      document.querySelector("#asistenciasError").innerHTML = "";
+      document.querySelector("#estadioError").innerHTML = "";
+      let successImg = document.getElementsByClassName("success-icon");
+      successImg[0].style.opacity = "1";
+      successImg[1].style.opacity = "1";
+      let datos={
+        "title":  title.value,
+        "description": description.value,
+        "files": 
+          files
+        ,
+        "assistances": 
+            asistencias
+        ,
+        "needs": 
+            necesidades
+        ,
+        "stage": estadio.value,
+        "newFiles": 
+          attachments
+      }
+      saveAttachments(title.value);
+      modificarProyecto(id_proyecto,datos);
+      necesidades=[];
+      asistencias=[];
+      attachments=[];
+    } else {
+      if (title.value == "" || title.value == "undefined") {
+        document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
+      } else {
+        document.querySelector("#titleError").innerHTML = "";
+      }
+      if (description.value == "" || description.value == "undefined") {
+        document.querySelector("#descriptionError").innerHTML = "Ingrese una descripción al proyecto";
+      } else {
+        document.querySelector("#descriptionError").innerHTML = "";
+      }
+      if (necesidades.length == 0) {
+        document.querySelector("#necesidadesError").innerHTML = "Seleccione al menos una necesidad";
+      } else {
+        document.querySelector("#necesidadesError").innerHTML = "";
+      }
+      if (asistencias.length == 0) {
+        document.querySelector("#asistenciasError").innerHTML = "Seleccione al menos un tipo de asistencia";
+      } else {
+        document.querySelector("#asistenciasError").innerHTML = "";
+      }
+      if (estadio == null) {
+        document.querySelector("#estadioError").innerHTML = "Seleccione un estadio";
+      } else {
+        document.querySelector("#estadioError").innerHTML = "";
+      }
+      necesidades=[];
+      asistencias=[];
+      attachments=[];
+    }
+  });    
 }
 
-function getNecesidadesoAsistenciasCreadas(URL){
-  return fetch(URL)
-  .then(response => response.json())
-  .then(json => {return json});
+function cargarCheckboxes(URL, proyecto,dato){
+  getAllBaseURL(URL, dato).then(()=>{
+    let checkboxes=[];
+    if(dato=="needs_created"){
+      checkboxes=document.querySelector('#necesidades_checks').querySelectorAll('.necesidadesCheckboxes, input[type=checkbox]');
+    }else if(dato=="assistances_created"){
+      checkboxes=document.querySelector('#asistencias_checks').querySelectorAll('.asistenciasCheckboxes, input[type=checkbox]');
+    }else{
+      checkboxes=document.querySelector('#estadios_checks').querySelectorAll('.estadiosCheckboxes, input[type=checkbox]');
+    }
+    checkboxes.forEach(checkbox => {
+      if(dato=="needs_created"){
+        for (let i = 0; i < proyecto.needs.length; i++) {
+          if(proyecto.needs[i].id_Need==checkbox.value){
+            checkbox.innerHTML+=proyecto.needs[i].type;
+            checkbox.checked=true;
+          }
+        }
+        selectedOptions("needs_created","multiSelectsNeedsCreated");
+      }else if(dato=="assistances_created"){
+        for (let i = 0; i < proyecto.assistances.length; i++) {
+          if(proyecto.assistances[i].id_Assistance==checkbox.value){
+            checkbox.checked=true;
+          }
+        }
+        selectedOptions("assistances_created","multiSelectsAssistancesCreated");
+      }else{  
+          if(proyecto.stage.id_Stage==checkbox.value){
+            checkbox.click();
+          }
+        }
+    });
+    
+  }); 
+}
+
+function selectedOptions(idSelect,multiSelect){
+  let selectedOption = document.getElementById(idSelect);
+  selectedOption.options[0].selected=true;
+  eval(multiSelect).updateSelect();
 }
