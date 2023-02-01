@@ -265,7 +265,7 @@ function MultiSelectTag (el,id_btn_reset_filter, id_btn_save ,customs = {shadow:
         }
     }
 
-    function updateSelect(id){
+    function updateSelect(){
         options = getOptions();
         initOptions()
         enableItemSelection()

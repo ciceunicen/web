@@ -1,4 +1,5 @@
 <div class="datosEmprendedor"></div>
+<div class="historyProject"></div>
 <div class="projectTitle">
     <p>Proyecto</p>
 </div>
@@ -9,7 +10,7 @@
 </div>
 <div class="projectLoading">
    
-    <form action="http://localhost:8080/Project" method="post">
+    <form action="#" method="post">
         <label for="title" required>Título * <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>
         <div>
             <input class="form-control" type="text" name="title" id="title" placeholder="titulo" required>
@@ -37,7 +38,9 @@
                  <strong class="iborrainputfile">Seleccionar archivo/s</strong>
                  <span class="selectedFiles" id="count_files"></span>
              </label>
-             <div id="div_paintBadFileAlert"></div>
+            <div id="div_paintBadFileAlert"></div>
+            <!--CARGA DE VISTA PREVIA DE ADJUNTOS-->
+            <div class="div_adjuntos" id="div_adjuntos"></div>
          </div> 
          <div class="saveContainer">
             <button type="submit"  class="btn btn-primary" id="save">Guardar</button>

@@ -83,22 +83,28 @@ function mostrarProyecto(proyecto){
     mostrarArray("#necesidades",proyecto.needs,"elemento.needType");
     partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
-    mostrarArray("#files",proyecto.files,"elemento.file", proyecto.title);
-    //evento para poder descargar todos sus archivos adjuntos
-    downloadAllAttachmentsByProject(proyecto.title);
+    //carga sección de archivos adjuntos
+    mostrarArchivoHTML("html/files.html").then(text =>{
+      document.getElementById("div_adjuntos").innerHTML = text;
+      mostrarArray("#files",proyecto.files,"elemento.file", proyecto);
+      //evento para poder descargar todos sus archivos adjuntos
+      downloadAllAttachmentsByProject(proyecto.title);
+    });
+    document.querySelector("#editarProyecto").addEventListener("click", ()=>{
+      mostrarEditarProyecto(proyecto.id_Project,proyecto);
+    });
   })
 }
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
-function mostrarCargaProyecto(emprendedor) {
+function mostrarCargaProyecto(id_ProjectManager) {
   mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
       //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
-      inicializarCargaProyecto();
+      inicializarCargaProyecto(id_ProjectManager);
       cargaRenderNecesidades();
       cargaRenderAsistencia();
-      let id_emprendedor=emprendedor.id_ProjectManager;
-      partialRendercargaDatosEmprendedor(".datosEmprendedor",id_emprendedor);
+      partialRendercargaDatosEmprendedor(".datosEmprendedor",id_ProjectManager);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
   });
@@ -160,7 +166,7 @@ function mostrarEmprendedor(emprendedor){
     showDataProjectManager(emprendedor);
     //evento cambio de pantalla a formulario de crear proyecto
     document.getElementById("btn_add_project").addEventListener("click", ()=>{
-      mostrarCargaProyecto(emprendedor);
+      mostrarCargaProyecto(emprendedor.id_ProjectManager);
     });
     page=1;
     getAllProjectsByProjectManager(emprendedor.id_ProjectManager).then(json=>{
@@ -182,3 +188,63 @@ function showDataProjectManager(projectManager){
     document.querySelector("#medioConocimientoCice").innerHTML=projectManager.medioConocimientoCice;
   });
 }
+
+
+//MOSTRAR EDITAR PROYECTO
+function mostrarEditarProyecto(id_proyecto,proyecto){
+  mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
+    document.querySelector(".main-container").innerHTML = text;
+    document.querySelector("#title").value=proyecto.title;
+    document.querySelector("#description").value=proyecto.description;
+    selecionarSoloUnEstadio();
+    cargarCheckboxes(URLStages, proyecto,'estadios_checks');
+    mostrarArchivoHTML("html/cargaDeNecesidades.html").then(text =>{
+      document.querySelector(".datosNecesidades").innerHTML = text;
+      document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
+      //Configuro Dropdown de necesidades
+      cargarCheckboxes(URLNeeds, proyecto,'needs_created');
+      //getNecesidadesoAsistenciasCreadas(URLNeeds);
+    
+    });
+    mostrarArchivoHTML("html/cargaDeAsistencias.html").then(text =>{
+      document.querySelector(".datosAsistencias").innerHTML = text;
+      document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
+      //Configuro Dropdown de asistencias
+      cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
+      //getNecesidadesoAsistenciasCreadas(URLAssitances);
+    });
+    //carga sección de archivos adjuntos
+    mostrarFilesEditar(proyecto);
+    changeCountInputFile();
+    partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
+    partialRenderHistorialProject(".historyProject", proyecto.id_Project);
+    saveNewData(id_proyecto, proyecto);
+    validFileType();
+  })
+}
+
+function mostrarFilesEditar(proyecto){
+  mostrarArchivoHTML("html/filesEdit.html").then(text =>{
+    let container = document.getElementById("div_adjuntos");
+    container.innerHTML = "";
+    container.innerHTML = text;
+    mostrarArray("#files_edit",proyecto.files,"elemento.file",proyecto);
+    //evento para poder eliminar todos sus archivos adjuntos
+    removedAllAttachmentsByProject(proyecto);
+    mostrarAdjuntos(proyecto);
+  });
+}
+
+function mostrarAdjuntos(proyecto){
+  proyecto.files.forEach(element => {
+    if(element!=null){
+      document.querySelector(".selectedFiles").innerHTML+=element.file + " ";
+    }    
+  }); 
+  
+}
+
+
+
+
+

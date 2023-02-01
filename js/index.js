@@ -36,7 +36,7 @@ function drawClickNav(click_nav) {
 
 //GET All reutilizable del Filtro para Necesidades,Asistencias y Estadios
 function getAllBaseURL(url, elementDOM) {
-  fetch(url)
+  return fetch(url)
     .then((response) => response.json())
     .then(json => createOptionsSelectDOM(json, elementDOM));
 }
