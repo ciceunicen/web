@@ -1,5 +1,6 @@
 let page=1;
 const URLProject="http://localhost:8080/projects";
+const URLFiles="http://localhost:8080/files";
 let statusFile = true;//guarda si los archivos cargados tienen una estención válida.
 //METODOS DE ABM
 
@@ -97,6 +98,21 @@ async function modificarProyecto(id_proyecto, proyecto){
    .then(json => {return json});
  }
  
+ //BORRAR FILES DE UN PROYECTO EN PARTICULAR
+async function borrarFilesProyecto(id_Project,idFile=false){
+  let url;
+  if(!idFile){
+     url = URLProject + "/removeFiles/idProject/" + id_Project;
+  }else{
+    url = URLFiles + "/idFile/" + idFile;;
+  }
+  await fetch(url,{
+    method: 'DELETE',
+    headers: {"Access-Control-Allow-Origin":"*" ,},
+    headers: {"Content-type": "application/json; charset=UTF-8",}
+  })
+  .then(response=>response);
+}
 
 //TODO DE LA SECCION DE LISTA DE PROYECTOS
 
@@ -482,11 +498,13 @@ function selecionarSoloUnEstadio(){
 }
 
 //CONVIERTE ARRAY A LISTA PARA MOSTRARLA EN LOS DATOS DEL PROYECTO
-function mostrarArray(contenedor,arreglo,dato, proyecto_title, action){
+function mostrarArray(contenedor,arreglo,dato, proyecto){
   for (let i = 0; i < arreglo.length; i++) {
     var elemento=arreglo[i];
     if(contenedor == "#files" || contenedor == "#files_edit"){//para adjuntos
-      drawFileInProject(contenedor, arreglo[i], proyecto_title);
+      if(elemento != null){
+        drawFileInProject(contenedor, elemento, proyecto);
+      } 
     //}else if(contenedor == "#files_edit"){
       //drawEditFileInProject(contenedor, arreglo[i], proyecto_title);
     }else{//para necesidades y asistencias
@@ -551,7 +569,9 @@ function saveNewData(id_proyecto, proyecto){
     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
     let files=[];
     proyecto.files.forEach(element => {
-      files.push(element.id_File);
+      if(element != null){
+        files.push(element.id_File);
+      }    
     });
     if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
       asistencias.length > 0 && estadio != null && statusFile) {

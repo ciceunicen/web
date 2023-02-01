@@ -86,7 +86,7 @@ function mostrarProyecto(proyecto){
     //carga sección de archivos adjuntos
     mostrarArchivoHTML("html/files.html").then(text =>{
       document.getElementById("div_adjuntos").innerHTML = text;
-      mostrarArray("#files",proyecto.files,"elemento.file", proyecto.title);
+      mostrarArray("#files",proyecto.files,"elemento.file", proyecto);
       //evento para poder descargar todos sus archivos adjuntos
       downloadAllAttachmentsByProject(proyecto.title);
     });
@@ -104,7 +104,6 @@ function mostrarCargaProyecto(id_ProjectManager) {
       inicializarCargaProyecto(id_ProjectManager);
       cargaRenderNecesidades();
       cargaRenderAsistencia();
-      console.log(id_ProjectManager);
       partialRendercargaDatosEmprendedor(".datosEmprendedor",id_ProjectManager);
       //Configuro Ckeckboxs dinamico de estadios
       getAllBaseURL(URLStages, 'estadios_checks');
@@ -215,13 +214,8 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
       //getNecesidadesoAsistenciasCreadas(URLAssitances);
     });
     //carga sección de archivos adjuntos
-    mostrarArchivoHTML("html/filesEdit.html").then(text =>{
-      document.getElementById("div_adjuntos").innerHTML = text;
-      mostrarArray("#files_edit",proyecto.files,"elemento.file", proyecto.title);
-      //evento para poder eliminar todos sus archivos adjuntos
-      removedAllAttachmentsByProject(proyecto.title);
-    });
-    mostrarAdjuntos(proyecto);
+    mostrarFilesEditar(proyecto);
+    changeCountInputFile();
     partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
     saveNewData(id_proyecto, proyecto);
@@ -229,9 +223,23 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
   })
 }
 
+function mostrarFilesEditar(proyecto){
+  mostrarArchivoHTML("html/filesEdit.html").then(text =>{
+    let container = document.getElementById("div_adjuntos");
+    container.innerHTML = "";
+    container.innerHTML = text;
+    mostrarArray("#files_edit",proyecto.files,"elemento.file",proyecto);
+    //evento para poder eliminar todos sus archivos adjuntos
+    removedAllAttachmentsByProject(proyecto);
+    mostrarAdjuntos(proyecto);
+  });
+}
+
 function mostrarAdjuntos(proyecto){
   proyecto.files.forEach(element => {
-    document.querySelector(".selectedFiles").innerHTML+=element.file + " ";
+    if(element!=null){
+      document.querySelector(".selectedFiles").innerHTML+=element.file + " ";
+    }    
   }); 
   
 }

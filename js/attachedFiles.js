@@ -124,7 +124,8 @@ function changeCountInputFile(){
   * @param {String} file_name -  nombre del archivo, ejemplo: "imagen.png"
   * @param {String} project_title - titulo del proyecto al cual pertenecen el archivo
 */
-function drawFileInProject(contenedor, file, proyecto_title){
+function drawFileInProject(contenedor, file, proyecto){
+  var proyecto_title = proyecto.title;
   var file_name = file.file;
   let img_preview = document.createElement("img");
   img_preview.src = defineImgPreview(file, proyecto_title);
@@ -145,12 +146,12 @@ function drawFileInProject(contenedor, file, proyecto_title){
   if(contenedor == "#files"){//pantalla que permite descargar adjuntos
     btn_download.innerHTML = "<i class="+" bi-download"+"></i>";
     btn_download.classList.add("btn_download");
-    downloadEvent(btn_download, file_name, proyecto_title);
+    downloadEvent(btn_download, file_name, proyecto.title);
 
   }else if(contenedor == "#files_edit"){//pantalla que permite eliminar adjuntos
     btn_download.innerHTML = "<i class="+" bi-trash3"+"></i>";
     btn_download.classList.add("btn_remove_file");
-    deletedEvent(btn_download, file_name, proyecto_title);
+    deletedEvent(btn_download, file, proyecto);
   }
 
   document.querySelector(contenedor).appendChild(div);
@@ -178,7 +179,7 @@ function downloadEvent(element, file_name, proyecto_title){
   element.addEventListener("click", ()=>{
     event.preventDefault();
     let url = "uploadFiles/"+proyecto_title+"/"+file_name;
-    runDownload(url, file_name)
+    runDownload(url, file_name);
   });
 }
 /**
@@ -212,8 +213,8 @@ function downloadAllAttachmentsByProject(proyecto_title){
 */
 function downloadZip(zip_name){
   let url = "uploadFiles/"+zip_name;
-  runDownload(url, zip_name)
-  removeZipFromSystem(zip_name);
+  runDownload(url, zip_name);
+  removeFileFromSystem(zip_name);
 }
 /**
   * Ejecuta la descarga del Zip o de un archivo dado. (funciona para los casos)
@@ -234,10 +235,9 @@ function runDownload(url, name_download){
   * Llama a funcion que elimina un archivo dado de la carpeta "uploadFiles".
   * @param {String} filename -  nombre del archivo a eliminar.
 */
-function removeZipFromSystem(filename){
+function removeFileFromSystem(filename){
   let formData = new FormData();
   formData.append('filename_delete',filename);
-
   fetch("php/uploadFiles.php", {
     method: 'POST',
     body: formData,
@@ -246,21 +246,29 @@ function removeZipFromSystem(filename){
   .then(json => {})
 }
 
-
-//continuar desarrollando
-function deletedEvent(element, file_name, proyecto_title){
+//ELIMINAR UN FILE EN ESPECIFICO
+function deletedEvent(element, file, proyecto){
   element.addEventListener("click", ()=>{
     event.preventDefault();
-    let url = "uploadFiles/"+proyecto_title+"/"+file_name;
     //runRemoved(url, file_name)
-    console.log("estás intentando eliminar el archivo"+file_name);
+    borrarFilesProyecto(proyecto.id_Project,file.id_File).then(response=>{
+      removeFileFromSystem(proyecto.title+"/"+file.file);
+      document.querySelector("#count_files").innerHTML="";
+      getProyecto(proyecto.id_Project).then(json=>{mostrarFilesEditar(json)});
+      
+    });
   });
 }
-//continuar desarrollando
-function removedAllAttachmentsByProject(proyecto_title){
+
+//ELIMINAR TODOS LOS FILES DE UN PROYECTO
+function removedAllAttachmentsByProject(proyecto){
   let element = document.getElementById('removedAll');
   element.addEventListener("click", ()=>{
     event.preventDefault();
-    console.log("estás intentando eliminar todo del proyecto: "+ proyecto_title);
+    borrarFilesProyecto(proyecto.id_Project).then(response=>{
+      removeFileFromSystem(proyecto.title);
+      document.querySelector("#count_files").innerHTML="";
+      getProyecto(proyecto.id_Project).then(json=>{mostrarFilesEditar(json)});
+    });
   });
 }

@@ -47,6 +47,16 @@
     if(isset($_POST['filename_delete'])){
         $filename_delete = $_POST['filename_delete'];
         $filename_path = "../uploadFiles/".$filename_delete;
-        $response = unlink($filename_path);
+        if(is_dir($filename_path)){
+            $files = glob($filename_path."/*"); //obtenemos todos los nombres de los ficheros
+            foreach($files as $file){
+                if(is_file($file)){
+                    unlink($file); //elimino el fichero
+                }
+            }
+            $response = rmdir($filename_path);
+        }else{
+            $response = unlink($filename_path);
+        }
         echo json_encode($response);
     }
