@@ -31,7 +31,7 @@ function borrarProyecto(id_Project,id_Admin,projectManager=0){
   .then(response=>{
     if(projectManager!=0){
       getAllProjectsByProjectManager(projectManager).then(lista=>{
-        mostrarTabla(lista,false);
+        mostrarTabla(lista,false,true);
         mostrarPaginado(lista.totalPages,"proyectosEmprendedor",[projectManager]);
       })
     }else{
