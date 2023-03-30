@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../css/login.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="info-login">
+            <img id="logoCice" src="../img/-login-registro.png" alt="">
+            <div clasS="info">
+                <p>Campus Universitario</p>
+                <p>Paraje Arroyo Seco S/N</p>
+                <p>0249 438 5522</p>
+                <p>info@cice.unicen.edu.ar</p>
+            </div>
+
+        </div>
+
+        <div class="login-form-container">
+
+
+
+            <form class="form-login" action="">
+
+                <div class="titulo">
+                    <h2>INICIAR SESION</h2>
+                </div>
+
+                <div class="inputLog">
+                    <div class="labInput">
+                        <label class="label" for="">Email</label>
+                        <input class="input" type="text" name="" id="">
+                    </div>
+                    <div class="labInput">
+                        <label class="label" for="">Contraseña</label>
+                        <div class="eye-password">
+                            <input class="input-eye" type="password" name="" id="password-input">
+                            <svg id="eye" onclick="showpassword()" width="35" height="35" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
+                    </svg>
+                        </div>
+                        <a id="FgPass" href="">¿Olvidaste tu contraseña?</a>
+                    </div>
+                </div>
+
+
+                <div class="button-volver">
+                    <button class="button">
+                        INGRESAR
+                    </button>
+                    <a>¿No sos usuario?</a>
+                    <button class="button">
+                        REGISTRARSE
+                    </button>
+                </div>
+
+
+
+
+            </form>
+        </div>
+
+    </div>
+
+    <script src="../js/registro.js"></script>
+</body>
+
+</html>
