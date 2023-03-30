@@ -159,12 +159,13 @@ select {
 .form-submit-btn input {
     margin: 3rem 0 0 .5rem;
     display: block;
-    width: 10%;
+    width: 12rem;
+    height: 2.5rem;
     font-size: 16px;
     padding: 5px 0 5px 0;
     border: none;
-    border-radius: 15px;
-    color: black;
+    border-radius: 8px;
+    color: #FFFFFF;
     background: #87cdf5;
     overflow: hidden;
 }
