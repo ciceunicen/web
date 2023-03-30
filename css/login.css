@@ -1,0 +1,201 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+
+.login-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: #36791E;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-login {
+    width: 40%;
+    margin-left: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.info-login img {
+    width: 50%;
+}
+
+.info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.info p {
+    margin: 0px;
+    color: #FFFFFF;
+}
+
+.login-form-container {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.titulo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.form-login {
+    width: 28rem;
+    height: 29rem;
+    padding: 15px 0px;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    flex-direction: column;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.form-registro{
+    width: 28rem;
+    padding: 15px 0px;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.inputLog {
+    margin-top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.labInput {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.input {
+    border-radius: 5PX;
+    height: 30PX;
+    background-color: #D9D9D9;
+    width: 90%;
+    border: none;
+    outline: 1;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-left: 2px;
+    margin: 0px 15px;
+}
+
+.input-short {
+    border-radius: 5PX;
+    height: 30PX;
+    background-color: #d9d9d9;
+    width: 178px;
+    border: none;
+    outline: 1;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-left: 2px;
+    margin: 0px 15px;
+}
+
+.input-eye {
+    border-radius: 5PX;
+    height: 30PX;
+    background-color: #D9D9D9;
+    width: 90%;
+    border: none;
+    outline: 1;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-left: 2px;
+    margin: 0px 15px;
+}
+
+.eye-password {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.eye-password svg {
+    cursor: pointer;
+    transform: translateX(-11px);
+}
+
+#eye {
+    color: #D9D9D9;
+}
+
+.label {
+    margin-left: 15px;
+    margin-top: 25px;
+}
+
+a {
+    color: rgb(28, 77, 212);
+    padding: 0.5rem;
+    padding-bottom: 0;
+}
+
+#FgPass {
+    text-decoration: none;
+    color: rgb(28, 77, 212);
+    margin: 0px 0.5rem;
+    padding-top: 0;
+}
+
+.button-volver {
+    margin-top: 4rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.button-volver a {
+    text-decoration: none;
+}
+
+.button {
+    width: 12rem;
+    height: 3rem;
+    cursor: pointer;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    background-color: #36791E;
+    margin-bottom: 15PX;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.button button {
+    padding: 0;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
