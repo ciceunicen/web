@@ -16,25 +16,12 @@ function showpassword() {
 document.addEventListener("DOMContentLoaded", async () => {
     "use strict";
 
-    let carga = document.getElementById("carga");
-
     const URL_REGISTER = "http://localhost:8080/usuarios";
 
     document.getElementById("register-form").addEventListener("submit", (e) => {
         e.preventDefault();
         register();
-
-
     })
-
-
-    // let carga = document.getElementById("carga");
-    // carga.innerHTML = `<div class="d-flex justify-content-center">
-    //         <div class="spinner-border" role="status">
-    //         <span class="visually-hidden">Loading...</span>
-    //         </div>
-    //         </div>`;
-
 
     async function register() {
 
@@ -66,10 +53,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         catch (e) {
             console.log(e)
         }
-        finally {
-            carga.innerHTML = "";
-        }
-
     }
 
     function getDatosInputsLogin() {
@@ -84,10 +67,5 @@ document.addEventListener("DOMContentLoaded", async () => {
             name: name,
             surname: surname,
         }
-
-
-
     }
-
-
 })
