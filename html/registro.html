@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../css/login.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="login-container">
+        <div class="info-login">
+            <img src="../img/logo-login-registro.png" alt="">
+            <div clasS="info">
+                <p>Campus Universiatio</p>
+                <p>Paraje Arroyo Seco S/N</p>
+                <p>0249 438 5522</p>
+                <p>info@cice.unicen.edu.ar</p>
+            </div>
+            
+        </div>
+    
+        <div class="login-form-container">
+
+           
+
+            <form class="form-registro" action="">
+
+                <div class="titulo">
+                    <h2>REGISTRO</h2>
+                </div>
+
+                <div class="flex">
+                    <div>
+                        <label class="label" for="">Nombre</label>
+                        <input class="input-short" type="text" name="" id="">
+                    </div>
+                    <div>
+                        <label class="label" for="">Apellido</label>
+                        <input class="input-short" type="text" name="" id="">
+                    </div>
+                </div>
+               
+               
+                <label class="label" for="">Email</label>
+                <input class="input" type="text" name="" id="">
+                <label class="label" for="">Contraseña</label>
+                <div class="eye-password">
+                    <input class="input-eye" type="password" name="" id="password-input">
+                    <svg 
+                    id="eye"
+                    onclick="showpassword()"
+                    width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
+                    </svg>
+                </div>
+                
+
+
+                <div class="button-volver">
+                    <button class="button">
+                        REGISTRARSE
+                    </button>
+                    <a href="">¿Ya tienes una cuenta?</a>
+                </div>
+
+
+
+
+            </form>
+        </div>
+    
+    </div>
+
+    <script src="../js/registro.js"></script>
+</body>
+</html>
+
