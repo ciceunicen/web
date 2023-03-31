@@ -6,14 +6,14 @@ document.addEventListener("DOMContentLoaded", async (e) => {
     let signin_form = document.querySelector('#signin_form')
     let btn_register = document.querySelector('#btn-register')
 
-    document.getElementById("register-form").addEventListener("submit", () => {
+    document.getElementById("register-form")?.addEventListener("submit", (e) => {
         e.preventDefault();
         register();
     })
 
     document.querySelectorAll('.signin_form').forEach(i => {
         let input = i.querySelector('input')
-        console.log(input)
+
         input.onkeyup = () => {
             if (checkSigninInput()) {
                 btn_register.removeAttribute('disabled')
