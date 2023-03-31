@@ -1,5 +1,8 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Inter', sans-serif;
     margin: 0px;
     padding: 0px;
 }
@@ -24,6 +27,7 @@ body {
 
 .info-login img {
     width: 50%;
+    margin-bottom: 4rem;
 }
 
 .info {
@@ -62,6 +66,18 @@ body {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
+.form-registro{
+    width: 28rem;
+    padding: 15px 0px;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
 .inputLog {
     margin-top: 0;
     width: 100%;
@@ -95,7 +111,7 @@ body {
     border-radius: 5PX;
     height: 30PX;
     background-color: #d9d9d9;
-    width: 180;
+    width: 178px;
     border: none;
     outline: 1;
     font-family: Arial, Helvetica, sans-serif;
@@ -140,6 +156,7 @@ body {
 }
 
 a {
+    color: rgb(28, 77, 212);
     padding: 0.5rem;
     padding-bottom: 0;
 }
@@ -161,7 +178,6 @@ a {
 }
 
 .button-volver a {
-    color: rgb(0, 0, 0);
     text-decoration: none;
 }
 
