@@ -1,8 +1,8 @@
-.listEmprendedores, .div_cont_table_emprendedores{
+.listEmprendedores, .div_cont_table_emprendedores, .listUsuarios, .contenedor_tabla_usuarios{
     width: 94%;
     margin: auto;
 }
-.listEmprendedores{
+.listEmprendedores, .listUsuarios{
     background-color: #74AC24;
     border-radius: 5px;
     padding: 0.5%;
@@ -15,7 +15,7 @@
     margin-bottom: 0%;
 }
 
-.header-list-projects-manager, .footer-list-emprendedores{
+.header-list-projects-manager, .footer-list-emprendedores, .header-list-users-manager, .footer-list-usuarios{
     background-color: #EAF7D8;
 }
 .manager-table{

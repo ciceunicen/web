@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif !important;
+}
+
+button {
+    border-radius: 5px !important;
+    border: none;
+}
+
+
+/* Este atributo se encuentra en index.css pero era cargarlo todo solo por 1 cosa */
+
+
+/*------------INICIO HEADER-NAVBAR-------------*/
+
+.user-logout {
+    display: flex;
+    align-items: baseline;
+}
+
+.nombre-avatar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nombre-avatar p {
+    color: white;
+}
+
+.nombre-avatar:hover #mail {
+    display: block;
+}
+
+#mail {
+    display: none;
+    position: absolute;
+    right: 7rem;
+    top: 1.8rem;
+}
+
+.nombre-avatar img {
+    width: 35px;
+    border-radius: 50%;
+    margin-bottom: 2%;
+}
+
+
+/* ----------------FIN HEADER-NAVBAR----------------*/
+
+
+/* ------------Inicio Input de busqueda------------ */
+
+.inputBusqueda {
+    width: 30%;
+    margin-bottom: 0.5% !important;
+    margin-left: 2.7rem;
+    border: 2px solid #74AC24;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#iconLupa {
+    width: 30px;
+    height: 30px;
+    bottom: 0.3rem;
+    left: 18.5rem;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.inputBusqueda input {
+    width: 90%;
+    height: 40px;
+    padding-left: 1.5%;
+    font-size: large;
+    font-weight: normal;
+    border: none;
+}
+
+.inputBusqueda input:focus {
+    outline: none;
+}
+
+
+/* ------------Fin Input de busqueda------------ */
+
+
+/*------------------Inicio tabla de usuarios---------------------*/
+
+.listUsuarios,
+.contenedor_tabla_usuarios {
+    width: 94%;
+    margin: auto;
+}
+
+.userManagersTable {
+    text-align: center;
+}
+
+.btn_save_rol {
+    color: #FFFFFF;
+    border-radius: 5px;
+    background-color: #74AC24;
+    border: none;
+}
+
+.administrador {
+    color: #74AC24;
+}
+
+.userManagersTable tr:nth-child(2n) {
+    background: rgba(186, 222, 169, 0.17);
+    mix-blend-mode: darken;
+}
+
+.footer-list-usuarios {
+    height: 50px;
+}
+
+.table {
+    outline: auto;
+}
+
+
+/*------------------Fin tabla de usuarios---------------------*/
+
+
+/*------------------Inicio Footer---------------------*/
+
+.footer-list-usuarios {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
