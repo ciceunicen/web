@@ -21,35 +21,39 @@
             </div>
         </div>
 
-        <div class="login-form-container">
+        <div class="login-form-container" id="signin_form">
             <form class="form-registro" action="" id="register-form">
                 <div class="titulo">
                     <h2>REGISTRO</h2>
                 </div>
                 <div class="flex">
-                    <div>
+                    <div class="signin_form">
                         <label class="label" for="">Nombre</label>
                         <input class="input-short" type="text" name="" id="name">
                     </div>
-                    <div>
+                    <div class="signin_form">
                         <label class="label" for="">Apellido</label>
                         <input class="input-short" type="text" name="" id="surname">
                     </div>
                 </div>
-                <label class="label" for="">Email</label>
-                <input class="input" type="text" name="" id="email">
-                <label class="label" for="">Contraseña</label>
-                <div class="eye-password">
-                    <input class="input-eye" type="password" name="" id="password">
-                    <svg id="eye" onclick="showpassword()" width="30" height="30" fill="none" stroke="currentColor"
-                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
-                    </svg>
+                <div class="email signin_form">
+                    <label class="label" for="">Email</label>
+                    <input class="input" type="text" name="" id="email">
+                </div>
+                <div class="pass signin_form">
+                    <label class="label" for="">Contraseña</label>
+                    <div class="eye-password">
+                        <input class="input-eye" type="password" name="" id="password">
+                        <svg id="eye" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
+                        </svg>
+                    </div>
                 </div>
                 <div class="button-volver">
-                    <button type="submit" class="button">
+                    <button type="submit" class="button" id="btn-register" disabled>
                         REGISTRARSE
                     </button>
                     <a href="">¿Ya tienes una cuenta?</a>
