@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
-
 body {
     font-family: 'Inter', sans-serif;
     margin: 0px;
@@ -184,6 +183,10 @@ a {
 
 .button-volver a {
     text-decoration: none;
+}
+
+#noUser {
+    color: black;
 }
 
 .button {

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async (e) => {
+document.addEventListener("DOMContentLoaded", async(e) => {
     "use strict";
 
     const URL_REGISTER = "http://localhost:8080/usuarios";
@@ -6,22 +6,28 @@ document.addEventListener("DOMContentLoaded", async (e) => {
     let signin_form = document.querySelector('#signin_form')
     let btn_register = document.querySelector('#btn-register')
 
-    document.getElementById("register-form")?.addEventListener("submit", (e) => {
+    checkInputs();
+
+    document.getElementById("register-form").addEventListener("submit", (e) => {
         e.preventDefault();
         register();
     })
 
-    document.querySelectorAll('.signin_form').forEach(i => {
-        let input = i.querySelector('input')
+    function checkInputs() {
+        document.querySelectorAll('.signin_form').forEach(i => {
+            let input = i.querySelector('input')
 
-        input.onkeyup = () => {
-            if (checkSigninInput()) {
-                btn_register.removeAttribute('disabled')
-            } else {
-                btn_register.setAttribute('disabled', 'true')
+            input.onkeyup = () => {
+                if (checkSigninInput()) {
+                    btn_register.removeAttribute('disabled')
+
+                } else {
+                    btn_register.setAttribute('disabled', 'true')
+
+                }
             }
-        }
-    })
+        })
+    }
 
     const checkSigninInput = () => {
 
@@ -68,8 +74,7 @@ document.addEventListener("DOMContentLoaded", async (e) => {
             } else {
                 window.location.replace("http://localhost/proyectos/CICE/web/")
             }
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e)
         }
     }
