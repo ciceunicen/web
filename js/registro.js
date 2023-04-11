@@ -7,35 +7,58 @@ document.addEventListener("DOMContentLoaded", async(e) => {
     let btn_register = document.querySelector('#btn-register')
     let textPassword_status = document.querySelector('#status-text');
 
+    
+    document.querySelectorAll('.input-eye').forEach(field_password => { //checkeo cada vez que escriben en algun campo pw
+        field_password.addEventListener("keyup", () => {
+            checkPasswords();
+        })
+    });
+
     checkInputs();
 
     document.getElementById("register-form").addEventListener("submit", (e) => {
         e.preventDefault();
         
+        checkPasswords();
         register();
     })
 
     function checkPasswords(){
         let passwords = document.querySelectorAll('.input-eye');
         if (passwords[0].value != passwords[1].value) //los dos campos de password
-            textPassword_status.innerHTML = "No Coinciden!!!!";
-        else
-            textPassword_status.innerHTML = "Coinciden";
+        {
+            textPassword_status.innerHTML = "Contraseñas no coinciden";
+            passwords.forEach(p => {
+                p.classList.add('wrong-status');
+            });
+        }
+        else{
+            textPassword_status.innerHTML = "";
+            passwords.forEach(p => {
+                if (p.classList.contains('wrong-status'))
+                    p.classList.remove('wrong-status');
+            });
+        }
     }
 
     function checkInputs() {
         document.querySelectorAll('.signin_form').forEach(i => {
-            let input = i.querySelector('input')
+            console.log(i)
+            let inputs = i.querySelectorAll('input')   /* Se cambia de QuerySelector a -> QuerySelectorAll debido a que
+            al agarrar solo 1 input de cada clase .siging_form, no agarraba el segundo campo de pw y bugeaba el boton de registro */
 
-            input.onkeyup = () => {
-                if (checkSigninInput()) {
-                    btn_register.removeAttribute('disabled')
-
-                } else {
-                    btn_register.setAttribute('disabled', 'true')
-
+            inputs.forEach(input => {
+                input.onkeyup = () => {
+                    if (checkSigninInput()) {
+                        btn_register.removeAttribute('disabled')
+    
+                    } else {
+                        btn_register.setAttribute('disabled', 'true')
+    
+                    }
                 }
-            }
+                
+            });
         })
     }
 
@@ -47,24 +70,10 @@ document.addEventListener("DOMContentLoaded", async(e) => {
         })
     }
 
-    /* document.getElementById("eye").addEventListener("click", () => {
-        e.preventDefault();
-        let input = document.getElementById('password')
-        let eye = document.getElementById('eye')
-        if (input.type == 'password') {
-            input.type = 'text'
-            eye.innerHTML = ' <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><path d="m1 1 22 22"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path>'
-        } else {
-            input.type = 'password'
-            eye.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>'
-        }
-    }) */
-
     let btns_eyes = document.querySelectorAll(".eyes");
     for (const eye of btns_eyes) {
         eye.addEventListener("click", () => {
             let input = eye.previousElementSibling;
-            checkPasswords();
             
             if (input.type == 'password') {
                 input.type = 'text'

@@ -221,12 +221,13 @@ button:disabled {
 }
 
 .password-status{
-    text-align: center;
-    border: 2px solid #36791E;
-    border-radius: 15px;
-
-    margin-top: 2%;
     margin-left: 15px;
     margin-right: 15%;
     padding: 1%;
+
+    color: red;
+}
+
+.wrong-status{
+    outline: 2px solid red;
 }
