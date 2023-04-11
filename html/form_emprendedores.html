@@ -39,13 +39,14 @@
         <h1 class="form-title">Registro para emprendedores</h1>
         <div class="container_form_input">
 
-            <form action="#">
+            <form action="#" id="register-emprendedor">
                 <div class="main-user-info">
 
                     <div class="container-checkbox">
                         <div class="container-check">
                             <label for="fisica">Persona Física</label>
-                            <input type="radio" name="tipo_persona" value="persona_fisica" id="fisica">
+                            <input
+                            type="radio" name="tipo_persona" value="persona_fisica" id="fisica" checked >
                         </div>
                         <div class="container-check">
                             <label for="juridica">Persona Jurídica</label>
@@ -54,9 +55,9 @@
                     </div>
                     <div class="contenedor_grupos">
                         <div class="container-input">
-                            <label for="name" id="tipo_razon">Nombre / Razón Social</label>
+                            <label for="name" id="tipo_razon">Nombre</label>
                             <input type="text" id="name" name="name" value=""
-                                placeholder="Ingrese su Nombre/Razón Social" />
+                                placeholder="Ingrese su Nombre/Razón Social" required/>
                         </div>
                         <div class="container-input" id="div_apellido">
                             <label for="surname">Apellido</label>
@@ -67,7 +68,7 @@
                     <div class="contenedor_grupos">
                         <div class="container-input">
                             <label for="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="Ingrese su Email" />
+                            <input type="email" id="email" name="email" placeholder="Ingrese su Email" required/>
                         </div>
                         <div class="container-input">
                             <label for="phoneNumber">Telefono</label>
@@ -78,7 +79,7 @@
                     <div class="contenedor_grupos">
                         <div class="container-input">
                             <label for="cuit_cuil">CUIT - CUIL</label>
-                            <input type="text" id="cuit_cuil" name="cuit_cuil" placeholder="Ingrese CUIT O CUIL" />
+                            <input type="text" id="cuit_cuil" name="cuit_cuil" placeholder="Ingrese CUIT O CUIL" required/>
                         </div>
 
                         <div class="container-input">
