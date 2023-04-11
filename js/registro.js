@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", async(e) => {
     document.getElementById("register-form").addEventListener("submit", (e) => {
         e.preventDefault();
         
-        checkPasswords();
         register();
     })
 
