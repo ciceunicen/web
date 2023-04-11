@@ -5,13 +5,23 @@ document.addEventListener("DOMContentLoaded", async(e) => {
 
     let signin_form = document.querySelector('#signin_form')
     let btn_register = document.querySelector('#btn-register')
+    let textPassword_status = document.querySelector('#status-text');
 
     checkInputs();
 
     document.getElementById("register-form").addEventListener("submit", (e) => {
         e.preventDefault();
+        
         register();
     })
+
+    function checkPasswords(){
+        let passwords = document.querySelectorAll('.input-eye');
+        if (passwords[0].value != passwords[1].value) //los dos campos de password
+            textPassword_status.innerHTML = "No Coinciden!!!!";
+        else
+            textPassword_status.innerHTML = "Coinciden";
+    }
 
     function checkInputs() {
         document.querySelectorAll('.signin_form').forEach(i => {
@@ -50,10 +60,11 @@ document.addEventListener("DOMContentLoaded", async(e) => {
         }
     }) */
 
-    let btns_eyes = document.getElementsByClassName("eyes"); //HTML Collection
+    let btns_eyes = document.querySelectorAll(".eyes");
     for (const eye of btns_eyes) {
-        eye.addEventListener("click", () => { //// PROBANDO, problema con selectorAll y byClasName debido a IN PROMISE!!!
+        eye.addEventListener("click", () => {
             let input = eye.previousElementSibling;
+            checkPasswords();
             
             if (input.type == 'password') {
                 input.type = 'text'
