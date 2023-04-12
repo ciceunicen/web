@@ -148,7 +148,7 @@ body {
     color: #D9D9D9;
 }
 
-.label {
+.label{
     margin-left: 15px;
     margin-top: 25px;
 }
@@ -237,5 +237,15 @@ button:disabled {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.password-status{
+    margin-left: 15px;
+    margin-right: 15%;
+    padding: 1%;
 
+    color: red;
+}
+
+.wrong-status{
+    outline: 2px solid red;
 }
