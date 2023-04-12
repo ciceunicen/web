@@ -173,7 +173,7 @@ a {
 }
 
 .button-volver {
-    margin-top: 4rem;
+    margin-top: 2rem;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -218,4 +218,24 @@ button:disabled {
     display: flex;
     justify-content: center;
     align-content: center;
+}
+
+
+
+/* ERRORES ---------------------------------------------------------------*/
+
+.login-error{
+    height: 12px;
+
+    margin-top: 1rem;
+    padding: 0px;
+    color: #EF1919
+}
+
+.center-error{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
