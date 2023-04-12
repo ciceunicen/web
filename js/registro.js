@@ -152,5 +152,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             name: name,
             surname: surname,
         }
+      }  
     }
 })

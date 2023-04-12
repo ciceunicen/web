@@ -39,8 +39,17 @@
                 </div>
                 <div class="email signin_form">
                     <label class="label" for="">Email</label>
-                    <input class="input" type="email" name="" id="email">
+                    <input class="input input-error" type="email" name="" id="email">
+                    
+                    <!-- email error -->
+                    <div class="email-status">
+                        <span id="">Email inválido</span>
+                    </div>
                 </div>
+
+                <!-- Email-error -->
+              
+
                 <div class="pass signin_form">
                     <label class="label" for="">Contraseña</label>
                     <div class="eye-password">
@@ -53,7 +62,12 @@
                         </svg>
                     </div>
 
-                    <label class="label" for="">Confirmar contraseña</label>
+                    <!-- pass error -->
+                    <div class="password-status">
+                        <span id="">La contraseña debe tener entre 8 y 20 caracteres</span>
+                    </div>
+
+                    <label class="label pd-t" for="">Confirmar contraseña</label>
                     <div class="eye-password">
                         <input class="input-eye" type="password" name="" id="password2" minlength="8" maxlength="20">
                         <svg class="eyes" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
@@ -63,6 +77,7 @@
                             <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
                         </svg>
                     </div>
+
                     <div class="password-status">
                         <span id="status-text"></span>
                     </div>
