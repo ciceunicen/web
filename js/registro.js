@@ -1,5 +1,6 @@
-document.addEventListener("DOMContentLoaded", async(e) => {
+document.addEventListener("DOMContentLoaded", async () => {
     "use strict";
+
 
     const URL_REGISTER = "http://localhost:8080/usuarios";
 
@@ -38,6 +39,26 @@ document.addEventListener("DOMContentLoaded", async(e) => {
                     p.classList.remove('wrong-status');
             });
         }
+
+    function success() {
+
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Registrado con exito',
+            showConfirmButton: false,
+            timer: 2000,
+        })
+    }
+
+    function error(err) {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: `${err.error} - ${err.status}`,
+            showConfirmButton: true,
+            // timer: 2000,
+        })
     }
 
     function checkInputs() {
@@ -86,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async(e) => {
 
     async function register() {
 
-        let valoresInputs = getDatosInputsLogin();
+        let valoresInputs = getDatosInputsRegitro();
 
         let datosRegister = JSON.stringify(valoresInputs);
 
@@ -103,21 +124,27 @@ document.addEventListener("DOMContentLoaded", async(e) => {
             });
 
             let data = await response.json();
+            console.log(data)
             if (!response.ok) {
+                console.log("aaaaaaaaaaaaaaaa")
                 throw { error: data.error, status: data.status }
             } else {
-                window.location.replace("http://localhost/proyectos/CICE/web/")
+                success();
+                setTimeout(() => {
+                    window.location.replace("http://localhost/proyectos/CICE/web/html/login.html")
+                }, 1500)
             }
         } catch (e) {
-            console.log(e)
+            error(e)
+            console.log(e);
         }
     }
 
-    function getDatosInputsLogin() {
-        let email = document.getElementById("email").value;
-        let pass = document.getElementById("password").value;
-        let name = document.getElementById("name").value;
-        let surname = document.getElementById("surname").value;
+    function getDatosInputsRegitro() {
+        let email = document.getElementById("email")?.value;
+        let pass = document.getElementById("password")?.value;
+        let name = document.getElementById("name")?.value;
+        let surname = document.getElementById("surname")?.value;
 
         return {
             email: email,
