@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     p.classList.remove('wrong-status');
             });
         }
+    }
 
     function success() {
 
