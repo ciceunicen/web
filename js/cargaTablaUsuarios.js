@@ -4,6 +4,16 @@ document.addEventListener("DOMContentLoaded", async(e) => {
 
     obtenerUsuarios(URL_ROL_USER);
 
+    let btnsRol = document.querySelectorAll('btn-detalles');
+    console.table(btnsRol);
+    btnsRol.forEach(btn => {
+        btn.addEventListener("click", e => {
+            e.preventDefault();
+
+            /*  changeRol(btn.getAttribute("data-id"))*/
+        })
+    })
+
     async function obtenerUsuarios(url) {
         try {
             let respuesta = await fetch(url);
@@ -27,15 +37,48 @@ document.addEventListener("DOMContentLoaded", async(e) => {
     function cargarUsuarios(arregloUsuarios) {
         tabla.innerHTML = "";
         arregloUsuarios.forEach(usuario => {
-            let datosUsuario =
-                `<td>${usuario.name}</td>
-            <td>${usuario.surname}</td>
-            <td>${usuario.email}</td>
-                 <td>${usuario.rol.type}</td> `
-
-            tabla.innerHTML +=
-                `<tr>${datosUsuario}</tr>`
+            if (usuario.rol.id == 1 || usuario.rol.id == 3) { //sòlo se muestran los usuarios que pueden ser admin, o los admin
+                let datosUsuario =
+                    `<td>${usuario.name}</td>
+                <td>${usuario.surname}</td>
+                <td>${usuario.email}</td>
+                <td>${usuario.rol.type}</td> `
+                if (usuario.rol.id == 1) {
+                    datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Remover Admin</button>";
+                } else {
+                    datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button>";
+                }
+                tabla.innerHTML += `<tr>${datosUsuario}</tr>`
+            }
         });
+    }
+
+    async function changeRol(idUser) {
+        try {
+            let response = await fetch(URL_ROL_USER + idUser + "/rol", {
+                "method": "PUT",
+                "headers": {
+                    "Content-Type": "application/json",
+                },
+                "body": JSON.stringify({
+
+
+                    "id": idUser
+
+                })
+
+
+            });
+
+            if (!response.ok) {
+                throw { error: data.error, status: data.status }
+            }
+        } catch (e) {
+            console.log(e)
+        }
+
+
+
     }
 
     /*  mostrar(array)
