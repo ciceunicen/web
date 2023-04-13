@@ -4,15 +4,19 @@ document.addEventListener("DOMContentLoaded", async(e) => {
 
     obtenerUsuarios(URL_ROL_USER);
 
-    let btnsRol = document.querySelectorAll('btn-detalles');
-    console.table(btnsRol);
-    btnsRol.forEach(btn => {
-        btn.addEventListener("click", e => {
-            e.preventDefault();
+    function buttons_action(){
+        let btnsRol = document.querySelectorAll('.btn-detalles');
+        console.log("Entra?")
+        console.log(btnsRol);
+        btnsRol.forEach(btn => {
+            btn.addEventListener("click", e => {
+            e.preventDefault(); //no necesario pq no es un form mepa
+            console.log("Me clickearon!!!")
 
-            /*  changeRol(btn.getAttribute("data-id"))*/
+                /*  changeRol(btn.getAttribute("data-id"))*/
+            })
         })
-    })
+    } 
 
     async function obtenerUsuarios(url) {
         try {
@@ -24,6 +28,8 @@ document.addEventListener("DOMContentLoaded", async(e) => {
                     cargarUsuarios(arreglo); ///
                     console.table(arreglo);
                     console.log("Es mayor a 0");
+
+                    buttons_action();
                 }
             }
         } catch (error) {
