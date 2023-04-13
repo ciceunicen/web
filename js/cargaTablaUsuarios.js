@@ -1,22 +1,17 @@
-document.addEventListener("DOMContentLoaded", async(e) => {
+document.addEventListener("DOMContentLoaded", () => {
     "use strict";
     const URL_ROL_USER = "http://localhost:8080/usuarios"
 
     obtenerUsuarios(URL_ROL_USER);
 
-    function buttons_action(){
+    function buttons_action() {
         let btnsRol = document.querySelectorAll('.btn-detalles');
-        console.log("Entra?")
-        console.log(btnsRol);
         btnsRol.forEach(btn => {
             btn.addEventListener("click", e => {
-            e.preventDefault(); //no necesario pq no es un form mepa
-            console.log("Me clickearon!!!")
-
-                /*  changeRol(btn.getAttribute("data-id"))*/
+                changeRol(btn.getAttribute("data-id"), btn.innerHTML);
             })
         })
-    } 
+    }
 
     async function obtenerUsuarios(url) {
         try {
@@ -26,8 +21,8 @@ document.addEventListener("DOMContentLoaded", async(e) => {
 
                 if (arreglo) {
                     cargarUsuarios(arreglo); ///
-                    console.table(arreglo);
-                    console.log("Es mayor a 0");
+
+
 
                     buttons_action();
                 }
@@ -59,9 +54,19 @@ document.addEventListener("DOMContentLoaded", async(e) => {
         });
     }
 
-    async function changeRol(idUser) {
+    async function changeRol(idUser, btnLabel) {
+
+        /* btnText = document.getAttribute("data-id");
+        console.log(btnText); */
+
+        let newId;
+        if (btnLabel == "Remover Admin")
+            newId = 3;
+        else
+            newId = 1;
+
         try {
-            let response = await fetch(URL_ROL_USER + idUser + "/rol", {
+            let response = await fetch(URL_ROL_USER + "/" + idUser + "/rol", {
                 "method": "PUT",
                 "headers": {
                     "Content-Type": "application/json",
@@ -69,16 +74,14 @@ document.addEventListener("DOMContentLoaded", async(e) => {
                 "body": JSON.stringify({
 
 
-                    "id": idUser
+                    "id": newId
 
                 })
 
 
             });
 
-            if (!response.ok) {
-                throw { error: data.error, status: data.status }
-            }
+            obtenerUsuarios(URL_ROL_USER);
         } catch (e) {
             console.log(e)
         }
