@@ -161,7 +161,7 @@ a {
 
 .pass,
 .email {
-    margin-top: 1.6rem;
+    margin-top: 1rem;
     width: 100%;
 }
 
@@ -173,7 +173,7 @@ a {
 }
 
 .button-volver {
-    margin-top: 4rem;
+    margin-top: 2rem;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -220,14 +220,44 @@ button:disabled {
     align-content: center;
 }
 
+
+.pd-t{
+    margin-top: 1rem;
+}
+
+/* ERRORES ---------------------------------------------------------------*/
+
+.login-error{
+    height: 12px;
+
+    margin-top: 1rem;
+    padding: 0px;
+    color: #EF1919
+}
+
+.center-error{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.email-status{
+    margin-left: 15px;
+    margin-right: 15%;
+    padding: 1%;
+    margin-bottom: 0.2rem;
+    color: #EF1919;
+}
+
 .password-status{
     margin-left: 15px;
     margin-right: 15%;
     padding: 1%;
-
-    color: red;
+    margin-bottom: 0.2rem;
+    color: #EF1919;
 }
 
 .wrong-status{
-    outline: 2px solid red;
+    outline: 2px solid #EF1919;
 }
