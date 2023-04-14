@@ -228,8 +228,8 @@ button:disabled {
 /* ERRORES ---------------------------------------------------------------*/
 
 .login-error{
+  display: none;
     height: 12px;
-
     margin-top: 1rem;
     padding: 0px;
     color: #EF1919
@@ -243,6 +243,7 @@ button:disabled {
 }
 
 .email-status{
+    display: none;
     margin-left: 15px;
     margin-right: 15%;
     padding: 1%;
@@ -251,11 +252,16 @@ button:disabled {
 }
 
 .password-status{
+    display: block;
     margin-left: 15px;
     margin-right: 15%;
     padding: 1%;
     margin-bottom: 0.2rem;
     color: #EF1919;
+}
+
+#status-length.password-status{
+  display: none; 
 }
 
 .wrong-status{
