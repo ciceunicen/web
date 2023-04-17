@@ -4,9 +4,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const URL_REGISTER = "http://localhost:8080/usuarios";
 
-    let signin_form = document.querySelector('#signin_form')
-    let btn_register = document.querySelector('#btn-register')
+    let signin_form = document.querySelector('#signin_form');
+    let btn_register = document.querySelector('#btn-register');
     let textPassword_status = document.querySelector('#status-text');
+    let textPassword_length = document.getElementById('#status-length');
+    let existingUserError = document.getElementById("existingUserError");
+    let invalidMailError = document.getElementById("invalidMailError");
 
     
     document.querySelectorAll('.input-eye').forEach(field_password => { //checkeo cada vez que escriben en algun campo pw
@@ -110,6 +113,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         let valoresInputs = getDatosInputsRegitro();
 
+        /*
+        let passWordLength = valoresInputs.password.length;
+        if (passWordLengthh < 8 || passWordLength > 20){
+          document.getElementById("errorInvalidPassMsg").style.display="block"
+          return;
+        } 
+        */
+
         let datosRegister = JSON.stringify(valoresInputs);
 
         try {
@@ -127,9 +138,22 @@ document.addEventListener("DOMContentLoaded", async () => {
             let data = await response.json();
             console.log(data)
             if (!response.ok) {
-                console.log("aaaaaaaaaaaaaaaa")
+                switch(response.status){
+                    case 400: //"Bad request", el email esta mal formateado
+                        invalidMailError.style.display="block";
+                        break;
+                    case 409: //"Conflict", el email ya existe
+                        existingUserError.style.display="block";
+                        break;
+                    case 422: //"Unprocessable Entity", la contraseña es del largo equivocado (menor a 8 caracteres o mayor a 20)
+                        textPassword_length.style.display="block";
+                        break;
+                }
                 throw { error: data.error, status: data.status }
             } else {
+                invalidMailError.style.display="none";
+                existingUserError.style.display="none";
+                textPassword_length.style.display="none";
                 success();
                 setTimeout(() => {
                     window.location.replace("http://localhost/proyectos/CICE/web/html/login.html")
@@ -155,4 +179,4 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }  
     }
-})
+)

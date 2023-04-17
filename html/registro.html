@@ -15,7 +15,7 @@
         <div class="info-login">
             <img src="../img/logo-login-registro.png" alt="">
             <div clasS="info">
-                <p>Campus Universiatio</p>
+                <p>Campus Universitario</p>
                 <p>Paraje Arroyo Seco S/N</p>
                 <p>0249 438 5522</p>
                 <p>info@cice.unicen.edu.ar</p>
@@ -42,9 +42,12 @@
                     <input class="input input-error" type="email" name="" id="email">
                     
                     <!-- email error -->
-                    <div class="email-status">
-                        <span id="">Email inválido</span>
+                    <div id="invalidMailError" class="email-status">
+                        <span id="">Formato de email inválido</span>
                     </div>
+                    <div id="existingUserError" class="email-status">
+                      <span id="">Este email ya esta en uso</span>
+                  </div>
                 </div>
 
                 <!-- Email-error -->
@@ -63,7 +66,7 @@
                     </div>
 
                     <!-- pass error -->
-                    <div class="password-status">
+                    <div id="status-length" class="password-status">
                         <span id="">La contraseña debe tener entre 8 y 20 caracteres</span>
                     </div>
 

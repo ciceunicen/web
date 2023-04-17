@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     /*   let sig_form = document.querySelector('.sig_form')*/
     let btnLog = document.querySelector('#btnLog')
     let btnReg = document.querySelector('#btnReg')
+    let loginError = document.getElementById('loginError')
 
     checkInputs();
 
@@ -56,6 +57,33 @@ document.addEventListener("DOMContentLoaded", (e) => {
         e.preventDefault();
         console.log("login")
 
+        /*
+        try {
+
+            let response = await fetch(
+              // metodo fetch
+            });
+
+            let data = await response.json();
+            console.log(data)
+            if (!response.ok) {
+                switch(response.status){
+                    case 401: //"Unauthorized", no se realizo login correctamente
+                    loginError.style.display="block";
+                    break;
+                }
+                throw { error: data.error, status: data.status }
+                
+            } else {
+                loginError.style.display="none";
+                // completar el login
+            }
+        } catch (e) {
+            error(e)
+            console.log(e);
+        }
+
+        */
     })
 })
 
