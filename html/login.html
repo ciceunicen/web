@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="../css/login.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Document</title>
 </head>
 
@@ -19,13 +20,19 @@
                 <p>0249 438 5522</p>
                 <p>info@cice.unicen.edu.ar</p>
             </div>
+
         </div>
 
         <div class="login-form-container">
+
+
+
             <form class="form-login" action="" id="register-form">
+
                 <div class="titulo">
                     <h2>INICIAR SESION</h2>
                 </div>
+
                 <div class="inputLog">
                     <div class="labInput sig_form">
                         <label class="label" for="">Email</label>
@@ -46,25 +53,26 @@
                     </div>
                 </div>
 
-                <div class="center-error">
-                    <p class="login-error" id="loginError">Usuario y/o contraseña inválidos</p>
-                </div>
-                
 
                 <div class="button-volver">
                     <button type="submit" class="button" id="btnLog" disabled>
                         INGRESAR
                     </button>
                     <a ID="noUser">¿No sos usuario?</a>
-                    <button type="submit" class="button" id="btnReg" disabled>
+                    <button type="submit" class="button" id="btnReg">
                         REGISTRARSE
                     </button>
                 </div>
+
+
+
+
             </form>
         </div>
+
     </div>
 
-
+    <!-- <script src="../js/registro.js"></script> -->
     <script src="../js/login.js"></script>
 </body>
 
