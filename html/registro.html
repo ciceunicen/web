@@ -15,7 +15,7 @@
         <div class="info-login">
             <img src="../img/logo-login-registro.png" alt="">
             <div clasS="info">
-                <p>Campus Universiatio</p>
+                <p>Campus Universitario</p>
                 <p>Paraje Arroyo Seco S/N</p>
                 <p>0249 438 5522</p>
                 <p>info@cice.unicen.edu.ar</p>
@@ -39,18 +39,50 @@
                 </div>
                 <div class="email signin_form">
                     <label class="label" for="">Email</label>
-                    <input class="input" type="text" name="" id="email">
+                    <input class="input input-error" type="email" name="" id="email">
+                    
+                    <!-- email error -->
+                    <div id="invalidMailError" class="email-status">
+                        <span id="">Formato de email inválido</span>
+                    </div>
+                    <div id="existingUserError" class="email-status">
+                      <span id="">Este email ya esta en uso</span>
+                  </div>
                 </div>
+
+                <!-- Email-error -->
+              
+
                 <div class="pass signin_form">
                     <label class="label" for="">Contraseña</label>
                     <div class="eye-password">
-                        <input class="input-eye" type="password" name="" id="password">
-                        <svg id="eye" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
+                        <input class="input-eye" type="password" name="" id="password" minlength="8" maxlength="20">
+                        <svg class="eyes" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
                         </svg>
+                    </div>
+
+                    <!-- pass error -->
+                    <div id="status-length" class="password-status">
+                        <span id="">La contraseña debe tener entre 8 y 20 caracteres</span>
+                    </div>
+
+                    <label class="label pd-t" for="">Confirmar contraseña</label>
+                    <div class="eye-password">
+                        <input class="input-eye" type="password" name="" id="password2" minlength="8" maxlength="20">
+                        <svg class="eyes" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
+                        </svg>
+                    </div>
+
+                    <div class="password-status">
+                        <span id="status-text"></span>
                     </div>
                 </div>
                 <div class="button-volver">
