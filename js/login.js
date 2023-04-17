@@ -1,9 +1,11 @@
-document.addEventListener("DOMContentLoaded", (e) => {
+document.addEventListener("DOMContentLoaded", () => {
     "use strict";
+
+    const URL_LOGIN = "http://localhost:8080/auth/login";
 
     /*   let sig_form = document.querySelector('.sig_form')*/
     let btnLog = document.querySelector('#btnLog')
-    let btnReg = document.querySelector('#btnReg')
+    // let btnReg = document.querySelector('#btnReg')
 
     checkInputs();
 
@@ -14,11 +16,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 if (checkSigninInput()) {
 
                     btnLog.removeAttribute('disabled')
-                    btnReg.removeAttribute('disabled')
+                    // btnReg.removeAttribute('disabled')
                 } else {
 
                     btnLog.setAttribute('disabled', 'true')
-                    btnReg.setAttribute('disabled', 'true')
+                    // btnReg.setAttribute('disabled', 'true')
                 }
             }
         })
@@ -48,14 +50,75 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     document.getElementById("btnReg").addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("first")
         window.location.replace("http://localhost/proyectos/CICE/web/html/registro.html")
     })
 
     document.getElementById("btnLog").addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("login")
-
+        login();
     })
+
+
+
+    function success() {
+
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Registrado con exito',
+            showConfirmButton: false,
+            timer: 2000,
+        })
+    }
+
+    async function login() {
+
+        let valoresInputs = getDatosInputsLogin();
+        let datosLogin = JSON.stringify(valoresInputs);
+
+        try {
+
+            let response = await fetch(URL_LOGIN, {
+                "method": "POST",
+
+                "headers": {
+                    "Content-Type": "application/json",
+                },
+                "body": datosLogin,
+            });
+
+            let data = await response.json();
+            console.log(data)
+            if (!response.ok) {
+                //TODO::
+                /**VERIFICAR ERRORES ENVIADOS DESDE BACK */
+                /**CAMBIAR URL'S DINAMICAS */
+                // throw { error: data.error, status: data.status }
+            } else {
+                localStorage.setItem("token", data.accessToken)
+                localStorage.setItem("usuario", data.email)
+
+                success();
+
+                setTimeout(() => {
+                    window.location.replace("http://localhost/proyectos/CICE/web/")
+                }, 1500)
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+
+    function getDatosInputsLogin() {
+        let email = document.getElementById("email-login")?.value;
+        let pass = document.getElementById("password-login")?.value;
+        console.log(email)
+        console.log(pass)
+        return {
+            email: email,
+            password: pass,
+        }
+    }
 })
 
