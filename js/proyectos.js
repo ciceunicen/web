@@ -6,17 +6,13 @@ let statusFile = true;//guarda si los archivos cargados tienen una estenciÃ³n vÃ
 
 //POST
 async function saveProject(datos) {
-  let token = localStorage.getItem("token");
+
   await fetch(URLProject, {
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(datos),
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,
-      "Access-Control-Allow-Origin": "*",
-    },
-    credentials: "include",
+    headers: { "Access-Control-Allow-Origin": "*", },
+    headers: { "Content-type": "application/json; charset=UTF-8", }
   })
     .then(response => response.json())
     .then(json => {
@@ -27,11 +23,18 @@ async function saveProject(datos) {
 
 //BORRAR UN PROYECTO EN PARTICULAR
 function borrarProyecto(id_Project, id_Admin, projectManager = 0) {
+  let token = localStorage.getItem("token");
+
   page = 1;
   fetch(URLProject + "/idProject/" + id_Project + "/idAdmin/" + id_Admin, {
     method: 'DELETE',
-    headers: { "Access-Control-Allow-Origin": "*", },
-    headers: { "Content-type": "application/json; charset=UTF-8", }
+    mode: 'cors',
+
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    },
   })
     .then(response => {
       if (projectManager != 0) {
@@ -57,7 +60,18 @@ function getProyecto(id) {
 
 //GET DE TODOS LOS PROYECTOS
 function getAllProjects() {
-  return fetch(URLProject + "/page/" + page)
+  let token = localStorage.getItem("token")
+  console.log(token)
+  return fetch(URLProject + "/page/" + page, {
+    mode: 'cors',
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    },
+
+  })
     .then(response => response.json())
     .then(json => { return json });
 }
