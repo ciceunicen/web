@@ -1,11 +1,12 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", (e) => {
     "use strict";
 
     const URL_LOGIN = "http://localhost:8080/auth/login";
 
     /*   let sig_form = document.querySelector('.sig_form')*/
     let btnLog = document.querySelector('#btnLog')
-    // let btnReg = document.querySelector('#btnReg')
+    let btnReg = document.querySelector('#btnReg')
+    let loginError = document.getElementById('loginError')
 
     checkInputs();
 
@@ -25,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         })
     }
-
     const checkSigninInput = () => {
 
         let inputs = document.querySelectorAll('input')
@@ -50,15 +50,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("btnReg").addEventListener("click", (e) => {
         e.preventDefault();
+        console.log("first")
         window.location.replace("http://localhost/proyectos/CICE/web/html/registro.html")
     })
 
     document.getElementById("btnLog").addEventListener("click", (e) => {
         e.preventDefault();
         login();
+        /*
+        try {
+
+            let response = await fetch(
+              // metodo fetch
+            });
+
+            let data = await response.json();
+            console.log(data)
+            if (!response.ok) {
+                switch(response.status){
+                    case 401: //"Unauthorized", no se realizo login correctamente
+                    loginError.style.display="block";
+                    break;
+                }
+                throw { error: data.error, status: data.status }
+                
+            } else {
+                loginError.style.display="none";
+                // completar el login
+            }
+        } catch (e) {
+            error(e)
+            console.log(e);
+        }
+
+        */
     })
-
-
 
     function success() {
 
@@ -109,7 +135,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-
     function getDatosInputsLogin() {
         let email = document.getElementById("email-login")?.value;
         let pass = document.getElementById("password-login")?.value;
@@ -120,5 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
             password: pass,
         }
     }
+
 })
 
