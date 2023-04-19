@@ -15,9 +15,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function obtenerUsuarios(url) {
         try {
-            let respuesta = await fetch(url);
+            let respuesta = await fetch(url, {
+                "method": "GET",
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxLGNhcm9zb0BnbWFpbC5jb20iLCJpc3MiOiJDaWNlRGV2IiwiaWF0IjoxNjgxODY3OTIxLCJleHAiOjE2ODE5NTQzMjF9.G4-TqfUyw1Cus4Q6D4DYBVpahi8Tv1FD-DWMUaZcpE9MUV0hu-HmOzVFEIcTan-eCR5SN0ICQJOTQ5fsJ4q5mQ"
+
+                },
+            })
             if (respuesta.ok) {
                 let arreglo = await respuesta.json();
+                console.log(arreglo);
 
                 if (arreglo) {
                     cargarUsuarios(arreglo); ///
@@ -38,15 +45,15 @@ document.addEventListener("DOMContentLoaded", () => {
     function cargarUsuarios(arregloUsuarios) {
         tabla.innerHTML = "";
         arregloUsuarios.forEach(usuario => {
-            if (usuario.rol.id == 1 || usuario.rol.id == 3) { //sòlo se muestran los usuarios que pueden ser admin, o los admin
+            if (usuario.rol.id == 2 || usuario.rol.id == 4) { //sòlo se muestran los usuarios que pueden ser admin, o los admin
                 let datosUsuario =
                     `<td>${usuario.name}</td>
                 <td>${usuario.surname}</td>
                 <td>${usuario.email}</td>
                 <td>${usuario.rol.type}</td> `
-                if (usuario.rol.id == 1) {
+                if (usuario.rol.id == 2) {
                     datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Remover Admin</button>";
-                } else {
+                } else if (usuario.rol.id == 4) {
                     datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button>";
                 }
                 tabla.innerHTML += `<tr>${datosUsuario}</tr>`
@@ -61,15 +68,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let newId;
         if (btnLabel == "Remover Admin")
-            newId = 3;
+            newId = 4;
         else
-            newId = 1;
+            newId = 2;
 
         try {
             let response = await fetch(URL_ROL_USER + "/" + idUser + "/rol", {
                 "method": "PUT",
                 "headers": {
                     "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxLGNhcm9zb0BnbWFpbC5jb20iLCJpc3MiOiJDaWNlRGV2IiwiaWF0IjoxNjgxODY3OTIxLCJleHAiOjE2ODE5NTQzMjF9.G4-TqfUyw1Cus4Q6D4DYBVpahi8Tv1FD-DWMUaZcpE9MUV0hu-HmOzVFEIcTan-eCR5SN0ICQJOTQ5fsJ4q5mQ"
                 },
                 "body": JSON.stringify({
 
