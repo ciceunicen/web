@@ -14,11 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function obtenerUsuarios(url) {
+        let tokin = localStorage.getItem("token");
+        console.log("El token es: " + tokin)
         try {
             let respuesta = await fetch(url, {
                 "method": "GET",
                 "headers": {
-                    "Authorization": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxLGNhcm9zb0BnbWFpbC5jb20iLCJpc3MiOiJDaWNlRGV2IiwiaWF0IjoxNjgxODY3OTIxLCJleHAiOjE2ODE5NTQzMjF9.G4-TqfUyw1Cus4Q6D4DYBVpahi8Tv1FD-DWMUaZcpE9MUV0hu-HmOzVFEIcTan-eCR5SN0ICQJOTQ5fsJ4q5mQ"
+                    "Authorization": "Bearer " + tokin
 
                 },
             })
