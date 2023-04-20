@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     "use strict";
     const URL_ROL_USER = "http://localhost:8080/usuarios"
-
+    const tokin = localStorage.getItem("token");
     obtenerUsuarios(URL_ROL_USER);
 
     function buttons_action() {
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function obtenerUsuarios(url) {
-        let tokin = localStorage.getItem("token");
+
         console.log("El token es: " + tokin)
         try {
             let respuesta = await fetch(url, {
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "method": "PUT",
                 "headers": {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxLGNhcm9zb0BnbWFpbC5jb20iLCJpc3MiOiJDaWNlRGV2IiwiaWF0IjoxNjgxODY3OTIxLCJleHAiOjE2ODE5NTQzMjF9.G4-TqfUyw1Cus4Q6D4DYBVpahi8Tv1FD-DWMUaZcpE9MUV0hu-HmOzVFEIcTan-eCR5SN0ICQJOTQ5fsJ4q5mQ"
+                    "Authorization": "Bearer " + tokin
                 },
                 "body": JSON.stringify({
 
