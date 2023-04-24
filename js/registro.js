@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let signin_form = document.querySelector('#signin_form');
     let btn_register = document.querySelector('#btn-register');
     let textPassword_status = document.querySelector('#status-text');
-    let textPassword_length = document.getElementById('#status-length');
+    let textPassword_length = document.getElementById('status-length');
     let existingUserError = document.getElementById("existingUserError");
     let invalidMailError = document.getElementById("invalidMailError");
 
