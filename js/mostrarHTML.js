@@ -19,6 +19,8 @@ function mostrarHome(){
       });
       //HOME TEMPORAL
       document.querySelector("#emprendedores").click();
+
+      logout("."); //Una vez cargado el NAV (se carga con parcial render), le agrego funcionalidad al boton creado
     })
 }
 
