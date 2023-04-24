@@ -1,4 +1,4 @@
-function logout(){
+function logout(param = ".."){ //Si no viene nada default ".." Esto es debido a que si se hacia logout en la pagina principal "index", se iba de carpeta por demas
     let btn_close = document.querySelector(".closeSession"); 
     
     btn_close.addEventListener("click", () => {
@@ -6,6 +6,6 @@ function logout(){
         console.log("token destroy");
 
         /* window.location.replace("../html/login.html"); */ //Cambie el .replace debido a que te quita la posibilidad de volver para atras en historial
-        window.location.href = "../html/login.html"; //Redirigo a Login 
+        window.location.href = `${param}/html/login.html`; //Redirigo a Login 
     })
 }
