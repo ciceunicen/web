@@ -156,7 +156,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 textPassword_length.style.display="none";
                 success();
                 setTimeout(() => {
-                    window.location.replace("http://localhost/proyectos/CICE/web/html/login.html")
+                    //window.location.replace("http://localhost/proyectos/CICE/web/html/login.html")
+                    window.location.href = "./login.html";
                 }, 1500)
             }
         } catch (e) {
