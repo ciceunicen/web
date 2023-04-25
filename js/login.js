@@ -123,7 +123,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
             } else {
                 localStorage.setItem("token", data.accessToken)
                 localStorage.setItem("usuario", data.email)
-                localStorage.setItem("rol id", data.rol)
+                localStorage.setItem("rol_id", data.rolID)
+                localStorage.setItem("rol_type", data.rolType)
 
                 success();
 
