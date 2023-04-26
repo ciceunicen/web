@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 // throw { error: data.error, status: data.status }
             } else {
                 localStorage.setItem("token", data.accessToken)
-                localStorage.setItem("usuario", data.email)
+                localStorage.setItem("usuario", data.usuario)
 
                 success();
 
