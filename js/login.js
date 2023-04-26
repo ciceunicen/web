@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         Swal.fire({
             position: 'center',
             icon: 'success',
-            title: 'Registrado con exito',
+            title: 'Sesion iniciada con exito',
             showConfirmButton: false,
             timer: 2000,
         })
@@ -129,7 +129,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 success();
 
                 setTimeout(() => {
-                    window.location.replace("http://localhost/proyectos/CICE/web/")
+                    //window.location.replace("http://localhost/proyectos/CICE/web/")
+                    window.location.href = "./dashboard.html";
                 }, 1500)
             }
         } catch (e) {
