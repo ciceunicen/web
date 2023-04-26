@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     /*   let sig_form = document.querySelector('.sig_form')*/
     let btnLog = document.querySelector('#btnLog')
     let btnReg = document.querySelector('#btnReg')
-    let loginError = document.getElementById('loginError')
+    let loginError = document.getElementById("loginUserPassError")
 
     checkInputs();
 
@@ -57,33 +57,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
     document.getElementById("btnLog").addEventListener("click", (e) => {
         e.preventDefault();
         login();
-        /*
-        try {
-
-            let response = await fetch(
-              // metodo fetch
-            });
-
-            let data = await response.json();
-            console.log(data)
-            if (!response.ok) {
-                switch(response.status){
-                    case 401: //"Unauthorized", no se realizo login correctamente
-                    loginError.style.display="block";
-                    break;
-                }
-                throw { error: data.error, status: data.status }
-                
-            } else {
-                loginError.style.display="none";
-                // completar el login
-            }
-        } catch (e) {
-            error(e)
-            console.log(e);
-        }
-
-        */
     })
 
     function success() {
@@ -96,6 +69,16 @@ document.addEventListener("DOMContentLoaded", (e) => {
             timer: 2000,
         })
     }
+
+    /*function error(err) {
+      Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: `${err.error} - ${err.status}`,
+          showConfirmButton: true,
+          // timer: 2000,
+      })
+    }*/
 
     async function login() {
 
@@ -113,28 +96,39 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 "body": datosLogin,
             });
 
-            let data = await response.json();
-            console.log(data)
+            
             if (!response.ok) {
-                //TODO::
-                /**VERIFICAR ERRORES ENVIADOS DESDE BACK */
-                /**CAMBIAR URL'S DINAMICAS */
-                // throw { error: data.error, status: data.status }
+                let errorText
+                switch(response.status){
+                    case 400: //"Bad request", no se realizo login correctamente
+                        loginError.style.display="block";
+                        errorText = "Bad Request"
+                        break;
+                    case 401: //"Unauthorized", el email existe pero las credenciales son incorrectas
+                        loginError.style.display="block";
+                        errorText = "Unauthorized"
+                        break;
+                    default: 
+                        errorText = "Error"
+                }
+                throw { error: response.status , status: errorText }
             } else {
+                let data = await response.json();
+                loginError.style.display="none";
                 localStorage.setItem("token", data.accessToken)
                 localStorage.setItem("usuario", data.email)
                 localStorage.setItem("rol_id", data.rolID)
                 localStorage.setItem("rol_type", data.rolType)
 
                 success();
-
+                
                 setTimeout(() => {
                     //window.location.replace("http://localhost/proyectos/CICE/web/")
                     window.location.href = "./dashboard.html";
                 }, 1500)
             }
         } catch (e) {
-            console.log(e);
+            console.log(e)
         }
     }
 

@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
     }
 
-    function error(err) {
+    /*function error(err) {
         Swal.fire({
             position: 'center',
             icon: 'error',
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             showConfirmButton: true,
             // timer: 2000,
         })
-    }
+    }*/
 
     function checkInputs() {
         document.querySelectorAll('.signin_form').forEach(i => {
@@ -113,14 +113,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         let valoresInputs = getDatosInputsRegitro();
 
-        /*
-        let passWordLength = valoresInputs.password.length;
-        if (passWordLengthh < 8 || passWordLength > 20){
-          document.getElementById("errorInvalidPassMsg").style.display="block"
-          return;
-        } 
-        */
-
         let datosRegister = JSON.stringify(valoresInputs);
 
         try {
@@ -135,21 +127,26 @@ document.addEventListener("DOMContentLoaded", async () => {
                 "body": datosRegister,
             });
 
-            let data = await response.json();
-            console.log(data)
+            // let data = await response.json();
             if (!response.ok) {
+                let errorText
                 switch(response.status){
                     case 400: //"Bad request", el email esta mal formateado
                         invalidMailError.style.display="block";
+                        errorText = "Bad Request"
                         break;
                     case 409: //"Conflict", el email ya existe
                         existingUserError.style.display="block";
+                        errorText = "Conflict"
                         break;
                     case 422: //"Unprocessable Entity", la contraseña es del largo equivocado (menor a 8 caracteres o mayor a 20)
                         textPassword_length.style.display="block";
+                        errorText = "Unprocessable Entity"
                         break;
+                    default: 
+                        errorText = "Error"
                 }
-                throw { error: data.error, status: data.status }
+                throw { error: response.status , status: errorText }
             } else {
                 invalidMailError.style.display="none";
                 existingUserError.style.display="none";
@@ -161,7 +158,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }, 1500)
             }
         } catch (e) {
-            error(e)
             console.log(e);
         }
     }
