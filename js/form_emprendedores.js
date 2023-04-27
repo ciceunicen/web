@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     "use strict";
 
+    logout();
+
     const URL_EMPRENDEDORES = "http://localhost:8080/emprendedores";
     
 

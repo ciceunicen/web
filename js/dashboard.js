@@ -13,24 +13,28 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     let container = document.getElementById("directions")
     let user_name = document.getElementById("user_name")
     let user_email = document.getElementById("user_email")
+
+    let user = localStorage.getItem('usuario')
+    user.rolType.toLowerCase()
+
+    user_name.innerHTML = user.name
+    user_email.innerHTML = user.email
     
-    let rol = localStorage.getItem('rol_type')
-    if(rol == "defecto"){ 
+    if(user.rolType == "defecto"){ 
         container.innerHTML = USER
-    }else if(rol == "emprendedor"){
+    }else if(user.rolType == "emprendedor"){
         container.innerHTML = EMPRENDEDOR
-    }else if(rol == "admin"){
+    }else if(user.rolType == "admin"){
         container.innerHTML = ADMIN
-    }else if(rol == "superadmin"){
+    }else if(user.rolType == "superadmin"){
         container.innerHTML = SUPERADMIN
     }else{
         container.innerHTML = EMPRENDEDOR
     }
 
 
-    let user = localStorage.getItem('usuario')
-    user_name.innerHTML = user.name
-    user_email.innerHTML = user.email
+    
+    
 
 
 })

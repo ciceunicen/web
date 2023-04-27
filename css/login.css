@@ -227,8 +227,12 @@ button:disabled {
 
 /* ERRORES ---------------------------------------------------------------*/
 
+#loginUserPassError.login-error{
+    text-align: center;
+}
+
 .login-error{
-  display: none;
+    display: none;
     height: 12px;
     margin-top: 1rem;
     padding: 0px;

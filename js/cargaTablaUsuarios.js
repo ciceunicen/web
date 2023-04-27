@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     "use strict";
+
+    logout(); //Debido a que para hacer andar el logout en el resto de la pagina que tiene PR, se tuvo que poner la funcionalidad en una funcion
+    //y dicha func se llama desde otros js que se cargan siempre en distintas paginas
+
     const URL_ROL_USER = "http://localhost:8080/usuarios"
     const tokin = localStorage.getItem("token");
     obtenerUsuarios(URL_ROL_USER);
