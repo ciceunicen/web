@@ -28,8 +28,6 @@ document.addEventListener("DOMContentLoaded", (e) =>{
         container.innerHTML = ADMIN
     }else if(user.rolType == "superadmin"){
         container.innerHTML = SUPERADMIN
-    }else{
-        container.innerHTML = EMPRENDEDOR
     }
 
 
