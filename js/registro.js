@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             
             if (response.ok) {
                 localStorage.setItem("token", data.accessToken)
-                localStorage.setItem("usuario", data.usuario)
+                localStorage.setItem("usuario", JSON.stringify(data.usuario));
                 window.location.href = "./dashboard.html";
             }
         } catch (e) {
