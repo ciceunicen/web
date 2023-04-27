@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     let user_name = document.getElementById("user_name")
     let user_email = document.getElementById("user_email")
 
-    let user = localStorage.getItem('usuario')
+    let user = JSON.parse(localStorage.getItem('usuario'))
     user.rolType.toLowerCase()
 
     user_name.innerHTML = user.name

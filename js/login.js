@@ -117,7 +117,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 let data = await response.json();
                 loginError.style.display="none";
                 localStorage.setItem("token", data.accessToken)
-                localStorage.setItem("usuario", data.usuario)
+
+                let pepe = data.usuario;
+                console.log(data.usuario);
+                localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
                 success();
                 
