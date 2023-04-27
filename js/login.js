@@ -117,9 +117,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 let data = await response.json();
                 loginError.style.display="none";
                 localStorage.setItem("token", data.accessToken)
-                localStorage.setItem("usuario", data.email)
-                localStorage.setItem("rol_id", data.rolID)
-                localStorage.setItem("rol_type", data.rolType)
+                localStorage.setItem("usuario", data.usuario)
 
                 success();
                 
