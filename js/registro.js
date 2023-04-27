@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     const URL_REGISTER = "http://localhost:8080/usuarios";
+    const URL_LOGIN = "http://localhost:8080/auth/login";
 
     let signin_form = document.querySelector('#signin_form');
     let btn_register = document.querySelector('#btn-register');
@@ -154,8 +155,37 @@ document.addEventListener("DOMContentLoaded", async () => {
                 success();
                 setTimeout(() => {
                     //window.location.replace("http://localhost/proyectos/CICE/web/html/login.html")
-                    window.location.href = "./login.html";
+                    //window.location.href = "./login.html";
+                    loguearUser(valoresInputs.email, valoresInputs.password);
                 }, 1500)
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async function loguearUser(email, pw) { /////////////////////////// Logueamos dps de registrar
+        let datosUser = {
+            email: email,
+            password: pw,
+        }
+        let datosLogin = JSON.stringify(datosUser);
+
+        try {
+            let response = await fetch(URL_LOGIN, {
+                "method": "POST",
+                "headers": {
+                    "Content-Type": "application/json",
+                },
+                "body": datosLogin,
+            });
+
+            let data = await response.json();
+            
+            if (response.ok) {
+                localStorage.setItem("token", data.accessToken)
+                localStorage.setItem("usuario", JSON.stringify(data.usuario));
+                window.location.href = "./dashboard.html";
             }
         } catch (e) {
             console.log(e);
