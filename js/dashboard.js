@@ -15,18 +15,19 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     let user_email = document.getElementById("user_email")
 
     let user = JSON.parse(localStorage.getItem('usuario'))
-    user.rolType.toLowerCase()
+    /* user.rolType.toLowerCase() */
+    let rolUser = user.rolType.toLowerCase()
 
     user_name.innerHTML = user.name
     user_email.innerHTML = user.email
     
-    if(user.rolType == "defecto"){ 
+    if(rolUser == "defecto"){ 
         container.innerHTML = USER
-    }else if(user.rolType == "emprendedor"){
+    }else if(rolUser == "emprendedor"){
         container.innerHTML = EMPRENDEDOR
-    }else if(user.rolType == "admin"){
+    }else if(rolUser == "admin"){
         container.innerHTML = ADMIN
-    }else if(user.rolType == "superadmin"){
+    }else if(rolUser == "superadmin"){
         container.innerHTML = SUPERADMIN
     }
 
