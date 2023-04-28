@@ -1,13 +1,15 @@
 document.addEventListener("DOMContentLoaded", (e) =>{
     "use strict";
-    
-    const USER = " <h2>Acceso</h2><ul><li>Logout</li></ul><h2>Utilidades</h2><ul><li>Ser emprendedor</li></ul>"
 
-    const EMPRENDEDOR = "<h2>Acceso</h2><ul><li>Logout</li></ul><h2>Proyectos</h2><ul><li>Crear Proyecto</li><li>Ver mis proyectos</li></ul><h2>Utilidades</h2><ul><li>Solicitar turno</li></ul>"
+  /*   logout();
+ */
+    const USER = " <h2>Utilidades</h2><ul><li>Ser emprendedor</li></ul>"
 
-    const ADMIN = "<h2>Acceso</h2><ul><li>Logout</li></ul><h2>Proyectos</h2><ul><li>Listar proyecto</li></ul><h2>Emprendedores</h2><ul><li>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li>Listar usuarios</li></ul>"
+    const EMPRENDEDOR = "<h2>Proyectos</h2><ul><li>Crear Proyecto</li><li>Ver mis proyectos</li></ul><h2>Utilidades</h2><ul><li>Solicitar turno</li></ul>"
 
-    const SUPERADMIN = "<h2>Acceso</h2><ul><li>Logout</li></ul><h2>Proyectos</h2><ul><li>Listar proyecto</li></ul><h2>Emprendedores</h2><ul><li>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li>Listar usuarios</li></ul>"
+    const ADMIN = "<h2>Proyectos</h2><ul><li>Listar proyecto</li></ul><h2>Emprendedores</h2><ul><li>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li>Listar usuarios</li></ul>"
+
+    const SUPERADMIN = "<h2>Proyectos</h2><ul><li>Listar proyecto</li></ul><h2>Emprendedores</h2><ul><li>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li>Listar usuarios</li></ul>"
 
 
     let container = document.getElementById("directions")
@@ -22,13 +24,13 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     user_email.innerHTML = user.email
     
     if(rolUser == "defecto"){ 
-        container.innerHTML = USER
+        container.innerHTML += USER
     }else if(rolUser == "emprendedor"){
-        container.innerHTML = EMPRENDEDOR
+        container.innerHTML += EMPRENDEDOR
     }else if(rolUser == "admin"){
-        container.innerHTML = ADMIN
+        container.innerHTML += ADMIN
     }else if(rolUser == "superadmin"){
-        container.innerHTML = SUPERADMIN
+        container.innerHTML += SUPERADMIN
     }
 
 
