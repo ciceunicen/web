@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", (e) =>{
     "use strict";
+    
+    logout();
 
-  /*   logout();
- */
     const USER = " <h2>Utilidades</h2><ul><li>Ser emprendedor</li></ul>"
 
     const EMPRENDEDOR = "<h2>Proyectos</h2><ul><li>Crear Proyecto</li><li>Ver mis proyectos</li></ul><h2>Utilidades</h2><ul><li>Solicitar turno</li></ul>"
