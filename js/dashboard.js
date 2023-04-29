@@ -64,7 +64,6 @@ document.addEventListener("DOMContentLoaded", (e) =>{
         })
     }
 
-   
     if(document.getElementById('AdmUsuariosRol')!=null){
         let BtnListProjectsManager = document.getElementById('AdmUsuariosRol').addEventListener('click', ()=>{
             window.location.href = "./cambioDeRol.html";
