@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function checkInputs() {
         document.querySelectorAll('.signin_form').forEach(i => {
-            console.log(i)
+            /* console.log(i) */
             let inputs = i.querySelectorAll('input')   /* Se cambia de QuerySelector a -> QuerySelectorAll debido a que
             al agarrar solo 1 input de cada clase .siging_form, no agarraba el segundo campo de pw y bugeaba el boton de registro */
 

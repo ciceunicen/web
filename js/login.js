@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         e.preventDefault();
         console.log("first")
         //window.location.replace("http://localhost/proyectos/CICE/web/html/registro.html")
-        window.location.href("./registro.html")
+        window.location.href = "./registro.html";
     })
 
     document.getElementById("btnLog").addEventListener("click", (e) => {

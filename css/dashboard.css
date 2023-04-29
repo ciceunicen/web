@@ -86,6 +86,7 @@
 
 ul{
     list-style: none;
+    z-index: 10;
 }
 .directions li{
     font-size: 14px;
