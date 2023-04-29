@@ -3,13 +3,13 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     
     logout();
 
-    const USER = " <h2>Utilidades</h2><ul><li>Ser emprendedor</li></ul>"
+    const USER = " <h2>Utilidades</h2><ul><li id='serEmprendedor'>Ser emprendedor</li></ul>"
 
-    const EMPRENDEDOR = "<h2>Proyectos</h2><ul><li>Crear Proyecto</li><li>Ver mis proyectos</li></ul><h2>Utilidades</h2><ul><li>Solicitar turno</li></ul>"
+    const EMPRENDEDOR = "<h2>Proyectos</h2><ul><li id='crearProject'>Crear Proyecto</li><li>Ver mis proyectos</li></ul><h2>Utilidades</h2><ul><li>Solicitar turno</li></ul>"
 
-    const ADMIN = "<h2>Proyectos</h2><ul><li>Listar proyecto</li></ul><h2>Emprendedores</h2><ul><li>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li>Listar usuarios</li></ul>"
+    const ADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyecto</li></ul><h2>Emprendedores</h2><ul><li>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li></ul>"
 
-    const SUPERADMIN = "<h2>Proyectos</h2><ul><li>Listar proyecto</li></ul><h2>Emprendedores</h2><ul><li>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li>Listar usuarios</li></ul>"
+    const SUPERADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyecto</li></ul><h2>Emprendedores</h2><ul><li>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li id='AdmUsuariosRol'>Listar usuarios</li></ul>"
 
 
     let container = document.getElementById("directions")
@@ -34,8 +34,41 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     }
 
 
-    
+    /*Interactions*/
+    /*Default */
+    if(document.getElementById('serEmprendedor')!=null){
+        let BtnSerEmprededor = document.getElementById('serEmprendedor').addEventListener('click', ()=>{
+            window.location.href = "./form_emprendedores.html";
+        })
+    }
     
 
+    /*Emprendedor */
+    if(document.getElementById('crearProject')!=null){
+        let BtnCrearProject = document.getElementById('crearProject').addEventListener('click', ()=>{
+            window.location.href = "./cargarProjects.html";
+        })
+    }
+    
+
+    /*Admin / Superadmin */
+    if(document.getElementById('listProjectsManager')!=null){
+        let BtnListProjectsManager = document.getElementById('listProjectsManager').addEventListener('click', ()=>{
+            window.location.href = "./listProjectsManager.html";
+        })
+    }
+
+    if(document.getElementById('cambioDeRol')!=null){
+        let BtnListProjectsManager = document.getElementById('cambioDeRol').addEventListener('click', ()=>{
+            window.location.href = "./cambioDeRol.html";
+        })
+    }
+
+   
+    if(document.getElementById('AdmUsuariosRol')!=null){
+        let BtnListProjectsManager = document.getElementById('AdmUsuariosRol').addEventListener('click', ()=>{
+            window.location.href = "./cambioDeRol.html";
+        })
+    }
 
 })
