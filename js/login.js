@@ -17,11 +17,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 if (checkSigninInput()) {
 
                     btnLog.removeAttribute('disabled')
-                    // btnReg.removeAttribute('disabled')
+                        // btnReg.removeAttribute('disabled')
                 } else {
 
                     btnLog.setAttribute('disabled', 'true')
-                    // btnReg.setAttribute('disabled', 'true')
+                        // btnReg.setAttribute('disabled', 'true')
                 }
             }
         })
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     document.getElementById("btnReg").addEventListener("click", (e) => {
         e.preventDefault();
         console.log("first")
-        //window.location.replace("http://localhost/proyectos/CICE/web/html/registro.html")
+            //window.location.replace("http://localhost/proyectos/CICE/web/html/registro.html")
         window.location.href = "./registro.html";
     })
 
@@ -60,12 +60,19 @@ document.addEventListener("DOMContentLoaded", (e) => {
         login();
     })
 
-    function success() {
+    document.getElementById("FgPass").addEventListener("click", (e) => {
+        e.preventDefault();
+        recoverPass();
+    })
+
+
+
+    function success(msg) {
 
         Swal.fire({
             position: 'center',
             icon: 'success',
-            title: 'Sesion iniciada con exito',
+            title: msg,
             showConfirmButton: false,
             timer: 2000,
         })
@@ -97,33 +104,33 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 "body": datosLogin,
             });
 
-            
+
             if (!response.ok) {
                 let errorText
-                switch(response.status){
+                switch (response.status) {
                     case 400: //"Bad request", no se realizo login correctamente
-                        loginError.style.display="block";
+                        loginError.style.display = "block";
                         errorText = "Bad Request"
                         break;
                     case 401: //"Unauthorized", el email existe pero las credenciales son incorrectas
-                        loginError.style.display="block";
+                        loginError.style.display = "block";
                         errorText = "Unauthorized"
                         break;
-                    default: 
+                    default:
                         errorText = "Error"
                 }
-                throw { error: response.status , status: errorText }
+                throw { error: response.status, status: errorText }
             } else {
                 let data = await response.json();
-                loginError.style.display="none";
+                loginError.style.display = "none";
                 localStorage.setItem("token", data.accessToken)
 
                 let pepe = data.usuario;
                 console.log(data.usuario);
                 localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
-                success();
-                
+                success('Sesion iniciada con exito');
+
                 setTimeout(() => {
                     //window.location.replace("http://localhost/proyectos/CICE/web/")
                     window.location.href = "./dashboard.html";
@@ -135,8 +142,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
     }
 
     function getDatosInputsLogin() {
-        let email = document.getElementById("email-login")?.value;
-        let pass = document.getElementById("password-login")?.value;
+        let email = document.getElementById("email-login").value;
+        let pass = document.getElementById("password-login").value;
         console.log(email)
         console.log(pass)
         return {
@@ -145,5 +152,52 @@ document.addEventListener("DOMContentLoaded", (e) => {
         }
     }
 
-})
+    async function recoverPass() {
 
+        let UserInput = document.getElementById("email-login");
+        console.log(UserInput.value);
+        let URL_RECOVER = "http://localhost:8080/auth/password"
+
+        try {
+
+            let response = await fetch(URL_RECOVER, {
+                "method": "GET",
+
+                "headers": {
+                    "Content-Type": "application/json",
+                },
+
+            });
+
+
+            if (!response.ok) {
+                let errorText
+                switch (response.status) {
+                    case 400: //"Bad request", no se realizo login correctamente
+                        loginError.style.display = "block";
+                        errorText = "Bad Request"
+                        break;
+                    case 401: //"Unauthorized", el email existe pero las credenciales son incorrectas
+                        loginError.style.display = "block";
+                        errorText = "Unauthorized"
+                        break;
+                    default:
+                        errorText = "Error"
+                }
+                throw { error: response.status, status: errorText }
+            } else {
+                let data = await response.json();
+                success('Enviaremos un mail para que pueda generar una nueva contraseña');
+
+                setTimeout(() => {
+                    //window.location.replace("http://localhost/proyectos/CICE/web/")
+                    window.location.href = "./dashboard.html";
+                }, 1500)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+
+})
