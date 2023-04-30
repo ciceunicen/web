@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", (e) =>{
     "use strict";
-    
-    logout();
 
     const USER = " <h2>Utilidades</h2><ul><li id='serEmprendedor'>Ser emprendedor</li></ul>"
 
@@ -33,6 +31,8 @@ document.addEventListener("DOMContentLoaded", (e) =>{
         container.innerHTML += SUPERADMIN
     }
 
+    logout(); //La carga del EventListener tiene que suceder dps de que se modifica el container.html
+    // sino deja de tener funcionalidad el logout
 
     /*Interactions*/
     /*Default */
