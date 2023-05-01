@@ -62,10 +62,31 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     document.getElementById("FgPass").addEventListener("click", (e) => {
         e.preventDefault();
-        recoverPass();
+        let mail = document.querySelector("#email-login");
+
+        if (validarEmail(mail.value)) {
+            console.log(validarEmail(mail.value));
+            recoverPass();
+        }
     })
 
 
+    function validarEmail(valor) {
+        console.log(valor);
+        var regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+        let valido = false;
+        console.log(valido);
+        if (!regex.test(valor)) {
+            let errorLabel = document.querySelector(".errorLabel");
+            errorLabel.classList.toggle("invisible");
+            document.querySelector("#email-login").classList.add("errorInput");
+
+        } else {
+            valido = true;
+        }
+        console.log(valido);
+        return valido
+    }
 
     function success(msg) {
 
@@ -78,15 +99,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
         })
     }
 
-    /*function error(err) {
-      Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: `${err.error} - ${err.status}`,
-          showConfirmButton: true,
-          // timer: 2000,
-      })
-    }*/
+    function error(err) {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: err,
+            showConfirmButton: false,
+            timer: 2000,
+        })
+    }
 
     async function login() {
 
@@ -154,9 +175,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     async function recoverPass() {
 
-        let UserInput = document.getElementById("email-login");
-        console.log(UserInput.value);
-        let URL_RECOVER = "http://localhost:8080/auth/password"
+        let userInput = document.getElementById("email-login");
+
+
+        let URL_RECOVER = "http://localhost:8080/usuarios/auth/email/" + userInput.value;
+
 
         try {
 
@@ -187,11 +210,19 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 throw { error: response.status, status: errorText }
             } else {
                 let data = await response.json();
-                success('Enviaremos un mail para que pueda generar una nueva contraseña');
+                if (data == true) {
+                    let mailText = `<span id="spMail">${userInput.value}</span>`;
 
+
+
+
+                    success('Enviaremos link de recupero a ' + mailText);
+                } else {
+                    error('Usuario no registrado');
+                }
                 setTimeout(() => {
                     //window.location.replace("http://localhost/proyectos/CICE/web/")
-                    window.location.href = "./dashboard.html";
+                    window.location.href = "#";
                 }, 1500)
             }
         } catch (e) {
