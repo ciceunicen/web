@@ -62,6 +62,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     document.getElementById("FgPass").addEventListener("click", (e) => {
         e.preventDefault();
+        document.querySelector(".errorLabel").classList.add("invisible");
+        document.querySelector("#email-login").classList.remove("errorInput");
         let mail = document.querySelector("#email-login");
 
         if (validarEmail(mail.value)) {
@@ -77,8 +79,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
         let valido = false;
         console.log(valido);
         if (!regex.test(valor)) {
-            let errorLabel = document.querySelector(".errorLabel");
-            errorLabel.classList.toggle("invisible");
+
+            document.querySelector(".errorLabel").classList.remove("invisible");
             document.querySelector("#email-login").classList.add("errorInput");
 
         } else {
@@ -228,6 +230,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    function toggleError() {
+
     }
 
 
