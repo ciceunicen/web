@@ -20,7 +20,7 @@ if(section == "projects"){
 }
 
 function initDropdown(div_cont, id_btn_change_screen){
-    return mostrarArchivoHTML("html/dropdownRemoved.html").then(texto=> showDropdownHTML(texto, div_cont, id_btn_change_screen));
+    return mostrarArchivoHTML("../html/dropdownRemoved.html").then(texto=> showDropdownHTML(texto, div_cont, id_btn_change_screen));
 }
 
 function showDropdownHTML(texto, div_cont, id_btn_change_screen){
