@@ -53,7 +53,15 @@ function borrarProyecto(id_Project, id_Admin, projectManager = 0) {
 
 //GET PROYECTO
 function getProyecto(id) {
-  return fetch(URLProject + "/" + id)
+  return fetch(URLProject + "/" + id,{
+    mode: 'cors',
+
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    },
+  })
     .then(response => response.json())
     .then(json => { return json });
 }
@@ -78,7 +86,16 @@ function getAllProjects() {
 
 //GET DE TODOS LOS PROYECTOS BORRADOS
 function getAllDeleteProjects(page = 1) {
-  return fetch(URLProject + "/removed/page/" + page)
+  return fetch(URLProject + "/removed/page/" + page,{
+    mode: 'cors',
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    },
+
+  })
     .then((response) => response.json())
     .then(json => { return json });
 }

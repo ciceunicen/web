@@ -53,9 +53,9 @@ function mostrarResponsableProyecto(id) {
     if (btn.className === 'hiddenData') {
         getProjectManager(id).then(json => showDataProjectManager(json));
         btn.className = 'showProjectManagerData';
-        document.querySelector(".slideDownResponsible").innerHTML = "<img src='img/icons8-flecha-contraer-50.png' class='slideDown'/>";
+        document.querySelector(".slideDownResponsible").innerHTML = "<img src='./img/icons8-flecha-contraer-50.png' class='slideDown'/>";
     } else {
-        document.querySelector(".slideDownResponsible").innerHTML = "<img src='img/expandir.png' class='slideDown'/>";
+        document.querySelector(".slideDownResponsible").innerHTML = "<img src='./img/expandir.png' class='slideDown'/>";
         btn.className = 'hiddenData';
     }
 }
@@ -63,7 +63,7 @@ function mostrarResponsableProyecto(id) {
 //carga datos en la tabla de datos de un emprendedor
 function showDataProjectManager(projectManager) {
     //llamo a contenido donde se muestran los datos del emprendedor.
-    mostrarArchivoHTML("html/dataProjectManager.html").then(text_pm => {
+    mostrarArchivoHTML("dataProjectManager.html").then(text_pm => {
         document.getElementById("projectManagerData").innerHTML = text_pm;
         //Completo datos del emprendedor
         document.querySelector("#fullName").innerHTML = projectManager.name + " " + projectManager.surname;
