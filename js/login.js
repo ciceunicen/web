@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     const URL_LOGIN = "http://localhost:8080/auth/login";
     const URL_RECOVER = "http://localhost:8080/auth/password";
 
-    /*   let sig_form = document.querySelector('.sig_form')*/
+
     let btnLog = document.querySelector('#btnLog')
     let btnReg = document.querySelector('#btnReg')
     let loginError = document.getElementById("loginUserPassError")
@@ -18,11 +18,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 if (checkSigninInput()) {
 
                     btnLog.removeAttribute('disabled')
-                        // btnReg.removeAttribute('disabled')
+
                 } else {
 
                     btnLog.setAttribute('disabled', 'true')
-                        // btnReg.setAttribute('disabled', 'true')
+
                 }
             }
         })
@@ -51,8 +51,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     document.getElementById("btnReg").addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("first")
-            //window.location.replace("http://localhost/proyectos/CICE/web/html/registro.html")
+
         window.location.href = "./registro.html";
     })
 
@@ -68,17 +67,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
         let mail = document.querySelector("#email-login");
 
         if (validarEmail(mail.value)) {
-            console.log(validarEmail(mail.value));
             recoverPass();
         }
     })
 
 
     function validarEmail(valor) {
-        console.log(valor);
+
         var regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         let valido = false;
-        console.log(valido);
         if (!regex.test(valor)) {
 
             document.querySelector(".errorLabel").classList.remove("invisible");
@@ -87,7 +84,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
         } else {
             valido = true;
         }
-        console.log(valido);
         return valido
     }
 
@@ -116,7 +112,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
         let valoresInputs = getDatosInputsLogin();
         let datosLogin = JSON.stringify(valoresInputs);
-  
+
         try {
 
             let response = await fetch(URL_LOGIN, {
@@ -149,8 +145,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 loginError.style.display = "none";
                 localStorage.setItem("token", data.accessToken)
 
-                let pepe = data.usuario;
-                console.log(data.usuario);
+
                 localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
                 success('Sesion iniciada con exito');
@@ -161,15 +156,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 }, 1500)
             }
         } catch (e) {
-            console.log(e)
+
         }
     }
 
     function getDatosInputsLogin() {
         let email = document.getElementById("email-login").value;
         let pass = document.getElementById("password-login").value;
-        console.log(email)
-        console.log(pass)
+
         return {
             email: email,
             password: pass,
@@ -180,7 +174,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
         let userInput = getEmailto();
         let mailTo = JSON.stringify(userInput);
-        let mailTo1=document.getElementById("email-login").value;
+        let mailTo1 = document.getElementById("email-login").value;
 
 
         try {
@@ -193,57 +187,32 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 "body": mailTo,
             });
 
-            console.log(response+ "la respuesta qeu envia es");
             if (!response.ok) {
-                let errorText
-                switch (response.status) {
-                    /*case 200:
-                        let mailText = `<span id="spMail">${userInput.value}</span>`;
-                        success('Enviaremos link de recupero a ' + mailText);
-                        break;*/
-                    case 404: //"Bad request", no se realizo login correctamente
-                        error('Usuario no registrado');
-                        console.log("llego al 404");
-                        break;
-                    default:
-                        console.log("error default");
-
-                }
+                error('Usuario no registrado');
+                let errorText;
                 throw { error: response.status, status: errorText }
-                }
-                else{
-                    let mailText = `<span id="spMail">${mailTo1}</span>`;
-                        success('Enviaremos link de recupero a ' + mailText);
-                   
-                }
-                setTimeout(() => {
-                    //window.location.replace("http://localhost/proyectos/CICE/web/")
-                    window.location.href = "#";
-                }, 1500);
-                
-                /*} else {
-                    let data = await response.json();
-                    if (data == true) {
-                        let mailText = `<span id="spMail">${userInput.value}</span>`;
-                        success('Enviaremos link de recupero a ' + mailText);
-                    } else {
-                        
-                    }*/
+            } else {
+                let mailText = `<span id="spMail">${mailTo1}</span>`;
+                success('Enviaremos link de recupero a ' + mailText);
+
             }
-         catch (e) {
+            setTimeout(() => {
+
+                window.location.href = "#";
+            }, 1500);
+
+        } catch (e) {
             console.log(e)
         }
     }
-    function getEmailto(){
-        let mailTo=document.getElementById("email-login").value;
+
+    function getEmailto() {
+        let mailTo = document.getElementById("email-login").value;
         return {
             mailTo: mailTo
         }
     }
-    
-    function toggleError() {
 
-    }
 
 
 })
