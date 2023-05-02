@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     "use strict";
 
     const URL_LOGIN = "http://localhost:8080/auth/login";
+    const URL_RECOVER = "http://localhost:8080/auth/password";
 
     /*   let sig_form = document.querySelector('.sig_form')*/
     let btnLog = document.querySelector('#btnLog')
@@ -178,54 +179,46 @@ document.addEventListener("DOMContentLoaded", (e) => {
     async function recoverPass() {
 
         let userInput = document.getElementById("email-login");
-
-
-        let URL_RECOVER = "http://localhost:8080/usuarios/auth/email/" + userInput.value;
+        let mailTo = JSON.stringify(userInput.value);
+        console.log(mailTo);
 
 
         try {
 
-            let response = await fetch(URL_RECOVER, {
-                "method": "GET",
-
+            let response = fetch(URL_RECOVER, {
+                "method": "POST",
                 "headers": {
                     "Content-Type": "application/json",
                 },
-
+                "body": mailTo,
             });
 
 
             if (!response.ok) {
                 let errorText
                 switch (response.status) {
-                    case 400: //"Bad request", no se realizo login correctamente
-                        loginError.style.display = "block";
-                        errorText = "Bad Request"
+                    case 200:
+                        let mailText = `<span id="spMail">${userInput.value}</span>`;
+                        success('Enviaremos link de recupero a ' + mailText);
                         break;
-                    case 401: //"Unauthorized", el email existe pero las credenciales son incorrectas
-                        loginError.style.display = "block";
-                        errorText = "Unauthorized"
+                    case 404: //"Bad request", no se realizo login correctamente
+                        error('Usuario no registrado');
                         break;
-                    default:
-                        errorText = "Error"
-                }
-                throw { error: response.status, status: errorText }
-            } else {
-                let data = await response.json();
-                if (data == true) {
-                    let mailText = `<span id="spMail">${userInput.value}</span>`;
 
-
-
-
-                    success('Enviaremos link de recupero a ' + mailText);
-                } else {
-                    error('Usuario no registrado');
                 }
                 setTimeout(() => {
                     //window.location.replace("http://localhost/proyectos/CICE/web/")
                     window.location.href = "#";
                 }, 1500)
+                throw { error: response.status, status: errorText }
+                /*} else {
+                    let data = await response.json();
+                    if (data == true) {
+                        let mailText = `<span id="spMail">${userInput.value}</span>`;
+                        success('Enviaremos link de recupero a ' + mailText);
+                    } else {
+                        
+                    }*/
             }
         } catch (e) {
             console.log(e)
