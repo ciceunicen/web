@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
         let valoresInputs = getDatosInputsLogin();
         let datosLogin = JSON.stringify(valoresInputs);
-
+  
         try {
 
             let response = await fetch(URL_LOGIN, {
@@ -178,14 +178,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     async function recoverPass() {
 
-        let userInput = document.getElementById("email-login");
-        let mailTo = JSON.stringify(userInput.value);
-        console.log(mailTo);
+        let userInput = getEmailto();
+        let mailTo = JSON.stringify(userInput);
+        let mailTo1=document.getElementById("email-login").value;
 
 
         try {
 
-            let response = fetch(URL_RECOVER, {
+            let response = await fetch(URL_RECOVER, {
                 "method": "POST",
                 "headers": {
                     "Content-Type": "application/json",
@@ -193,24 +193,34 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 "body": mailTo,
             });
 
-
+            console.log(response+ "la respuesta qeu envia es");
             if (!response.ok) {
                 let errorText
                 switch (response.status) {
-                    case 200:
+                    /*case 200:
                         let mailText = `<span id="spMail">${userInput.value}</span>`;
                         success('Enviaremos link de recupero a ' + mailText);
-                        break;
+                        break;*/
                     case 404: //"Bad request", no se realizo login correctamente
                         error('Usuario no registrado');
+                        console.log("llego al 404");
                         break;
+                    default:
+                        console.log("error default");
 
+                }
+                throw { error: response.status, status: errorText }
+                }
+                else{
+                    let mailText = `<span id="spMail">${mailTo1}</span>`;
+                        success('Enviaremos link de recupero a ' + mailText);
+                   
                 }
                 setTimeout(() => {
                     //window.location.replace("http://localhost/proyectos/CICE/web/")
                     window.location.href = "#";
-                }, 1500)
-                throw { error: response.status, status: errorText }
+                }, 1500);
+                
                 /*} else {
                     let data = await response.json();
                     if (data == true) {
@@ -220,11 +230,17 @@ document.addEventListener("DOMContentLoaded", (e) => {
                         
                     }*/
             }
-        } catch (e) {
+         catch (e) {
             console.log(e)
         }
     }
-
+    function getEmailto(){
+        let mailTo=document.getElementById("email-login").value;
+        return {
+            mailTo: mailTo
+        }
+    }
+    
     function toggleError() {
 
     }
