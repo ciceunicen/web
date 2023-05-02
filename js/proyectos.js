@@ -104,14 +104,32 @@ function getAllDeleteProjects(page = 1) {
 function getFilterProjects(datos, pagina) {
   let url = new URL(URLProject + "/filters/page/" + pagina);
   let params = new URLSearchParams(datos);
-  return fetch(url + "?" + params)
+  return fetch(url + "?" + params,{
+    mode: 'cors',
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    },
+
+  })
     .then(response => response.json())
     .then(json => { return json });
 }
 
 //GET HISTORIAL DE PROYECTO
 function getProjectHistory(id) {
-  return fetch(URLProject + "/" + id + "/administrationRecords/page/" + page)
+  return fetch(URLProject + "/" + id + "/administrationRecords/page/" + page,{
+    mode: 'cors',
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    },
+
+  })
     .then(response => response.json())
     .then(json => { return json });
 }
