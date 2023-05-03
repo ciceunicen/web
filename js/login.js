@@ -2,8 +2,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
     "use strict";
 
     const URL_LOGIN = "http://localhost:8080/auth/login";
+    const URL_RECOVER = "http://localhost:8080/auth/password";
 
-    /*   let sig_form = document.querySelector('.sig_form')*/
+
     let btnLog = document.querySelector('#btnLog')
     let btnReg = document.querySelector('#btnReg')
     let loginError = document.getElementById("loginUserPassError")
@@ -17,11 +18,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 if (checkSigninInput()) {
 
                     btnLog.removeAttribute('disabled')
-                    // btnReg.removeAttribute('disabled')
+
                 } else {
 
                     btnLog.setAttribute('disabled', 'true')
-                    // btnReg.setAttribute('disabled', 'true')
+
                 }
             }
         })
@@ -50,9 +51,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     document.getElementById("btnReg").addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("first")
-        //window.location.replace("http://localhost/proyectos/CICE/web/html/registro.html")
-        window.location.href = "./html/registro.html";
+
+        window.location.href = "./registro.html";
     })
 
     document.getElementById("btnLog").addEventListener("click", (e) => {
@@ -60,26 +60,53 @@ document.addEventListener("DOMContentLoaded", (e) => {
         login();
     })
 
-    function success() {
+    document.getElementById("FgPass").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.querySelector(".errorLabel").classList.add("invisible");
+        document.querySelector("#email-login").classList.remove("errorInput");
+        let mail = document.querySelector("#email-login");
+
+        if (validarEmail(mail.value)) {
+            recoverPass();
+        }
+    })
+
+
+    function validarEmail(valor) {
+
+        var regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+        let valido = false;
+        if (!regex.test(valor)) {
+
+            document.querySelector(".errorLabel").classList.remove("invisible");
+            document.querySelector("#email-login").classList.add("errorInput");
+
+        } else {
+            valido = true;
+        }
+        return valido
+    }
+
+    function success(msg) {
 
         Swal.fire({
             position: 'center',
             icon: 'success',
-            title: 'Sesion iniciada con exito',
+            title: msg,
             showConfirmButton: false,
             timer: 2000,
         })
     }
 
-    /*function error(err) {
-      Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: `${err.error} - ${err.status}`,
-          showConfirmButton: true,
-          // timer: 2000,
-      })
-    }*/
+    function error(err) {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: err,
+            showConfirmButton: false,
+            timer: 2000,
+        })
+    }
 
     async function login() {
 
@@ -97,53 +124,95 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 "body": datosLogin,
             });
 
-            
+
             if (!response.ok) {
                 let errorText
-                switch(response.status){
+                switch (response.status) {
                     case 400: //"Bad request", no se realizo login correctamente
-                        loginError.style.display="block";
+                        loginError.style.display = "block";
                         errorText = "Bad Request"
                         break;
                     case 401: //"Unauthorized", el email existe pero las credenciales son incorrectas
-                        loginError.style.display="block";
+                        loginError.style.display = "block";
                         errorText = "Unauthorized"
                         break;
-                    default: 
+                    default:
                         errorText = "Error"
                 }
-                throw { error: response.status , status: errorText }
+                throw { error: response.status, status: errorText }
             } else {
                 let data = await response.json();
-                loginError.style.display="none";
+                loginError.style.display = "none";
                 localStorage.setItem("token", data.accessToken)
 
-                let pepe = data.usuario;
-                console.log(data.usuario);
+
                 localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
-                success();
-                
+                success('Sesion iniciada con exito');
+
                 setTimeout(() => {
                     //window.location.replace("http://localhost/proyectos/CICE/web/")
                     window.location.href = "./html/dashboard.html";
                 }, 1500)
             }
         } catch (e) {
-            console.log(e)
+
         }
     }
 
     function getDatosInputsLogin() {
-        let email = document.getElementById("email-login")?.value;
-        let pass = document.getElementById("password-login")?.value;
-        console.log(email)
-        console.log(pass)
+        let email = document.getElementById("email-login").value;
+        let pass = document.getElementById("password-login").value;
+
         return {
             email: email,
             password: pass,
         }
     }
 
-})
+    async function recoverPass() {
 
+        let userInput = getEmailto();
+        let mailTo = JSON.stringify(userInput);
+        let mailTo1 = document.getElementById("email-login").value;
+
+
+        try {
+
+            let response = await fetch(URL_RECOVER, {
+                "method": "POST",
+                "headers": {
+                    "Content-Type": "application/json",
+                },
+                "body": mailTo,
+            });
+
+            if (!response.ok) {
+                error('Usuario no registrado');
+                let errorText;
+                throw { error: response.status, status: errorText }
+            } else {
+                let mailText = `<span id="spMail">${mailTo1}</span>`;
+                success('Enviaremos link de recupero a ' + mailText);
+
+            }
+            setTimeout(() => {
+
+                window.location.href = "#";
+            }, 1500);
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    function getEmailto() {
+        let mailTo = document.getElementById("email-login").value;
+        return {
+            mailTo: mailTo
+        }
+    }
+
+
+
+})
