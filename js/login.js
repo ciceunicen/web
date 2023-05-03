@@ -51,8 +51,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     document.getElementById("btnReg").addEventListener("click", (e) => {
         e.preventDefault();
+<<<<<<< HEAD
 
         window.location.href = "./registro.html";
+=======
+        console.log("first")
+        //window.location.replace("http://localhost/proyectos/CICE/web/html/registro.html")
+        window.location.href = "./html/registro.html";
+>>>>>>> develop
     })
 
     document.getElementById("btnLog").addEventListener("click", (e) => {
@@ -152,7 +158,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
                 setTimeout(() => {
                     //window.location.replace("http://localhost/proyectos/CICE/web/")
-                    window.location.href = "./dashboard.html";
+                    window.location.href = "./html/dashboard.html";
                 }, 1500)
             }
         } catch (e) {

@@ -1,15 +1,13 @@
 document.addEventListener("DOMContentLoaded", (e) =>{
     "use strict";
-    
-    logout();
 
     const USER = " <h2>Utilidades</h2><ul><li id='serEmprendedor'>Ser emprendedor</li></ul>"
 
     const EMPRENDEDOR = "<h2>Proyectos</h2><ul><li id='crearProject'>Crear Proyecto</li><li>Ver mis proyectos</li></ul><h2>Utilidades</h2><ul><li>Solicitar turno</li></ul>"
 
-    const ADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyecto</li></ul><h2>Emprendedores</h2><ul><li>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li></ul>"
+    const ADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li></ul><h2>Emprendedores</h2><ul><li id='listEntrepreneur'>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li></ul>"
 
-    const SUPERADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyecto</li></ul><h2>Emprendedores</h2><ul><li>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li id='AdmUsuariosRol'>Listar usuarios</li></ul>"
+    const SUPERADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li></ul><h2>Emprendedores</h2><ul><li id='listEntrepreneur'>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li id='AdmUsuariosRol'>Listar usuarios</li></ul>"
 
 
     let container = document.getElementById("directions")
@@ -33,6 +31,8 @@ document.addEventListener("DOMContentLoaded", (e) =>{
         container.innerHTML += SUPERADMIN
     }
 
+    logout(); //La carga del EventListener tiene que suceder dps de que se modifica el container.html
+    // sino deja de tener funcionalidad el logout
 
     /*Interactions*/
     /*Default */
@@ -54,7 +54,13 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     /*Admin / Superadmin */
     if(document.getElementById('listProjectsManager')!=null){
         let BtnListProjectsManager = document.getElementById('listProjectsManager').addEventListener('click', ()=>{
-            window.location.href = "./listProjectsManager.html";
+            window.location.href = "./home.html";
+        })
+    }
+
+    if(document.getElementById('listEntrepreneur')!=null){
+        let BtnListProjectsManager = document.getElementById('listEntrepreneur').addEventListener('click', ()=>{
+            window.location.href = "./home.html";
         })
     }
 

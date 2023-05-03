@@ -6,7 +6,7 @@ function mostrarArchivoHTML(rutaArchivo){
 
 //Muestra el home de la pagina
 function mostrarHome(){
-  mostrarArchivoHTML("html/navbar.html",".navbar").then(text => {
+  mostrarArchivoHTML("navbar.html",".navbar").then(text => {
       document.querySelector(".navbar").innerHTML = text;
       document.querySelector("#proyectos").addEventListener("click", ()=>{
         drawClickNav("proyectos");
@@ -20,13 +20,13 @@ function mostrarHome(){
       //HOME TEMPORAL
       document.querySelector("#emprendedores").click();
 
-      logout("."); //Una vez cargado el NAV (se carga con parcial render), le agrego funcionalidad al boton creado
+      logout(); //Una vez cargado el NAV (se carga con parcial render), le agrego funcionalidad al boton creado
     })
 }
 
 //Cambio de pantalla a proyectos eliminados
 function showTableProjectsRemoved(){
-    mostrarArchivoHTML("html/listProjectsRemoved.html").then(text =>{
+    mostrarArchivoHTML("listProjectsRemoved.html").then(text =>{
       document.querySelector(".main-container").innerHTML = text;
       //configuro dropdown que lleva a sección de tabla de todos los proyectos
       let id_btn_change_screen = 'btn_section_projects';
@@ -41,7 +41,7 @@ function showTableProjectsRemoved(){
 
 //muestra la lista de proyectos
 function mostrarProyectos(json) {
-  mostrarArchivoHTML("html/listProjects.html").then(text =>{
+  mostrarArchivoHTML("listProjects.html").then(text =>{
     document.querySelector(".main-container").innerHTML = text;
     //AGREGO DROPDOWN DE PROYECTOS ELIMINADOS Y EVENTOS DE CAMBIOS DE PANTALLA
     let id_btn_change_screen = 'btn_section_projects_removed';
@@ -66,7 +66,7 @@ function mostrarProyectos(json) {
 
 //muestra la seccion del paginado
 function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list-projects"){
-  mostrarArchivoHTML("html/pagination.html").then(text =>{
+  mostrarArchivoHTML("pagination.html").then(text =>{
     document.querySelector(div).innerHTML=text;
     document.querySelector("#pageNumber").innerHTML=page;
     comportamientoPaginado(pages,datosFiltro,tablaUtilizada);
@@ -76,7 +76,7 @@ function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list
 
 //MOSTRAR PROYECTO
 function mostrarProyecto(proyecto){
-  mostrarArchivoHTML("html/proyecto.html").then(text=>{
+  mostrarArchivoHTML("proyecto.html").then(text=>{
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#titulo").innerHTML+=proyecto.title;
     document.querySelector("#descripcion").innerHTML+=proyecto.description;
@@ -86,7 +86,7 @@ function mostrarProyecto(proyecto){
     partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
     //carga sección de archivos adjuntos
-    mostrarArchivoHTML("html/files.html").then(text =>{
+    mostrarArchivoHTML("files.html").then(text =>{
       document.getElementById("div_adjuntos").innerHTML = text;
       mostrarArray("#files",proyecto.files,"elemento.file", proyecto);
       //evento para poder descargar todos sus archivos adjuntos
@@ -100,7 +100,7 @@ function mostrarProyecto(proyecto){
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
 function mostrarCargaProyecto(id_ProjectManager) {
-  mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
+  mostrarArchivoHTML("cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
       //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
       inicializarCargaProyecto(id_ProjectManager);
@@ -113,7 +113,7 @@ function mostrarCargaProyecto(id_ProjectManager) {
 }
 
 function partialRendercargaDatosEmprendedor(div,id_emprendedor){
-  mostrarArchivoHTML("html/datosEmprendedor.html").then(text=>{
+  mostrarArchivoHTML("datosEmprendedor.html").then(text=>{
     document.querySelector(div).innerHTML = text;
     document.querySelector('.slideDownResponsible').addEventListener("click",()=>{
       mostrarResponsableProyecto(id_emprendedor);
@@ -123,7 +123,7 @@ function partialRendercargaDatosEmprendedor(div,id_emprendedor){
 }
 
 function cargaRenderNecesidades(){
-  mostrarArchivoHTML("html/cargaDeNecesidades.html").then(text =>{
+  mostrarArchivoHTML("cargaDeNecesidades.html").then(text =>{
     document.querySelector(".datosNecesidades").innerHTML = text;
     document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
     //Configuro Dropdown de necesidades
@@ -132,7 +132,7 @@ function cargaRenderNecesidades(){
 }
 
 function cargaRenderAsistencia(){
-  mostrarArchivoHTML("html/cargaDeAsistencias.html").then(text =>{
+  mostrarArchivoHTML("cargaDeAsistencias.html").then(text =>{
     document.querySelector(".datosAsistencias").innerHTML = text;
     document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
     //Configuro Dropdown de asistencias
@@ -141,7 +141,7 @@ function cargaRenderAsistencia(){
 }
 //MUESTRA LA LISTA DE EMPRENDEDORES
 function mostrarListaEmprendedores(){//recibe un json por parametro
-  mostrarArchivoHTML("html/listProjectsManager.html").then(text =>{
+  mostrarArchivoHTML("listProjectsManager.html").then(text =>{
       document.querySelector(".main-container").innerHTML = text;
       page=1;
       getAllProjectManagers().then(json => {
@@ -152,7 +152,7 @@ function mostrarListaEmprendedores(){//recibe un json por parametro
 }
 
 function partialRenderHistorialProject(div, id_project){
-  mostrarArchivoHTML("html/ProjectHistory.html").then(text=>{
+  mostrarArchivoHTML("ProjectHistory.html").then(text=>{
     document.querySelector(div).innerHTML = text;
     document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
     page=1;
@@ -162,7 +162,7 @@ function partialRenderHistorialProject(div, id_project){
 
 //muestra un emprendedor
 function mostrarEmprendedor(emprendedor){
-  mostrarArchivoHTML("html/projectManager.html").then(text =>{
+  mostrarArchivoHTML("projectManager.html").then(text =>{
     document.querySelector(".main-container").innerHTML=text;
     //cargo tabla de datos del emprendedor
     showDataProjectManager(emprendedor);
@@ -180,7 +180,7 @@ function mostrarEmprendedor(emprendedor){
 
 function showDataProjectManager(projectManager){
   //llamo a contenido donde se muestran los datos del emprendedor.
-  mostrarArchivoHTML("html/dataProjectManager.html").then(text_pm =>{
+  mostrarArchivoHTML("dataProjectManager.html").then(text_pm =>{
     document.getElementById("projectManagerData").innerHTML=text_pm;
     //Completo datos del emprendedor
     document.querySelector("#fullName").innerHTML=projectManager.name+" "+projectManager.surname;
@@ -194,13 +194,13 @@ function showDataProjectManager(projectManager){
 
 //MOSTRAR EDITAR PROYECTO
 function mostrarEditarProyecto(id_proyecto,proyecto){
-  mostrarArchivoHTML("html/cargarProjects.html").then(text=>{
+  mostrarArchivoHTML("cargarProjects.html").then(text=>{
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#title").value=proyecto.title;
     document.querySelector("#description").value=proyecto.description;
     selecionarSoloUnEstadio();
     cargarCheckboxes(URLStages, proyecto,'estadios_checks');
-    mostrarArchivoHTML("html/cargaDeNecesidades.html").then(text =>{
+    mostrarArchivoHTML("cargaDeNecesidades.html").then(text =>{
       document.querySelector(".datosNecesidades").innerHTML = text;
       document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
       //Configuro Dropdown de necesidades
@@ -208,7 +208,7 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
       //getNecesidadesoAsistenciasCreadas(URLNeeds);
     
     });
-    mostrarArchivoHTML("html/cargaDeAsistencias.html").then(text =>{
+    mostrarArchivoHTML("cargaDeAsistencias.html").then(text =>{
       document.querySelector(".datosAsistencias").innerHTML = text;
       document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
       //Configuro Dropdown de asistencias
@@ -226,7 +226,7 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
 }
 
 function mostrarFilesEditar(proyecto){
-  mostrarArchivoHTML("html/filesEdit.html").then(text =>{
+  mostrarArchivoHTML("filesEdit.html").then(text =>{
     let container = document.getElementById("div_adjuntos");
     container.innerHTML = "";
     container.innerHTML = text;

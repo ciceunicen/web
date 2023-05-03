@@ -6,6 +6,7 @@ const URLStages = "http://localhost:8080/stages";
 let necesidades = [];
 let asistencias = [];
 let attachments = [];
+let token = localStorage.getItem("token");
 
 
 //Para guardar los id por lo que se va a filtrar
@@ -36,18 +37,26 @@ function drawClickNav(click_nav) {
 
 //GET All reutilizable del Filtro para Necesidades,Asistencias y Estadios
 function getAllBaseURL(url, elementDOM) {
-  return fetch(url)
+  return fetch(url, {
+    mode: 'cors',
+
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    },
+  })
     .then((response) => response.json())
     .then(json => createOptionsSelectDOM(json, elementDOM));
 }
 
-function createOptionsSelectDOM(json, elementDOM){
-    innerHTML(json, elementDOM);
-    if(elementDOM == 'needs_created'){
-      multiSelectsNeedsCreated = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveNecesidad');
-    }else if(elementDOM == 'assistances_created'){
-      multiSelectsAssistancesCreated = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveAsistencia');
-    }else if(elementDOM != 'estadios_checks'){
-      new MultiSelectTag(elementDOM, 'btn_reset_filter');
-    }
+function createOptionsSelectDOM(json, elementDOM) {
+  innerHTML(json, elementDOM);
+  if (elementDOM == 'needs_created') {
+    multiSelectsNeedsCreated = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveNecesidad');
+  } else if (elementDOM == 'assistances_created') {
+    multiSelectsAssistancesCreated = MultiSelectTag(elementDOM, 'btn_reset_filter', 'saveAsistencia');
+  } else if (elementDOM != 'estadios_checks') {
+    new MultiSelectTag(elementDOM, 'btn_reset_filter');
+  }
 }
