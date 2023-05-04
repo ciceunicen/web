@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     const URL_LOGIN = "http://localhost:8080/auth/login";
     const URL_RECOVER = "http://localhost:8080/auth/password";
+    const URL_SENDMAIL = "http://localhost:8080/auth/password/sendEmail";
 
 
     let btnLog = document.querySelector('#btnLog')
@@ -194,12 +195,23 @@ document.addEventListener("DOMContentLoaded", (e) => {
             } else {
                 let mailText = `<span id="spMail">${mailTo1}</span>`;
                 success('Enviaremos link de recupero a ' + mailText);
+                setTimeout(() => {
 
+                    let response = fetch(URL_SENDMAIL, {
+                        "method": "POST",
+                        "headers": {
+                            "Content-Type": "application/json",
+                        },
+                        "body": mailTo,
+                    });
+
+
+                }, 1500);
             }
             setTimeout(() => {
 
                 window.location.href = "#";
-            }, 1500);
+            }, 2000);
 
         } catch (e) {
             console.log(e)
