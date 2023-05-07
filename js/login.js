@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     let btnReg = document.querySelector('#btnReg')
     let loginError = document.getElementById("loginUserPassError")
 
+
     checkInputs();
 
     function checkInputs() {
@@ -50,10 +51,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
         }
     })
 
-    document.getElementById("btnReg").addEventListener("click", (e) => {
+    btnReg.addEventListener("click", (e) => {
         e.preventDefault();
 
-        window.location.href = "./registro.html";
+        window.location.href = "./html/registro.html";
     })
 
     document.getElementById("btnLog").addEventListener("click", (e) => {
@@ -95,7 +96,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
             icon: 'success',
             title: msg,
             showConfirmButton: false,
-            timer: 2000,
+            timer: 10000,
         })
     }
 
@@ -211,7 +212,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
             setTimeout(() => {
 
                 window.location.href = "#";
-            }, 2000);
+            }, 5000);
 
         } catch (e) {
             console.log(e)
