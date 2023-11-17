@@ -15,6 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 changeRol(btn.getAttribute("data-id"), btn.innerHTML);
             })
         })
+
+        let btnsDelete = document.querySelectorAll('.btn_delete_user');
+        btnsDelete.forEach(btn => {
+            btn.addEventListener("click", e => {
+                deleteUser(btn.getAttribute("data-id"));
+            })
+        })
     }
 
     async function obtenerUsuarios(url) {
@@ -64,11 +71,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (usuario.role.id == 2) {
                     datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Remover Admin</button>";
                 } else if (usuario.role.id == 4) {
-                    datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button> <button class='btn_delete_user btn-detalles'  data-id = '" + usuario.id + "'>Eliminar usuario</button>";
+                    datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button> <button class='btn_delete_user'  data-id = '" + usuario.id + "'>Eliminar usuario</button>";
                 }
                 tabla.innerHTML += `<tr>${datosUsuario}</tr>`
             }
         });
+    }
+
+    async function deleteUser(idUser) {
+        try {
+            let response = await fetch(URL_ROL_USER + "/" + idUser + "/delete", {
+                "method": "PUT",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + tokin
+                }
+            });
+
+            if (response.ok) {
+                let deletedUser = await response.json();
+                console.log("User eliminado: " + deletedUser);
+                obtenerUsuarios(URL_ROL_USER);
+            }
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     async function changeRol(idUser, btnLabel) {
