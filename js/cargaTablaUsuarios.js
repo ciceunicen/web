@@ -51,16 +51,20 @@ document.addEventListener("DOMContentLoaded", () => {
     function cargarUsuarios(arregloUsuarios) {
         tabla.innerHTML = "";
         arregloUsuarios.forEach(usuario => {
-            if (usuario.rol.id == 2 || usuario.rol.id == 4) { //sòlo se muestran los usuarios que pueden ser admin, o los admin
-                let datosUsuario =
+            if (usuario.role.id == 2 || usuario.role.id == 4) { //sòlo se muestran los usuarios que pueden ser admin, o los admin
+                /* let datosUsuario =
                     `<td>${usuario.name}</td>
                 <td>${usuario.surname}</td>
                 <td>${usuario.email}</td>
-                <td>${usuario.rol.type}</td> `
-                if (usuario.rol.id == 2) {
+                <td>${usuario.role.type}</td> ` */
+                let datosUsuario =
+                    `<td>${usuario.username}</td>
+                <td>${usuario.email}</td>
+                <td>${usuario.role.type}</td> `
+                if (usuario.role.id == 2) {
                     datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Remover Admin</button>";
-                } else if (usuario.rol.id == 4) {
-                    datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button>";
+                } else if (usuario.role.id == 4) {
+                    datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button> <button class='btn_delete_user btn-detalles'  data-id = '" + usuario.id + "'>Eliminar usuario</button>";
                 }
                 tabla.innerHTML += `<tr>${datosUsuario}</tr>`
             }
