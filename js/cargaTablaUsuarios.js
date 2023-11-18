@@ -90,7 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 let deletedUser = await response.json();
-                console.log("User eliminado: " + deletedUser);
+                console.log("User eliminado: ", deletedUser);
+                console.log(response);
                 obtenerUsuarios(URL_ROL_USER);
             }
         } catch (e) {
