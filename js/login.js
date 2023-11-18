@@ -138,6 +138,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
                         loginError.style.display = "block";
                         errorText = "Unauthorized"
                         break;
+                    case 404: //"Not Found", las credenciales son correctas pero el usuario fue eliminado de forma lógica
+                        loginError.style.display = "block";
+                        errorText = "Not Found"
+                        break;
                     default:
                         errorText = "Error"
                 }
