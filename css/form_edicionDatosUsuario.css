@@ -1,0 +1,19 @@
+.contenedor_grupos {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container-input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.eye-password {
+    display: flex;
+    align-items: center;
+}
+
+.input-eye {
+    flex: 1;
+    margin-right: 5px;
+}

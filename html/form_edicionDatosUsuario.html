@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/form_emprendedores.css">
+    <link rel="stylesheet" href="../css/form_edicionDatosUsuario.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!---LINK PARA ICONOS DE BOOTSTRAP-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <title>Editar mis datos</title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+        <a><img class="nav_img" src="../img/logo.png" alt="Logo CICE"></a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ">
+                <li class="nav-item">
+                    <a class="nav-link active click_nav" href="#" id="name_user">Nombre Usuario</a>
+                </li>
+            </ul>
+            <div>
+                <button class="closeSession"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                  fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
+                    <path fill-rule="evenodd"
+                          d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+                </svg></button>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container_general">
+    <h1 class="form-title">Editar mis datos</h1>
+    <div class="container_form_input">
+
+        <form action="#" id="editar-datos-usuario">
+
+            <div class="main-user-info">
+                <div class="contenedor_grupos">
+                    <div class="container-input">
+                        <label for="username" id="nombreusuario">Nombre de usuario</label>
+                        <input type="text" id="username" name="name" value=""
+                               placeholder="Ingrese su nuevo nombre de usuario" required/>
+                    </div>
+                    <div class="container-input" id="div_email">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" name="email" placeholder="Ingrese su nuevo email" />
+                        <!-- email error -->
+                      <!--  <div id="invalidMailError" class="email-status">
+                            <span id="">Formato de email inválido</span>
+                        </div>
+                        <div id="existingUserError" class="email-status">
+                            <span id="">Este email ya esta en uso</span>
+                        </div> -->
+                    </div>
+                </div>
+
+                <div class="contenedor_grupos">
+                    <div class="container-input">
+                        <label for="password">Nueva contraseña</label>
+                        <div class="eye-password">
+                            <input class="input-eye" type="password" name="" id="password" minlength="8" maxlength="20">
+                            <svg class="eyes" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
+                                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="container-input">
+                        <label class="label pd-t" for="password2">Confirmar contraseña</label>
+                        <div class="eye-password">
+                            <input class="input-eye" type="password" name="" id="password2" minlength="8" maxlength="20">
+                            <svg class="eyes" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
+                                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="contenedor_grupos">
+                        <div class="container-input">
+                            <!-- pass error -->
+                            <div id="status-length" class="password-status">
+                                <span>La contraseña debe tener entre 8 y 20 caracteres</span>
+                            </div>
+                        </div>
+                        <div class="container-input">
+                            <div class="password-status">
+                                <span id="status-text"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-submit-btn">
+                <input type="submit" value="Confirmar">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+</body>
+<script src="../js/form_edicionDatosUsuario.js"></script>
+<script src="../js/closeSession.js"></script>
+
+</html>
