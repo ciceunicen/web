@@ -71,7 +71,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (usuario.role.id == 2) {
                     datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Remover Admin</button>";
                 } else if (usuario.role.id == 4) {
-                    datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button> <button class='btn_delete_user'  data-id = '" + usuario.id + "'>Eliminar usuario</button>";
+                    if (usuario._deleted) {
+                        datosUsuario += "<td > <button class='btn_save_rol btn-detalles btn_disabled'  data-id = '" + usuario.id + "' disabled>Agregar Admin</button> ";
+                        datosUsuario += "<button class='btn_delete_user btn_disabled'  data-id = '" + usuario.id + "' disabled>Eliminar usuario</button>"
+                    } else {
+                        datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button> ";
+                        datosUsuario += "<button class='btn_delete_user'  data-id = '" + usuario.id + "'>Eliminar usuario</button>"
+                    }
                 }
                 tabla.innerHTML += `<tr>${datosUsuario}</tr>`
             }
@@ -80,8 +86,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function deleteUser(idUser) {
         try {
-            let response = await fetch(URL_ROL_USER + "/" + idUser + "/delete", {
-                "method": "PUT",
+            let response = await fetch(URL_ROL_USER + "/" + idUser, {
+                "method": "DELETE",
                 "headers": {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + tokin
