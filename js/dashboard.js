@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", (e) =>{
     "use strict";
 
-    const USER = " <h2>Utilidades</h2><ul><li id='serEmprendedor'>Ser emprendedor</li></ul>"
+    const USER = " <h2>Utilidades</h2><ul><li id='serEmprendedor'>Ser emprendedor</li><li id='editarDatosUsuario'>Editar mis datos</li></ul>"
 
     const EMPRENDEDOR = "<h2>Proyectos</h2><ul><li id='crearProject'>Crear Proyecto</li><li>Ver mis proyectos</li></ul><h2>Utilidades</h2><ul><li>Solicitar turno</li></ul>"
 
@@ -39,6 +39,12 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     if(document.getElementById('serEmprendedor')!=null){
         let BtnSerEmprededor = document.getElementById('serEmprendedor').addEventListener('click', ()=>{
             window.location.href = "./form_emprendedores.html";
+        })
+    }
+
+    if(document.getElementById('editarDatosUsuario')!=null){
+        let BtnEditarDatosUsuario = document.getElementById('editarDatosUsuario').addEventListener('click', ()=>{
+            window.location.href = "./form_edicionDatosUsuario.html";
         })
     }
     
