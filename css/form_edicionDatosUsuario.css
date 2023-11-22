@@ -17,3 +17,10 @@
     flex: 1;
     margin-right: 5px;
 }
+
+.password-status {
+    bottom: 0;
+    width: 100%;
+    text-align: left;
+    color: #EF1919;
+}

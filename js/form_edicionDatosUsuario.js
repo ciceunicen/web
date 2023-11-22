@@ -3,14 +3,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     logout();
 
-    const URL_EDITAR_USUARIO = "http://localhost:8080/editar_usuario";
+    let url_editar_usuario = "http://localhost:8080/usuarios";
 
     let formEditarUsuario = document.getElementById("editar-datos-usuario"); //formulario
     let textPasswordStatus = document.getElementById("status-text");
     let textPasswordLength = document.getElementById('status-length');
     let btn_confirmar = document.querySelector('.form-submit-btn input');
-    let existingUserError = document.getElementById("existingUserError");
-    let invalidMailError = document.getElementById("invalidMailError");
+ /*   let existingUserError = document.getElementById("existingUserError");
+    let invalidMailError = document.getElementById("invalidMailError");*/
+
+    const checkEditarUsuarioInput = () => {
+        let inputs = formEditarUsuario.querySelectorAll('input');
+        return Array.from(inputs).every(input => {
+            return input.value.trim().length >= 1;
+        });
+    }
 
     formEditarUsuario.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -72,88 +79,51 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const checkEditarUsuarioInput = () => {
-        let inputs = formEditarUsuario.querySelectorAll('input');
-        return Array.from(inputs).every(input => {
-            return input.value.trim().length >= 1;
-        });
-    }
 
-    /*async function editarUsuario() {
-        let valoresInputs = getDatos();
-        let datosEditarUsuario = JSON.stringify(valoresInputs);
-        try {
-            let response = await fetch(URL_EDITAR_USUARIO, {
-                "method": "POST",
-                "headers": {
-                    "Content-Type": "application/json",
-                },
-                "body": datosEditarUsuario,
-            });
-
-            //let data = await response.json();
-
-            if (!response.ok) {
-                let errorText
-                switch(response.status){
-                    case 400: //"Bad request", el email esta mal formateado
-                        invalidMailError.style.display="block";
-                        errorText = "Bad Request"
-                        break;
-                    case 409: //"Conflict", el email ya existe
-                        existingUserError.style.display="block";
-                        errorText = "Conflict"
-                        break;
-                    case 422: //"Unprocessable Entity", la contraseña es del largo equivocado (menor a 8 caracteres o mayor a 20)
-                        textPasswordLength.style.display="block";
-                        errorText = "Unprocessable Entity"
-                        break;
-                    default:
-                        errorText = "Error"
-                }
-                throw { error: response.status , status: errorText }
-            } else {
-                invalidMailError.style.display="none";
-                existingUserError.style.display="none";
-                textPasswordLength.style.display="none";
-                success();
-                window.location.href = "./dashboard.html";
-
-                console.log("Usuario editado exitosamente");
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }*/
     async function editarUsuario() {
 
         let valoresInputs = getDatos();
         let datosEditarUsuario = JSON.stringify(valoresInputs);
-        try {
 
-            let response = await fetch(URL_EDITAR_USUARIO, {
-                "method": "POST",
-                "headers": {
-                    "Content-Type": "application/json",
-                },
-                "body": datosEditarUsuario,
-            });
-            let data = await response.json();
-            if (!response.ok) {
-                throw { error: data.error, status: data.status }
-            } else {
-                window.location.replace("http://localhost/proyectos/CICE/web/")
+        let usuarioGuardado = localStorage.getItem('usuario');
+        let usuarioLogueado = usuarioGuardado ? JSON.parse(usuarioGuardado) : null;
+        
+        //si existe usuarioLogueado y si tiene un id procede
+        if (usuarioLogueado && usuarioLogueado.id) {
+            let id_usuario = usuarioLogueado.id;
+            url_editar_usuario = `http://localhost:8080/usuarios/${id_usuario}`;
+            try {
+                let response = await fetch(url_editar_usuario, {
+                    "method": "PUT",
+                    "headers": {
+                        "Content-Type": "application/json",
+                    },
+                    "body": datosEditarUsuario,
+                });
+                let data = await response.json();
+                if (!response.ok) {
+                    throw { error: data.error, status: data.status }
+                } else {
+                    success('Datos actualizados con exito');
+
+                    setTimeout(() => {
+                        window.location.href = "./html/dashboard.html";
+                    }, 1500)
+                }
             }
-        }
-        catch (e) {
-            console.log(e)
+            catch (e) {
+                console.log(e)
+            }
+        } else {
+            console.error('No se pudo obtener el ID del usuario.');
         }
     }
 
     function getDatos() {
         let username = document.getElementById("username").value;
         let email = document.getElementById("email").value;
-        let newPassword = document.getElementById("password").value;
+        let currentPassword = document.getElementById("currentPassword").value;
+        let newPassword = document.getElementById("newPassword").value;
 
         return {
             "username": username,

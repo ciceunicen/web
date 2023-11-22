@@ -49,19 +49,32 @@
                         <input type="text" id="username" name="name" value=""
                                placeholder="Ingrese su nuevo nombre de usuario" required/>
                     </div>
+                    <div class="container-input">
+                        <label for="currentPassword">Contraseña actual</label>
+                        <div class="eye-password">
+                            <input class="input-eye" type="password" name="" id="currentPassword" minlength="8" maxlength="20">
+                            <svg class="eyes" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
+                                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="contenedor_grupos">
                     <div class="container-input" id="div_email">
                         <label for="email">Email</label>
                         <input type="text" id="email" name="email" placeholder="Ingrese su nuevo email" />
                         <!-- email error -->
-                      <!--  <div id="invalidMailError" class="email-status">
-                            <span id="">Formato de email inválido</span>
-                        </div>
-                        <div id="existingUserError" class="email-status">
-                            <span id="">Este email ya esta en uso</span>
-                        </div> -->
+                        <!--  <div id="invalidMailError" class="email-status">
+                              <span id="">Formato de email inválido</span>
+                          </div>
+                          <div id="existingUserError" class="email-status">
+                              <span id="">Este email ya esta en uso</span>
+                          </div> -->
                     </div>
                 </div>
-
                 <div class="contenedor_grupos">
                     <div class="container-input">
                         <label for="password">Nueva contraseña</label>
