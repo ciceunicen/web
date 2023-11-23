@@ -72,11 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
         tabla.innerHTML = "";
         arregloUsuarios.forEach(usuario => {
             if (usuario.role.id == 2 || usuario.role.id == 4) { //sòlo se muestran los usuarios que pueden ser admin, o los admin
-                /* let datosUsuario =
-                    `<td>${usuario.name}</td>
-                <td>${usuario.surname}</td>
-                <td>${usuario.email}</td>
-                <td>${usuario.role.type}</td> ` */
                 let datosUsuario =
                     `<td>${usuario.username}</td>
                 <td>${usuario.email}</td>
