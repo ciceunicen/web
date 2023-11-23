@@ -154,7 +154,7 @@ button {
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.459);
     z-index: -1;
-    transition: 0.5s;
+    /* transition: 0.5s; */
 }
 
 .fondo-aviso.show {
@@ -182,7 +182,7 @@ button {
     justify-content: end;
     padding: 1%;
     background-color: #74AC24;
-    border-radius: 5px 5px 0 0;
+    border-radius: 3px 3px 0 0;
 }
 
 .aviso header img {
@@ -196,8 +196,13 @@ button {
     padding: 2%;
 }
 
+.aviso div h2 {
+    color: #496D17;
+}
+
 .aviso div p {
-    margin: 0 auto 5% auto;
+    margin: 0 auto 4% auto;
+    font-size: 1.1rem;
     text-align: center;
     font-weight: 500;
 }
