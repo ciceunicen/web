@@ -1,16 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
     "use strict";
 
+
     logout();
 
+
     let url_editar_usuario = "http://localhost:8080/usuarios";
+
 
     let formEditarUsuario = document.getElementById("editar-datos-usuario"); //formulario
     let textPasswordStatus = document.getElementById("status-text");
     let textPasswordLength = document.getElementById('status-length');
     let btn_confirmar = document.querySelector('.form-submit-btn input');
- /*   let existingUserError = document.getElementById("existingUserError");
-    let invalidMailError = document.getElementById("invalidMailError");*/
+    /*   let existingUserError = document.getElementById("existingUserError");
+       let invalidMailError = document.getElementById("invalidMailError");*/
+
 
     const checkEditarUsuarioInput = () => {
         let inputs = formEditarUsuario.querySelectorAll('input');
@@ -18,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return input.value.trim().length >= 1;
         });
     }
+
 
     formEditarUsuario.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -29,12 +34,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+
     checkInputs();
+
 
     let btns_eyes = document.querySelectorAll(".eyes");
     for (const eye of btns_eyes) {
         eye.addEventListener("click", () => {
             let input = eye.previousElementSibling;
+
 
             if (input.type == 'password') {
                 input.type = 'text'
@@ -45,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
 
     function checkPasswords() {
         let passwords = document.querySelectorAll('.input-eye');
@@ -62,18 +71,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+
     function checkInputs() {
         document.querySelectorAll('.editar_usuario').forEach(i => {
             let inputs = i.querySelectorAll('input');
+
 
             inputs.forEach(input => {
                 input.onkeyup = () => {
                     if (checkEditarUsuarioInput()) {// Habilitar el botón de confirmar si los datos son válidos
                         btn_confirmar.removeAttribute('disabled');
-                } else {
-                    // Deshabilitar el botón de confirmar si los datos no son válidos
-                    btn_confirmar.setAttribute('disabled', 'true');
-                }
+                    } else {
+                        // Deshabilitar el botón de confirmar si los datos no son válidos
+                        btn_confirmar.setAttribute('disabled', 'true');
+                    }
                 };
             });
         });
@@ -87,32 +98,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let usuarioGuardado = localStorage.getItem('usuario');
         let usuarioLogueado = usuarioGuardado ? JSON.parse(usuarioGuardado) : null;
-        
+
         //si existe usuarioLogueado y si tiene un id procede
         if (usuarioLogueado && usuarioLogueado.id) {
             let id_usuario = usuarioLogueado.id;
             url_editar_usuario = `http://localhost:8080/usuarios/${id_usuario}`;
+
             try {
                 let response = await fetch(url_editar_usuario, {
                     "method": "PUT",
                     "headers": {
                         "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`,
                     },
                     "body": datosEditarUsuario,
                 });
                 let data = await response.json();
+
                 if (!response.ok) {
                     throw { error: data.error, status: data.status }
                 } else {
-                    success('Datos actualizados con exito');
-
-                    setTimeout(() => {
-                        window.location.href = "./html/dashboard.html";
-                    }, 1500)
+                    success();
+                    window.location.href = "./dashboard.html";
                 }
             }
             catch (e) {
-                console.log(e)
+                console.error("Error en editarUsuario:", e);
+                let errorMessage = e.error || 'Hubo un error al actualizar los datos. Por favor, vuelve a iniciar sesión.';
+                alert(errorMessage);
             }
         } else {
             console.error('No se pudo obtener el ID del usuario.');
@@ -125,20 +138,25 @@ document.addEventListener("DOMContentLoaded", () => {
         let currentPassword = document.getElementById("currentPassword").value;
         let newPassword = document.getElementById("newPassword").value;
 
+        console.log("FRONT getDatos() currentPw valor"+ currentPassword);
+        console.log("FRONT getDatos() newPw valor"+ newPassword);
         return {
             "username": username,
             "email": email,
+            "currentPassword": currentPassword,
             "newPassword": newPassword,
         };
     }
 
     function success() {
-        Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Datos actualizados exitosamente',
-            showConfirmButton: false,
-            timer: 2000,
-        })
+        console.log("Dentro de success");
+        alert("Datos actualizados exitosamente");
+        // Swal.fire({
+        //     position: 'center',
+        //     icon: 'success',
+        //     title: 'Datos actualizados exitosamente',
+        //     showConfirmButton: false,
+        //     timer: 2000,
+        // });
     }
 });

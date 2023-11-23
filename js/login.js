@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     btnReg.addEventListener("click", (e) => {
         e.preventDefault();
 
-        window.location.href = "./html/registro.html";
+        window.location.href = "./registro.html";
     })
 
     document.getElementById("btnLog").addEventListener("click", (e) => {
