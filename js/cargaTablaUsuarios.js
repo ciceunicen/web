@@ -24,6 +24,19 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
+    const aviso_fondo = document.querySelector(".fondo-aviso");
+    const aviso = document.querySelector(".aviso");
+    const btn_ok = document.querySelector(".btn-ok");
+    const cruz = document.querySelector(".cruz");
+
+    btn_ok.addEventListener("click", cerrarAviso);
+    cruz.addEventListener("click", cerrarAviso);
+
+    function cerrarAviso() {
+        aviso_fondo.classList.remove("show");
+        aviso.classList.remove("show");
+    }
+
     async function obtenerUsuarios(url) {
 
         console.log("El token es: " + tokin)
@@ -99,6 +112,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("User eliminado: ", deletedUser);
                 console.log(response);
                 obtenerUsuarios(URL_ROL_USER);
+            } else if (response.status == 400) { //Bad Request
+                aviso_fondo.classList.add("show");
+                aviso.classList.add("show");
             }
         } catch (e) {
             console.log(e)
