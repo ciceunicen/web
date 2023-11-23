@@ -123,9 +123,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let newId;
         if (btnLabel == "Remover Admin")
-            newId = 4;
+            newId = 4; // ID usuario defecto
         else
-            newId = 2;
+            newId = 2; // ID admin
 
         try {
             let response = await fetch(URL_ROL_USER + "/" + idUser + "/rol", {
@@ -141,10 +141,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 })
 
-
+                
             });
 
-            obtenerUsuarios(URL_ROL_USER);
+            if (response.ok) {
+                const json = await response.json();
+                console.log(json);
+                obtenerUsuarios(URL_ROL_USER);
+            } else if (response.status == 401) { // Unathorized
+                console.error("No tiene los permisos para realizar esta acción");
+            }
         } catch (e) {
             console.log(e)
         }
