@@ -106,6 +106,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!response.ok) {
                     throw { error: data.error, status: data.status }
                 } else {
+                    // Actualiza el email en el objeto del usuario en el localStorage para que
+                    // se muestre correctamente en dashboard al redirigir
+                    let usuarioActualizado = localStorage.getItem('usuario');
+                    usuarioActualizado = usuarioActualizado ? JSON.parse(usuarioActualizado) : null;
+
+                    if (usuarioActualizado) {
+                        usuarioActualizado.email = valoresInputs.email;
+                        localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+                    }
                     alert("Datos actualizados con exito");
                     window.location.href = "./dashboard.html";
                 }
