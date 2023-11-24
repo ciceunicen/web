@@ -13,14 +13,22 @@
     align-items: center;
 }
 
-.input-eye {
+.input-eye, .input-eye-current-pw {
     flex: 1;
     margin-right: 5px;
+}
+
+.eyes {
+    color: #D9D9D9;
+}
+
+.password-status #status-length {
+    display: none;
 }
 
 .password-status {
     bottom: 0;
     width: 100%;
     text-align: left;
-    color: #EF1919;
 }
+
