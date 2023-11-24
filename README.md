@@ -15,6 +15,7 @@ A continuación se detallan los pasos necesarios para configurar y ejecutar el p
 ### Requisitos Previos
 
 #### Se deben tener instalados los siguientes entornos:
+
   
 1. [XAMPP](https://www.apachefriends.org/es/download.html): Asegúrate de tener XAMPP instalado y configurado en tu máquina. Este entorno proporciona Apache para el servidor web y MySQL para la base de datos. 
 
