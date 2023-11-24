@@ -112,9 +112,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             catch (e) {
                 console.error("Error en editarUsuario:", e);
-                let errorMessage = e.error || 'Hubo un error al actualizar los datos. Por favor, vuelve a iniciar sesión.';
+                let errorMessage = e.error || 'Hubo un error al actualizar los datos. Por favor, intentelo nuevamente';
                 alert(errorMessage);
-                window.location.href = "./login.html";
             }
         } else {
             console.error('No se pudo obtener el ID del usuario.');
