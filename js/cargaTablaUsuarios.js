@@ -15,6 +15,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 changeRol(btn.getAttribute("data-id"), btn.innerHTML);
             })
         })
+
+        let btnsDelete = document.querySelectorAll('.btn_delete_user');
+        btnsDelete.forEach(btn => {
+            btn.addEventListener("click", e => {
+                deleteUser(btn.getAttribute("data-id"));
+            })
+        })
+    }
+
+    const aviso_fondo = document.querySelector(".fondo-aviso");
+    const aviso = document.querySelector(".aviso");
+    const btn_ok = document.querySelector(".btn-ok");
+    const cruz = document.querySelector(".cruz");
+
+    btn_ok.addEventListener("click", cerrarAviso);
+    cruz.addEventListener("click", cerrarAviso);
+
+    function cerrarAviso() {
+        aviso_fondo.classList.remove("show");
+        aviso.classList.remove("show");
     }
 
     async function obtenerUsuarios(url) {
@@ -51,20 +71,49 @@ document.addEventListener("DOMContentLoaded", () => {
     function cargarUsuarios(arregloUsuarios) {
         tabla.innerHTML = "";
         arregloUsuarios.forEach(usuario => {
-            if (usuario.rol.id == 2 || usuario.rol.id == 4) { //sòlo se muestran los usuarios que pueden ser admin, o los admin
+            if (usuario.role.id == 2 || usuario.role.id == 4) { //sòlo se muestran los usuarios que pueden ser admin, o los admin
                 let datosUsuario =
-                    `<td>${usuario.name}</td>
-                <td>${usuario.surname}</td>
+                    `<td>${usuario.username}</td>
                 <td>${usuario.email}</td>
-                <td>${usuario.rol.type}</td> `
-                if (usuario.rol.id == 2) {
+                <td>${usuario.role.type}</td> `
+                if (usuario.role.id == 2) {
                     datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Remover Admin</button>";
-                } else if (usuario.rol.id == 4) {
-                    datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button>";
+                } else if (usuario.role.id == 4) {
+                    if (usuario._deleted) {
+                        datosUsuario += "<td > <button class='btn_save_rol btn-detalles btn_disabled'  data-id = '" + usuario.id + "' disabled>Agregar Admin</button> ";
+                        datosUsuario += "<button class='btn_delete_user btn_disabled'  data-id = '" + usuario.id + "' disabled>Eliminar usuario</button>"
+                    } else {
+                        datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button> ";
+                        datosUsuario += "<button class='btn_delete_user'  data-id = '" + usuario.id + "'>Eliminar usuario</button>"
+                    }
                 }
                 tabla.innerHTML += `<tr>${datosUsuario}</tr>`
             }
         });
+    }
+
+    async function deleteUser(idUser) {
+        try {
+            let response = await fetch(URL_ROL_USER + "/" + idUser, {
+                "method": "DELETE",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + tokin
+                }
+            });
+
+            if (response.ok) {
+                let deletedUser = await response.json();
+                console.log("User eliminado: ", deletedUser);
+                console.log(response);
+                obtenerUsuarios(URL_ROL_USER);
+            } else if (response.status == 400) { //Bad Request
+                aviso_fondo.classList.add("show");
+                aviso.classList.add("show");
+            }
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     async function changeRol(idUser, btnLabel) {
