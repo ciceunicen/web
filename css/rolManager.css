@@ -113,7 +113,7 @@ button {
     background-color: #74AC24;
 }
 
-.btn_delete_user {
+.btn_delete_user, .btn_delete_admin {
     background-color: rgb(173, 23, 23);
 }
 
