@@ -1,0 +1,52 @@
+.project-section {
+    width: 80%;
+    margin: 0% 10%;
+}
+
+.projectTitle {
+    background-color: #6B9E22;
+    padding: 10px;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.projectTitle p {
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.btn {
+    cursor: pointer;
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 5px;
+}
+
+.btn_save_green {
+    background-color: #74AC24;
+    color: #FFFFFF;
+    width: 100%;
+    transition: 0.4s;
+}
+
+.btn_save_green:hover {
+    background-color: #649421;
+}
+
+.btn_save_green:focus {
+    background-color: #496D17;
+}
+
+.mainBtns {
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.projectLoading{
+    background-color: #EAF7D8;
+    border-radius: 0px 0px 10px 10px;
+}
