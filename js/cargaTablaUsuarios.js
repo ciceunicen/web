@@ -77,10 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${usuario.email}</td>
                 <td>${usuario.role.type}</td> `
                 if (usuario.role.id == 2) {
-                    if (usuario._deleted) {
-                        datosUsuario += "<td > <button class='btn_save_rol btn-detalles btn_disabled'  data-id = '" + usuario.id + "' disabled>Remover Admin</button>";
-                        datosUsuario += "<button class='btn_delete_user btn_disabled'  data-id = '" + usuario.id + "' disabled>Eliminar admin</button>";
-                    } else {
+                    if (!usuario._deleted) {
                         datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Remover Admin</button>";
                         datosUsuario += "<button class='btn_delete_user'  data-id = '" + usuario.id + "'>Eliminar admin</button>";
                     }
