@@ -68,30 +68,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let tabla = document.querySelector("#lista"); ////
 
+    // Sòlo se muestran los usuarios que pueden ser admin, o los admin
     function cargarUsuarios(arregloUsuarios) {
         tabla.innerHTML = "";
+        let datosUsuario = "";
         arregloUsuarios.forEach(usuario => {
-            if (usuario.role.id == 2 || usuario.role.id == 4) { //sòlo se muestran los usuarios que pueden ser admin, o los admin
-                let datosUsuario =
+            datosUsuario = "";
+            if (usuario.role.id == 2 && !usuario._deleted) {
+                datosUsuario =
                     `<td>${usuario.username}</td>
                 <td>${usuario.email}</td>
-                <td>${usuario.role.type}</td> `
-                if (usuario.role.id == 2) {
-                    if (!usuario._deleted) {
-                        datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Remover Admin</button>";
-                        datosUsuario += "<button class='btn_delete_user'  data-id = '" + usuario.id + "'>Eliminar admin</button>";
-                    }
-                } else if (usuario.role.id == 4) {
-                    if (usuario._deleted) {
-                        datosUsuario += "<td > <button class='btn_save_rol btn-detalles btn_disabled'  data-id = '" + usuario.id + "' disabled>Agregar Admin</button> ";
-                        datosUsuario += "<button class='btn_delete_user btn_disabled'  data-id = '" + usuario.id + "' disabled>Eliminar usuario</button>"
-                    } else {
-                        datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button> ";
-                        datosUsuario += "<button class='btn_delete_user'  data-id = '" + usuario.id + "'>Eliminar usuario</button>"
-                    }
+                <td>${usuario.role.type}</td>`;
+
+                datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Remover Admin</button>";
+                datosUsuario += "<button class='btn_delete_user'  data-id = '" + usuario.id + "'>Eliminar admin</button>";
+            } else if (usuario.role.id == 4) {
+                datosUsuario =
+                    `<td>${usuario.username}</td>
+                <td>${usuario.email}</td>
+                <td>${usuario.role.type}</td> `;
+
+                if (usuario._deleted) {
+                    datosUsuario += "<td > <button class='btn_save_rol btn-detalles btn_disabled'  data-id = '" + usuario.id + "' disabled>Agregar Admin</button> ";
+                    datosUsuario += "<button class='btn_delete_user btn_disabled'  data-id = '" + usuario.id + "' disabled>Eliminar usuario</button>"
+                } else {
+                    datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Admin</button> ";
+                    datosUsuario += "<button class='btn_delete_user'  data-id = '" + usuario.id + "'>Eliminar usuario</button>"
                 }
-                tabla.innerHTML += `<tr>${datosUsuario}</tr>`
             }
+
+            tabla.innerHTML += `<tr>${datosUsuario}</tr>`
         });
     }
 
