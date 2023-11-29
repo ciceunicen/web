@@ -39,33 +39,41 @@
                             <p>PROYECTO</p>
                         </div>
                         <div class="mainBtns">
-                            <button class="btn btn-success btn_save_green" id="datos">Datos</button>
-                            <button class="btn btn-success btn_save_green" id="diagnostico">Diagnóstico</button>
-                            <button class="btn btn-success btn_save_green" id="diagnostico">Registro de encuentros</button>
+                            <button class="btn btn_save_green" id="datos">Datos</button>
+                            <button class="btn btn_save_green" id="diagnostico">Diagnóstico</button>
+                            <button class="btn btn_save_green" id="diagnostico">Registro de encuentros</button>
                         </div>
                         <div class="projectLoading">   
                             <form action="#" method="post">
-                                <label for="title" required>Título * <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>
-                                <div>
+                                <div class="input-section">
+                                    <label for="title" required>Título* <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>                                    
                                     <input class="form-control" type="text" name="title" id="title" placeholder="titulo" required>
                                     <p class="error" id="titleError"></p>
                                 </div>
-                                <label for="description" required>Descripción * <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>
-                                <div>
+                                <div class="input-section">
+                                    <label for="description" required>Descripción* <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>
                                     <textarea class="form-control" type="text" name="description" id="description" placeholder="descripción" required></textarea>
                                     <p class="error" id="descriptionError"></p>
                                 </div>
+
                                 <!--Partial render checkboxs necesidades-->
-                                <div class="datosNecesidades"></div>
-                                <!--Partial render checkboxs asistencias-->
-                                <div class="datosAsistencias"></div>
-                                
-                                <label for="estadios" class="estadios">Estadios *</label>
-                                <div class="estadios_checks" id="estadios_checks">
-                                    
-                                    <p class="error" id="estadioError"></p>
+                                <div class="input-section">
+                                    <label for="needs" class="estadios">Necesidades</label>
+                                    <div class="datosNecesidades"></div>
                                 </div>
-                                <div class="adjuntos">
+                                <!--Partial render checkboxs asistencias-->
+                                <div class="input-section">
+                                    <label for="assists" class="estadios">Asistencias</label>
+                                    <div class="datosAsistencias"></div>
+                                </div>
+
+                                <div class="input-section">
+                                    <label for="estadios" class="estadios">Estadio</label>
+                                    <div class="estadios_checks" id="estadios_checks">                                    
+                                        <p class="error" id="estadioError"></p>
+                                    </div>
+                                </div>
+                                <!-- <div class="adjuntos">
                                     <label for="otra" >Adjuntar archivos</label>
                                     <input type="file" name="file-7" id="file-7" class="inputfile inputfile-7" data-multiple-caption="{count} archivos seleccionados" multiple />
                                     <label for="file-7" class="iborrainputfile">
@@ -73,13 +81,12 @@
                                         <span class="selectedFiles" id="count_files"></span>
                                     </label>
                                     <div id="div_paintBadFileAlert"></div>
-                                    <!--CARGA DE VISTA PREVIA DE ADJUNTOS-->
+                                    //CARGA DE VISTA PREVIA DE ADJUNTOS
                                     <div class="div_adjuntos" id="div_adjuntos"></div>
-                                </div> 
+                                </div>  -->                              
                                 <div class="saveContainer">
-                                    <button type="submit"  class="btn btn-primary" id="save">Guardar</button>
-                                <div class="generalSave">           
-                                </div>
+                                    <button type="submit" class="btn btn-save" id="save">Guardar</button>
+                                    <div class="generalSave"></div>
                                 </div>     
                             </form>
                         </div>
