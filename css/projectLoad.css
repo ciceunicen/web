@@ -82,8 +82,11 @@
     color: #496D17;    
 }
 
-.projectLoading form .input-section input {
+input {
     outline: none;
+}
+
+.projectLoading form .input-section .form-input {
     border: 1px solid #74AC24;
     padding: 7px;
     border-radius: 5px;
@@ -100,5 +103,42 @@
     border-radius: 5px;
     min-height: 74px;
     font-size: 14px;
-    
+}
+
+.save-input {
+    width: 60%;
+    border: 1px solid #74AC24;
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+}
+
+.save-input div {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFFFFF;
+    border-right: 1px solid #74AC24;
+    border-radius: 5px 0px 0px 5px;
+}
+
+.save-input input {
+    width: 60%;
+    border: 0px;
+}
+
+.save-input button {
+    width: 25%;
+    background-color: #74AC24;
+    color: #FFFFFF;
+    transition: 0.4s;
+}
+
+.save-input button:hover {
+    background-color: #649421;
+}
+
+.save-input button:focus {
+    background-color: #496D17;
 }
