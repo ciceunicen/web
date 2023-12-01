@@ -55,26 +55,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function showNeeds(array) {
-        needContainer.innerHTML = "";
         array.forEach(need => {
-            let needData = 
-            `<article>
-                <input class='checkbox-input' type='checkbox' id='cbox1' value=${need.needType}> 
-                <label>${need.needType}</label>
-            </article>`
-            needContainer.innerHTML += needData;
+            let article = document.createElement('article');
+            let input = document.createElement('input');
+            input.classList.add('checkbox-input');
+            input.type = 'checkbox';
+            input.value = need.needType;
+            let label = document.createElement('label');
+            label.classList.add("checkbox-label");
+            label.textContent = need.needType;        
+            article.appendChild(input);
+            article.appendChild(label);
+        
+            needContainer.appendChild(article);  
         });
     }
 
     function showAssistances(array) {
-        assistanceContainer.innerHTML = "";
         array.forEach(assistance => {
-            let assistanceData = 
-            `<article>
-                <input class='checkbox-input' type='checkbox' id='cbox1' value=${assistance.type}> 
-                <label>${assistance.type}</label>
-            </article>`
-            assistanceContainer.innerHTML += assistanceData;
+            let article = document.createElement('article');
+            let input = document.createElement('input');
+            input.classList.add('checkbox-input');
+            input.type = 'checkbox';
+            input.value = assistance.type;
+            let label = document.createElement('label');
+            label.classList.add("checkbox-label");
+            label.textContent = assistance.type;
+            article.appendChild(input);
+            article.appendChild(label);
+          
+            assistanceContainer.appendChild(article);      
         });
     }
 

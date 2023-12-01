@@ -60,45 +60,46 @@
     flex-direction: row;
 }
 
-.projectLoading{
+.project-loading{
     background-color: #EAF7D8;
     border-radius: 0px 0px 10px 10px;
     display: flex;
 }
 
-.projectLoading form {
+.project-loading form {
     width: 80%;
-    margin: 0% 10%;
-    padding: 20px;
+    margin: 25px 10%;
 }
 
-.projectLoading form .input-section {
+.project-loading form .input-section {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
 }
 
-.projectLoading form label {
-    color: #496D17;    
+.input-label {
+    font-size: 18px;
+    color: #496D17;  
 }
+
 
 input {
     outline: none;
 }
 
-.projectLoading form .input-section .form-input {
+.project-loading form .input-section .form-input {
     border: 1px solid #74AC24;
     padding: 7px;
     border-radius: 5px;
     font-size: 14px;
 }
 
-.projectLoading form .input-section textarea {
+.input-section textarea {   
+    box-sizing:border-box;  
     width: 100%;
-    outline: none;
-    box-sizing: border-box;
-    border: 1px solid #74AC24;
     padding: 7px;
+    border: 1px solid #74AC24;
+    min-width: 100%;
     max-width: 100%;
     border-radius: 5px;
     min-height: 74px;
@@ -126,6 +127,7 @@ input {
 .save-input input {
     width: 60%;
     border: 0px;
+    padding: 5px;
 }
 
 .save-input button {
@@ -143,9 +145,12 @@ input {
     background-color: #496D17;
 }
 
-.needsData{
+#needsData, #assistancesData, #stagesData{
     padding: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+}
+
+.checkbox-label {
+    font-size:16px;
+    color:#496D17;
+    padding-left:5px;
 }

@@ -46,23 +46,23 @@
                         <div class="projectLoading">   
                             <form action="#" method="post">
                                 <div class="input-section">
-                                    <label for="title" required>Título* <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>                                    
+                                    <label class="input-label" for="title" required>Título* <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>                                    
                                     <input class="form-input" type="text" name="title" id="title" placeholder="titulo">
                                     <p class="error" id="titleError"></p>
                                 </div>
                                 <div class="input-section">
-                                    <label for="description" required>Descripción* <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>
+                                    <label class="input-label" for="description" required>Descripción* <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>
                                     <textarea type="text" name="description" id="description" placeholder="descripción"></textarea>
                                     <p class="error" id="descriptionError"></p>
                                 </div>
 
                                 <!--Partial render checkboxs necesidades-->
                                 <div class="input-section">
-                                    <label>Necesidades</label>
+                                    <label class="input-label">Necesidades</label>
                                     <div id="needsData"></div>
                                     <div class="save-input">
                                         <div>
-                                            <label for="save-need">Otra</label>
+                                            <label class="input-label" for="save-need">Otra</label>
                                         </div>
                                         <input type="text" name="save-need">
                                         <button class="btn">Guardar</button>
@@ -70,11 +70,11 @@
                                 </div>
                                 <!--Partial render checkboxs asistencias-->
                                 <div class="input-section">
-                                    <label>Asistencias</label>
+                                    <label class="input-label">Asistencias</label>
                                     <div id="assistancesData"></div>
                                     <div class="save-input">
                                         <div>
-                                            <label for="save-assistance">Otra</label>
+                                            <label class="input-label" for="save-assistance">Otra</label>
                                         </div>
                                         <input type="text" name="save-assistance">
                                         <button class="btn">Guardar</button>
@@ -82,7 +82,7 @@
                                 </div>
 
                                 <div class="input-section">
-                                    <label for="estadios">Estadio</label>
+                                    <label class="input-label">Estadio</label>
                                     <div class="estadios_checks" id="estadios_checks">                                    
                                         <p class="error" id="estadioError"></p>
                                     </div>
