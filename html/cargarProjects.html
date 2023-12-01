@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
         <link rel="stylesheet" href="../css/dashboard.css">
-        <link rel="stylesheet" href="../css/projectLoad.css">
+        <link rel="stylesheet" href="../css/uploadProject.css">
     </head>
     <body>
         <section class="container">
@@ -58,8 +58,8 @@
 
                                 <!--Partial render checkboxs necesidades-->
                                 <div class="input-section">
-                                    <label for="needs" class="estadios">Necesidades</label>
-                                    <div class="needsData"></div>
+                                    <label>Necesidades</label>
+                                    <div id="needsData"></div>
                                     <div class="save-input">
                                         <div>
                                             <label for="save-need">Otra</label>
@@ -70,8 +70,8 @@
                                 </div>
                                 <!--Partial render checkboxs asistencias-->
                                 <div class="input-section">
-                                    <label for="assists" class="estadios">Asistencias</label>
-                                    <div class="assistsData"></div>
+                                    <label>Asistencias</label>
+                                    <div id="assistancesData"></div>
                                     <div class="save-input">
                                         <div>
                                             <label for="save-assistance">Otra</label>
@@ -82,7 +82,7 @@
                                 </div>
 
                                 <div class="input-section">
-                                    <label for="estadios" class="estadios">Estadio</label>
+                                    <label for="estadios">Estadio</label>
                                     <div class="estadios_checks" id="estadios_checks">                                    
                                         <p class="error" id="estadioError"></p>
                                     </div>
@@ -108,6 +108,7 @@
                 </div>
             </article> 
         </section>       
+        <script src="../js/uploadProject.js"></script>
         <script src="../js/closeSession.js"></script>
         <script src="../js/dashboard.js"></script>
     </body>

@@ -142,3 +142,10 @@ input {
 .save-input button:focus {
     background-color: #496D17;
 }
+
+.needsData{
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
