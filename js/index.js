@@ -16,7 +16,18 @@ var multiSelectsNeedsCreated;
 var multiSelectsAssistancesCreated;
 
 document.addEventListener("DOMContentLoaded", function () {
-  mostrarHome();
+  console.log()
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  console.log(user);
+  let rolUser = user.rolType.toLowerCase();
+
+  // Muestra contenido según el rol del usuario
+  if (rolUser === "emprendedor") {
+    mostrarHomeEmprendedor();
+  } else {
+    // Para otros roles (admin/super admin)
+    mostrarHome();
+  }
 })
 
 
