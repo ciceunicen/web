@@ -85,18 +85,14 @@ function mostrarProyectos(json) {
 }
 
 function mostrarProyectosDeEmprendedor(json) {
+  console.log(json);
   mostrarArchivoHTML("listProjectsEntrepreneur.html").then(text =>{
     document.querySelector(".main-container").innerHTML = text;
-   /* document.querySelector("#btn_filter").addEventListener("click", function(){
-      captureSelectedOptions();
-      //Acá hacer fetch a la API pidiendo los proyectos filtrados, usando JSON "json_filters"
-      //...
-    });*/
+
     mostrarPaginado(json.totalPages,"proyectos");
     mostrarTablaProyectosEmprendedor(json);
   });
 }
-
 
 //muestra la seccion del paginado
 function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list-projects"){

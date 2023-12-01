@@ -318,6 +318,7 @@ function mostrarTabla(json, borrados, projectManager = false) {
 
 //muestra los proyectos de un emprendedor
 function mostrarTablaProyectosEmprendedor(json) {
+  console.log(json);
   let array = json;
 
   if (Array.isArray(array) && array.length > 0) {
@@ -333,7 +334,7 @@ function mostrarTablaProyectosEmprendedor(json) {
 
       cell1.innerHTML = proyecto.title;
       cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
-      cell3.innerHTML = proyecto.stage.stage_type;
+      cell3.innerHTML = proyecto.stage;
       let input = document.createElement("input");
       input.setAttribute("type", "button");
       input.setAttribute("value", "Ver más");
