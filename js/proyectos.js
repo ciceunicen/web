@@ -341,16 +341,8 @@ function mostrarTablaProyectosEmprendedor(json) {
       input.setAttribute("id", proyecto.id_Project);
       input.setAttribute("class", "btn_save_green verMas");
       cell4.appendChild(input);
-      //revisar que anden TODOS los botones ver mas. Me parece que solo hace andar al primero. sino intentar el codigo
-      //comentado de abajo
+
       document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
-      //delegación de eventos para asignar el evento a todos los botones de manera más eficiente
-      /*container.addEventListener("click", (event) => {
-        if (event.target.classList.contains("verMas")) {
-          const projectId = event.target.id;
-          getProyecto(projectId).then(json => mostrarProyecto(json));
-        }
-      });*/
     }
   } else {
     console.error("El array de proyectos está vacío o no está definido.");
