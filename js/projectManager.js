@@ -53,9 +53,9 @@ function mostrarResponsableProyecto(id) {
     if (btn.className === 'hiddenData') {
         getProjectManager(id).then(json => showDataProjectManager(json));
         btn.className = 'showProjectManagerData';
-        document.querySelector(".slideDownResponsible").innerHTML = "<img src='./img/icons8-flecha-contraer-50.png' class='slideDown'/>";
+        document.querySelector(".slideDownResponsible").innerHTML = "<img src='../img/icons8-flecha-contraer-50.png' class='slideDown'/>";
     } else {
-        document.querySelector(".slideDownResponsible").innerHTML = "<img src='./img/expandir.png' class='slideDown'/>";
+        document.querySelector(".slideDownResponsible").innerHTML = "<img src='../img/expandir.png' class='slideDown'/>";
         btn.className = 'hiddenData';
     }
 }

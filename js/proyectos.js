@@ -400,9 +400,9 @@ function mostrarHistorialProyecto() {
   let btn = document.getElementById('projectDataHistory')
   if (btn.className === 'hiddenData') {
     btn.className = 'showDataHistory';
-    document.querySelector(".slideDownHistory").innerHTML = "<img src='img/icons8-flecha-contraer-50.png' class='slideDown'/>";
+    document.querySelector(".slideDownHistory").innerHTML = "<img src='../img/icons8-flecha-contraer-50.png' class='slideDown'/>";
   } else {
-    document.querySelector(".slideDownHistory").innerHTML = "<img src='img/expandir.png' class='slideDown'/>";
+    document.querySelector(".slideDownHistory").innerHTML = "<img src='../img/expandir.png' class='slideDown'/>";
     btn.className = 'hiddenData';
   }
 }
