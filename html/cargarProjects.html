@@ -43,16 +43,16 @@
                             <button class="btn btn_save_green" id="diagnostico">Diagnóstico</button>
                             <button class="btn btn_save_green" id="diagnostico">Registro de encuentros</button>
                         </div>
-                        <div class="projectLoading">   
-                            <form action="#" method="post">
+                        <div class="project-loading">   
+                            <form id="projectForm" action="#" method="POST">
                                 <div class="input-section">
                                     <label class="input-label" for="title" required>Título* <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>                                    
-                                    <input class="form-input" type="text" name="title" id="title" placeholder="titulo">
+                                    <input class="form-input" type="text" name="title" placeholder="titulo">
                                     <p class="error" id="titleError"></p>
                                 </div>
                                 <div class="input-section">
                                     <label class="input-label" for="description" required>Descripción* <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>
-                                    <textarea type="text" name="description" id="description" placeholder="descripción"></textarea>
+                                    <textarea type="text" name="description" placeholder="descripción"></textarea>
                                     <p class="error" id="descriptionError"></p>
                                 </div>
 
@@ -67,6 +67,7 @@
                                         <input type="text" name="save-need">
                                         <button class="btn">Guardar</button>
                                     </div>
+                                    <p class="error" id="needError"></p>
                                 </div>
                                 <!--Partial render checkboxs asistencias-->
                                 <div class="input-section">
@@ -79,13 +80,13 @@
                                         <input type="text" name="save-assistance">
                                         <button class="btn">Guardar</button>
                                     </div>
+                                    <p class="error" id="assistanceError"></p>
                                 </div>
 
                                 <div class="input-section">
                                     <label class="input-label">Estadio</label>
-                                    <div class="estadios_checks" id="estadios_checks">                                    
-                                        <p class="error" id="estadioError"></p>
-                                    </div>
+                                    <div id="stagesData"></div>
+                                    <p class="error" id="stageError"></p>
                                 </div>
                                 <!-- <div class="adjuntos">
                                     <label for="otra" >Adjuntar archivos</label>
@@ -99,7 +100,7 @@
                                     <div class="div_adjuntos" id="div_adjuntos"></div>
                                 </div>  -->                              
                                 <div class="saveContainer">
-                                    <button type="submit" class="btn btn-save" id="save">Guardar</button>
+                                    <input class="btn btn-save" type="submit" value="Guardar">
                                     <div class="generalSave"></div>
                                 </div>     
                             </form>
