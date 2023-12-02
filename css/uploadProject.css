@@ -154,3 +154,8 @@ input {
     color:#496D17;
     padding-left:5px;
 }
+
+.error {
+    font-size: 14px;
+    color: red;
+}
