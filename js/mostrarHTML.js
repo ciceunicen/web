@@ -24,6 +24,27 @@ function mostrarHome(){
     })
 }
 
+function mostrarHomeEmprendedor(){
+
+  //let emprendedor = JSON.parse(localStorage.getItem('emprendedor'));
+  let user = JSON.parse(localStorage.getItem('usuario'));
+
+  // Verifica si el usuario es un emprendedor y obtener su ID
+  if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor' && user.id) {
+    let emprendedorId = user.id;
+
+    mostrarArchivoHTML("navbarEntrepreneur.html", ".navbar").then(
+        text => {
+          document.querySelector(".navbar").innerHTML = text;
+          getAllProjectsByEntrepreneur(emprendedorId).then(json => mostrarProyectosDeEmprendedor(json));
+          logout();
+        }
+    );
+  } else {
+    console.error('Error al obtener el ID del emprendedor desde el local storage.');
+  }
+}
+
 //Cambio de pantalla a proyectos eliminados
 function showTableProjectsRemoved(){
     mostrarArchivoHTML("listProjectsRemoved.html").then(text =>{
@@ -63,6 +84,15 @@ function mostrarProyectos(json) {
   });
 }
 
+function mostrarProyectosDeEmprendedor(json) {
+  console.log(json);
+  mostrarArchivoHTML("listProjectsEntrepreneur.html").then(text =>{
+    document.querySelector(".main-container").innerHTML = text;
+
+    mostrarPaginado(json.totalPages,"proyectos");
+    mostrarTablaProyectosEmprendedor(json);
+  });
+}
 
 //muestra la seccion del paginado
 function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list-projects"){
@@ -76,26 +106,39 @@ function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list
 
 //MOSTRAR PROYECTO
 function mostrarProyecto(proyecto){
-  mostrarArchivoHTML("proyecto.html").then(text=>{
+  mostrarArchivoHTML("proyecto.html").then(text=> {
     document.querySelector(".main-container").innerHTML = text;
-    document.querySelector("#titulo").innerHTML+=proyecto.title;
-    document.querySelector("#descripcion").innerHTML+=proyecto.description;
-    document.querySelector("#estadio").innerHTML+=proyecto.stage.stage_type;
-    mostrarArray("#asistencia",proyecto.assistances,"elemento.type");
-    mostrarArray("#necesidades",proyecto.needs,"elemento.needType");
-    partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
+    document.querySelector("#titulo").innerHTML += proyecto.title;
+    document.querySelector("#descripcion").innerHTML += proyecto.description;
+    document.querySelector("#estadio").innerHTML += proyecto.stage.stage_type;
+    mostrarArray("#asistencia", proyecto.assistances, "elemento.type");
+    mostrarArray("#necesidades", proyecto.needs, "elemento.needType");
+    partialRendercargaDatosEmprendedor(".datosEmprendedor", proyecto.projectManager.id_ProjectManager);
     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
     //carga sección de archivos adjuntos
-    mostrarArchivoHTML("files.html").then(text =>{
+    mostrarArchivoHTML("files.html").then(text => {
       document.getElementById("div_adjuntos").innerHTML = text;
-      mostrarArray("#files",proyecto.files,"elemento.file", proyecto);
+      mostrarArray("#files", proyecto.files, "elemento.file", proyecto);
       //evento para poder descargar todos sus archivos adjuntos
       downloadAllAttachmentsByProject(proyecto.title);
     });
-    document.querySelector("#editarProyecto").addEventListener("click", ()=>{
-      mostrarEditarProyecto(proyecto.id_Project,proyecto);
-    });
-  })
+
+    let user = JSON.parse(localStorage.getItem('usuario'));
+    console.log(user);
+    console.log(user.rolType);
+    if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
+      // ocultar el botón de editar
+      let editarProyectoBtn = document.querySelector("#editarProyecto");
+      if (editarProyectoBtn) {
+        editarProyectoBtn.style.display = 'none';
+      }
+    }
+    else {
+      document.querySelector("#editarProyecto").addEventListener("click", () => {
+        mostrarEditarProyecto(proyecto.id_Project, proyecto);
+      });
+    }
+  });
 }
 
 //MUESTRA FORMULARIO CARGA PROYECTOS

@@ -16,13 +16,23 @@ var multiSelectsNeedsCreated;
 var multiSelectsAssistancesCreated;
 
 document.addEventListener("DOMContentLoaded", function () {
-  mostrarHome();
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  console.log(user);
+  let rolUser = user.rolType.toLowerCase();
+
+  // Muestra contenido según el rol del usuario
+  if (rolUser === "emprendedor") {
+    mostrarHomeEmprendedor();
+  } else {
+    // Para otros roles (admin/super admin)
+    mostrarHome();
+  }
 })
 
 
 //Pinta de color verde obscuro el botón del navegador en el que se encuentra la página.
 function drawClickNav(click_nav) {
-  //traiigo del DOM todos los botones de la barra de navegación
+  //traigo del DOM todos los botones de la barra de navegación
   let link_nav = document.querySelectorAll(".click_nav");
   //los recorro
   link_nav.forEach(link => {

@@ -1,5 +1,6 @@
 let page = 1;
 const URLProject = "http://localhost:8080/projects";
+const URLEntrepreneurProjects = "http://localhost:8080/emprendedores";
 const URLFiles = "http://localhost:8080/files";
 let statusFile = true;//guarda si los archivos cargados tienen una estención válida.
 //METODOS DE ABM
@@ -82,6 +83,24 @@ function getAllProjects() {
   })
     .then(response => response.json())
     .then(json => { return json });
+}
+
+//GET DE TODOS LOS PROYECTOS de un emprendedor
+function getAllProjectsByEntrepreneur(entrepreneurId) {
+  let token = localStorage.getItem("token")
+  console.log(token)
+  return fetch(URLEntrepreneurProjects + `/${entrepreneurId}/mis_proyectos`, {
+    mode: 'cors',
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    },
+
+  })
+      .then(response => response.json())
+      .then(json => { return json });
 }
 
 //GET DE TODOS LOS PROYECTOS BORRADOS
@@ -215,6 +234,11 @@ function cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages) {
       mostrarTabla(json, false);
       comportamientoBotonesPaginado(pages);
     });
+    }else if (tablaUtilizada == "proyectos") {
+      getAllProjectsByEntrepreneur(page).then(json => {
+        mostrarTablaProyectosEmprendedor(json);
+        comportamientoBotonesPaginado(pages);
+      });
   }
 }
 
@@ -292,6 +316,39 @@ function mostrarTabla(json, borrados, projectManager = false) {
   }
 }
 
+//muestra los proyectos de un emprendedor
+function mostrarTablaProyectosEmprendedor(json) {
+  console.log(json);
+  let array = json;
+
+  if (Array.isArray(array) && array.length > 0) {
+    let container = document.querySelector(".list");
+    container.innerHTML = "";
+    for (let i = array.length - 1; i >= 0; i--) {
+      const proyecto = array[i];
+      var row = container.insertRow(0);
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+
+      cell1.innerHTML = proyecto.title;
+      cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
+      cell3.innerHTML = proyecto.stage;
+      let input = document.createElement("input");
+      input.setAttribute("type", "button");
+      input.setAttribute("value", "Ver más");
+      input.setAttribute("id", proyecto.id_Project);
+      input.setAttribute("class", "btn_save_green verMas");
+      cell4.appendChild(input);
+
+      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
+    }
+  } else {
+    console.error("El array de proyectos está vacío o no está definido.");
+  }
+}
+
 //CAPTURA LAS OPCIONES SELECCIONADAS DEL FILTRO DE PROYECTOS
 function captureSelectedOptions() {
   json_filters = { filters: [] };
@@ -335,9 +392,9 @@ function mostrarHistorialProyecto() {
   let btn = document.getElementById('projectDataHistory')
   if (btn.className === 'hiddenData') {
     btn.className = 'showDataHistory';
-    document.querySelector(".slideDownHistory").innerHTML = "<img src='img/icons8-flecha-contraer-50.png' class='slideDown'/>";
+    document.querySelector(".slideDownHistory").innerHTML = "<img src='../img/icons8-flecha-contraer-50.png' class='slideDown'/>";
   } else {
-    document.querySelector(".slideDownHistory").innerHTML = "<img src='img/expandir.png' class='slideDown'/>";
+    document.querySelector(".slideDownHistory").innerHTML = "<img src='../img/expandir.png' class='slideDown'/>";
     btn.className = 'hiddenData';
   }
 }
