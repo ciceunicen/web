@@ -5,18 +5,19 @@
     flex-direction: column;
 }
 
-.projectTitle {
+.project-title {
     background-color: #6B9E22;
     padding: 10px;
     border-radius: 10px 10px 0px 0px;
+    
 }
 
-.projectTitle p {
+.project-title p {
     color: #FFFFFF;
     text-align: center;
 }
 
-.btn {
+.btn-project-blue {
     cursor: pointer;
     background: none;
     border: 0;
@@ -25,9 +26,6 @@
     line-height: normal;
     overflow: visible;
     padding: 5px;
-}
-
-.btn-save {
     background-color: #0190E0;
     color: #FFFFFF;
     border-radius: 6px;
@@ -35,22 +33,30 @@
     transition: 0.4s;
 }
 
-.btn-save:hover {
+.btn-project-blue:hover {
     background-color: #0370af;
 }
 
-.btn_save_green {
+.btn-project-green {
+    cursor: pointer;
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 5px;
     background-color: #74AC24;
     color: #FFFFFF;
     width: 100%;
     transition: 0.4s;
 }
 
-.btn_save_green:hover {
+.btn-project-green:hover {
     background-color: #649421;
 }
 
-.btn_save_green:focus {
+.btn-project-green:focus {
     background-color: #496D17;
 }
 
@@ -68,20 +74,19 @@
 
 .project-loading form {
     width: 80%;
-    margin: 25px 10%;
+    margin: 16px 10%;
 }
 
 .project-loading form .input-section {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom:18px;
 }
 
 .input-label {
     font-size: 18px;
     color: #496D17;  
 }
-
 
 input {
     outline: none;
@@ -146,16 +151,25 @@ input {
 }
 
 #needsData, #assistancesData, #stagesData{
-    padding: 10px;
+    padding: 5px 10px;
 }
 
 .checkbox-label {
-    font-size:16px;
+    font-size:14px;
     color:#496D17;
     padding-left:5px;
 }
 
 .error {
-    font-size: 14px;
+    font-size: 12px;
     color: red;
+}
+
+.input-select {
+    width: 200px;
+    background-color: #FFFFFF;
+    padding: 7px;
+    border: 1px solid #74AC24;
+    border-radius: 5px;
+    
 }

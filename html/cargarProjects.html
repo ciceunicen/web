@@ -35,58 +35,67 @@
                     <section class="project-section">
                         <div class="datosEmprendedor"></div>
                         <div class="historyProject"></div>
-                        <div class="projectTitle">
+                        <div class="project-title">
                             <p>PROYECTO</p>
                         </div>
                         <div class="mainBtns">
-                            <button class="btn btn_save_green" id="datos">Datos</button>
-                            <button class="btn btn_save_green" id="diagnostico">Diagnóstico</button>
-                            <button class="btn btn_save_green" id="diagnostico">Registro de encuentros</button>
+                            <button class="btn-project-green" id="datos">Datos</button>
+                            <button class="btn-project-green" id="diagnostico">Diagnóstico</button>
+                            <button class="btn-project-green" id="diagnostico">Registro de encuentros</button>
                         </div>
                         <div class="project-loading">   
                             <form id="projectForm" action="#" method="POST">
                                 <div class="input-section">
-                                    <label class="input-label" for="title" required>Título* <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>                                    
+                                    <label class="input-label" for="title" required>Título*</label>                                    
                                     <input class="form-input" type="text" name="title" placeholder="titulo">
                                     <p class="error" id="titleError"></p>
                                 </div>
                                 <div class="input-section">
-                                    <label class="input-label" for="description" required>Descripción* <i class="far fa-check-circle success-icon"></i><i class="fas fa-exclamation-circle failure-icon"></i></label>
+                                    <label class="input-label" for="description" required>Descripción*</label>
                                     <textarea type="text" name="description" placeholder="descripción"></textarea>
                                     <p class="error" id="descriptionError"></p>
                                 </div>
 
                                 <!--Partial render checkboxs necesidades-->
                                 <div class="input-section">
-                                    <label class="input-label">Necesidades</label>
+                                    <label class="input-label">Necesidades*</label>
                                     <div id="needsData"></div>
                                     <div class="save-input">
                                         <div>
                                             <label class="input-label" for="save-need">Otra</label>
                                         </div>
                                         <input type="text" id="save-need" name="save-need">
-                                        <button id="saveNeed" class="btn">Guardar</button>
+                                        <button id="saveNeed" class="btn-project-green">Guardar</button>
                                     </div>
                                     <p class="error" id="needError"></p>
                                 </div>
                                 <!--Partial render checkboxs asistencias-->
                                 <div class="input-section">
-                                    <label class="input-label">Asistencias</label>
+                                    <label class="input-label">Asistencias*</label>
                                     <div id="assistancesData"></div>
                                     <div class="save-input">
                                         <div>
                                             <label class="input-label" for="save-assistance">Otra</label>
                                         </div>
                                         <input type="text" id="save-assistance" name="save-assistance">
-                                        <button id="saveAssistance" class="btn">Guardar</button>
+                                        <button id="saveAssistance" class="btn-project-green">Guardar</button>
                                     </div>
                                     <p class="error" id="assistanceError"></p>
                                 </div>
 
                                 <div class="input-section">
-                                    <label class="input-label">Estadio</label>
-                                    <div id="stagesData"></div>
+                                    <label class="input-label">Estadio*</label>
+                                    <select class="input-select" name="stage-select" id="stageSelect">
+                                        <option value="no-select">Seleccionar estadio</option>
+                                    </select>
                                     <p class="error" id="stageError"></p>
+                                </div>
+                                <div class="input-section">
+                                    <label class="input-label">Administrador*</label>
+                                    <select class="input-select" name="admin-select" id="adminSelect">
+                                        <option value="no-select">Seleccionar administrador</option>
+                                    </select>
+                                    <p class="error" id="adminError"></p>
                                 </div>
                                 <!-- <div class="adjuntos">
                                     <label for="otra" >Adjuntar archivos</label>
@@ -100,7 +109,7 @@
                                     <div class="div_adjuntos" id="div_adjuntos"></div>
                                 </div>  -->                              
                                 <div class="saveContainer">
-                                    <input class="btn btn-save" type="submit" value="Guardar">
+                                    <input class="btn-project-blue" type="submit" value="Guardar">
                                     <div class="generalSave"></div>
                                 </div>     
                             </form>

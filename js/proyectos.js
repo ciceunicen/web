@@ -4,14 +4,10 @@ const URLFiles = "http://localhost:8080/files";
 const URLNeeds = "http://localhost:8080/needs";
 const URLAssitances = "http://localhost:8080/assistances";
 const URLStages = "http://localhost:8080/stages";
+const URLUsers = "http://localhost:8080/usuarios/rol/Admin";
 
 let statusFile = true;//guarda si los archivos cargados tienen una estención válida.
 let form = document.querySelector("#projectForm");
-
-//Metodos para cargar checkboxs disponibles en cargar proyecto
-getNeeds(URLNeeds);
-getAssistances(URLAssitances);
-getStages(URLStages);
 
 //METODOS DE ABM
 
@@ -29,7 +25,9 @@ async function saveProject(data) {
       });
       if(res.ok) {
           showSucess();
-          setTimeout(mostrarCargaProyecto(), 5000);
+          setTimeout(() => {
+            window.location.href = "dashboard.html";
+          } , 1500)
       }
   }catch(error){
       console.log(error);
@@ -359,22 +357,22 @@ function mostrarHistorialProyecto() {
 
 
 //ACTUALIZA EL DROPDOWN DE CREACION DE PROYECTOS CUANDO CREAS UNA NUEVA ASISTENCIA O UNA NUEVA NECESIDAD
-function updateCheckbox(valueCheckbox, labelCheckbox, containerType, nameCheckbox) {
+function updateCheckbox(checkboxValue, checkboxLabel, containerType, checkboxName) {
   let container = document.querySelector(containerType);
   let article = document.createElement('article');
   let input = document.createElement('input');
   input.classList.add('checkbox-input');
   input.type = 'checkbox';
-  input.name = nameCheckbox
-  input.value = valueCheckbox
+  input.name = checkboxName
+  input.value = checkboxValue
   let label = document.createElement('label');
   label.classList.add("checkbox-label");
-  label.textContent = labelCheckbox;        
+  label.textContent = checkboxLabel;        
   article.appendChild(input);
   article.appendChild(label);
+  input.checked = true;
 
-  container.appendChild(article);  
-
+  container.appendChild(article);
 }
 
 
@@ -430,6 +428,11 @@ function innerHTML(json, elementDOM) {
 
 //COMPRUEBA LOS CAMPOS DE CARGA DE PROYECTOS
 if(form){
+  //Metodos para cargar checkboxs disponibles en cargar proyecto
+  getNeeds(URLNeeds);
+  getAssistances(URLAssitances);
+  getStages(URLStages);
+  getAdmins(URLUsers);
   form.addEventListener('submit', validForm);
 
   function validForm(e){
@@ -448,30 +451,32 @@ if(form){
     assistancesCheckboxes.forEach((checkbox) => {
         assistances.push(checkbox.value);
     });
-    let stage = document.querySelector('input[name="stage-checkbox"]:checked');      
+    let stage = formData.get('stage-select');   
+    let admin = formData.get('admin-select');   
 
     if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
-    assistances.length > 0 && stage != null) {
+    assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
       document.querySelector("#titleError").innerHTML = "";
       document.querySelector("#descriptionError").innerHTML = "";
       document.querySelector("#needError").innerHTML = "";
       document.querySelector("#assistanceError").innerHTML = "";
       document.querySelector("#stageError").innerHTML = "";
+      document.querySelector("#adminError").innerHTML = "";
 
       let data = {
           "id_ProjectManager": user.id,
           "title": title,
           "description": description,
-          "stage": stage.value,
+          "stage": stage,
           "assistanceType": assistances,
           "files": null,
           "needs": needs,
-          "id_Admin": 1
+          "id_Admin": admin
       }
-
       saveProject(data);
       needs = [];
       assistances = [];
+
     }else {
       if (title == "" || title == "undefined") {
         document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
@@ -493,10 +498,15 @@ if(form){
       } else {
         document.querySelector("#assistanceError").innerHTML = "";
       }
-      if (stage == null) {
+      if (stage == "no-select" || stage == "undefined") {
         document.querySelector("#stageError").innerHTML = "Seleccione un estadio";
       } else {
         document.querySelector("#stageError").innerHTML = "";
+      }
+      if (admin == "no-select" || admin == "undefined") {
+        document.querySelector("#adminError").innerHTML = "Seleccione un administrador";
+      } else {
+        document.querySelector("#adminError").innerHTML = "";
       }
     }
   }
@@ -597,56 +607,77 @@ if(form){
 //GUARDAR NECESIDADES
 document.querySelector("#saveNeed").addEventListener('click', async (e) => {
   e.preventDefault();
+  document.querySelector("#needError").innerHTML = "";
   let token = localStorage.getItem("token");
-  let data = { 
-    "needType" : document.getElementById("save-need").value
-  };
-  try{
-    await fetch(URLNeeds, {
-      method: "POST",
-      mode: 'cors',
-      body: JSON.stringify(data),
-      headers: {"Content-type" : "application/json",
-                "Authorization": "Bearer " + token,
-                "Access-Control-Allow-Origin": "*"},
-    })
-      .then(response => response.json())
-      .then(json => updateCheckbox(json.id_Need, json.needType, "#needsData", "need-checkbox"));
-  }catch(error) {
-    console.log(error)
-  } 
+  let input = document.getElementById("save-need");
+  if(input.value != "" && input.value != "undefined") {
+    let data = { 
+      "needType" : input.value
+    };
+    try{
+      await fetch(URLNeeds, {
+        method: "POST",
+        mode: 'cors',
+        body: JSON.stringify(data),
+        headers: {"Content-type" : "application/json",
+                  "Authorization": "Bearer " + token,
+                  "Access-Control-Allow-Origin": "*"},
+      })
+        .then(response => response.json())
+        .then(json => updateCheckbox(json.id_Need, json.needType, "#needsData", "need-checkbox"));
+    }catch(error) {
+      console.log(error)
+    }
+    input.value = ""; 
+  }else{
+    if(input.value == "" || input.value == "undefined") {
+      document.querySelector("#needError").innerHTML = "Escriba su necesidad antes de guardar";
+    } else {
+      document.querySelector("#needError").innerHTML = "";
+    }
+  }
 })
 
 //GUARDAR ASISTENCIAS
 document.querySelector("#saveAssistance").addEventListener('click', async (e) => {
   e.preventDefault();
+  document.querySelector("#assistanceError").innerHTML = "";
   let token = localStorage.getItem("token");
-  let data = { 
-    "type": document.getElementById("save-assistance").value 
-  };
-  console.log(data)
-  try{
-    await fetch(URLAssitances, {
-      method: "POST",
-      mode: 'cors',
-      body: JSON.stringify(data),
-      headers: {"Content-type" : "application/json",
-                "Authorization": "Bearer " + token,
-                "Access-Control-Allow-Origin": "*"},
-    })
-      .then(response => response.json())
-      .then(json => updateCheckbox(json.id_Assistance, json.type, "#assistancesData", "assistance-checkbox"));
-  }catch(error) {
-    console.log(error)
-  } 
+  let input = document.getElementById("save-assistance");
+  if(input.value != "" && input.value != "undefined") {
+    let data = { 
+      "type": input.value 
+    };
+    try{
+      await fetch(URLAssitances, {
+        method: "POST",
+        mode: 'cors',
+        body: JSON.stringify(data),
+        headers: {"Content-type" : "application/json",
+                  "Authorization": "Bearer " + token,
+                  "Access-Control-Allow-Origin": "*"},
+      })
+        .then(response => response.json())
+        .then(json => updateCheckbox(json.id_Assistance, json.type, "#assistancesData", "assistance-checkbox"));
+    }catch(error) {
+      console.log(error)
+    }
+    input.value = "";  
+  }else{
+    if(input.value == "" || input.value == "undefined") {
+      document.querySelector("#assistanceError").innerHTML = "Escriba su asistencia antes de guardar";
+    } else {
+      document.querySelector("#assistanceError").innerHTML = "";
+    }
+  }
 })
 
 
-//MUESTRA TILDE VERDE CUANDO TODO SE CARGO BIEN
-function showSucess() {
-  document.querySelector(".generalSave").innerHTML =
+//MUESTRA MENSAJE VERDE CUANDO TODO SE CARGO BIEN
+  function showSucess() {
+   document.querySelector(".generalSave").innerHTML =
     "<p style='color:green;font-size:14px;'>Se han cargado los datos exitosamente!</p>";
-}
+  }
 
 //SELECCIONAR SOLO UN ESTADIO
 function selectOnlyOneStage() {
@@ -844,6 +875,7 @@ function selectedOptions(idSelect, multiSelect) {
   eval(multiSelect).updateSelect();
 }
 
+//OBTIENE DATOS PARA CARGAR CHECKBOXS Y SELECTS
 async function getNeeds(url) {
   let token = localStorage.getItem("token");
   try {
@@ -901,6 +933,26 @@ async function getStages(url) {
   }
 }
 
+async function getAdmins(url) {
+  let token = localStorage.getItem("token");
+  try {
+      let res = await fetch(url, {
+          "method": "GET",
+          "headers" : {"Authorization": "Bearer " + token}
+      })
+      
+      if (res.ok) {
+          let array = await res.json();
+          if (array) {
+              showAdmins(array);
+          }
+      }
+  } catch (error) {
+      console.log("Fallo al obtener el JSON de la API.");
+      console.log(error);
+  }
+}
+
 function showNeeds(array) {
   let needContainer = document.querySelector("#needsData");
   array.forEach(need => {
@@ -940,22 +992,21 @@ function showAssistances(array) {
 }
 
 function showStages(array) {
-  let stagesContainer = document.querySelector("#stagesData");
+  let stagesContainer = document.querySelector("#stageSelect");
   array.forEach(stage => {
-      let article = document.createElement('article');
-      let input = document.createElement('input');
-      input.classList.add('checkbox-input');
-      input.classList.add('stageCheckbox');
-      input.type = 'checkbox';
-      input.name = "stage-checkbox"
-      input.value = stage.id_Stage;
-      let label = document.createElement('label');
-      label.classList.add("checkbox-label");
-      label.textContent = stage.stage_type;
-      article.appendChild(input);
-      article.appendChild(label);
-    
-      stagesContainer.appendChild(article);      
+    let option = document.createElement('option');
+    option.value = stage.id_Stage;
+    option.label = stage.stage_type;
+    stagesContainer.appendChild(option);   
   });
-  selectOnlyOneStage();
+}
+
+function showAdmins(array) {
+  let adminSelect = document.querySelector("#adminSelect");
+  array.forEach(admin => {
+    let option = document.createElement('option');
+    option.value = admin.id;
+    option.label = admin.email;
+    adminSelect.appendChild(option);
+  })
 }
