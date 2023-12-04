@@ -137,6 +137,30 @@ function getFilterProjects(datos, pagina) {
     .then(json => { return json });
 }
 
+//GET DE LOS PROYECTOS FILTRADOS DE EMPRENDEDOR - SOLO CON ESTADO, EN LA PRÓXIMA ITERACIÓN SE COMPLETA EL FILTRO
+function getEntrepreneurFilterProjects(pagina, radioButtonEstado) {
+  let url = new URL(URLProject + "/entrepreneur/filters/page/" + pagina);
+  /* let params = new URLSearchParams(datos);
+  return fetch(url + "?" + params,{ */
+  let estado = radioButtonEstado;
+  if (radioButtonEstado == "") {
+    /* estado = {active: [true, false]}; */
+    estado = [true, false].map(value => `param=${encodeURIComponent(value)}`).join('&');
+  }
+
+  return fetch(url + "?" + `filters=asd&active=${estado}`,{
+    mode: 'cors',
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    }
+  })
+    .then(response => response.json())
+    .then(json => { return json });
+}
+
 //GET HISTORIAL DE PROYECTO
 function getProjectHistory(id) {
   return fetch(URLProject + "/" + id + "/administrationRecords/page/" + page,{
@@ -334,7 +358,7 @@ function mostrarTablaProyectosEmprendedor(json) {
 
       cell1.innerHTML = proyecto.title;
       cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
-      cell3.innerHTML = proyecto.stage;
+      cell3.innerHTML = proyecto.stage.stage_type;
       let input = document.createElement("input");
       input.setAttribute("type", "button");
       input.setAttribute("value", "Ver más");

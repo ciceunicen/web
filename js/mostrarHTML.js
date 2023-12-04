@@ -91,6 +91,22 @@ function mostrarProyectosDeEmprendedor(json) {
 
     mostrarPaginado(json.totalPages,"proyectos");
     mostrarTablaProyectosEmprendedor(json);
+    comportamientoBtnsFiltros()
+  });
+}
+
+function comportamientoBtnsFiltros() {
+  let filtrarBtn = document.querySelector("#btn_filter");
+  filtrarBtn.addEventListener("click", async () => {
+    try {
+      //const radioButtonValue = document.querySelector(".activoRadioButton");
+      const radioButtonEstado = document.querySelector("input[name=estado]:checked").value;
+      const proyectos = await getEntrepreneurFilterProjects(1, radioButtonEstado);
+
+      mostrarTablaProyectosEmprendedor(proyectos.content);
+    } catch (error) {
+      console.log(error);
+    }
   });
 }
 

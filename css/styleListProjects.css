@@ -18,12 +18,34 @@
 }
 
 /*SECCIÓN DE FILTROS*/
-/* .filter-projects{
-    display: flex;
-} */
+.filter-projects{
+    padding: 1% 0;
+}
 
 .filter-projects>select{
     margin: 2px;
+}
+
+.filter-projects > fieldset {
+    width: 20%;
+    margin: 0 auto 1% auto;
+    padding: 0.5%;
+    border: 2px #198754 solid;
+    border-radius: 5px;
+}
+
+.filter-projects legend {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.filter-projects fieldset label {
+    margin: 0;
+}
+
+.filter-projects > fieldset > div {
+    display: flex;
+    justify-content: space-between;
 }
 
 .verMas, .btn_borrar{
