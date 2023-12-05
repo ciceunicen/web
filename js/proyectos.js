@@ -142,13 +142,14 @@ function getEntrepreneurFilterProjects(pagina, radioButtonEstado) {
   let url = new URL(URLProject + "/entrepreneur/filters/page/" + pagina);
   /* let params = new URLSearchParams(datos);
   return fetch(url + "?" + params,{ */
-  let estado = radioButtonEstado;
-  if (radioButtonEstado == "") {
-    /* estado = {active: [true, false]}; */
-    estado = [true, false].map(value => `param=${encodeURIComponent(value)}`).join('&');
+  /* let estado = radioButtonEstado; */
+  let estadoParam = "";
+  if (radioButtonEstado != "") {
+    /* estado = [true, false].map(value => `param=${encodeURIComponent(value)}`).join('&'); */
+    estadoParam = `&active=${radioButtonEstado}`;
   }
 
-  return fetch(url + "?" + `filters=asd&active=${estado}`,{
+  return fetch(url + "?" + `filters=asd${estadoParam}`,{
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
