@@ -4,7 +4,7 @@ const URLFiles = "http://localhost:8080/files";
 const URLNeeds = "http://localhost:8080/needs";
 const URLAssitances = "http://localhost:8080/assistances";
 const URLStages = "http://localhost:8080/stages";
-const URLUsers = "http://localhost:8080/usuarios/rol/Admin";
+const URLUsers = "http://localhost:8080/usuarios/rol/2";
 
 let statusFile = true;//guarda si los archivos cargados tienen una estención válida.
 let form = document.querySelector("#projectForm");
