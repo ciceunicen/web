@@ -346,7 +346,7 @@ function mostrarTablaProyectosEmprendedor(json) {
   console.log(json);
   let array = json;
 
-  if (Array.isArray(array) && array.length > 0) {
+  if (Array.isArray(array)) {
     let container = document.querySelector(".list");
     container.innerHTML = "";
     for (let i = array.length - 1; i >= 0; i--) {
