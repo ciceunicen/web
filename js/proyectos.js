@@ -215,24 +215,24 @@ async function borrarFilesProyecto(id_Project, idFile = false) {
 //TODO DE LA SECCION DE LISTA DE PROYECTOS
 
 //maneja el funcionamiento del paginado de la tabla de proyectos
-function comportamientoPaginado(pages, datosFiltro, tablaUtilizada) {
+function comportamientoPaginado(pages, datosFiltro, estadoFiltro, tablaUtilizada) {
   comportamientoBotonesPaginado(pages);
   document.querySelector("#nextPage").addEventListener("click", () => {
     if (page <= pages) {
       page++;
-      cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages);
+      cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages);
     }
   });
   document.querySelector("#previousPage").addEventListener("click", () => {
     if (page > 1) {
       page--;
-      cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages);
+      cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages);
     }
   });
 }
 
 //Cambia el numero que se muestra en la seccion de paginado
-function cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages) {
+function cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages) {
   document.querySelector("#pageNumber").innerHTML = page;
   if (tablaUtilizada == "proyectosFiltrados") {
     getFilterProjects(datosFiltro, page).then(json => {
@@ -259,11 +259,16 @@ function cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages) {
       mostrarTabla(json, false);
       comportamientoBotonesPaginado(pages);
     });
-    }else if (tablaUtilizada == "proyectos") {
-      getAllProjectsByEntrepreneur(page).then(json => {
-        mostrarTablaProyectosEmprendedor(json);
-        comportamientoBotonesPaginado(pages);
-      });
+  } else if (tablaUtilizada == "proyectosEmprendedorFiltrados") {
+    getEntrepreneurFilterProjects(page, estadoFiltro).then(json => {
+      mostrarTablaProyectosEmprendedor(json.content);
+      comportamientoBotonesPaginado(pages);
+    });
+  } else if (tablaUtilizada == "proyectos") {
+    getAllProjectsByEntrepreneur(page).then(json => {
+      mostrarTablaProyectosEmprendedor(json);
+      comportamientoBotonesPaginado(pages);
+    });
   }
 }
 

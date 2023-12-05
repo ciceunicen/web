@@ -104,6 +104,7 @@ function comportamientoBtnsFiltros() {
       const proyectos = await getEntrepreneurFilterProjects(1, radioButtonEstado);
 
       mostrarTablaProyectosEmprendedor(proyectos.content);
+      mostrarPaginado(proyectos.totalPages, "proyectosEmprendedorFiltrados", [], radioButtonEstado);
     } catch (error) {
       console.log(error);
     }
@@ -111,11 +112,11 @@ function comportamientoBtnsFiltros() {
 }
 
 //muestra la seccion del paginado
-function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list-projects"){
+function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [], estadoFiltro = "", div=".footer-list-projects"){
   mostrarArchivoHTML("pagination.html").then(text =>{
     document.querySelector(div).innerHTML=text;
     document.querySelector("#pageNumber").innerHTML=page;
-    comportamientoPaginado(pages,datosFiltro,tablaUtilizada);
+    comportamientoPaginado(pages,datosFiltro,estadoFiltro,tablaUtilizada);
   });
 }
 
