@@ -125,7 +125,7 @@ function mostrarProyecto(proyecto){
     if (user.rolType.toLowerCase() == "personal del cice" || user.rolType.toLowerCase() == "emprendedor") {
       let estadoDiv = document.querySelector("#estadoDiv");
       estadoDiv.classList.remove("hide");
-      estadoDiv.innerHTML = `<h6 class="h6_description_stage">Estado</h6><p id="estado"></p>`;
+      estadoDiv.innerHTML += `<h6 class="h6_description_stage">Estado</h6><p id="estado"></p>`;
       if (proyecto._active) {
         document.querySelector("#estado").innerHTML += "Activo";
       } else {
@@ -144,7 +144,6 @@ function mostrarProyecto(proyecto){
       downloadAllAttachmentsByProject(proyecto.title);
     });
 
-    let user = JSON.parse(localStorage.getItem('usuario'));
     console.log(user);
     console.log(user.rolType);
     if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
