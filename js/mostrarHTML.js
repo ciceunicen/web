@@ -5,7 +5,7 @@ function mostrarArchivoHTML(rutaArchivo){
 }
 
 //Muestra el home de la pagina
-function mostrarHome(actualPage = 1){
+function mostrarHome(actualPage = 1, seccion = "emprendedores"){
   mostrarArchivoHTML("navbar.html",".navbar").then(text => {
       document.querySelector(".navbar").innerHTML = text;
       document.querySelector("#proyectos").addEventListener("click", ()=>{
@@ -18,7 +18,7 @@ function mostrarHome(actualPage = 1){
         mostrarListaEmprendedores();
       });
       //HOME TEMPORAL
-      document.querySelector("#emprendedores").click();
+      document.querySelector(`#${seccion}`).click();
 
       logout(); //Una vez cargado el NAV (se carga con parcial render), le agrego funcionalidad al boton creado
     })
