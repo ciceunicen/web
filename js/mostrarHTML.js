@@ -234,6 +234,16 @@ function showDataProjectManager(projectManager){
   });
 }
 
+function showDataProjectAdmin(projectAdmin){
+  //llamo a contenido donde se muestran los datos del admin del proyecto.
+  mostrarArchivoHTML("dataAdminProject.html").then(text_pm =>{
+    document.getElementById("projectAdminData").innerHTML=text_pm;
+    //Completo datos del admin del proyecto
+    document.querySelector("#fullName").innerHTML=projectAdmin.username;
+    document.querySelector("#username").innerHTML=projectAdmin.username;
+    document.querySelector("#email").innerHTML=projectAdmin.email;
+  });
+}
 
 //MOSTRAR EDITAR PROYECTO
 function mostrarEditarProyecto(id_proyecto,proyecto){
