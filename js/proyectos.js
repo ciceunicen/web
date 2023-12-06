@@ -56,9 +56,9 @@ function borrarProyecto(id_Project, id_Admin, projectManager = 0) {
 async function cambiarEstadoProyecto(id_Project) {
   let token = localStorage.getItem("token");
 
-  let response = await fetch(URLProject + `${id_Project}/isActive`, {
+  let response = await fetch(URLProject + `/${id_Project}/isActive`, {
     mode: 'cors',
-
+    "method": "PUT",
     "headers": {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`,
