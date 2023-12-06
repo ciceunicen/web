@@ -278,6 +278,25 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
       cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
       //getNecesidadesoAsistenciasCreadas(URLAssitances);
     });
+    document.querySelector("#estados").innerHTML =
+    `<div>
+      <input type="radio" id="activo" name="estado" value=true />
+      <label for="activo">Activo</label>
+    </div>
+
+    <div>
+      <input type="radio" id="noActivo" name="estado" value=false />
+      <label for="noActivo">No activo</label>
+    </div>`
+
+    const radioActivo = document.querySelector("#activo");
+    const radioNoActivo = document.querySelector("#noActivo");
+    if (proyecto._active) {
+      radioActivo.setAttribute("checked", "true");
+    } else {
+      radioNoActivo.setAttribute("checked", "true");
+    }
+
     //carga sección de archivos adjuntos
     mostrarFilesEditar(proyecto);
     changeCountInputFile();

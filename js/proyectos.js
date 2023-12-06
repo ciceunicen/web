@@ -178,14 +178,25 @@ function getProjectHistory(id) {
 
 //MODIFICAR DATOS DE UN PROYECTO
 async function modificarProyecto(id_proyecto, proyecto) {
-  await fetch(URLProject + "/" + id_proyecto, {
+  console.log("Campos", proyecto);
+  let response = await fetch(URLProject + "/" + id_proyecto, {
     method: "PUT",
     mode: 'cors',
     body: JSON.stringify(proyecto),
-    headers: { "Access-Control-Allow-Origin": "*", },
-    headers: { "Content-type": "application/json; charset=UTF-8", }
-  })
-    .then(response => { response.json().then(json => mostrarProyecto(json)) })
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      "Access-Control-Allow-Origin": "*",
+    }
+  });
+
+  if (response.ok) {
+    let json = await response.json();
+    console.log("Updated", json);
+    mostrarProyecto(json);
+  } else {
+    console.error("No se pudo editar el proyecto");
+  }
 }
 
 function getNecesidadesoAsistenciasCreadas(URL) {
@@ -735,6 +746,12 @@ function saveNewData(id_proyecto, proyecto) {
       }
     }
     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
+    let isActive = document.querySelector('input[name="estado"]:checked').value;
+    if (isActive === "true") {
+      isActive = true;
+    } else {
+      isActive = false;
+    }
     let files = [];
     proyecto.files.forEach(element => {
       if (element != null) {
@@ -764,6 +781,7 @@ function saveNewData(id_proyecto, proyecto) {
           necesidades
         ,
         "stage": estadio.value,
+        "is_active": isActive,
         "newFiles":
           attachments
       }
