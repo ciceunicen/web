@@ -66,10 +66,10 @@ async function cambiarEstadoProyecto(id_Project) {
     },
   });
   if (response.ok) {
-    let proyecto = response.json();
-    console.log(proyecto);
+    let proyecto = await response.json();
+    console.log("Proyecto cambiado", proyecto);
 
-    getAllProjects();
+    mostrarHome(page);
   } else {
     console.error("No fue posible cambiar el estado del proyecto");
   }

@@ -5,12 +5,12 @@ function mostrarArchivoHTML(rutaArchivo){
 }
 
 //Muestra el home de la pagina
-function mostrarHome(){
+function mostrarHome(actualPage = 1){
   mostrarArchivoHTML("navbar.html",".navbar").then(text => {
       document.querySelector(".navbar").innerHTML = text;
       document.querySelector("#proyectos").addEventListener("click", ()=>{
         drawClickNav("proyectos");
-        page=1;
+        page=actualPage;
         getAllProjects().then(json=>mostrarProyectos(json));
       });
       document.querySelector("#emprendedores").addEventListener("click", ()=>{
