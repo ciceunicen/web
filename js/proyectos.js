@@ -52,6 +52,29 @@ function borrarProyecto(id_Project, id_Admin, projectManager = 0) {
     });
 }
 
+//CAMBIAR EL ESTADO DE UN PROYECTO
+async function cambiarEstadoProyecto(id_Project) {
+  let token = localStorage.getItem("token");
+
+  let response = await fetch(URLProject + `${id_Project}/isActive`, {
+    mode: 'cors',
+
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+  if (response.ok) {
+    let proyecto = response.json();
+    console.log(proyecto);
+
+    getAllProjects();
+  } else {
+    console.error("No fue posible cambiar el estado del proyecto");
+  }
+}
+
 //GET PROYECTO
 function getProyecto(id) {
   return fetch(URLProject + "/" + id,{
@@ -330,6 +353,21 @@ function mostrarTabla(json, borrados, projectManager = false) {
         btn_delete.addEventListener("click", () => { borrarProyecto(proyecto.id_Project, id_Admin) });
       }
       cell4.appendChild(btn_delete);
+
+      if (user.rolType.toLowerCase() == 'personal del cice') {
+        //creo botón para cambiar el estado de un proyecto
+        let btn_is_active = document.createElement("input");
+        btn_is_active.setAttribute("type", "button");
+        btn_is_active.setAttribute("value", "Cambiar estado");
+        btn_is_active.setAttribute("id", proyecto.id_Project);
+        btn_is_active.setAttribute("class", "btn_save_green btn_is_active");
+
+        btn_is_active.addEventListener("click", () => {
+          cambiarEstadoProyecto(proyecto.id_Project);
+        })
+
+        cell4.appendChild(btn_is_active);
+      }
     }
     cellsCount = 0;
   }
