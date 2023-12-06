@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "method": "POST",
                 "headers": {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`,
                 },
                 "body": datosRegister,
             });
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) {
                 throw { error: data.error, status: data.status }
             } else {
-                window.location.replace("http://localhost/proyectos/CICE/web/")
+                window.location.href = "./dashboard.html";
             }
         }
         catch (e) {
