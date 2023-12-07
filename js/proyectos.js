@@ -137,6 +137,30 @@ function getFilterProjects(datos, pagina) {
     .then(json => { return json });
 }
 
+//GET DE LOS PROYECTOS FILTRADOS DE EMPRENDEDOR - SÓLO FILTRA POR ESTADO
+// Si no se pasan datos por parámetro = []
+function getEntrepreneurFilterProjects(datos, pagina, radioButtonEstado) {
+  let url = new URL(URLProject + "/entrepreneur/filters/page/" + pagina);
+  let params = new URLSearchParams(datos);
+  
+  let estadoParam = "";
+  if (radioButtonEstado != "") {
+    estadoParam = `&active=${radioButtonEstado}`;
+  }
+
+  return fetch(url + `?${params}${estadoParam}`,{
+    mode: 'cors',
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    }
+  })
+    .then(response => response.json())
+    .then(json => { return json });
+}
+
 //GET HISTORIAL DE PROYECTO
 function getProjectHistory(id) {
   return fetch(URLProject + "/" + id + "/administrationRecords/page/" + page,{
@@ -190,24 +214,24 @@ async function borrarFilesProyecto(id_Project, idFile = false) {
 //TODO DE LA SECCION DE LISTA DE PROYECTOS
 
 //maneja el funcionamiento del paginado de la tabla de proyectos
-function comportamientoPaginado(pages, datosFiltro, tablaUtilizada) {
+function comportamientoPaginado(pages, datosFiltro, estadoFiltro, tablaUtilizada) {
   comportamientoBotonesPaginado(pages);
   document.querySelector("#nextPage").addEventListener("click", () => {
     if (page <= pages) {
       page++;
-      cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages);
+      cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages);
     }
   });
   document.querySelector("#previousPage").addEventListener("click", () => {
     if (page > 1) {
       page--;
-      cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages);
+      cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages);
     }
   });
 }
 
 //Cambia el numero que se muestra en la seccion de paginado
-function cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages) {
+function cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages) {
   document.querySelector("#pageNumber").innerHTML = page;
   if (tablaUtilizada == "proyectosFiltrados") {
     getFilterProjects(datosFiltro, page).then(json => {
@@ -234,11 +258,16 @@ function cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages) {
       mostrarTabla(json, false);
       comportamientoBotonesPaginado(pages);
     });
-    }else if (tablaUtilizada == "proyectos") {
-      getAllProjectsByEntrepreneur(page).then(json => {
-        mostrarTablaProyectosEmprendedor(json);
-        comportamientoBotonesPaginado(pages);
-      });
+  } else if (tablaUtilizada == "proyectosEmprendedorFiltrados") {
+    getEntrepreneurFilterProjects(datosFiltro, page, estadoFiltro).then(json => {
+      mostrarTablaProyectosEmprendedor(json.content);
+      comportamientoBotonesPaginado(pages);
+    });
+  } else if (tablaUtilizada == "proyectos") {
+    getAllProjectsByEntrepreneur(page).then(json => {
+      mostrarTablaProyectosEmprendedor(json);
+      comportamientoBotonesPaginado(pages);
+    });
   }
 }
 
@@ -321,7 +350,7 @@ function mostrarTablaProyectosEmprendedor(json) {
   console.log(json);
   let array = json;
 
-  if (Array.isArray(array) && array.length > 0) {
+  if (Array.isArray(array)) {
     let container = document.querySelector(".list");
     container.innerHTML = "";
     for (let i = array.length - 1; i >= 0; i--) {
@@ -334,7 +363,7 @@ function mostrarTablaProyectosEmprendedor(json) {
 
       cell1.innerHTML = proyecto.title;
       cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
-      cell3.innerHTML = proyecto.stage;
+      cell3.innerHTML = proyecto.stage.stage_type;
       let input = document.createElement("input");
       input.setAttribute("type", "button");
       input.setAttribute("value", "Ver más");
