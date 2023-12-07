@@ -17,10 +17,10 @@
     /*labels generales, todos*/
     label{
         color: #74AC24;
-        margin-top:10px;
+        
     }
     /*Borde de inputs*/
-    input, textarea, .input-group-text{
+    .input-group-text{
         border: 1px solid #74AC24 !important;
     }
     /*Div que contiene todo el formulario de cargar proyecto*/

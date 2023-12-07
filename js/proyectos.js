@@ -2,10 +2,10 @@ let page = 1;
 const URLProject = "http://localhost:8080/projects";
 const URLEntrepreneurProjects = "http://localhost:8080/emprendedores";
 const URLFiles = "http://localhost:8080/files";
-const URLNeeds = "http://localhost:8080/needs";
-const URLAssitances = "http://localhost:8080/assistances";
-const URLStages = "http://localhost:8080/stages";
-const URLUsers = "http://localhost:8080/usuarios/rol/2";
+const URLNEEDS = "http://localhost:8080/needs";
+const URLASSISTANCES = "http://localhost:8080/assistances";
+const URLSTAGES = "http://localhost:8080/stages";
+const URLUSERS = "http://localhost:8080/usuarios/rol/2";
 
 let statusFile = true;//guarda si los archivos cargados tienen una estención válida.
 let form = document.querySelector("#projectForm");
@@ -416,6 +416,16 @@ function mostrarHistorialProyecto() {
 
 
 //ACTUALIZA EL DROPDOWN DE CREACION DE PROYECTOS CUANDO CREAS UNA NUEVA ASISTENCIA O UNA NUEVA NECESIDAD
+function actualizacionSelect(value, label, idElemento, funcion) {
+  let select = document.getElementById(idElemento);
+  let option = document.createElement('option');
+  option.setAttribute('value', value);
+  option.setAttribute('label', label);
+  option.selected = true;
+  select.appendChild(option);
+  eval(funcion).updateSelect(value);
+}
+
 function updateCheckbox(checkboxValue, checkboxLabel, containerType, checkboxName) {
   let container = document.querySelector(containerType);
   let article = document.createElement('article');
@@ -488,87 +498,91 @@ function innerHTML(json, elementDOM) {
 //COMPRUEBA LOS CAMPOS DE CARGA DE PROYECTOS
 if(form){
   //Metodos para cargar checkboxs disponibles en cargar proyecto
-  getNeeds(URLNeeds);
-  getAssistances(URLAssitances);
-  getStages(URLStages);
-  getAdmins(URLUsers);
-  form.addEventListener('submit', validForm);
+  getNeeds(URLNEEDS, null);
+  getAssistances(URLASSISTANCES, null);
+  getStages(URLSTAGES);
+  getAdmins(URLUSERS);
+  form.addEventListener('submit', validForm(event, null, null));
 
-  function validForm(e){
+  function validForm(event, id_project, project){
     e.preventDefault();
-    let formData = new FormData(form);
-    let user = JSON.parse(localStorage.getItem('usuario'));
-    let needs = [];
-    let assistances = [];
-    let title = formData.get('title');
-    let description = formData.get('description');
-    let needsCheckboxes = document.querySelectorAll('input[name="need-checkbox"]:checked');
-    needsCheckboxes.forEach((checkbox) => {
-        needs.push(checkbox.value);
-    });
-    let assistancesCheckboxes = document.querySelectorAll('input[name="assistance-checkbox"]:checked');
-    assistancesCheckboxes.forEach((checkbox) => {
-        assistances.push(checkbox.value);
-    });
-    let stage = formData.get('stage-select');   
-    let admin = formData.get('admin-select');   
+    if(id_project != null && project != null) {
+      console.log("tengo id y proyecto xd")
+    }else{
+      let formData = new FormData(form);
+      let user = JSON.parse(localStorage.getItem('usuario'));
+      let needs = [];
+      let assistances = [];
+      let title = formData.get('title');
+      let description = formData.get('description');
+      let needsCheckboxes = document.querySelectorAll('input[name="need-checkbox"]:checked');
+      needsCheckboxes.forEach((checkbox) => {
+          needs.push(checkbox.value);
+      });
+      let assistancesCheckboxes = document.querySelectorAll('input[name="assistance-checkbox"]:checked');
+      assistancesCheckboxes.forEach((checkbox) => {
+          assistances.push(checkbox.value);
+      });
+      let stage = formData.get('stage-select');   
+      let admin = formData.get('admin-select');   
 
-    if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
-    assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
-      document.querySelector("#titleError").innerHTML = "";
-      document.querySelector("#descriptionError").innerHTML = "";
-      document.querySelector("#needError").innerHTML = "";
-      document.querySelector("#assistanceError").innerHTML = "";
-      document.querySelector("#stageError").innerHTML = "";
-      document.querySelector("#adminError").innerHTML = "";
-
-      let data = {
-          "id_ProjectManager": user.id,
-          "title": title,
-          "description": description,
-          "stage": stage,
-          "assistanceType": assistances,
-          "files": null,
-          "needs": needs,
-          "id_Admin": admin
-      }
-      saveProject(data);
-      needs = [];
-      assistances = [];
-
-    }else {
-      if (title == "" || title == "undefined") {
-        document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
-      } else {
+      if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
+      assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
         document.querySelector("#titleError").innerHTML = "";
-      }
-      if (description == "" || description == "undefined") {
-        document.querySelector("#descriptionError").innerHTML = "Ingrese una descripción al proyecto";
-      } else {
         document.querySelector("#descriptionError").innerHTML = "";
-      }
-      if (needs.length == 0) {
-        document.querySelector("#needError").innerHTML = "Seleccione al menos una necesidad";
-      } else {
         document.querySelector("#needError").innerHTML = "";
-      }
-      if (assistances.length == 0) {
-        document.querySelector("#assistanceError").innerHTML = "Seleccione al menos un tipo de asistencia";
-      } else {
         document.querySelector("#assistanceError").innerHTML = "";
-      }
-      if (stage == "no-select" || stage == "undefined") {
-        document.querySelector("#stageError").innerHTML = "Seleccione un estadio";
-      } else {
         document.querySelector("#stageError").innerHTML = "";
-      }
-      if (admin == "no-select" || admin == "undefined") {
-        document.querySelector("#adminError").innerHTML = "Seleccione un administrador";
-      } else {
         document.querySelector("#adminError").innerHTML = "";
+
+        let data = {
+            "id_ProjectManager": user.id,
+            "title": title,
+            "description": description,
+            "stage": stage,
+            "assistanceType": assistances,
+            "files": null,
+            "needs": needs,
+            "id_Admin": admin
+        }
+        saveProject(data);
+        needs = [];
+        assistances = [];
+
+      }else {
+        if (title == "" || title == "undefined") {
+          document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
+        } else {
+          document.querySelector("#titleError").innerHTML = "";
+        }
+        if (description == "" || description == "undefined") {
+          document.querySelector("#descriptionError").innerHTML = "Ingrese una descripción al proyecto";
+        } else {
+          document.querySelector("#descriptionError").innerHTML = "";
+        }
+        if (needs.length == 0) {
+          document.querySelector("#needError").innerHTML = "Seleccione al menos una necesidad";
+        } else {
+          document.querySelector("#needError").innerHTML = "";
+        }
+        if (assistances.length == 0) {
+          document.querySelector("#assistanceError").innerHTML = "Seleccione al menos un tipo de asistencia";
+        } else {
+          document.querySelector("#assistanceError").innerHTML = "";
+        }
+        if (stage == "no-select" || stage == "undefined") {
+          document.querySelector("#stageError").innerHTML = "Seleccione un estadio";
+        } else {
+          document.querySelector("#stageError").innerHTML = "";
+        }
+        if (admin == "no-select" || admin == "undefined") {
+          document.querySelector("#adminError").innerHTML = "Seleccione un administrador";
+        } else {
+          document.querySelector("#adminError").innerHTML = "";
+        }
       }
     }
-  }
+  }   
 }
 
 // function inicializarCargaProyecto(id_ProjectManager) {
@@ -667,7 +681,7 @@ if(form){
 function guardarNecesidades() {
   event.preventDefault();
   let json = { "needType": document.getElementById('new_need').value };
-  fetch(URLNeeds, {
+  fetch(URLNEEDS, {
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(json),
@@ -683,7 +697,7 @@ function guardarNecesidades() {
 function guardarAsistencias() {
   event.preventDefault();
   let json = { "type": document.getElementById('new_assistance').value };
-  fetch(URLAssitances, {
+  fetch(URLASSISTANCES, {
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(json),
@@ -706,7 +720,7 @@ document.querySelector("#saveNeed").addEventListener('click', async (e) => {
       "needType" : input.value
     };
     try{
-      await fetch(URLNeeds, {
+      await fetch(URLNEEDS, {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify(data),
@@ -740,7 +754,7 @@ document.querySelector("#saveAssistance").addEventListener('click', async (e) =>
       "type": input.value 
     };
     try{
-      await fetch(URLAssitances, {
+      await fetch(URLASSISTANCES, {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify(data),
@@ -771,6 +785,19 @@ document.querySelector("#saveAssistance").addEventListener('click', async (e) =>
   }
 
 //SELECCIONAR SOLO UN ESTADIO
+function selecionarSoloUnEstadio() {
+  let checkedStage = null;
+  for (let CheckBox of document.getElementsByClassName('estadiosCheckboxes')) {
+    CheckBox.onclick = function () {
+      if (checkedStage != null) {
+        checkedStage.checked = false;
+        checkedStage = CheckBox;
+      }
+      checkedStage = CheckBox;
+    }
+  }
+}
+
 function selectOnlyOneStage() {
   let checkedStage = null;
   for (let CheckBox of document.getElementsByClassName('stageCheckbox')) {
@@ -960,7 +987,7 @@ function selectedOptions(idSelect, multiSelect) {
 }
 
 //OBTIENE DATOS PARA CARGAR CHECKBOXS Y SELECTS
-async function getNeeds(url) {
+async function getNeeds(url, project) {
   let token = localStorage.getItem("token");
   try {
       let res = await fetch(url, {
@@ -970,7 +997,7 @@ async function getNeeds(url) {
       if (res.ok) {
           let array = await res.json();
           if (array) {
-              showNeeds(array);
+              showNeeds(array, project);
           }
       }
   } catch (error) {
@@ -979,7 +1006,7 @@ async function getNeeds(url) {
   }
 }
 
-async function getAssistances(url) {
+async function getAssistances(url, project) {
   let token = localStorage.getItem("token");
   try {
       let res = await fetch(url, {
@@ -989,7 +1016,7 @@ async function getAssistances(url) {
       if (res.ok) {
           let array = await res.json();
           if (array) {
-              showAssistances(array);
+              showAssistances(array, project);
           }
       }
   } catch (error) {
@@ -1037,7 +1064,7 @@ async function getAdmins(url) {
   }
 }
 
-function showNeeds(array) {
+function showNeeds(array, project) {
   let needContainer = document.querySelector("#needsData");
   array.forEach(need => {
       let article = document.createElement('article');
@@ -1051,12 +1078,20 @@ function showNeeds(array) {
       label.textContent = need.needType;        
       article.appendChild(input);
       article.appendChild(label);
-  
+
+      if(project != null) {
+        for (let i = 0; i < project.needs.length; i++) {
+          if (project.needs[i].id_Need == input.value) {
+            input.innerHTML += project.needs[i].type;
+            input.checked = true;
+          }
+        }
+      }
       needContainer.appendChild(article);  
   });
 }
 
-function showAssistances(array) {
+function showAssistances(array, project) {
   let assistanceContainer = document.querySelector("#assistancesData");
   array.forEach(assistance => {
       let article = document.createElement('article');
@@ -1070,6 +1105,15 @@ function showAssistances(array) {
       label.textContent = assistance.type;
       article.appendChild(input);
       article.appendChild(label);
+
+      if(project != null){ 
+        for (let i = 0; i < project.assistances.length; i++) {
+          if (project.assistances[i].id_Assistance == input.value) {
+            input.innerHTML += project.assistances[i].type;
+            input.checked = true;
+          }
+        }
+      }
     
       assistanceContainer.appendChild(article);      
   });

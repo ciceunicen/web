@@ -1,37 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <link rel="stylesheet" href="../css/dashboard.css">
-        <link rel="stylesheet" href="../css/uploadProject.css">
-    </head>
-    <body>
-        <section class="container">
-            <article class="nav-barr">
-                <div class="info">
-                    <img class="img-cice" src="../img/logo-login-registro.png" alt="logo">   
-                    <div class="user-data">
-                        <h2 id="user_name"></h2>
-                        <p id="user_email"></p>
-                    </div>  
-                    <div class="container-avatar">
-                        <img 
-                        class="avatar"
-                        src="../img/avatarIcon.jpg" alt="">
-                    </div>               
-                </div>
-                <div class="directions" id="directions">    
-                    <h2>Acceso</h2><ul><li class="closeSession">Logout</li></ul>
-                </div>
-            </article>
-            <article class="content-side">
-                <header>
-                    <p>Solicitar turno</p>              
-                </header>
-                <div class="content">
+
                     <section class="project-section">
                         <div class="datosEmprendedor"></div>
                         <div class="historyProject"></div>
@@ -47,12 +14,12 @@
                             <form id="projectForm" action="#" method="POST">
                                 <div class="input-section">
                                     <label class="input-label" for="title" required>Título*</label>                                    
-                                    <input class="form-input" type="text" name="title" placeholder="titulo">
+                                    <input class="form-input" type="text" id="title" name="title" placeholder="titulo">
                                     <p class="error" id="titleError"></p>
                                 </div>
                                 <div class="input-section">
                                     <label class="input-label" for="description" required>Descripción*</label>
-                                    <textarea type="text" name="description" placeholder="descripción"></textarea>
+                                    <textarea type="text" id="description" name="description" placeholder="descripción"></textarea>
                                     <p class="error" id="descriptionError"></p>
                                 </div>
 
@@ -115,11 +82,3 @@
                             </form>
                         </div>
                     </section>                   
-                </div>
-            </article> 
-        </section>       
-        <script src="../js/proyectos.js"></script>
-        <script src="../js/closeSession.js"></script>
-        <script src="../js/dashboard.js"></script>
-    </body>
-</html>
