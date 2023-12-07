@@ -294,6 +294,12 @@ function comportamientoBotonesPaginado(pages) {
 }
 //Generar tabla de proyectos
 function mostrarTabla(json, borrados, projectManager = false) {
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  if (user.rolType.toLowerCase() == 'personal del cice') {
+    listadoHTML = "listProjectsPersonalCICE.html";
+  }
+
+  let cellsCount = 0;
   let array = json.content;
   let container;
   if (borrados) {
@@ -304,13 +310,25 @@ function mostrarTabla(json, borrados, projectManager = false) {
   container.innerHTML = "";
   for (let i = array.length - 1; i >= 0; i--) {
     const proyecto = array[i];
+    console.log(proyecto);
     var row = container.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-    var cell4 = row.insertCell(3);
+    var cell1 = row.insertCell(cellsCount++);
+    var cell2 = row.insertCell(cellsCount++);
+    var cell3 = row.insertCell(cellsCount++);
+    if (user.rolType.toLowerCase() == 'personal del cice') {
+      const isActive = proyecto._active;
+      let cellState = row.insertCell(cellsCount++)
+      if (isActive) {
+        cellState.innerHTML = "Activo";
+        cellState.classList.add("activo");
+      } else {
+        cellState.innerHTML = "No activo";
+        cellState.classList.add("noActivo");
+      }
+    }
+    var cell4 = row.insertCell(cellsCount++);
     if (borrados) {
-      var cell5 = row.insertCell(4);
+      var cell5 = row.insertCell(cellsCount++);
       cell1.innerHTML = proyecto.project.title;
       cell2.innerHTML = proyecto.project.projectManager.name + " " + proyecto.project.projectManager.surname;
       cell3.innerHTML = proyecto.project.stage.stage_type;
@@ -342,6 +360,7 @@ function mostrarTabla(json, borrados, projectManager = false) {
       }
       cell4.appendChild(btn_delete);
     }
+    cellsCount = 0;
   }
 }
 
