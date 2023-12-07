@@ -85,7 +85,7 @@ function mostrarProyectos(json) {
 }
 
 function mostrarProyectosDeEmprendedor(json) {
-  console.log(json);
+  console.log(json); //se muestra bien
   mostrarArchivoHTML("listProjectsEntrepreneur.html").then(text =>{
     document.querySelector(".main-container").innerHTML = text;
 
@@ -106,11 +106,18 @@ function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list
 
 //MOSTRAR PROYECTO
 function mostrarProyecto(proyecto){
+  console.log("proyecto en mostrarProyecto(p): "+ proyecto); //object
+  console.log("username admin "+ proyecto.adminUsername) //bien
+  console.log("stage en mostrarProyecto(p) "+ proyecto.stage) //bien
   mostrarArchivoHTML("proyecto.html").then(text=> {
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#titulo").innerHTML += proyecto.title;
     document.querySelector("#descripcion").innerHTML += proyecto.description;
-    document.querySelector("#estadio").innerHTML += proyecto.stage.stage_type;
+   // document.querySelector("#estadio").innerHTML += proyecto.stage.stage_type;
+    document.querySelector("#estadio").innerHTML += proyecto.stage;
+    document.querySelector("#adminUsername").innerHTML += proyecto.adminUsername;
+    document.querySelector("#adminEmail").innerHTML += proyecto.adminEmail;
+    console.log(proyecto.assistances); //undefined
     mostrarArray("#asistencia", proyecto.assistances, "elemento.type");
     mostrarArray("#necesidades", proyecto.needs, "elemento.needType");
     partialRendercargaDatosEmprendedor(".datosEmprendedor", proyecto.projectManager.id_ProjectManager);
@@ -231,17 +238,6 @@ function showDataProjectManager(projectManager){
     document.querySelector("#linkUnicen").innerHTML=projectManager.linkUnicen;
     document.querySelector("#phone").innerHTML=projectManager.phone;
     document.querySelector("#medioConocimientoCice").innerHTML=projectManager.medioConocimientoCice;
-  });
-}
-
-function showDataProjectAdmin(projectAdmin){
-  //llamo a contenido donde se muestran los datos del admin del proyecto.
-  mostrarArchivoHTML("dataAdminProject.html").then(text_pm =>{
-    document.getElementById("projectAdminData").innerHTML=text_pm;
-    //Completo datos del admin del proyecto
-    document.querySelector("#fullName").innerHTML=projectAdmin.username;
-    document.querySelector("#username").innerHTML=projectAdmin.username;
-    document.querySelector("#email").innerHTML=projectAdmin.email;
   });
 }
 
