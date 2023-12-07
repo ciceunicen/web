@@ -155,12 +155,14 @@ function getProjectHistory(id) {
 
 //MODIFICAR DATOS DE UN PROYECTO
 async function modificarProyecto(id_proyecto, proyecto) {
+  let token = localStorage.getItem("token");
   await fetch(URLProject + "/" + id_proyecto, {
     method: "PUT",
     mode: 'cors',
     body: JSON.stringify(proyecto),
-    headers: { "Access-Control-Allow-Origin": "*", },
-    headers: { "Content-type": "application/json; charset=UTF-8", }
+    headers : {"Content-Type" : "application/json; charset=utf-8",
+                "Authorization" : "Bearer " + token,
+                "Access-Control-Allow-Origin": "*"},
   })
     .then(response => { response.json().then(json => mostrarProyecto(json)) })
 }
@@ -565,8 +567,9 @@ function guardarNecesidades() {
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(json),
-    headers: { "Access-Control-Allow-Origin": "*", },
-    headers: { "Content-type": "application/json; charset=UTF-8", }
+    headers : {"Content-Type" : "application/json; charset=utf-8",
+                "Authorization" : "Bearer " + token,
+                "Access-Control-Allow-Origin": "*"},
   })
     .then(response => response.json())
     .then(json => actualizacionSelect(json.id_Need, json.needType, "needs_created", "multiSelectsNeedsCreated"));
@@ -580,8 +583,9 @@ function guardarAsistencias() {
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(json),
-    headers: { "Access-Control-Allow-Origin": "*", },
-    headers: { "Content-type": "application/json; charset=UTF-8", }
+    headers : {"Content-Type" : "application/json; charset=utf-8",
+                "Authorization" : "Bearer " + token,
+                "Access-Control-Allow-Origin": "*"},
   })
     .then(response => response.json())
     .then(json => actualizacionSelect(json.id_Assistance, json.type, "assistances_created", "multiSelectsAssistancesCreated"));
@@ -695,20 +699,13 @@ function saveNewData(id_proyecto, proyecto) {
       successImg[0].style.opacity = "1";
       successImg[1].style.opacity = "1";
       let datos = {
-        "title": title.value,
-        "description": description.value,
-        "files":
-          files
-        ,
-        "assistances":
-          asistencias
-        ,
-        "needs":
-          necesidades
-        ,
-        "stage": estadio.value,
-        "newFiles":
-          attachments
+        "title" : title.value,
+        "description" : description.value,
+        "stage" : estadio.value,
+        "assistances" : asistencias,
+        "files" : files,       
+        "needs" : necesidades,       
+        "newFiles" : attachments
       }
       saveAttachments(title.value);
       modificarProyecto(id_proyecto, datos);
