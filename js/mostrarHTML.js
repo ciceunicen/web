@@ -99,9 +99,8 @@ function comportamientoBtnsFiltros() {
   let filtrarBtn = document.querySelector("#btn_filter");
   filtrarBtn.addEventListener("click", async () => {
     try {
-      //const radioButtonValue = document.querySelector(".activoRadioButton");
       const radioButtonEstado = document.querySelector("input[name=estado]:checked").value;
-      const proyectos = await getEntrepreneurFilterProjects(1, radioButtonEstado);
+      const proyectos = await getEntrepreneurFilterProjects([], 1, radioButtonEstado);
 
       mostrarTablaProyectosEmprendedor(proyectos.content);
       mostrarPaginado(proyectos.totalPages, "proyectosEmprendedorFiltrados", [], radioButtonEstado);

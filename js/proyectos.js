@@ -137,19 +137,18 @@ function getFilterProjects(datos, pagina) {
     .then(json => { return json });
 }
 
-//GET DE LOS PROYECTOS FILTRADOS DE EMPRENDEDOR - SOLO CON ESTADO, EN LA PRÓXIMA ITERACIÓN SE COMPLETA EL FILTRO
-function getEntrepreneurFilterProjects(pagina, radioButtonEstado) {
+//GET DE LOS PROYECTOS FILTRADOS DE EMPRENDEDOR - SÓLO FILTRA POR ESTADO
+// Si no se pasan datos por parámetro = []
+function getEntrepreneurFilterProjects(datos, pagina, radioButtonEstado) {
   let url = new URL(URLProject + "/entrepreneur/filters/page/" + pagina);
-  /* let params = new URLSearchParams(datos);
-  return fetch(url + "?" + params,{ */
-  /* let estado = radioButtonEstado; */
+  let params = new URLSearchParams(datos);
+  
   let estadoParam = "";
   if (radioButtonEstado != "") {
-    /* estado = [true, false].map(value => `param=${encodeURIComponent(value)}`).join('&'); */
     estadoParam = `&active=${radioButtonEstado}`;
   }
 
-  return fetch(url + "?" + `filters=asd${estadoParam}`,{
+  return fetch(url + `?${params}${estadoParam}`,{
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
@@ -260,7 +259,7 @@ function cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages)
       comportamientoBotonesPaginado(pages);
     });
   } else if (tablaUtilizada == "proyectosEmprendedorFiltrados") {
-    getEntrepreneurFilterProjects(page, estadoFiltro).then(json => {
+    getEntrepreneurFilterProjects(datosFiltro, page, estadoFiltro).then(json => {
       mostrarTablaProyectosEmprendedor(json.content);
       comportamientoBotonesPaginado(pages);
     });
