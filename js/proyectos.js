@@ -265,8 +265,6 @@ function comportamientoBotonesPaginado(pages) {
 }
 //Generar tabla de proyectos
 function mostrarTabla(json, borrados, projectManager = false) {
-  console.log("MostrarTabla .stage.stage_type: "+json.stage.stage_type)
-  console.log("MostrarTabla .stage: "+json.stage)
   let array = json.content;
   let container;
   if (borrados) {
@@ -320,8 +318,6 @@ function mostrarTabla(json, borrados, projectManager = false) {
 
 //muestra los proyectos de un emprendedor
 function mostrarTablaProyectosEmprendedor(json) {
-  console.log("El json en mostrarTablaProyectosEmprendedor"+ json); //object
-  console.log(json[0].adminUsername); //se muestra bien
   let array = json;
 
   if (Array.isArray(array) && array.length > 0) {
