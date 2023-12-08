@@ -272,9 +272,16 @@ function mostrarEditarProyecto(id_project, project) {
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#title").value = project.title;
     document.querySelector("#description").value = project.description;
+    document.querySelector("#saveNeed").addEventListener('click', saveNewNeed);
+    document.querySelector("#saveAssistance").addEventListener('click', saveNewAssistance);
     getNeeds(URLNeeds, project);
     getAssistances(URLAssitances, project);
-    
+    getStages(URLStages, project);
+    getAdmins(URLUsers, project)
+    document.querySelector("#projectForm").addEventListener('submit', (e) =>{
+      e.preventDefault();
+      updateProject(id_project);
+    })
   })
 }
 
