@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     /*Emprendedor */
     if(document.getElementById('crearProject')!=null){
         let BtnCrearProject = document.getElementById('crearProject').addEventListener('click', ()=>{
-            window.location.href = "./cargarProjects.html";
+            window.location.href = "./home.html";
         })
     }
 
