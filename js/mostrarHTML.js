@@ -5,12 +5,12 @@ function mostrarArchivoHTML(rutaArchivo){
 }
 
 //Muestra el home de la pagina
-function mostrarHome(){
+function mostrarHome(actualPage = 1, seccion = "emprendedores"){
   mostrarArchivoHTML("navbar.html",".navbar").then(text => {
       document.querySelector(".navbar").innerHTML = text;
       document.querySelector("#proyectos").addEventListener("click", ()=>{
         drawClickNav("proyectos");
-        page=1;
+        page=actualPage;
         getAllProjects().then(json=>mostrarProyectos(json));
       });
       document.querySelector("#emprendedores").addEventListener("click", ()=>{
@@ -18,7 +18,7 @@ function mostrarHome(){
         mostrarListaEmprendedores();
       });
       //HOME TEMPORAL
-      document.querySelector("#emprendedores").click();
+      document.querySelector(`#${seccion}`).click();
 
       logout(); //Una vez cargado el NAV (se carga con parcial render), le agrego funcionalidad al boton creado
     })
@@ -294,6 +294,25 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
       cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
       //getNecesidadesoAsistenciasCreadas(URLAssitances);
     });
+    document.querySelector("#estados").innerHTML =
+    `<div>
+      <input type="radio" id="activo" name="estado" value=true />
+      <label for="activo">Activo</label>
+    </div>
+
+    <div>
+      <input type="radio" id="noActivo" name="estado" value=false />
+      <label for="noActivo">No activo</label>
+    </div>`
+
+    const radioActivo = document.querySelector("#activo");
+    const radioNoActivo = document.querySelector("#noActivo");
+    if (proyecto._active) {
+      radioActivo.setAttribute("checked", "true");
+    } else {
+      radioNoActivo.setAttribute("checked", "true");
+    }
+
     //carga sección de archivos adjuntos
     mostrarFilesEditar(proyecto);
     changeCountInputFile();

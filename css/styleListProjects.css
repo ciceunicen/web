@@ -48,15 +48,11 @@
     justify-content: space-between;
 }
 
-.verMas, .btn_borrar{
+.verMas, .btn_borrar, .btn_is_active{
     color:#FFFFFF;
     border-radius: 5px;
+    margin: 0 3%;
 }
-
-.verMas{
-    margin-right: 10%;
-}
-
 
 .pagination{
     justify-content: center;
