@@ -100,15 +100,31 @@ function mostrarProyectosDeEmprendedor(json) {
 
     mostrarPaginado(json.totalPages,"proyectos");
     mostrarTablaProyectosEmprendedor(json);
+    comportamientoBtnsFiltros()
+  });
+}
+
+function comportamientoBtnsFiltros() {
+  let filtrarBtn = document.querySelector("#btn_filter");
+  filtrarBtn.addEventListener("click", async () => {
+    try {
+      const radioButtonEstado = document.querySelector("input[name=estado]:checked").value;
+      const proyectos = await getEntrepreneurFilterProjects([], 1, radioButtonEstado);
+
+      mostrarTablaProyectosEmprendedor(proyectos.content);
+      mostrarPaginado(proyectos.totalPages, "proyectosEmprendedorFiltrados", [], radioButtonEstado);
+    } catch (error) {
+      console.log(error);
+    }
   });
 }
 
 //muestra la seccion del paginado
-function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list-projects"){
+function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [], estadoFiltro = "", div=".footer-list-projects"){
   mostrarArchivoHTML("pagination.html").then(text =>{
     document.querySelector(div).innerHTML=text;
     document.querySelector("#pageNumber").innerHTML=page;
-    comportamientoPaginado(pages,datosFiltro,tablaUtilizada);
+    comportamientoPaginado(pages,datosFiltro,estadoFiltro,tablaUtilizada);
   });
 }
 
