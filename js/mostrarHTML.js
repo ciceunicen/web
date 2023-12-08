@@ -5,12 +5,12 @@ function mostrarArchivoHTML(rutaArchivo){
 }
 
 //Muestra el home de la pagina
-function mostrarHome(){
+function mostrarHome(actualPage = 1, seccion = "emprendedores"){
   mostrarArchivoHTML("navbar.html",".navbar").then(text => {
       document.querySelector(".navbar").innerHTML = text;
       document.querySelector("#proyectos").addEventListener("click", ()=>{
         drawClickNav("proyectos");
-        page=1;
+        page=actualPage;
         getAllProjects().then(json=>mostrarProyectos(json));
       });
       document.querySelector("#emprendedores").addEventListener("click", ()=>{
@@ -22,7 +22,7 @@ function mostrarHome(){
         mostrarCargaProyecto();
       });
       //HOME TEMPORAL
-      document.querySelector("#emprendedores").click();
+      document.querySelector(`#${seccion}`).click();
 
       logout(); //Una vez cargado el NAV (se carga con parcial render), le agrego funcionalidad al boton creado
     })
@@ -336,6 +336,51 @@ function mostrarEditarProyecto(id_project, project) {
       e.preventDefault();
       updateProject(id_project);
     })
+    //document.querySelector("#title").value=proyecto.title;
+    //document.querySelector("#description").value=proyecto.description;
+    //selecionarSoloUnEstadio();
+    //cargarCheckboxes(URLStages, proyecto,'estadios_checks');
+    //mostrarArchivoHTML("cargaDeNecesidades.html").then(text =>{
+    //  document.querySelector(".datosNecesidades").innerHTML = text;
+    //  document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
+      //Configuro Dropdown de necesidades
+    //  cargarCheckboxes(URLNeeds, proyecto,'needs_created');
+      //getNecesidadesoAsistenciasCreadas(URLNeeds);
+    
+    //});
+    //mostrarArchivoHTML("cargaDeAsistencias.html").then(text =>{
+    //  document.querySelector(".datosAsistencias").innerHTML = text;
+    //  document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
+      //Configuro Dropdown de asistencias
+    //  cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
+      //getNecesidadesoAsistenciasCreadas(URLAssitances);
+    //});
+    document.querySelector("#estados").innerHTML =
+    `<div>
+      <input type="radio" id="activo" name="estado" value=true />
+      <label for="activo">Activo</label>
+    </div>
+
+    <div>
+      <input type="radio" id="noActivo" name="estado" value=false />
+      <label for="noActivo">No activo</label>
+    </div>`
+
+    const radioActivo = document.querySelector("#activo");
+    const radioNoActivo = document.querySelector("#noActivo");
+    if (proyecto._active) {
+      radioActivo.setAttribute("checked", "true");
+    } else {
+      radioNoActivo.setAttribute("checked", "true");
+    }
+
+    //carga sección de archivos adjuntos
+    //mostrarFilesEditar(proyecto);
+    //changeCountInputFile();
+    //partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
+    //partialRenderHistorialProject(".historyProject", proyecto.id_Project);
+    //saveNewData(id_proyecto, proyecto);
+    //validFileType();
   })
 }
 

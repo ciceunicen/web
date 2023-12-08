@@ -48,6 +48,12 @@
             margin-left: 5px;
             margin-right: 20px;
         }
+        .estados {
+            display: flex;
+        }
+        .estados div {
+            margin: 0 10px;
+        }
     
 /*mensajes error de feedback*/
 .error{

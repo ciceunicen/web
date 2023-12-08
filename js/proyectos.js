@@ -185,24 +185,24 @@ function getProjectHistory(id) {
 
 //MODIFICAR DATOS DE UN PROYECTO
 async function modificarProyecto(id_proyecto, proyecto) {
-  let token = localStorage.getItem("token");
-  try{
-    let res = await fetch(URLProject + "/" + id_proyecto, {
-      method: "PUT",
-      mode: 'cors',
-      body: JSON.stringify(proyecto),
-      headers : {"Content-Type" : "application/json; charset=utf-8",
-                  "Authorization" : "Bearer " + token,
-                  "Access-Control-Allow-Origin": "*"},
-    })
-    if(res.ok) {
-      showSucess("Proyecto modificado con exito!");
-      setTimeout(() => {
-        window.location.href = "dashboard.html";
-      } , 1500)
-  }
-  }catch(error){
-    console.log(error);
+  console.log("Campos", proyecto);
+  let response = await fetch(URLProject + "/" + id_proyecto, {
+    method: "PUT",
+    mode: 'cors',
+    body: JSON.stringify(proyecto),
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      "Access-Control-Allow-Origin": "*",
+    }
+  });
+
+  if (response.ok) {
+    let json = await response.json();
+    console.log("Updated", json);
+    mostrarProyecto(json);
+  } else {
+    console.error("No se pudo editar el proyecto");
   }
 }
 
@@ -943,7 +943,13 @@ function updateProject(id_project) {
       assistances.push(checkbox.value);
   });
   let stage = formData.get('stage-select');   
-  let admin = formData.get('admin-select');   
+  let admin = formData.get('admin-select');
+  let isActive = document.querySelector('input[name="estado"]:checked').value;
+  if (isActive === "true") {
+    isActive = true;
+  } else {
+    isActive = false;
+  }
   if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
   assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
     document.querySelector("#titleError").innerHTML = "";
@@ -957,6 +963,7 @@ function updateProject(id_project) {
       "title" : title,
       "description" : description,
       "stage" : stage,
+      "is_active": isActive,
       "assistances" : assistances,
       "files" : null,       
       "needs" : needs,       
