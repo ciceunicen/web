@@ -17,6 +17,10 @@ function mostrarHome(){
         drawClickNav("emprendedores");
         mostrarListaEmprendedores();
       });
+      document.querySelector("#crearProyecto").addEventListener("click", ()=>{
+        drawClickNav("crearProyecto");
+        mostrarCargaProyecto();
+      });
       //HOME TEMPORAL
       document.querySelector("#emprendedores").click();
 
@@ -38,6 +42,10 @@ function mostrarHomeEmprendedor(){
           document.querySelector(".navbar").innerHTML = text;
           getAllProjectsByEntrepreneur(emprendedorId).then(json => mostrarProyectosDeEmprendedor(json));
           logout();
+          document.querySelector("#crearProyecto").addEventListener("click", ()=>{
+            drawClickNav("crearProyecto");
+            mostrarCargaProyecto();
+          });
         }
     );
   } else {
@@ -142,16 +150,26 @@ function mostrarProyecto(proyecto){
 }
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
-function mostrarCargaProyecto(id_ProjectManager) {
+function mostrarCargaProyecto() {
   mostrarArchivoHTML("cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
       //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
-      inicializarCargaProyecto(id_ProjectManager);
-      cargaRenderNecesidades();
-      cargaRenderAsistencia();
-      partialRendercargaDatosEmprendedor(".datosEmprendedor",id_ProjectManager);
+      // inicializarCargaProyecto(id_ProjectManager);
+      // cargaRenderNecesidades();
+      // cargaRenderAsistencia();
+      // partialRendercargaDatosEmprendedor(".datosEmprendedor",id_ProjectManager);
       //Configuro Ckeckboxs dinamico de estadios
-      getAllBaseURL(URLStages, 'estadios_checks');
+      // getAllBaseURL(URLStages, 'estadios_checks');
+      getNeeds(URLNeeds, null);
+      getAssistances(URLAssitances, null);
+      getStages(URLStages, null);
+      getAdmins(URLUsers, null)
+      document.querySelector("#saveNeed").addEventListener('click', saveNewNeed);
+      document.querySelector("#saveAssistance").addEventListener('click', saveNewAssistance);
+      document.querySelector("#projectForm").addEventListener('submit', (e) =>{
+        e.preventDefault();
+        saveNewProject();
+      })
   });
 }
 

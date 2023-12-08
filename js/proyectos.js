@@ -2,16 +2,9 @@ let page = 1;
 const URLProject = "http://localhost:8080/projects";
 const URLEntrepreneurProjects = "http://localhost:8080/emprendedores";
 const URLFiles = "http://localhost:8080/files";
-const URLNEEDS = "http://localhost:8080/needs";
-const URLASSISTANCES = "http://localhost:8080/assistances";
-const URLSTAGES = "http://localhost:8080/stages";
-const URLUSERS = "http://localhost:8080/usuarios/rol/2";
-
 let statusFile = true;//guarda si los archivos cargados tienen una estención válida.
 
-
 //METODOS DE ABM
-
 //POST
 async function saveProject(data) {
   let token = localStorage.getItem("token");
@@ -507,12 +500,6 @@ function innerHTML(json, elementDOM) {
 //COMPRUEBA LOS CAMPOS DE CARGA DE PROYECTOS
 
   //Metodos para cargar checkboxs disponibles en cargar proyecto
-  // getNeeds(URLNEEDS, null);
-  // getAssistances(URLASSISTANCES, null);
-  // getStages(URLSTAGES, null);
-  // getAdmins(URLUSERS, null);
-  // form.addEventListener('submit', validForm(event, null, null));
-
   function saveNewProject(){
     let form = document.querySelector("#projectForm");
     let formData = new FormData(form);
@@ -686,7 +673,7 @@ function innerHTML(json, elementDOM) {
 function guardarNecesidades() {
   event.preventDefault();
   let json = { "needType": document.getElementById('new_need').value };
-  fetch(URLNEEDS, {
+  fetch(URLNeeds, {
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(json),
@@ -702,7 +689,7 @@ function guardarNecesidades() {
 function guardarAsistencias() {
   event.preventDefault();
   let json = { "type": document.getElementById('new_assistance').value };
-  fetch(URLASSISTANCES, {
+  fetch(URLAssistances, {
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(json),
@@ -725,7 +712,7 @@ async function saveNewNeed() {
       "needType" : input.value
     };
     try{
-      await fetch(URLNEEDS, {
+      await fetch(URLNeeds, {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify(data),
@@ -759,7 +746,7 @@ async function saveNewAssistance() {
       "type": input.value 
     };
     try{
-      await fetch(URLASSISTANCES, {
+      await fetch(URLAssitances, {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify(data),
@@ -871,7 +858,6 @@ function updateProject(id_project) {
   });
   let stage = formData.get('stage-select');   
   let admin = formData.get('admin-select');   
-  console.log(needsCheckboxes.length)
   if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
   assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
     document.querySelector("#titleError").innerHTML = "";
@@ -885,9 +871,9 @@ function updateProject(id_project) {
       "title" : title,
       "description" : description,
       "stage" : stage,
-      "assistances" : asistencias,
+      "assistances" : assistances,
       "files" : null,       
-      "needs" : necesidades,       
+      "needs" : needs,       
       "newFiles" : null
     }
     modificarProyecto(id_project, data);
@@ -1161,7 +1147,6 @@ function showNeeds(array, project) {
       if(project != null) {
         for (let i = 0; i < project.needs.length; i++) {
           if (project.needs[i].id_Need == input.value) {
-            input.innerHTML += project.needs[i].type;
             input.checked = true;
           }
         }
@@ -1188,7 +1173,6 @@ function showAssistances(array, project) {
       if(project != null){ 
         for (let i = 0; i < project.assistances.length; i++) {
           if (project.assistances[i].id_Assistance == input.value) {
-            input.innerHTML += project.assistances[i].type;
             input.checked = true;
           }
         }
