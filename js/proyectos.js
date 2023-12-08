@@ -143,6 +143,30 @@ function getFilterProjects(datos, pagina) {
     .then(json => { return json });
 }
 
+//GET DE LOS PROYECTOS FILTRADOS DE EMPRENDEDOR - SÓLO FILTRA POR ESTADO
+// Si no se pasan datos por parámetro = []
+function getEntrepreneurFilterProjects(datos, pagina, radioButtonEstado) {
+  let url = new URL(URLProject + "/entrepreneur/filters/page/" + pagina);
+  let params = new URLSearchParams(datos);
+  
+  let estadoParam = "";
+  if (radioButtonEstado != "") {
+    estadoParam = `&active=${radioButtonEstado}`;
+  }
+
+  return fetch(url + `?${params}${estadoParam}`,{
+    mode: 'cors',
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    }
+  })
+    .then(response => response.json())
+    .then(json => { return json });
+}
+
 //GET HISTORIAL DE PROYECTO
 function getProjectHistory(id) {
   return fetch(URLProject + "/" + id + "/administrationRecords/page/" + page,{
@@ -207,24 +231,24 @@ async function borrarFilesProyecto(id_Project, idFile = false) {
 //TODO DE LA SECCION DE LISTA DE PROYECTOS
 
 //maneja el funcionamiento del paginado de la tabla de proyectos
-function comportamientoPaginado(pages, datosFiltro, tablaUtilizada) {
+function comportamientoPaginado(pages, datosFiltro, estadoFiltro, tablaUtilizada) {
   comportamientoBotonesPaginado(pages);
   document.querySelector("#nextPage").addEventListener("click", () => {
     if (page <= pages) {
       page++;
-      cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages);
+      cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages);
     }
   });
   document.querySelector("#previousPage").addEventListener("click", () => {
     if (page > 1) {
       page--;
-      cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages);
+      cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages);
     }
   });
 }
 
 //Cambia el numero que se muestra en la seccion de paginado
-function cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages) {
+function cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages) {
   document.querySelector("#pageNumber").innerHTML = page;
   if (tablaUtilizada == "proyectosFiltrados") {
     getFilterProjects(datosFiltro, page).then(json => {
@@ -256,6 +280,16 @@ function cambiarNumeroPaginado(datosFiltro, tablaUtilizada, pages) {
         mostrarTablaProyectosEmprendedor(json);
         comportamientoBotonesPaginado(pages);
       });
+  } else if (tablaUtilizada == "proyectosEmprendedorFiltrados") {
+    getEntrepreneurFilterProjects(datosFiltro, page, estadoFiltro).then(json => {
+      mostrarTablaProyectosEmprendedor(json.content);
+      comportamientoBotonesPaginado(pages);
+    });
+  } else if (tablaUtilizada == "proyectos") {
+    getAllProjectsByEntrepreneur(page).then(json => {
+      mostrarTablaProyectosEmprendedor(json);
+      comportamientoBotonesPaginado(pages);
+    });
   }
 }
 
@@ -282,6 +316,12 @@ function comportamientoBotonesPaginado(pages) {
 }
 //Generar tabla de proyectos
 function mostrarTabla(json, borrados, projectManager = false) {
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  if (user.rolType.toLowerCase() == 'personal del cice') {
+    listadoHTML = "listProjectsPersonalCICE.html";
+  }
+
+  let cellsCount = 0;
   let array = json.content;
   let container;
   if (borrados) {
@@ -292,13 +332,25 @@ function mostrarTabla(json, borrados, projectManager = false) {
   container.innerHTML = "";
   for (let i = array.length - 1; i >= 0; i--) {
     const proyecto = array[i];
+    console.log(proyecto);
     var row = container.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-    var cell4 = row.insertCell(3);
+    var cell1 = row.insertCell(cellsCount++);
+    var cell2 = row.insertCell(cellsCount++);
+    var cell3 = row.insertCell(cellsCount++);
+    if (user.rolType.toLowerCase() == 'personal del cice') {
+      const isActive = proyecto._active;
+      let cellState = row.insertCell(cellsCount++)
+      if (isActive) {
+        cellState.innerHTML = "Activo";
+        cellState.classList.add("activo");
+      } else {
+        cellState.innerHTML = "No activo";
+        cellState.classList.add("noActivo");
+      }
+    }
+    var cell4 = row.insertCell(cellsCount++);
     if (borrados) {
-      var cell5 = row.insertCell(4);
+      var cell5 = row.insertCell(cellsCount++);
       cell1.innerHTML = proyecto.project.title;
       cell2.innerHTML = proyecto.project.projectManager.name + " " + proyecto.project.projectManager.surname;
       cell3.innerHTML = proyecto.project.stage.stage_type;
@@ -330,6 +382,40 @@ function mostrarTabla(json, borrados, projectManager = false) {
       }
       cell4.appendChild(btn_delete);
     }
+    cellsCount = 0;
+  }
+}
+
+//muestra los proyectos de un emprendedor
+function mostrarTablaProyectosEmprendedor(json) {
+  console.log(json);
+  let array = json;
+
+  if (Array.isArray(array)) {
+    let container = document.querySelector(".list");
+    container.innerHTML = "";
+    for (let i = array.length - 1; i >= 0; i--) {
+      const proyecto = array[i];
+      var row = container.insertRow(0);
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+
+      cell1.innerHTML = proyecto.title;
+      cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
+      cell3.innerHTML = proyecto.stage.stage_type;
+      let input = document.createElement("input");
+      input.setAttribute("type", "button");
+      input.setAttribute("value", "Ver más");
+      input.setAttribute("id", proyecto.id_Project);
+      input.setAttribute("class", "btn_save_green verMas");
+      cell4.appendChild(input);
+
+      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
+    }
+  } else {
+    console.error("El array de proyectos está vacío o no está definido.");
   }
 }
 

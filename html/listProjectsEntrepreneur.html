@@ -21,3 +21,57 @@
         <section class="footer-list-projects"></section>
     </div>
 </div>
+<article class="cointaint-list">
+    <!----SELECTS DE FILTROS-->
+    <section class="filter-projects">
+        <fieldset>
+            <legend>Estado:</legend>
+          
+            <div>
+                <div>
+                    <input type="radio" class="activoRadioButton" id="noFiltrar" name="estado" value="" checked />
+                    <label for="noFiltrar">No filtrar</label>
+                </div>
+                
+                <div>
+                  <input type="radio" class="activoRadioButton" id="activos" name="estado" value=true />
+                  <label for="activos">Activos</label>
+                </div>
+                
+                <div>
+                  <input type="radio" class="activoRadioButton" id="noActivos" name="estado" value=false />
+                  <label for="noActivos">No activos</label>
+                </div>
+            </div>
+          </fieldset>
+        <div class="div_cont_btn_filter_reset">
+            <button class="btn btn-success btn_save_green" id="btn_filter">Filtrar</button>
+            <button class="btn btn-success btn_save_green" id="btn_reset_filter">Reset</button>
+        </div>
+    
+    </section>
+
+    <div class="div_cont_dropdown_section_removed_and_table_project">
+
+        <div class="div_cont_table_projects">
+            <section class="list-projects">
+                <table class="table table-hover">
+                    <thead class="header-list-projects">
+                    <tr>
+                        <th scope="col">Título</th>
+                        <th scope="col">Responsable del proyecto</th>
+                        <th scope="col">Estadio</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="list-projects list">
+                    <!-- muestra de como se veria la lista de proyectos -->
+                    </tbody>
+                    <!-- <tfoot class="footer-list-projects">
+                    </tfoot> -->
+                </table>
+            </section>
+            <section class="footer-list-projects"></section>
+        </div>
+    </div>
+</article>

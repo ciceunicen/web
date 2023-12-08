@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", (e) =>{
 
     const SUPERADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li></ul><h2>Emprendedores</h2><ul><li id='listEntrepreneur'>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li id='AdmUsuariosRol'>Listar usuarios</li></ul>"
 
+    const PERSONAL_CICE = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li></ul>"
+
 
     let container = document.getElementById("directions")
     let user_name = document.getElementById("user_name")
@@ -29,6 +31,8 @@ document.addEventListener("DOMContentLoaded", (e) =>{
         container.innerHTML += ADMIN
     }else if(rolUser == "superadmin"){
         container.innerHTML += SUPERADMIN
+    }else if(rolUser == "personal del cice"){
+        container.innerHTML += PERSONAL_CICE
     }
 
     logout(); //La carga del EventListener tiene que suceder dps de que se modifica el container.html
@@ -52,6 +56,12 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     /*Emprendedor */
     if(document.getElementById('crearProject')!=null){
         let BtnCrearProject = document.getElementById('crearProject').addEventListener('click', ()=>{
+            window.location.href = "./home.html";
+        })
+    }
+
+    if(document.getElementById('listProjectsEntrepreneur')!=null){
+        let BtnListEntrepreneurProjects = document.getElementById('listProjectsEntrepreneur').addEventListener('click', ()=>{
             window.location.href = "./home.html";
         })
     }

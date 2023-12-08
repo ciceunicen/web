@@ -70,7 +70,16 @@ function showTableProjectsRemoved(){
 
 //muestra la lista de proyectos
 function mostrarProyectos(json) {
-  mostrarArchivoHTML("listProjects.html").then(text =>{
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  
+  let listadoHTML = "";
+  if (user.rolType.toLowerCase() == 'personal del cice') {
+    listadoHTML = "listProjectsPersonalCICE.html";
+  } else {
+    listadoHTML = "listProjects.html";
+  }
+
+  mostrarArchivoHTML(listadoHTML).then(text =>{
     document.querySelector(".main-container").innerHTML = text;
     //AGREGO DROPDOWN DE PROYECTOS ELIMINADOS Y EVENTOS DE CAMBIOS DE PANTALLA
     let id_btn_change_screen = 'btn_section_projects_removed';
@@ -99,26 +108,53 @@ function mostrarProyectosDeEmprendedor(json) {
 
     mostrarPaginado(json.totalPages,"proyectos");
     mostrarTablaProyectosEmprendedor(json);
+    comportamientoBtnsFiltros()
+  });
+}
+
+function comportamientoBtnsFiltros() {
+  let filtrarBtn = document.querySelector("#btn_filter");
+  filtrarBtn.addEventListener("click", async () => {
+    try {
+      const radioButtonEstado = document.querySelector("input[name=estado]:checked").value;
+      const proyectos = await getEntrepreneurFilterProjects([], 1, radioButtonEstado);
+
+      mostrarTablaProyectosEmprendedor(proyectos.content);
+      mostrarPaginado(proyectos.totalPages, "proyectosEmprendedorFiltrados", [], radioButtonEstado);
+    } catch (error) {
+      console.log(error);
+    }
   });
 }
 
 //muestra la seccion del paginado
-function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list-projects"){
+function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [], estadoFiltro = "", div=".footer-list-projects"){
   mostrarArchivoHTML("pagination.html").then(text =>{
     document.querySelector(div).innerHTML=text;
     document.querySelector("#pageNumber").innerHTML=page;
-    comportamientoPaginado(pages,datosFiltro,tablaUtilizada);
+    comportamientoPaginado(pages,datosFiltro,estadoFiltro,tablaUtilizada);
   });
 }
 
 
 //MOSTRAR PROYECTO
 function mostrarProyecto(proyecto){
+  let user = JSON.parse(localStorage.getItem('usuario'));
   mostrarArchivoHTML("proyecto.html").then(text=> {
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#titulo").innerHTML += proyecto.title;
     document.querySelector("#descripcion").innerHTML += proyecto.description;
     document.querySelector("#estadio").innerHTML += proyecto.stage.stage_type;
+    if (user.rolType.toLowerCase() == "personal del cice" || user.rolType.toLowerCase() == "emprendedor") {
+      let estadoDiv = document.querySelector("#estadoDiv");
+      estadoDiv.classList.remove("hide");
+      estadoDiv.innerHTML += `<h6 class="h6_description_stage">Estado</h6><p id="estado"></p>`;
+      if (proyecto._active) {
+        document.querySelector("#estado").innerHTML += "Activo";
+      } else {
+        document.querySelector("#estado").innerHTML += "No activo";
+      }
+    }
     mostrarArray("#asistencia", proyecto.assistances, "elemento.type");
     mostrarArray("#necesidades", proyecto.needs, "elemento.needType");
     partialRendercargaDatosEmprendedor(".datosEmprendedor", proyecto.projectManager.id_ProjectManager);
