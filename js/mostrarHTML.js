@@ -5,12 +5,12 @@ function mostrarArchivoHTML(rutaArchivo){
 }
 
 //Muestra el home de la pagina
-function mostrarHome(){
+function mostrarHome(actualPage = 1, seccion = "emprendedores"){
   mostrarArchivoHTML("navbar.html",".navbar").then(text => {
       document.querySelector(".navbar").innerHTML = text;
       document.querySelector("#proyectos").addEventListener("click", ()=>{
         drawClickNav("proyectos");
-        page=1;
+        page=actualPage;
         getAllProjects().then(json=>mostrarProyectos(json));
       });
       document.querySelector("#emprendedores").addEventListener("click", ()=>{
@@ -18,7 +18,7 @@ function mostrarHome(){
         mostrarListaEmprendedores();
       });
       //HOME TEMPORAL
-      document.querySelector("#emprendedores").click();
+      document.querySelector(`#${seccion}`).click();
 
       logout(); //Una vez cargado el NAV (se carga con parcial render), le agrego funcionalidad al boton creado
     })
@@ -62,7 +62,16 @@ function showTableProjectsRemoved(){
 
 //muestra la lista de proyectos
 function mostrarProyectos(json) {
-  mostrarArchivoHTML("listProjects.html").then(text =>{
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  
+  let listadoHTML = "";
+  if (user.rolType.toLowerCase() == 'personal del cice') {
+    listadoHTML = "listProjectsPersonalCICE.html";
+  } else {
+    listadoHTML = "listProjects.html";
+  }
+
+  mostrarArchivoHTML(listadoHTML).then(text =>{
     document.querySelector(".main-container").innerHTML = text;
     //AGREGO DROPDOWN DE PROYECTOS ELIMINADOS Y EVENTOS DE CAMBIOS DE PANTALLA
     let id_btn_change_screen = 'btn_section_projects_removed';
@@ -90,21 +99,38 @@ function mostrarProyectosDeEmprendedor(json) {
 
     mostrarPaginado(json.totalPages,"proyectos");
     mostrarTablaProyectosEmprendedor(json);
+    comportamientoBtnsFiltros()
+  });
+}
+
+function comportamientoBtnsFiltros() {
+  let filtrarBtn = document.querySelector("#btn_filter");
+  filtrarBtn.addEventListener("click", async () => {
+    try {
+      const radioButtonEstado = document.querySelector("input[name=estado]:checked").value;
+      const proyectos = await getEntrepreneurFilterProjects([], 1, radioButtonEstado);
+
+      mostrarTablaProyectosEmprendedor(proyectos.content);
+      mostrarPaginado(proyectos.totalPages, "proyectosEmprendedorFiltrados", [], radioButtonEstado);
+    } catch (error) {
+      console.log(error);
+    }
   });
 }
 
 //muestra la seccion del paginado
-function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [],div=".footer-list-projects"){
+function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [], estadoFiltro = "", div=".footer-list-projects"){
   mostrarArchivoHTML("pagination.html").then(text =>{
     document.querySelector(div).innerHTML=text;
     document.querySelector("#pageNumber").innerHTML=page;
-    comportamientoPaginado(pages,datosFiltro,tablaUtilizada);
+    comportamientoPaginado(pages,datosFiltro,estadoFiltro,tablaUtilizada);
   });
 }
 
 
 //MOSTRAR PROYECTO
 function mostrarProyecto(proyecto){
+  let user = JSON.parse(localStorage.getItem('usuario'));
   mostrarArchivoHTML("proyecto.html").then(text=> {
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#titulo").innerHTML += proyecto.title;
@@ -113,6 +139,19 @@ function mostrarProyecto(proyecto){
     document.querySelector("#adminUsername").innerHTML += proyecto.adminUsername;
     document.querySelector("#adminEmail").innerHTML += proyecto.adminEmail;
     mostrarArray("#asistencia", proyecto.assistanceType, "elemento.type");
+
+    if (user.rolType.toLowerCase() == "personal del cice" || user.rolType.toLowerCase() == "emprendedor") {
+      let estadoDiv = document.querySelector("#estadoDiv");
+      estadoDiv.classList.remove("hide");
+      estadoDiv.innerHTML += `<h6 class="h6_description_stage">Estado</h6><p id="estado"></p>`;
+      if (proyecto._active) {
+        document.querySelector("#estado").innerHTML += "Activo";
+      } else {
+        document.querySelector("#estado").innerHTML += "No activo";
+      }
+    }
+    mostrarArray("#asistencia", proyecto.assistanceType, "elemento.type");
+
     mostrarArray("#necesidades", proyecto.needs, "elemento.needType");
     partialRendercargaDatosEmprendedor(".datosEmprendedor", proyecto.projectManager.id_ProjectManager);
     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
@@ -124,7 +163,6 @@ function mostrarProyecto(proyecto){
       downloadAllAttachmentsByProject(proyecto.title);
     });
 
-    let user = JSON.parse(localStorage.getItem('usuario'));
     console.log(user);
     console.log(user.rolType);
     if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
@@ -258,6 +296,25 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
       cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
       //getNecesidadesoAsistenciasCreadas(URLAssitances);
     });
+    document.querySelector("#estados").innerHTML =
+    `<div>
+      <input type="radio" id="activo" name="estado" value=true />
+      <label for="activo">Activo</label>
+    </div>
+
+    <div>
+      <input type="radio" id="noActivo" name="estado" value=false />
+      <label for="noActivo">No activo</label>
+    </div>`
+
+    const radioActivo = document.querySelector("#activo");
+    const radioNoActivo = document.querySelector("#noActivo");
+    if (proyecto._active) {
+      radioActivo.setAttribute("checked", "true");
+    } else {
+      radioNoActivo.setAttribute("checked", "true");
+    }
+
     //carga sección de archivos adjuntos
     mostrarFilesEditar(proyecto);
     changeCountInputFile();

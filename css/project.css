@@ -17,6 +17,10 @@
     margin-bottom: 1%;
 }
 
+.div_description_stage.hide {
+    display: none;
+}
+
 .div_description_stage>p{
     color: #4f800b;
 }
