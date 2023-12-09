@@ -31,6 +31,21 @@
     width: 25%;
 }
 
+.h7_admin_username{
+    text-transform: uppercase;
+    margin-right: 1%;
+
+}
+#adminUsername{
+    margin-right: 5%;
+}
+
+.h7_admin_email{
+    text-transform: uppercase;
+    margin-right: 1%;
+
+}
+
 .div_cont_needs_assitences{
     background-color: #d5ebb7;
     border-radius: 5px;

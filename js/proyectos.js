@@ -218,7 +218,7 @@ async function borrarFilesProyecto(id_Project, idFile = false) {
   if (!idFile) {
     url = URLProject + "/removeFiles/idProject/" + id_Project;
   } else {
-    url = URLFiles + "/idFile/" + idFile;;
+    url = URLFiles + "/idFile/" + idFile;
   }
   await fetch(url, {
     method: 'DELETE',
@@ -388,7 +388,6 @@ function mostrarTabla(json, borrados, projectManager = false) {
 
 //muestra los proyectos de un emprendedor
 function mostrarTablaProyectosEmprendedor(json) {
-  console.log(json);
   let array = json;
 
   if (Array.isArray(array)) {
@@ -404,7 +403,7 @@ function mostrarTablaProyectosEmprendedor(json) {
 
       cell1.innerHTML = proyecto.title;
       cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
-      cell3.innerHTML = proyecto.stage.stage_type;
+      cell3.innerHTML = proyecto.stage;
       let input = document.createElement("input");
       input.setAttribute("type", "button");
       input.setAttribute("value", "Ver más");
@@ -891,6 +890,10 @@ function selectOnlyOneStage() {
 
 //CONVIERTE ARRAY A LISTA PARA MOSTRARLA EN LOS DATOS DEL PROYECTO
 function mostrarArray(contenedor, arreglo, dato, proyecto) {
+  console.log("En mostrarProyecto arreglo: "+ arreglo) //undefined
+  console.log("En mostrarProyecto proyecto: "+proyecto) //undefined
+  console.log("Tipo de arreglo:", typeof arreglo);
+  console.log("Propiedad en elemento:", dato);
   for (let i = 0; i < arreglo.length; i++) {
     var elemento = arreglo[i];
     if (contenedor == "#files" || contenedor == "#files_edit") {//para adjuntos

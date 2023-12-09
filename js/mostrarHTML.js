@@ -102,7 +102,6 @@ function mostrarProyectos(json) {
 }
 
 function mostrarProyectosDeEmprendedor(json) {
-  console.log(json);
   mostrarArchivoHTML("listProjectsEntrepreneur.html").then(text =>{
     document.querySelector(".main-container").innerHTML = text;
 
@@ -145,6 +144,9 @@ function mostrarProyecto(proyecto){
     document.querySelector("#titulo").innerHTML += proyecto.title;
     document.querySelector("#descripcion").innerHTML += proyecto.description;
     document.querySelector("#estadio").innerHTML += proyecto.stage.stage_type;
+    document.querySelector("#adminUsername").innerHTML += proyecto.adminUsername;
+    document.querySelector("#adminEmail").innerHTML += proyecto.adminEmail;
+    mostrarArray("#asistencia", proyecto.assistanceType, "elemento.type");
     if (user.rolType.toLowerCase() == "personal del cice" || user.rolType.toLowerCase() == "emprendedor") {
       let estadoDiv = document.querySelector("#estadoDiv");
       estadoDiv.classList.remove("hide");
@@ -155,7 +157,8 @@ function mostrarProyecto(proyecto){
         document.querySelector("#estado").innerHTML += "No activo";
       }
     }
-    mostrarArray("#asistencia", proyecto.assistances, "elemento.type");
+    mostrarArray("#asistencia", proyecto.assistanceType, "elemento.type");
+
     mostrarArray("#necesidades", proyecto.needs, "elemento.needType");
     partialRendercargaDatosEmprendedor(".datosEmprendedor", proyecto.projectManager.id_ProjectManager);
     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
@@ -287,7 +290,6 @@ function showDataProjectManager(projectManager){
     document.querySelector("#medioConocimientoCice").innerHTML=projectManager.medioConocimientoCice;
   });
 }
-
 
 //MOSTRAR EDITAR PROYECTO
 // function mostrarEditarProyecto(id_proyecto,proyecto){
