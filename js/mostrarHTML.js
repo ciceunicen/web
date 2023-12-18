@@ -17,6 +17,10 @@ function mostrarHome(actualPage = 1, seccion = "emprendedores"){
         drawClickNav("emprendedores");
         mostrarListaEmprendedores();
       });
+      document.querySelector("#crearProyecto").addEventListener("click", ()=>{
+        drawClickNav("crearProyecto");
+        mostrarCargaProyecto();
+      });
       //HOME TEMPORAL
       document.querySelector(`#${seccion}`).click();
 
@@ -38,6 +42,10 @@ function mostrarHomeEmprendedor(){
           document.querySelector(".navbar").innerHTML = text;
           getAllProjectsByEntrepreneur(emprendedorId).then(json => mostrarProyectosDeEmprendedor(json));
           logout();
+          document.querySelector("#crearProyecto").addEventListener("click", ()=>{
+            drawClickNav("crearProyecto");
+            mostrarCargaProyecto();
+          });
         }
     );
   } else {
@@ -135,11 +143,10 @@ function mostrarProyecto(proyecto){
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#titulo").innerHTML += proyecto.title;
     document.querySelector("#descripcion").innerHTML += proyecto.description;
-    document.querySelector("#estadio").innerHTML += proyecto.stage;
+    document.querySelector("#estadio").innerHTML += proyecto.stage.stage_type;
     document.querySelector("#adminUsername").innerHTML += proyecto.adminUsername;
     document.querySelector("#adminEmail").innerHTML += proyecto.adminEmail;
     mostrarArray("#asistencia", proyecto.assistanceType, "elemento.type");
-
     if (user.rolType.toLowerCase() == "personal del cice" || user.rolType.toLowerCase() == "emprendedor") {
       let estadoDiv = document.querySelector("#estadoDiv");
       estadoDiv.classList.remove("hide");
@@ -163,6 +170,7 @@ function mostrarProyecto(proyecto){
       downloadAllAttachmentsByProject(proyecto.title);
     });
 
+    let user = JSON.parse(localStorage.getItem('usuario'));
     console.log(user);
     console.log(user.rolType);
     if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
@@ -181,16 +189,26 @@ function mostrarProyecto(proyecto){
 }
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
-function mostrarCargaProyecto(id_ProjectManager) {
+function mostrarCargaProyecto() {
   mostrarArchivoHTML("cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
       //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
-      inicializarCargaProyecto(id_ProjectManager);
-      cargaRenderNecesidades();
-      cargaRenderAsistencia();
-      partialRendercargaDatosEmprendedor(".datosEmprendedor",id_ProjectManager);
+      // inicializarCargaProyecto(id_ProjectManager);
+      // cargaRenderNecesidades();
+      // cargaRenderAsistencia();
+      // partialRendercargaDatosEmprendedor(".datosEmprendedor",id_ProjectManager);
       //Configuro Ckeckboxs dinamico de estadios
-      getAllBaseURL(URLStages, 'estadios_checks');
+      // getAllBaseURL(URLStages, 'estadios_checks');
+      getNeeds(URLNeeds, null);
+      getAssistances(URLAssitances, null);
+      getStages(URLStages, null);
+      getAdmins(URLUsers, null)
+      document.querySelector("#saveNeed").addEventListener('click', saveNewNeed);
+      document.querySelector("#saveAssistance").addEventListener('click', saveNewAssistance);
+      document.querySelector("#projectForm").addEventListener('submit', (e) =>{
+        e.preventDefault();
+        saveNewProject();
+      })
   });
 }
 
@@ -274,28 +292,71 @@ function showDataProjectManager(projectManager){
 }
 
 //MOSTRAR EDITAR PROYECTO
-function mostrarEditarProyecto(id_proyecto,proyecto){
+// function mostrarEditarProyecto(id_proyecto,proyecto){
+//   mostrarArchivoHTML("cargarProjects.html").then(text=>{
+//     document.querySelector(".main-container").innerHTML = text;
+//     document.querySelector("#title").value=proyecto.title;
+//     document.querySelector("#description").value=proyecto.description;
+//     selecionarSoloUnEstadio();
+//     cargarCheckboxes(URLStages, proyecto,'estadios_checks');
+//     mostrarArchivoHTML("cargaDeNecesidades.html").then(text =>{
+//       document.querySelector(".datosNecesidades").innerHTML = text;
+//       document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
+//       //Configuro Dropdown de necesidades
+//       cargarCheckboxes(URLNeeds, proyecto,'needs_created');
+//       //getNecesidadesoAsistenciasCreadas(URLNeeds);
+    
+//     });
+//     mostrarArchivoHTML("cargaDeAsistencias.html").then(text =>{
+//       document.querySelector(".datosAsistencias").innerHTML = text;
+//       document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
+//       //Configuro Dropdown de asistencias
+//       cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
+//       //getNecesidadesoAsistenciasCreadas(URLAssitances);
+//     });
+//     //carga sección de archivos adjuntos
+//     mostrarFilesEditar(proyecto);
+//     changeCountInputFile();
+//     partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
+//     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
+//     saveNewData(id_proyecto, proyecto);
+//     validFileType();
+//   })
+// }
+function mostrarEditarProyecto(id_project, project) {
   mostrarArchivoHTML("cargarProjects.html").then(text=>{
     document.querySelector(".main-container").innerHTML = text;
-    document.querySelector("#title").value=proyecto.title;
-    document.querySelector("#description").value=proyecto.description;
-    selecionarSoloUnEstadio();
-    cargarCheckboxes(URLStages, proyecto,'estadios_checks');
-    mostrarArchivoHTML("cargaDeNecesidades.html").then(text =>{
-      document.querySelector(".datosNecesidades").innerHTML = text;
-      document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
+    document.querySelector("#title").value = project.title;
+    document.querySelector("#description").value = project.description;
+    document.querySelector("#saveNeed").addEventListener('click', saveNewNeed);
+    document.querySelector("#saveAssistance").addEventListener('click', saveNewAssistance);
+    getNeeds(URLNeeds, project);
+    getAssistances(URLAssitances, project);
+    getStages(URLStages, project);
+    getAdmins(URLUsers, project)
+    document.querySelector("#projectForm").addEventListener('submit', (e) =>{
+      e.preventDefault();
+      updateProject(id_project);
+    })
+    //document.querySelector("#title").value=proyecto.title;
+    //document.querySelector("#description").value=proyecto.description;
+    //selecionarSoloUnEstadio();
+    //cargarCheckboxes(URLStages, proyecto,'estadios_checks');
+    //mostrarArchivoHTML("cargaDeNecesidades.html").then(text =>{
+    //  document.querySelector(".datosNecesidades").innerHTML = text;
+    //  document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
       //Configuro Dropdown de necesidades
-      cargarCheckboxes(URLNeeds, proyecto,'needs_created');
+    //  cargarCheckboxes(URLNeeds, proyecto,'needs_created');
       //getNecesidadesoAsistenciasCreadas(URLNeeds);
     
-    });
-    mostrarArchivoHTML("cargaDeAsistencias.html").then(text =>{
-      document.querySelector(".datosAsistencias").innerHTML = text;
-      document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
+    //});
+    //mostrarArchivoHTML("cargaDeAsistencias.html").then(text =>{
+    //  document.querySelector(".datosAsistencias").innerHTML = text;
+    //  document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
       //Configuro Dropdown de asistencias
-      cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
+    //  cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
       //getNecesidadesoAsistenciasCreadas(URLAssitances);
-    });
+    //});
     document.querySelector("#estados").innerHTML =
     `<div>
       <input type="radio" id="activo" name="estado" value=true />
@@ -316,12 +377,12 @@ function mostrarEditarProyecto(id_proyecto,proyecto){
     }
 
     //carga sección de archivos adjuntos
-    mostrarFilesEditar(proyecto);
-    changeCountInputFile();
-    partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
-    partialRenderHistorialProject(".historyProject", proyecto.id_Project);
-    saveNewData(id_proyecto, proyecto);
-    validFileType();
+    //mostrarFilesEditar(proyecto);
+    //changeCountInputFile();
+    //partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
+    //partialRenderHistorialProject(".historyProject", proyecto.id_Project);
+    //saveNewData(id_proyecto, proyecto);
+    //validFileType();
   })
 }
 
