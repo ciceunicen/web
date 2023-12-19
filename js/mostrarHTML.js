@@ -192,13 +192,7 @@ function mostrarProyecto(proyecto){
 function mostrarCargaProyecto() {
   mostrarArchivoHTML("cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
-      //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
-      // inicializarCargaProyecto(id_ProjectManager);
-      // cargaRenderNecesidades();
-      // cargaRenderAsistencia();
-      // partialRendercargaDatosEmprendedor(".datosEmprendedor",id_ProjectManager);
-      //Configuro Ckeckboxs dinamico de estadios
-      // getAllBaseURL(URLStages, 'estadios_checks');
+      document.querySelector("#projectData").classList.add('focus');
       getNeeds(URLNeeds, null);
       getAssistances(URLAssitances, null);
       getStages(URLStages, null);
@@ -209,7 +203,36 @@ function mostrarCargaProyecto() {
         e.preventDefault();
         saveNewProject();
       })
+      mostrarCargaDiagnostico();
   });
+}
+
+function mostrarCargaDiagnostico() {
+  let dataBtn = document.querySelector("#projectData");
+  let diagnosticBtn = document.querySelector("#projectDiagnostic");
+  let dataForm = document.querySelector(".project-loading");
+  let diagnosticFrom = document.querySelector(".diagnostic-loading");
+
+  diagnosticBtn.addEventListener('click', ()=>{
+    if(dataBtn.classList.contains('focus')) {
+      dataBtn.classList.remove('focus');
+      diagnosticBtn.classList.add('focus');
+      dataForm.style.display = 'none';
+      diagnosticFrom.style.display = 'flex';
+    }
+  })
+  dataBtn.addEventListener('click', ()=>{
+    if(diagnosticBtn.classList.contains('focus')) {
+      diagnosticBtn.classList.remove('focus');
+      dataBtn.classList.add('focus');
+      diagnosticFrom.style.display = 'none';
+      dataForm.style.display = 'flex';
+    }
+  })
+  document.querySelector("#diagnosticForm").addEventListener('submit', (e) =>{
+    e.preventDefault();
+    saveNewDiagnostic();
+  })
 }
 
 function partialRendercargaDatosEmprendedor(div,id_emprendedor){
