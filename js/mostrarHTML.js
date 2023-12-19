@@ -40,6 +40,14 @@ function mostrarHomeEmprendedor(){
     mostrarArchivoHTML("navbarEntrepreneur.html", ".navbar").then(
         text => {
           document.querySelector(".navbar").innerHTML = text;
+
+          const notificacionesContainer = document.querySelector(".notificaciones-container");
+          const iconoNotificacion = document.querySelector(".icono-notificacion");
+
+          iconoNotificacion.addEventListener("click", () => {
+              notificacionesContainer.classList.toggle("hidden");
+          });
+
           getAllProjectsByEntrepreneur(emprendedorId).then(json => mostrarProyectosDeEmprendedor(json));
           logout();
           document.querySelector("#crearProyecto").addEventListener("click", ()=>{

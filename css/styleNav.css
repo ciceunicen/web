@@ -35,6 +35,57 @@
     width: 70%;
     height:auto;
 }
+
+.icono-notificacion {
+    margin: 0 5% 0 0;
+    cursor: pointer;
+}
+
+.notificaciones-container {
+    position: absolute;
+    top: 4rem;
+    right: 12rem;
+    z-index: 5;
+    border: solid 1px #496D17;
+    border-radius: 5px;
+    background-color: #74AC24;
+    color: #FFFFFF;
+    width: 20%;
+}
+
+.notificaciones-container.hidden {
+    display: none;
+}
+
+.notificaciones {
+    padding: 20px;
+}
+
+.notificaciones article {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 1%;
+    border-bottom: solid 1px #FFFFFF;
+}
+
+.notificaciones-top, .notificaciones-bottom {
+    padding: 1%;
+    background-color: #5b881d;
+}
+
+.notificaciones-top {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.notificaciones-bottom {
+    padding: 2%;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
 .closeSession{
     background-color: transparent;
     color:#FFFFFF;
