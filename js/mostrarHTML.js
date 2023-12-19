@@ -178,7 +178,6 @@ function mostrarProyecto(proyecto){
       downloadAllAttachmentsByProject(proyecto.title);
     });
 
-    let user = JSON.parse(localStorage.getItem('usuario'));
     console.log(user);
     console.log(user.rolType);
     if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
