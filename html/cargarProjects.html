@@ -6,9 +6,9 @@
                             <p>PROYECTO</p>
                         </div>
                         <div class="mainBtns">
-                            <button class="btn-project-green" id="datos">Datos</button>
-                            <button class="btn-project-green" id="diagnostico">Diagnóstico</button>
-                            <button class="btn-project-green" id="diagnostico">Registro de encuentros</button>
+                            <button class="btn-project-green" id="projectData">Datos</button>
+                            <button class="btn-project-green" id="projectDiagnostic">Diagnóstico</button>
+                            <button class="btn-project-green" id="projectRegistry">Registro de encuentros</button>
                         </div>
                         <div class="project-loading">   
                             <form id="projectForm" action="#" method="POST">
@@ -79,6 +79,25 @@
                                     <input class="btn-project-blue" type="submit" value="Guardar">
                                     <div class="generalSave"></div>
                                 </div>     
+                            </form>
+                        </div>
+                        <div class="diagnostic-loading">
+                            <form id="diagnosticForm" action="#" method="POST">
+                                <div class="input-section">
+                                    <label class="input-label">Proyecto*</label>
+                                    <select class="input-select" name="project-select" id="projectSelect">
+                                        <option value="no-select">Seleccionar un proyecto</option>
+                                    </select>
+                                </div>
+                                <div class="input-section">
+                                    <label class="input-label" for="description" required>Diagnostico*</label>
+                                    <textarea type="text" id="diagnostic" name="diagnostic" placeholder="diagnóstico"></textarea>
+                                    <p class="error" id="diagnosticError"></p>
+                                </div>
+                                <div class="saveContainer">
+                                    <input class="btn-project-blue" type="submit" value="Guardar">
+                                    <div class="generalSave"></div>
+                                </div>  
                             </form>
                         </div>
                     </section>                   

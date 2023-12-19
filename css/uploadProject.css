@@ -56,7 +56,7 @@
     background-color: #649421;
 }
 
-.btn-project-green:focus {
+.focus {
     background-color: #496D17;
 }
 
@@ -72,12 +72,23 @@
     display: flex;
 }
 
+.diagnostic-loading{
+    background-color: #EAF7D8;
+    border-radius: 0px 0px 10px 10px;
+    display: none;
+}
+
+.diagnostic-loading form{
+    width: 80%;
+    margin: 16px 10%;
+}
+
 .project-loading form {
     width: 80%;
     margin: 16px 10%;
 }
 
-.project-loading form .input-section {
+ .input-section {
     display: flex;
     flex-direction: column;
     margin-bottom:18px;
