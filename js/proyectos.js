@@ -1305,3 +1305,12 @@ function showAdmins(array, project) {
     adminSelect.value = project.administrador;
   }
 }
+
+//Toggle Acoordion en Cargar Proyecto
+function toggleAccordion(button) {
+  const accordionContent = button.nextElementSibling;
+
+  button.classList.toggle('accordion--expanded');
+  accordionContent.style.maxHeight = 
+      accordionContent.style.maxHeight ? null : `${accordionContent.scrollHeight}px`;
+}
