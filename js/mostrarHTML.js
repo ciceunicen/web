@@ -190,9 +190,18 @@ function mostrarProyecto(proyecto){
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
 function mostrarCargaProyecto() {
-  
   mostrarArchivoHTML("cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
+      let user = JSON.parse(localStorage.getItem('usuario'));
+      if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
+        // ocultar el botón registro de encuentros
+        let projectRegistryBtn = document.querySelector("#projectRegistry");
+        let mainBtns = document.querySelector('.mainBtns');
+        if (projectRegistryBtn) {
+          projectRegistryBtn.style.display = 'none';
+          mainBtns.style.gridTemplateColumns = "50% 50%";
+        }
+      }
       document.querySelector("#projectData").classList.add('focus');
       getNeeds(URLNeeds, null);
       getAssistances(URLAssitances, null);
@@ -206,14 +215,7 @@ function mostrarCargaProyecto() {
       })
       mostrarCargaDiagnostico();
   });
-  let user = JSON.parse(localStorage.getItem('usuario'));
-  if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
-    // ocultar el botón registro de encuentros
-    let projectRegistryBtn = document.querySelector("#projectRegistry");
-    if (projectRegistryBtn) {
-      projectRegistryBtn.style.visibility = 'hidden';
-    }
-  }
+  
 }
 
 function mostrarCargaDiagnostico() {
