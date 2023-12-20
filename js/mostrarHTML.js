@@ -190,6 +190,7 @@ function mostrarProyecto(proyecto){
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
 function mostrarCargaProyecto() {
+  
   mostrarArchivoHTML("cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
       document.querySelector("#projectData").classList.add('focus');
@@ -205,6 +206,14 @@ function mostrarCargaProyecto() {
       })
       mostrarCargaDiagnostico();
   });
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
+    // ocultar el botón registro de encuentros
+    let projectRegistryBtn = document.querySelector("#projectRegistry");
+    if (projectRegistryBtn) {
+      projectRegistryBtn.style.visibility = 'hidden';
+    }
+  }
 }
 
 function mostrarCargaDiagnostico() {
@@ -212,6 +221,8 @@ function mostrarCargaDiagnostico() {
   let diagnosticBtn = document.querySelector("#projectDiagnostic");
   let dataForm = document.querySelector(".project-loading");
   let diagnosticFrom = document.querySelector(".diagnostic-loading");
+
+  addProjectsToSelectInput();
 
   diagnosticBtn.addEventListener('click', ()=>{
     if(dataBtn.classList.contains('focus')) {
@@ -229,6 +240,7 @@ function mostrarCargaDiagnostico() {
       dataForm.style.display = 'flex';
     }
   })
+
   document.querySelector("#diagnosticForm").addEventListener('submit', (e) =>{
     e.preventDefault();
     saveNewDiagnostic();
