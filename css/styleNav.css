@@ -47,6 +47,14 @@
     width: auto;
 }
 
+#btn-back{
+    font-weight: normal;
+}
+
+#btn-back svg {
+    margin-right: 1%;
+}
+
 @media screen and (min-width: 1366px){
     .nav-item{
         width: 15%;
