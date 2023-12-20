@@ -338,7 +338,7 @@ function mostrarTabla(json, borrados, projectManager = false) {
     var cell2 = row.insertCell(cellsCount++);
     var cell3 = row.insertCell(cellsCount++);
     if (user.rolType.toLowerCase() == 'personal del cice') {
-      const isActive = proyecto._active;
+      const isActive = proyecto.is_active;
       let cellState = row.insertCell(cellsCount++)
       if (isActive) {
         cellState.innerHTML = "Activo";

@@ -159,7 +159,7 @@ function mostrarProyecto(proyecto){
       let estadoDiv = document.querySelector("#estadoDiv");
       estadoDiv.classList.remove("hide");
       estadoDiv.innerHTML += `<h6 class="h6_description_stage">Estado</h6><p id="estado"></p>`;
-      if (proyecto._active) {
+      if (proyecto.is_active) {
         document.querySelector("#estado").innerHTML += "Activo";
       } else {
         document.querySelector("#estado").innerHTML += "No activo";
@@ -377,7 +377,7 @@ function mostrarEditarProyecto(id_project, project) {
 
     const radioActivo = document.querySelector("#activo");
     const radioNoActivo = document.querySelector("#noActivo");
-    if (project._active) {
+    if (project.is_active) {
       radioActivo.setAttribute("checked", "true");
     } else {
       radioNoActivo.setAttribute("checked", "true");
