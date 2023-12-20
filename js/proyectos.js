@@ -618,7 +618,7 @@ function innerHTML(json, elementDOM) {
           "title": title,
           "description": description,
           "stage": stage,
-          "assistanceType": assistances,
+          "assistances": assistances,
           "files": null,
           "needs": needs,
           "id_Admin": admin
@@ -711,7 +711,7 @@ function innerHTML(json, elementDOM) {
 //         "title": title.value,
 //         "description": description.value,
 //         "stage": estadio.value,
-//         "assistanceType":
+//         "assistances":
 //           asistencias,
 //         "files":
 //           attachments,
