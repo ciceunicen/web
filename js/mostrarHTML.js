@@ -97,7 +97,7 @@ function mostrarProyectos(json) {
     //Traigo de la base de datos y muestro en el DOM las necesidades, asistencias y estadios existentes
     //le paso la url y el Id del DOM donde se van a mostrar los elementos
     getAllBaseURL(URLNeeds, 'needs');
-    getAllBaseURL(URLAssitances, 'assists');
+    getAllBaseURL(URLAssistances, 'assists');
     getAllBaseURL(URLStages, 'stadiums');
     document.querySelector("#btn_filter").addEventListener("click", function(){
       captureSelectedOptions();
@@ -207,7 +207,7 @@ function mostrarCargaProyecto() {
       //Configuro Ckeckboxs dinamico de estadios
       // getAllBaseURL(URLStages, 'estadios_checks');
       getNeeds(URLNeeds, null);
-      getAssistances(URLAssitances, null);
+      getAssistances(URLAssistances, null);
       getStages(URLStages, null);
       getAdmins(URLUsers, null)
       document.querySelector("#saveNeed").addEventListener('click', saveNewNeed);
@@ -243,7 +243,7 @@ function cargaRenderAsistencia(){
     document.querySelector(".datosAsistencias").innerHTML = text;
     document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
     //Configuro Dropdown de asistencias
-    getAllBaseURL(URLAssitances, 'assistances_created');
+    getAllBaseURL(URLAssistances, 'assistances_created');
   });  
 }
 //MUESTRA LA LISTA DE EMPRENDEDORES
@@ -338,7 +338,7 @@ function mostrarEditarProyecto(id_project, project) {
     document.querySelector("#saveNeed").addEventListener('click', saveNewNeed);
     document.querySelector("#saveAssistance").addEventListener('click', saveNewAssistance);
     getNeeds(URLNeeds, project);
-    getAssistances(URLAssitances, project);
+    getAssistances(URLAssistances, project);
     getStages(URLStages, project);
     getAdmins(URLUsers, project)
     document.querySelector("#projectForm").addEventListener('submit', (e) =>{
@@ -364,7 +364,7 @@ function mostrarEditarProyecto(id_project, project) {
     //  cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
       //getNecesidadesoAsistenciasCreadas(URLAssitances);
     //});
-    document.querySelector("#estados").innerHTML =
+    /* document.querySelector("#estados").innerHTML =
     `<div>
       <input type="radio" id="activo" name="estado" value=true />
       <label for="activo">Activo</label>
@@ -373,11 +373,11 @@ function mostrarEditarProyecto(id_project, project) {
     <div>
       <input type="radio" id="noActivo" name="estado" value=false />
       <label for="noActivo">No activo</label>
-    </div>`
+    </div>` */
 
     const radioActivo = document.querySelector("#activo");
     const radioNoActivo = document.querySelector("#noActivo");
-    if (proyecto._active) {
+    if (project._active) {
       radioActivo.setAttribute("checked", "true");
     } else {
       radioNoActivo.setAttribute("checked", "true");

@@ -831,7 +831,7 @@ async function saveNewAssistance() {
       "type": input.value 
     };
     try{
-      await fetch(URLAssitances, {
+      await fetch(URLAssistances, {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify(data),

@@ -57,6 +57,19 @@
                                     </select>
                                     <p class="error" id="stageError"></p>
                                 </div>
+                                <label for="estados" class="estadosLabel">Estado*</label>
+                                <div class="estados" id="estados">
+                                    <!--Partial render radio buttons estados-->
+                                    <div>
+                                        <input type="radio" id="activo" name="estado" value=true />
+                                        <label for="activo">Activo</label>
+                                      </div>
+                                  
+                                      <div>
+                                        <input type="radio" id="noActivo" name="estado" value=false />
+                                        <label for="noActivo">No activo</label>
+                                      </div>
+                                </div>
                                 <div class="input-section">
                                     <label class="input-label">Administrador*</label>
                                     <select class="input-select" name="admin-select" id="adminSelect">
