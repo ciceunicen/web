@@ -1,43 +1,46 @@
 <section class="project-section">
     <div class="accordion project-title" tabindex="0" onclick="toggleAccordion(this)"> <p>Responsable del proyecto</p></div>
     <div class="accordion-content">
-        <div id="referentForm" class="project-loading">
-            <form action="POST">
+        <div class="project-loading">
+            <form id="referentForm" action="#" action="POST">
                 <div class="input-section">
-                    <label class="input-label" for="nombre">Nombre</label>
-                    <input class="form-input" type="text" id="nombre" name="nombre" value="">
+                    <label class="input-label">Nombre</label>
+                    <select class="input-select" name="referent-select" id="referentSelect">
+                        <option value="no-select">Seleccionar representante</option>
+                    </select>
+                    <p class="error" id="referentError"></p>
                 </div>
                 <div class="input-section">
-                    <label class="input-label" for="telefono">Teléfono</label>
-                    <input class="form-input" type="text" id="telefono" name="telefono" value="">
+                    <label class="input-label" for="referent-telefono">Teléfono</label>
+                    <input class="form-input" type="text" id="referent-telefono" name="referent-telefono" value="">
                 </div>
                 <div class="input-section">
-                    <label class="input-label" for="localidad">Localidad</label>
-                    <input class="form-input" type="text" id="localidad" name="localidad" value="">
+                    <label class="input-label" for="referent-localidad">Localidad</label>
+                    <input class="form-input" type="text" id="referent-localidad" name="referent-localidad" value="">
                 </div>
                 <div class="input-section">
-                    <label class="input-label" for="mail">Mail</label>
-                    <input class="form-input" type="email" id="mail" name="mail" value="">
+                    <label class="input-label" for="referent-mail">Mail</label>
+                    <input class="form-input" type="email" id="referent-mail" name="referent-mail" value="">
                 </div>
                 <div class="input-section">
-                    <label class="input-label" for="ocupacion">Ocupación</label>
-                    <input class="form-input" type="text" id="ocupacion" name="ocupacion" value="">
+                    <label class="input-label" for="referent-ocupacion">Ocupación</label>
+                    <input class="form-input" type="text" id="referent-ocupacion" name="referent-ocupacion" value="">
                 </div>
                 <div class="input-section">
-                    <label class="input-label" for="vinculo">Vinculación con UNICEN</label>
-                    <input class="form-input" type="text" id="vinculo" name="vinculo" value="">
+                    <label class="input-label" for="referent-vinculacion">Vinculación con UNICEN</label>
+                    <input class="form-input" type="text" id="referent-vinculacion" name="referent-vinculacion" value="">
                 </div>
                 <div class="input-section">
-                    <label class="input-label" for="facultad">Facultad a la que pertenece</label>
-                    <input class="form-input" type="text" id="facultad" name="facultad" value="">
+                    <label class="input-label" for="referent-facultad">Facultad a la que pertenece</label>
+                    <input class="form-input" type="text" id="referent-facultad" name="referent-facultad" value="">
                 </div>
                 <div class="input-section">
-                    <label class="input-label" for="conocimiento">Medio de conocimiento del CICE</label>
-                    <input class="form-input" type="text" id="conocimiento" name="conocimiento" value="">
+                    <label class="input-label" for="referent-conocimiento">Medio de conocimiento del CICE</label>
+                    <input class="form-input" type="text" id="referent-conocimiento" name="referent-conocimiento" value="">
                 </div>
                 <div class="input-section">
-                    <label class="input-label" for="organizacion">Organización asociativa</label>
-                    <input class="form-input" type="text" id="organizacion" name="organizacion" value="">
+                    <label class="input-label" for="referent-organizacion">Organización asociativa</label>
+                    <input class="form-input" type="text" id="referent-organizacion" name="referent-organizacion" value="">
                 </div>
             </form>
         </div>
