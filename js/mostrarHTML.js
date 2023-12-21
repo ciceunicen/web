@@ -21,7 +21,7 @@ function mostrarHome(actualPage = 1, seccion = "emprendedores"){
         drawClickNav("crearProyecto");
         mostrarCargaProyecto();
       });
-      //HOME TEMPORAL
+      
       document.querySelector(`#${seccion}`).click();
 
       logout(); //Una vez cargado el NAV (se carga con parcial render), le agrego funcionalidad al boton creado
