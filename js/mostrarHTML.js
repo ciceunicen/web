@@ -143,7 +143,7 @@ function mostrarProyecto(proyecto){
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#titulo").innerHTML += proyecto.title;
     document.querySelector("#descripcion").innerHTML += proyecto.description;
-    document.querySelector("#estadio").innerHTML += proyecto.stage.stage_type;
+    document.querySelector("#estadio").innerHTML += proyecto.stage;
     document.querySelector("#adminUsername").innerHTML += proyecto.adminUsername;
     document.querySelector("#adminEmail").innerHTML += proyecto.adminEmail;
     mostrarArray("#asistencia", proyecto.assistanceType, "elemento.type");
@@ -170,7 +170,6 @@ function mostrarProyecto(proyecto){
       downloadAllAttachmentsByProject(proyecto.title);
     });
 
-    let user = JSON.parse(localStorage.getItem('usuario'));
     console.log(user);
     console.log(user.rolType);
     if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
@@ -223,7 +222,7 @@ function mostrarCargaDiagnostico() {
   let diagnosticBtn = document.querySelector("#projectDiagnostic");
   let dataForm = document.querySelector(".project-loading");
   let diagnosticFrom = document.querySelector(".diagnostic-loading");
-
+  let user = JSON.parse(localStorage.getItem('usuario'));
   addProjectsToSelectInput();
 
   diagnosticBtn.addEventListener('click', ()=>{
@@ -242,11 +241,12 @@ function mostrarCargaDiagnostico() {
       dataForm.style.display = 'flex';
     }
   })
-
-  document.querySelector("#diagnosticForm").addEventListener('submit', (e) =>{
-    e.preventDefault();
-    saveNewDiagnostic();
-  })
+  if(user) {
+    document.querySelector("#diagnosticForm").addEventListener('submit', (e) =>{
+      e.preventDefault();
+      saveNewDiagnostic(user.id);
+    })
+  }
 }
 
 function partialRendercargaDatosEmprendedor(div,id_emprendedor){
