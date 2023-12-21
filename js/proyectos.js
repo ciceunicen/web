@@ -8,23 +8,25 @@ let statusFile = true;//guarda si los archivos cargados tienen una estención v�
 //POST
 async function saveProject(data) {
   let token = localStorage.getItem("token");
-  try{
-      let res = await fetch(URLProject,{
-          method : "POST",
-          mode : 'cors',
-          body : JSON.stringify(data),
-          headers : {"Content-type": "application/json",
-                      "Authorization": "Bearer " + token,
-                      "Access-Control-Allow-Origin": "*"},                     
-      });
-      if(res.ok) {
-          showSucess("Se han cargado los datos exitosamente!");
-          setTimeout(() => {
-            window.location.href = "dashboard.html";
-          } , 1500)
-      }
-  }catch(error){
-      console.log(error);
+  try {
+    let res = await fetch(URLProject, {
+      method: "POST",
+      mode: 'cors',
+      body: JSON.stringify(data),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + token,
+        "Access-Control-Allow-Origin": "*"
+      },
+    });
+    if (res.ok) {
+      showSucess("Se han cargado los datos exitosamente!");
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1500)
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -60,7 +62,7 @@ function borrarProyecto(id_Project, id_Admin, projectManager = 0) {
 
 //GET PROYECTO
 function getProyecto(id) {
-  return fetch(URLProject + "/" + id,{
+  return fetch(URLProject + "/" + id, {
     mode: 'cors',
 
     "headers": {
@@ -105,13 +107,13 @@ function getAllProjectsByEntrepreneur(entrepreneurId) {
     },
 
   })
-      .then(response => response.json())
-      .then(json => { return json });
+    .then(response => response.json())
+    .then(json => { return json });
 }
 
 //GET DE TODOS LOS PROYECTOS BORRADOS
 function getAllDeleteProjects(page = 1) {
-  return fetch(URLProject + "/removed/page/" + page,{
+  return fetch(URLProject + "/removed/page/" + page, {
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
@@ -129,7 +131,7 @@ function getAllDeleteProjects(page = 1) {
 function getFilterProjects(datos, pagina) {
   let url = new URL(URLProject + "/filters/page/" + pagina);
   let params = new URLSearchParams(datos);
-  return fetch(url + "?" + params,{
+  return fetch(url + "?" + params, {
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
@@ -148,13 +150,13 @@ function getFilterProjects(datos, pagina) {
 function getEntrepreneurFilterProjects(datos, pagina, radioButtonEstado) {
   let url = new URL(URLProject + "/entrepreneur/filters/page/" + pagina);
   let params = new URLSearchParams(datos);
-  
+
   let estadoParam = "";
   if (radioButtonEstado != "") {
     estadoParam = `&active=${radioButtonEstado}`;
   }
 
-  return fetch(url + `?${params}${estadoParam}`,{
+  return fetch(url + `?${params}${estadoParam}`, {
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
@@ -169,7 +171,7 @@ function getEntrepreneurFilterProjects(datos, pagina, radioButtonEstado) {
 
 //GET HISTORIAL DE PROYECTO
 function getProjectHistory(id) {
-  return fetch(URLProject + "/" + id + "/administrationRecords/page/" + page,{
+  return fetch(URLProject + "/" + id + "/administrationRecords/page/" + page, {
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
@@ -275,11 +277,11 @@ function cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages)
       mostrarTabla(json, false);
       comportamientoBotonesPaginado(pages);
     });
-    }else if (tablaUtilizada == "proyectos") {
-      getAllProjectsByEntrepreneur(page).then(json => {
-        mostrarTablaProyectosEmprendedor(json);
-        comportamientoBotonesPaginado(pages);
-      });
+  } else if (tablaUtilizada == "proyectos") {
+    getAllProjectsByEntrepreneur(page).then(json => {
+      mostrarTablaProyectosEmprendedor(json);
+      comportamientoBotonesPaginado(pages);
+    });
   } else if (tablaUtilizada == "proyectosEmprendedorFiltrados") {
     getEntrepreneurFilterProjects(datosFiltro, page, estadoFiltro).then(json => {
       mostrarTablaProyectosEmprendedor(json.content);
@@ -523,7 +525,7 @@ function updateCheckbox(checkboxValue, checkboxLabel, containerType, checkboxNam
   input.value = checkboxValue
   let label = document.createElement('label');
   label.classList.add("checkbox-label");
-  label.textContent = checkboxLabel;        
+  label.textContent = checkboxLabel;
   article.appendChild(input);
   article.appendChild(label);
   input.checked = true;
@@ -584,111 +586,164 @@ function innerHTML(json, elementDOM) {
 
 //COMPRUEBA LOS CAMPOS DE CARGA DE PROYECTOS
 
-  //Metodos para cargar checkboxs disponibles en cargar proyecto
-  function saveNewProject(){
-    let form = document.querySelector("#projectForm");
-    let referentForm = document.querySelector("#referentForm");
-    let formData = new FormData();
-    new FormData(form).forEach((value, key) => formData.append(key, value));
-    new FormData(referentForm).forEach((value, key) => formData.append(key, value));
+//Metodos para cargar checkboxs disponibles en cargar proyecto
+function saveNewProject() {
+  let form = document.querySelector("#projectForm");
+  let referentForm = document.querySelector("#referentForm");
+  let formData = new FormData();
+  new FormData(form).forEach((value, key) => formData.append(key, value));
+  new FormData(referentForm).forEach((value, key) => formData.append(key, value));
 
-    //datos del referente
-    let referent = formData.get('referent-select');
-    let referent_telefono = formData.get('referent-telefono');
-    let referent_localidad = formData.get('referent-localidad');
-    let referent_mail = formData.get('referent-mail');
-    let referent_ocupacion = formData.get('referent-ocupacion');
-    let referent_vinculacion = formData.get('referent-vinculacion');
-    let referent_facultad = formData.get('referent-facultad');
-    let referent_conocimiento = formData.get('referent-conocimiento');
-    let referent_organizacion = formData.get('referent-organizacion');
-    //
-    
-    //datos del proyecto
-    let user = JSON.parse(localStorage.getItem('usuario'));
-    let needs = [];
-    let assistances = [];
-    let title = formData.get('title');
-    let description = formData.get('description');
-    let needsCheckboxes = document.querySelectorAll('input[name="need-checkbox"]:checked');
-    needsCheckboxes.forEach((checkbox) => {
-        needs.push(checkbox.value);
-    });
-    let assistancesCheckboxes = document.querySelectorAll('input[name="assistance-checkbox"]:checked');
-    assistancesCheckboxes.forEach((checkbox) => {
-        assistances.push(checkbox.value);
-    });
-    let stage = formData.get('stage-select');   
-    let admin = formData.get('admin-select');   
-    //fin de datos del proyecto
+  //datos del referente
+  let referent = formData.get('referent-select');
+  let referent_telefono = formData.get('referent-telefono');
+  let referent_localidad = formData.get('referent-localidad');
+  let referent_mail = formData.get('referent-mail');
+  let referent_ocupacion = formData.get('referent-ocupacion');
+  let referent_vinculacion = formData.get('referent-vinculacion');
+  let referent_facultad = formData.get('referent-facultad');
+  let referent_conocimiento = formData.get('referent-conocimiento');
+  let referent_organizacion = formData.get('referent-organizacion');
+  //
 
-    if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
-    assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
-      document.querySelector("#titleError").innerHTML = "";
-      document.querySelector("#descriptionError").innerHTML = "";
-      document.querySelector("#needError").innerHTML = "";
-      document.querySelector("#assistanceError").innerHTML = "";
-      document.querySelector("#stageError").innerHTML = "";
-      document.querySelector("#adminError").innerHTML = "";
+  //datos del proyecto
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  let needs = [];
+  let assistances = [];
+  let title = formData.get('title');
+  let description = formData.get('description');
+  let needsCheckboxes = document.querySelectorAll('input[name="need-checkbox"]:checked');
+  needsCheckboxes.forEach((checkbox) => {
+    needs.push(checkbox.value);
+  });
+  let assistancesCheckboxes = document.querySelectorAll('input[name="assistance-checkbox"]:checked');
+  assistancesCheckboxes.forEach((checkbox) => {
+    assistances.push(checkbox.value);
+  });
+  let stage = formData.get('stage-select');
+  let admin = formData.get('admin-select');
+  //fin de datos del proyecto
 
-      let data = {
-        "id_ProjectManager": user.id,
-        "title": title,
-        "description": description,
-        "stage": stage,
-        "assistanceType": assistances,
-        "files": null,
-        "needs": needs,
-        "id_Admin": admin,
-        "referent_userId": referent,
-        "referent_telefono": referent_telefono,
-        "referent_localidad": referent_localidad,
-        "referent_mail": referent_mail,
-        "referent_ocupacion": referent_ocupacion,
-        "referent_vinculacion": referent_vinculacion,
-        "referent_facultad": referent_facultad,
-        "referent_conocimiento": referent_conocimiento,
-        "referent_organizacion": referent_organizacion
-      }
+  if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
+    assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")
+    && (referent != "" && referent != "undefined") && (referent_telefono != "" && referent_telefono != "undefined") && (referent_localidad != "" && referent_localidad != "undefined")
+    && (referent_mail != "" && referent_mail != "undefined") && (referent_vinculacion != "" && referent_vinculacion != "undefined") && (referent_facultad != "" && referent_facultad != "undefined")
+    && (referent_organizacion != "" && referent_organizacion != "undefined")) {
+    document.querySelector("#titleError").innerHTML = "";
+    document.querySelector("#descriptionError").innerHTML = "";
+    document.querySelector("#needError").innerHTML = "";
+    document.querySelector("#assistanceError").innerHTML = "";
+    document.querySelector("#stageError").innerHTML = "";
+    document.querySelector("#adminError").innerHTML = "";
 
-      console.log(data)
-      saveProject(data);
-      needs = [];
-      assistances = [];
-
-    }else {
-      if (title == "" || title == "undefined") {
-        document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
-      } else {
-        document.querySelector("#titleError").innerHTML = "";
-      }
-      if (description == "" || description == "undefined") {
-        document.querySelector("#descriptionError").innerHTML = "Ingrese una descripción al proyecto";
-      } else {
-        document.querySelector("#descriptionError").innerHTML = "";
-      }
-      if (needs.length == 0) {
-        document.querySelector("#needError").innerHTML = "Seleccione al menos una necesidad";
-      } else {
-        document.querySelector("#needError").innerHTML = "";
-      }
-      if (assistances.length == 0) {
-        document.querySelector("#assistanceError").innerHTML = "Seleccione al menos un tipo de asistencia";
-      } else {
-        document.querySelector("#assistanceError").innerHTML = "";
-      }
-      if (stage == "no-select" || stage == "undefined") {
-        document.querySelector("#stageError").innerHTML = "Seleccione un estadio";
-      } else {
-        document.querySelector("#stageError").innerHTML = "";
-      }
-      if (admin == "no-select" || admin == "undefined") {
-        document.querySelector("#adminError").innerHTML = "Seleccione un administrador";
-      } else {
-        document.querySelector("#adminError").innerHTML = "";
-      }
+    let data = {
+      "id_ProjectManager": user.id,
+      "title": title,
+      "description": description,
+      "stage": stage,
+      "assistanceType": assistances,
+      "files": null,
+      "needs": needs,
+      "id_Admin": admin,
+      "referent_userId": referent,
+      "referent_telefono": referent_telefono,
+      "referent_localidad": referent_localidad,
+      "referent_mail": referent_mail,
+      "referent_ocupacion": referent_ocupacion,
+      "referent_vinculacion": referent_vinculacion,
+      "referent_facultad": referent_facultad,
+      "referent_conocimiento": referent_conocimiento,
+      "referent_organizacion": referent_organizacion
     }
-  }  
+
+    console.log(data)
+    saveProject(data);
+    needs = [];
+    assistances = [];
+
+  } else {
+    if (title == "" || title == "undefined") {
+      document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
+    } else {
+      document.querySelector("#titleError").innerHTML = "";
+    }
+    if (description == "" || description == "undefined") {
+      document.querySelector("#descriptionError").innerHTML = "Ingrese una descripción al proyecto";
+    } else {
+      document.querySelector("#descriptionError").innerHTML = "";
+    }
+    if (needs.length == 0) {
+      document.querySelector("#needError").innerHTML = "Seleccione al menos una necesidad";
+    } else {
+      document.querySelector("#needError").innerHTML = "";
+    }
+    if (assistances.length == 0) {
+      document.querySelector("#assistanceError").innerHTML = "Seleccione al menos un tipo de asistencia";
+    } else {
+      document.querySelector("#assistanceError").innerHTML = "";
+    }
+    if (stage == "no-select" || stage == "undefined") {
+      document.querySelector("#stageError").innerHTML = "Seleccione un estadio";
+    } else {
+      document.querySelector("#stageError").innerHTML = "";
+    }
+    if (admin == "no-select" || admin == "undefined") {
+      document.querySelector("#adminError").innerHTML = "Seleccione un administrador";
+    } else {
+      document.querySelector("#adminError").innerHTML = "";
+    }
+
+    // Validar campos del referente
+    if (referent === 'no-select' || referent === 'undefined') {
+      document.querySelector("#referentError").innerHTML = "Seleccione un usuario para el rol de referente";
+      referentError = true;
+    } else {
+      document.querySelector("#referentError").innerHTML = "";
+    }
+    if (referent_mail === '' || referent_mail === 'undefined') {
+      document.querySelector("#referent-mail-error").innerHTML = "Ingrese el correo del referente";
+      referentError = true;
+    } else {
+      document.querySelector("#referent-mail-error").innerHTML = "";
+    }
+    if (referent_telefono === '' || referent_telefono === 'undefined') {
+      document.querySelector("#referent-telefono-error").innerHTML = "Ingrese el teléfono del referente";
+      referentError = true;
+    } else {
+      document.querySelector("#referent-telefono-error").innerHTML = "";
+    }
+    if (referent_localidad === '' || referent_localidad === 'undefined') {
+      document.querySelector("#referent-localidad-error").innerHTML = "Ingrese localidad del referente";
+      referentError = true;
+    } else {
+      document.querySelector("#referent-localidad-error").innerHTML = "";
+    }
+    if (referent_ocupacion === '' || referent_ocupacion === 'undefined') {
+      document.querySelector("#referent-ocupacion-error").innerHTML = "Ingrese la ocupación del referente";
+      referentError = true;
+    } else {
+      document.querySelector("#referent-ocupacion-error").innerHTML = "";
+    }
+    if (referent_vinculacion === '' || referent_vinculacion === 'undefined') {
+      document.querySelector("#referent-vinculacion-error").innerHTML = "Ingrese la vinculación con UNICEN del referente";
+      referentError = true;
+    } else {
+      document.querySelector("#referent-vinculacion-error").innerHTML = "";
+    }
+    if (referent_facultad === '' || referent_facultad === 'undefined') {
+      document.querySelector("#referent-facultad-error").innerHTML = "Ingrese la facultad de UNICEN a la que pertenece el referente";
+      referentError = true;
+    } else {
+      document.querySelector("#referent-facultad-error").innerHTML = "";
+    }
+    if (referent_organizacion === '' || referent_organizacion === 'undefined') {
+      document.querySelector("#referent-organizacion-error").innerHTML = "Ingrese la organización asociativa a la que pertenece el referente";
+      referentError = true;
+    } else {
+      document.querySelector("#referent-organizacion-error").innerHTML = "";
+    }
+  }
+}
 
 
 // function inicializarCargaProyecto(id_ProjectManager) {
@@ -791,9 +846,11 @@ function guardarNecesidades() {
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(json),
-    headers : {"Content-Type" : "application/json; charset=utf-8",
-                "Authorization" : "Bearer " + token,
-                "Access-Control-Allow-Origin": "*"},
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Authorization": "Bearer " + token,
+      "Access-Control-Allow-Origin": "*"
+    },
   })
     .then(response => response.json())
     .then(json => actualizacionSelect(json.id_Need, json.needType, "needs_created", "multiSelectsNeedsCreated"));
@@ -807,9 +864,11 @@ function guardarAsistencias() {
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(json),
-    headers : {"Content-Type" : "application/json; charset=utf-8",
-                "Authorization" : "Bearer " + token,
-                "Access-Control-Allow-Origin": "*"},
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Authorization": "Bearer " + token,
+      "Access-Control-Allow-Origin": "*"
+    },
   })
     .then(response => response.json())
     .then(json => actualizacionSelect(json.id_Assistance, json.type, "assistances_created", "multiSelectsAssistancesCreated"));
@@ -821,27 +880,29 @@ async function saveNewNeed() {
   document.querySelector("#needError").innerHTML = "";
   let token = localStorage.getItem("token");
   let input = document.getElementById("save-need");
-  if(input.value != "" && input.value != "undefined") {
-    let data = { 
-      "needType" : input.value
+  if (input.value != "" && input.value != "undefined") {
+    let data = {
+      "needType": input.value
     };
-    try{
+    try {
       await fetch(URLNeeds, {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify(data),
-        headers: {"Content-type" : "application/json",
-                  "Authorization": "Bearer " + token,
-                  "Access-Control-Allow-Origin": "*"},
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer " + token,
+          "Access-Control-Allow-Origin": "*"
+        },
       })
         .then(response => response.json())
         .then(json => updateCheckbox(json.id_Need, json.needType, "#needsData", "need-checkbox"));
-    }catch(error) {
+    } catch (error) {
       console.log(error)
     }
-    input.value = ""; 
-  }else{
-    if(input.value == "" || input.value == "undefined") {
+    input.value = "";
+  } else {
+    if (input.value == "" || input.value == "undefined") {
       document.querySelector("#needError").innerHTML = "Escriba su necesidad antes de guardar";
     } else {
       document.querySelector("#needError").innerHTML = "";
@@ -855,27 +916,29 @@ async function saveNewAssistance() {
   document.querySelector("#assistanceError").innerHTML = "";
   let token = localStorage.getItem("token");
   let input = document.getElementById("save-assistance");
-  if(input.value != "" && input.value != "undefined") {
-    let data = { 
-      "type": input.value 
+  if (input.value != "" && input.value != "undefined") {
+    let data = {
+      "type": input.value
     };
-    try{
+    try {
       await fetch(URLAssitances, {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify(data),
-        headers: {"Content-type" : "application/json",
-                  "Authorization": "Bearer " + token,
-                  "Access-Control-Allow-Origin": "*"},
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer " + token,
+          "Access-Control-Allow-Origin": "*"
+        },
       })
         .then(response => response.json())
         .then(json => updateCheckbox(json.id_Assistance, json.type, "#assistancesData", "assistance-checkbox"));
-    }catch(error) {
+    } catch (error) {
       console.log(error)
     }
-    input.value = "";  
-  }else{
-    if(input.value == "" || input.value == "undefined") {
+    input.value = "";
+  } else {
+    if (input.value == "" || input.value == "undefined") {
       document.querySelector("#assistanceError").innerHTML = "Escriba su asistencia antes de guardar";
     } else {
       document.querySelector("#assistanceError").innerHTML = "";
@@ -885,10 +948,10 @@ async function saveNewAssistance() {
 
 
 //MUESTRA MENSAJE VERDE CUANDO TODO SE CARGO BIEN
-  function showSucess(string) {
-   document.querySelector(".generalSave").innerHTML =
+function showSucess(string) {
+  document.querySelector(".generalSave").innerHTML =
     `<p style='color:green;font-size:14px;'>${string}</p>`;
-  }
+}
 
 //SELECCIONAR SOLO UN ESTADIO
 function selecionarSoloUnEstadio() {
@@ -919,8 +982,8 @@ function selectOnlyOneStage() {
 
 //CONVIERTE ARRAY A LISTA PARA MOSTRARLA EN LOS DATOS DEL PROYECTO
 function mostrarArray(contenedor, arreglo, dato, proyecto) {
-  console.log("En mostrarProyecto arreglo: "+ arreglo) //undefined
-  console.log("En mostrarProyecto proyecto: "+proyecto) //undefined
+  console.log("En mostrarProyecto arreglo: " + arreglo) //undefined
+  console.log("En mostrarProyecto proyecto: " + proyecto) //undefined
   console.log("Tipo de arreglo:", typeof arreglo);
   console.log("Propiedad en elemento:", dato);
   for (let i = 0; i < arreglo.length; i++) {
@@ -968,13 +1031,13 @@ function updateProject(id_project) {
   let description = formData.get('description');
   let needsCheckboxes = document.querySelectorAll('input[name="need-checkbox"]:checked');
   needsCheckboxes.forEach((checkbox) => {
-      needs.push(checkbox.value);
+    needs.push(checkbox.value);
   });
   let assistancesCheckboxes = document.querySelectorAll('input[name="assistance-checkbox"]:checked');
   assistancesCheckboxes.forEach((checkbox) => {
-      assistances.push(checkbox.value);
+    assistances.push(checkbox.value);
   });
-  let stage = formData.get('stage-select');   
+  let stage = formData.get('stage-select');
   let admin = formData.get('admin-select');
   let isActive = document.querySelector('input[name="estado"]:checked').value;
   if (isActive === "true") {
@@ -983,7 +1046,7 @@ function updateProject(id_project) {
     isActive = false;
   }
   if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
-  assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
+    assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
     document.querySelector("#titleError").innerHTML = "";
     document.querySelector("#descriptionError").innerHTML = "";
     document.querySelector("#needError").innerHTML = "";
@@ -992,19 +1055,19 @@ function updateProject(id_project) {
     document.querySelector("#adminError").innerHTML = "";
 
     let data = {
-      "title" : title,
-      "description" : description,
-      "stage" : stage,
+      "title": title,
+      "description": description,
+      "stage": stage,
       "is_active": isActive,
-      "assistances" : assistances,
-      "files" : null,       
-      "needs" : needs,       
-      "newFiles" : null
+      "assistances": assistances,
+      "files": null,
+      "needs": needs,
+      "newFiles": null
     }
     modificarProyecto(id_project, data);
     needs = [];
     assistances = [];
-  }else {
+  } else {
     if (title == "" || title == "undefined") {
       document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
     } else {
@@ -1180,150 +1243,150 @@ function selectedOptions(idSelect, multiSelect) {
 async function getNeeds(url, project) {
   let token = localStorage.getItem("token");
   try {
-      let res = await fetch(url, {
-          "method": "GET",
-          "headers": {"Authorization": "Bearer " + token}
-      })
-      if (res.ok) {
-          let array = await res.json();
-          if (array) {
-              showNeeds(array, project);
-          }
+    let res = await fetch(url, {
+      "method": "GET",
+      "headers": { "Authorization": "Bearer " + token }
+    })
+    if (res.ok) {
+      let array = await res.json();
+      if (array) {
+        showNeeds(array, project);
       }
+    }
   } catch (error) {
-      console.log("Fallo al obtener el JSON de la API.");
-      console.log(error);
+    console.log("Fallo al obtener el JSON de la API.");
+    console.log(error);
   }
 }
 
 async function getAssistances(url, project) {
   let token = localStorage.getItem("token");
   try {
-      let res = await fetch(url, {
-          "method": "GET",
-          "headers" : {"Authorization": "Bearer " + token}
-      })
-      if (res.ok) {
-          let array = await res.json();
-          if (array) {
-              showAssistances(array, project);
-          }
+    let res = await fetch(url, {
+      "method": "GET",
+      "headers": { "Authorization": "Bearer " + token }
+    })
+    if (res.ok) {
+      let array = await res.json();
+      if (array) {
+        showAssistances(array, project);
       }
+    }
   } catch (error) {
-      console.log("Fallo al obtener el JSON de la API.");
-      console.log(error);
+    console.log("Fallo al obtener el JSON de la API.");
+    console.log(error);
   }
 }
 
 async function getStages(url, project) {
   let token = localStorage.getItem("token");
   try {
-      let res = await fetch(url, {
-          "method": "GET",
-          "headers" : {"Authorization": "Bearer " + token}
-      })
-      if (res.ok) {
-          let array = await res.json();
-          if (array) {
-              showStages(array, project);
-          }
+    let res = await fetch(url, {
+      "method": "GET",
+      "headers": { "Authorization": "Bearer " + token }
+    })
+    if (res.ok) {
+      let array = await res.json();
+      if (array) {
+        showStages(array, project);
       }
+    }
   } catch (error) {
-      console.log("Fallo al obtener el JSON de la API.");
-      console.log(error);
+    console.log("Fallo al obtener el JSON de la API.");
+    console.log(error);
   }
 }
 
 async function getAdmins(url, project) {
   let token = localStorage.getItem("token");
   try {
-      let res = await fetch(url, {
-          "method": "GET",
-          "headers" : {"Authorization": "Bearer " + token}
-      })
-      
-      if (res.ok) {
-          let array = await res.json();
-          if (array) {
-              showAdmins(array, project);
-          }
+    let res = await fetch(url, {
+      "method": "GET",
+      "headers": { "Authorization": "Bearer " + token }
+    })
+
+    if (res.ok) {
+      let array = await res.json();
+      if (array) {
+        showAdmins(array, project);
       }
+    }
   } catch (error) {
-      console.log("Fallo al obtener el JSON de la API.");
-      console.log(error);
+    console.log("Fallo al obtener el JSON de la API.");
+    console.log(error);
   }
 }
 
 async function getUsers(url, project) {
   let token = localStorage.getItem("token");
   try {
-      let res = await fetch(url, {
-          "method": "GET",
-          "headers" : {"Authorization": "Bearer " + token}
-      })
-      
-      if (res.ok) {
-          let array = await res.json();
-          if (array) {
-              showUsers(array, project);
-          }
+    let res = await fetch(url, {
+      "method": "GET",
+      "headers": { "Authorization": "Bearer " + token }
+    })
+
+    if (res.ok) {
+      let array = await res.json();
+      if (array) {
+        showUsers(array, project);
       }
+    }
   } catch (error) {
-      console.log("Fallo al obtener el JSON de la API.");
-      console.log(error);
+    console.log("Fallo al obtener el JSON de la API.");
+    console.log(error);
   }
 }
 
 function showNeeds(array, project) {
   let needContainer = document.querySelector("#needsData");
   array.forEach(need => {
-      let article = document.createElement('article');
-      let input = document.createElement('input');
-      input.classList.add('checkbox-input');
-      input.type = 'checkbox';
-      input.name = "need-checkbox"
-      input.value = need.id_Need;
-      let label = document.createElement('label');
-      label.classList.add("checkbox-label");
-      label.textContent = need.needType;        
-      article.appendChild(input);
-      article.appendChild(label);
+    let article = document.createElement('article');
+    let input = document.createElement('input');
+    input.classList.add('checkbox-input');
+    input.type = 'checkbox';
+    input.name = "need-checkbox"
+    input.value = need.id_Need;
+    let label = document.createElement('label');
+    label.classList.add("checkbox-label");
+    label.textContent = need.needType;
+    article.appendChild(input);
+    article.appendChild(label);
 
-      if(project != null) {
-        for (let i = 0; i < project.needs.length; i++) {
-          if (project.needs[i].id_Need == input.value) {
-            input.checked = true;
-          }
+    if (project != null) {
+      for (let i = 0; i < project.needs.length; i++) {
+        if (project.needs[i].id_Need == input.value) {
+          input.checked = true;
         }
       }
-      needContainer.appendChild(article);  
+    }
+    needContainer.appendChild(article);
   });
 }
 
 function showAssistances(array, project) {
   let assistanceContainer = document.querySelector("#assistancesData");
   array.forEach(assistance => {
-      let article = document.createElement('article');
-      let input = document.createElement('input');
-      input.classList.add('checkbox-input');
-      input.type = 'checkbox';
-      input.name = "assistance-checkbox"
-      input.value = assistance.id_Assistance;
-      let label = document.createElement('label');
-      label.classList.add("checkbox-label");
-      label.textContent = assistance.type;
-      article.appendChild(input);
-      article.appendChild(label);
+    let article = document.createElement('article');
+    let input = document.createElement('input');
+    input.classList.add('checkbox-input');
+    input.type = 'checkbox';
+    input.name = "assistance-checkbox"
+    input.value = assistance.id_Assistance;
+    let label = document.createElement('label');
+    label.classList.add("checkbox-label");
+    label.textContent = assistance.type;
+    article.appendChild(input);
+    article.appendChild(label);
 
-      if(project != null){ 
-        for (let i = 0; i < project.assistances.length; i++) {
-          if (project.assistances[i].id_Assistance == input.value) {
-            input.checked = true;
-          }
+    if (project != null) {
+      for (let i = 0; i < project.assistances.length; i++) {
+        if (project.assistances[i].id_Assistance == input.value) {
+          input.checked = true;
         }
       }
-    
-      assistanceContainer.appendChild(article);      
+    }
+
+    assistanceContainer.appendChild(article);
   });
 }
 
@@ -1333,10 +1396,10 @@ function showStages(array, project) {
     let option = document.createElement('option');
     option.value = stage.id_Stage;
     option.label = stage.stage_type;
-    stagesContainer.appendChild(option);   
+    stagesContainer.appendChild(option);
   });
 
-  if(project != null) {
+  if (project != null) {
     stagesContainer.value = project.stage.id_Stage;
   }
 }
@@ -1350,7 +1413,7 @@ function showAdmins(array, project) {
     adminSelect.appendChild(option);
   })
 
-  if(project != null) {
+  if (project != null) {
     adminSelect.value = project.administrador;
   }
 }
@@ -1358,7 +1421,7 @@ function showAdmins(array, project) {
 
 function showUsers(array, project) {
   console.log(array, project)
-   let referentSelect = document.querySelector("#referentSelect");
+  let referentSelect = document.querySelector("#referentSelect");
   array.forEach(referent => {
     let option = document.createElement('option');
     option.value = referent.id;
@@ -1366,7 +1429,7 @@ function showUsers(array, project) {
     referentSelect.appendChild(option);
   })
 
-  if(project != null) {
+  if (project != null) {
     referentSelect.value = null;
   }
 }
@@ -1376,6 +1439,6 @@ function toggleAccordion(button) {
   const accordionContent = button.nextElementSibling;
 
   button.classList.toggle('accordion--expanded');
-  accordionContent.style.maxHeight = 
-      accordionContent.style.maxHeight ? null : `${accordionContent.scrollHeight}px`;
+  accordionContent.style.maxHeight =
+    accordionContent.style.maxHeight ? null : `${accordionContent.scrollHeight}px`;
 }
