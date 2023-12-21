@@ -9,7 +9,7 @@
     background-color: #6B9E22;
     padding: 10px;
     border-radius: 10px 10px 0px 0px;
-    
+    margin: 10px 60px 0px 60px;
 }
 
 .project-title p {
@@ -62,7 +62,7 @@
 }
 
 .mainBtns {
-    margin: 0;
+    margin: 0 60px;
     display: flex;
     flex-direction: row;
 }
@@ -71,12 +71,14 @@
     background-color: #EAF7D8;
     border-radius: 0px 0px 10px 10px;
     display: flex;
+    margin: 0 60px;
 }
 
 .diagnostic-loading{
     background-color: #EAF7D8;
     border-radius: 0px 0px 10px 10px;
     display: none;
+    margin: 0 60px;
 }
 
 .diagnostic-loading form{
