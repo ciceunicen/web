@@ -26,7 +26,15 @@ document.addEventListener("DOMContentLoaded", function () {
     mostrarHomeEmprendedor();
   } else {
     // Para otros roles (admin/super admin)
-    mostrarHome();
+    const urlPath = location.pathname;
+    const urlSearch = location.search.substring(1);
+
+    if (urlSearch) {
+      window.history.replaceState(null, null, urlPath);
+      mostrarHome(1, urlSearch);
+    } else {
+      mostrarHome();
+    }
   }
 })
 
