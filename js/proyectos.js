@@ -1161,7 +1161,7 @@ function saveNewDiagnostic(idAdmin) {
     let data = {
       "idProject" : project,
       "idAdmin" : idAdmin,
-      "diagnostic" : diagnostic 
+      "diagnostic" : "Diagnostico: " + diagnostic 
     }
     
     addDiagnosticToProject(data)
