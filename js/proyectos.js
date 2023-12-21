@@ -1148,7 +1148,7 @@ function showProjects(array) {
   })
 }
 
-function saveNewDiagnostic() {
+function saveNewDiagnostic(idAdmin) {
   let form = document.querySelector("#diagnosticForm");
   let formData = new FormData(form);
   let project = formData.get('project-select');
@@ -1160,6 +1160,7 @@ function saveNewDiagnostic() {
 
     let data = {
       "idProject" : project,
+      "idAdmin" : idAdmin,
       "diagnostic" : diagnostic 
     }
     
