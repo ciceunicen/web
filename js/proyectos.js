@@ -314,8 +314,11 @@ function comportamientoBotonesPaginado(pages) {
     document.querySelector("#nextPage").removeAttribute("disabled");
   }
 }
+
 //Generar tabla de proyectos
-function mostrarTabla(json, borrados, projectManager = false) {
+//function mostrarTabla(json, borrados, projectManager = false, pagAnterior) {
+function mostrarTabla(json, borrados, pagAnterior, projectManager = false, emprendedor) {
+  console.log("mostrarTabla: " + pagAnterior)
   let user = JSON.parse(localStorage.getItem('usuario'));
   if (user.rolType.toLowerCase() == 'personal del cice') {
     listadoHTML = "listProjectsPersonalCICE.html";
@@ -366,7 +369,10 @@ function mostrarTabla(json, borrados, projectManager = false) {
       input.setAttribute("id", proyecto.id_Project);
       input.setAttribute("class", "btn_save_green verMas");
       cell4.appendChild(input);
-      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
+      //let pagAnterior = "proyectos";
+      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json, pagAnterior));
+        window.location.hash = `detallesProyecto`;
+      });
       //creo botón de borrar para cada proyecto
       var btn_delete = document.createElement("input");
       btn_delete.setAttribute("type", "button");
@@ -420,7 +426,6 @@ function mostrarTablaProyectosEmprendedor(json) {
 
 //muestra los proyectos de un emprendedor
 function mostrarTablaProyectosEmprendedor(json) {
-  console.log(json);
   let array = json;
 
   if (Array.isArray(array) && array.length > 0) {
@@ -890,10 +895,6 @@ function selectOnlyOneStage() {
 
 //CONVIERTE ARRAY A LISTA PARA MOSTRARLA EN LOS DATOS DEL PROYECTO
 function mostrarArray(contenedor, arreglo, dato, proyecto) {
-  console.log("En mostrarProyecto arreglo: "+ arreglo) //undefined
-  console.log("En mostrarProyecto proyecto: "+proyecto) //undefined
-  console.log("Tipo de arreglo:", typeof arreglo);
-  console.log("Propiedad en elemento:", dato);
   for (let i = 0; i < arreglo.length; i++) {
     var elemento = arreglo[i];
     if (contenedor == "#files" || contenedor == "#files_edit") {//para adjuntos
