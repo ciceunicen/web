@@ -38,7 +38,7 @@ function mostrarHomeEmprendedor(){
     let emprendedorId = user.id;
 
     mostrarArchivoHTML("navbarEntrepreneur.html", ".navbar").then(
-        text => {
+        async text => {
           document.querySelector(".navbar").innerHTML = text;
 
           const notificacionesContainer = document.querySelector(".notificaciones-container");
@@ -48,7 +48,8 @@ function mostrarHomeEmprendedor(){
               notificacionesContainer.classList.toggle("hidden");
           });
 
-          const notifications = getEntrepreneurNotifications(user); // MOSTRAR LA NOTIFICACIONES
+          const notifications = await getEntrepreneurNotifications(user); // MOSTRAR LA NOTIFICACIONES
+          showNotifications(notifications);
 
           getAllProjectsByEntrepreneur(emprendedorId).then(json => mostrarProyectosDeEmprendedor(json));
           logout();
@@ -63,20 +64,15 @@ function mostrarHomeEmprendedor(){
   }
 }
 
-async function getEntrepreneurNotifications(user) {
-  const response = await fetch(`${URLNotifications}/projectManager/${user.id}`, {
-    "method": "GET",
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + token
-    }
-  });
-  if (response.ok) {
-    const notificaciones = await response.json();
-    console.log("NOTIFICACIONES", notificaciones);
-    return notificaciones;
-  } else {
-    console.error("Error al obtener las notificaciones");
+function showNotifications(notifications) {
+  const notificationsSection = document.querySelector(".notificaciones");
+
+  notificationsSection.innerHTML = "";
+  for (let notification of notifications) {
+    notificationsSection.innerHTML += `<article>
+      <p>${notification.message}</p>
+      <p>${notification.date}</p>
+    </article>`
   }
 }
 

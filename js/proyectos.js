@@ -2,7 +2,6 @@ let page = 1;
 const URLProject = "http://localhost:8080/projects";
 const URLEntrepreneurProjects = "http://localhost:8080/emprendedores";
 const URLFiles = "http://localhost:8080/files";
-const URLNotifications = "http://localhost:8080/notifications";
 let statusFile = true;//guarda si los archivos cargados tienen una estención válida.
 
 //METODOS DE ABM
