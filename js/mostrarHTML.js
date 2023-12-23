@@ -66,12 +66,24 @@ function mostrarHomeEmprendedor(){
 
 function showNotifications(notifications) {
   const notificationsSection = document.querySelector(".notificaciones");
+  let dateFromDatabase = null;
+  let formattedDate = null;
 
   notificationsSection.innerHTML = "";
   for (let notification of notifications) {
+    dateFromDatabase = new Date(notification.date);
+    formattedDate = dateFromDatabase.toLocaleString('es-AR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+
     notificationsSection.innerHTML += `<article>
       <p>${notification.message}</p>
-      <p>${notification.date}</p>
+      <p>${formattedDate}</p>
     </article>`
   }
 }
