@@ -48,6 +48,8 @@ function mostrarHomeEmprendedor(){
               notificacionesContainer.classList.toggle("hidden");
           });
 
+          const notifications = getEntrepreneurNotifications(user); // MOSTRAR LA NOTIFICACIONES
+
           getAllProjectsByEntrepreneur(emprendedorId).then(json => mostrarProyectosDeEmprendedor(json));
           logout();
           document.querySelector("#crearProyecto").addEventListener("click", ()=>{
@@ -58,6 +60,23 @@ function mostrarHomeEmprendedor(){
     );
   } else {
     console.error('Error al obtener el ID del emprendedor desde el local storage.');
+  }
+}
+
+async function getEntrepreneurNotifications(user) {
+  const response = await fetch(`${URLNotifications}/projectManager/${user.id}`, {
+    "method": "GET",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    }
+  });
+  if (response.ok) {
+    const notificaciones = await response.json();
+    console.log("NOTIFICACIONES", notificaciones);
+    return notificaciones;
+  } else {
+    console.error("Error al obtener las notificaciones");
   }
 }
 
