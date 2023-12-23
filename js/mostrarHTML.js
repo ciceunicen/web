@@ -48,8 +48,12 @@ function mostrarHomeEmprendedor(){
               notificacionesContainer.classList.toggle("hidden");
           });
 
-          const notifications = await getEntrepreneurNotifications(user); // MOSTRAR LA NOTIFICACIONES
+          const notifications = await getEntrepreneurNotifications(user);
           showNotifications(notifications);
+
+          if (notifications.length > 0) {
+            iconoNotificacion.setAttribute("src", "../img/Icono-notificacion2.svg");
+          }
 
           getAllProjectsByEntrepreneur(emprendedorId).then(json => mostrarProyectosDeEmprendedor(json));
           logout();
