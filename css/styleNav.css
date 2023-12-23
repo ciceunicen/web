@@ -44,7 +44,7 @@
 .notificaciones-container {
     position: absolute;
     top: 4rem;
-    right: 12rem;
+    right: 9.3rem;
     z-index: 5;
     height: fit-content;
     border: solid 1px #496D17;
@@ -118,8 +118,18 @@
     width: auto;
 }
 
+@media only screen and (min-width: 1260px) {
+    .notificaciones-container {
+        right: 10rem;
+    }
+}
 @media screen and (min-width: 1366px){
     .nav-item{
         width: 15%;
+    }
+}
+@media only screen and (min-width: 1800px) {
+    .notificaciones-container {
+        right: 12rem;
     }
 }
