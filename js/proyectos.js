@@ -832,6 +832,16 @@ function generarTablaHistorial(json) {
     //cambiar cuando este la entidad administrador, utilizar nombre y apellido
     cell2.innerHTML = "Admin default";
     cell3.innerHTML = historial.action;
+    if(historial.action == "Diagnostico"){
+      let link = document.createElement("a");
+      link.setAttribute("href", "#")
+      link.setAttribute("data-id", historial.id_record);
+      let linkText = document.createTextNode("Ver mas");
+      link.appendChild(linkText);
+      link.classList.add("diagnostic-button");
+      cell3.appendChild(link);
+      link.addEventListener("click", function() {showDiagnostic(link.dataset.id)});
+    }
     cell4.innerHTML = historial.date;
   }
 }
@@ -1154,27 +1164,29 @@ function saveNewDiagnostic(idAdmin) {
   let project = formData.get('project-select');
   let diagnostic = formData.get('diagnostic');
 
-  if ((project != "no-select" && project != "undefined") && (diagnostic != "" && diagnostic != "undefined")) {
+  if ((project != "no-select" && project != "undefined") && (diagnostic != "" && diagnostic.length < 255)) {
     document.querySelector("#projectError").innerHTML = "";
     document.querySelector("#diagnosticError").innerHTML = "";
 
     let data = {
       "idProject" : project,
       "idAdmin" : idAdmin,
-      "diagnostic" : "Diagnostico: " + diagnostic 
+      "diagnostic" : diagnostic 
     }
     
     addDiagnosticToProject(data)
     
   }else{
-    if (project == "no-select" || project == "undefined") {
+    if(project == "no-select" || project == "undefined") {
       document.querySelector("#projectError").innerHTML = "Elija un proyecto";
-    } else {
+    }else {
       document.querySelector("#projectError").innerHTML = "";
     }
-    if (diagnostic == "" || diagnostic == "undefined") {
+    if(diagnostic == "") {
       document.querySelector("#diagnosticError").innerHTML = "Ingrese un diagnostico al proyecto";
-    } else {
+    } else if(diagnostic.length > 255) {
+      document.querySelector("#diagnosticError").innerHTML = "Texto muy largo, ingrese menos caracteres";
+    }else {
       document.querySelector("#diagnosticError").innerHTML = "";
     }
   }
@@ -1200,4 +1212,39 @@ async function addDiagnosticToProject(data) {
   }catch(error){
     console.log(error);
   }
+}
+
+async function getDiagnosticById(idRecord) {
+  let token = localStorage.getItem("token");
+  try {
+      let res = await fetch(URLProject+"/diagnostic/"+idRecord, {
+          "method": "GET",
+          "headers" : {"Authorization": "Bearer " + token}
+      })
+      if (res.ok) {
+          let array = await res.json();
+          if (array) {
+            showDiagnosticInModal(array);
+          }
+      }
+  } catch (error) {
+      console.log("Fallo al obtener el JSON de la API.");
+      console.log(error);
+  }
+}
+
+function showDiagnostic(id) {
+  let modal = document.querySelector('#modal');
+  modal.classList.add('modal-flex');
+  if(modal.classList.contains('modal-flex')) {
+    getDiagnosticById(id);
+  }
+  modal.onclick = function(){
+      modal.classList.remove('modal-flex');
+  } 
+}
+
+function showDiagnosticInModal(array) {
+  let diagnosticText = document.querySelector("#diagnosticText");
+  diagnosticText.innerHTML = array.diagnostic;
 }

@@ -185,5 +185,46 @@ input {
     padding: 7px;
     border: 1px solid #74AC24;
     border-radius: 5px;
-    
 }
+
+.diagnostic-button{
+    margin-left: 10px;
+}
+
+.modal-container-diagnostic{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: #00000094;
+    z-index: 300;
+  }
+
+  .modal-container-diagnostic.modal-flex{
+    display: flex;
+  }
+
+  .modal-content-diagnostic{
+    width: 680px;
+    height: auto;
+    border-radius: 10px;
+    background-color: #ffffff;
+    padding: 20px;
+  }
+
+  .modal-content-diagnostic h2{
+    font-size: 30px;
+    font-weight: 380;
+    text-align: center;
+    color: #496D17;
+  }
+
+  .modal-content-diagnostic .diagnostic-line{
+    width: 640px;
+    border-top: 1px solid #0000001f;
+    margin-bottom: 10px;
+  }
