@@ -272,7 +272,7 @@ function cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages)
     })
   } else if (tablaUtilizada == "proyectosEmprendedor") {
     getAllProjectsByProjectManager(datosFiltro[0]).then(json => {
-      mostrarTabla(json, false);
+      mostrarTabla(json, false, "dashboard");
       comportamientoBotonesPaginado(pages);
     });
     }else if (tablaUtilizada == "proyectos") {
@@ -317,7 +317,7 @@ function comportamientoBotonesPaginado(pages) {
 
 //Generar tabla de proyectos
 //function mostrarTabla(json, borrados, projectManager = false, pagAnterior) {
-function mostrarTabla(json, borrados, pagAnterior, projectManager = false, emprendedor) {
+function mostrarTabla(json, borrados, pagAnterior, projectManager = false) {
   console.log("mostrarTabla: " + pagAnterior)
   let user = JSON.parse(localStorage.getItem('usuario'));
   if (user.rolType.toLowerCase() == 'personal del cice') {
@@ -396,6 +396,9 @@ function mostrarTabla(json, borrados, pagAnterior, projectManager = false, empre
 function mostrarTablaProyectosEmprendedor(json) {
   let array = json;
 
+  removerEventoClic("dashboard");
+  agregarEventoClic("dashboard");
+
   if (Array.isArray(array)) {
     let container = document.querySelector(".list");
     container.innerHTML = "";
@@ -449,7 +452,7 @@ function mostrarTablaProyectosEmprendedor(json) {
       input.setAttribute("class", "btn_save_green verMas");
       cell4.appendChild(input);
 
-      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
+      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json, "proyectosEmprendedor")) });
     }
   } else {
     console.error("El array de proyectos está vacío o no está definido.");

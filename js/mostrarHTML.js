@@ -6,7 +6,6 @@ function mostrarArchivoHTML(rutaArchivo){
 
 function cargarPaginaAnterior(pagAnterior) {
   console.log("cargarPaginaAnterior: " + pagAnterior)
- // return () => {
     if (pagAnterior === "detallesEmprendedor") { //estoy en detalles proyecto o carga proyecto
       mostrarEmprendedor( pagAnterior);
     } else if (pagAnterior === "dashboard") { // navbar
@@ -16,10 +15,10 @@ function cargarPaginaAnterior(pagAnterior) {
     }else if(pagAnterior === "emprendedores"){ //estoy en detalle emprendedor
       mostrarListaEmprendedores("dashboard");
     }
- // };
 }
 
 let cargarPaginaAnteriorHandler;
+
 function agregarEventoClic(pagAnterior) {
   console.log("agregarEventoClic: "+ pagAnterior);
   cargarPaginaAnteriorHandler = function() {
@@ -39,9 +38,6 @@ function mostrarHome(actualPage = 1, seccion = "emprendedores"){
   mostrarArchivoHTML("navbar.html",".navbar").then(text => {
       let pagAnterior = "dashboard";
       document.querySelector(".navbar").innerHTML = text;
-/*      document.querySelector("#btn-back").addEventListener("click", (e)=>{
-        window.location.href = "./dashboard.html";
-      });*/
       document.querySelector("#proyectos").addEventListener("click", ()=>{
         drawClickNav("proyectos");
         page=actualPage;
@@ -63,8 +59,7 @@ function mostrarHome(actualPage = 1, seccion = "emprendedores"){
 }
 
 function mostrarHomeEmprendedor(){
-
-  //let emprendedor = JSON.parse(localStorage.getItem('emprendedor'));
+  let pagAnterior = "dashboard";
   let user = JSON.parse(localStorage.getItem('usuario'));
 
   // Verifica si el usuario es un emprendedor y obtener su ID
@@ -78,7 +73,7 @@ function mostrarHomeEmprendedor(){
           logout();
           document.querySelector("#crearProyecto").addEventListener("click", ()=>{
             drawClickNav("crearProyecto");
-            mostrarCargaProyecto();
+            mostrarCargaProyecto(pagAnterior);
           });
         }
     );
@@ -141,6 +136,10 @@ function mostrarProyectos(json, pagAnterior) {
 }
 
 function mostrarProyectosDeEmprendedor(json) {
+
+  removerEventoClic("dashboard");
+  agregarEventoClic("dashboard");
+
   mostrarArchivoHTML("listProjectsEntrepreneur.html").then(text =>{
     document.querySelector(".main-container").innerHTML = text;
 
@@ -181,10 +180,11 @@ function mostrarProyecto(proyecto, pagAnterior){
 
   if(pagAnterior === "dashboard"){ //si viene del listado de proyectos
     pagAnterior = "proyectos"
+  }else if(pagAnterior === "proyectosEmprendedor"){ //temporal
+    pagAnterior = "dashboard"
   }else{
     pagAnterior = "emprendedores";
   }
-  //pagAnterior = "proyectos";
 
   let user = JSON.parse(localStorage.getItem('usuario'));
 
@@ -294,9 +294,10 @@ function cargaRenderAsistencia(){
 }
 //MUESTRA LA LISTA DE EMPRENDEDORES
 function mostrarListaEmprendedores(pagAnterior){
+  console.log("mostrarListaEmprendedores: "+ pagAnterior);
 
-  removerEventoClic(pagAnterior);
-  agregarEventoClic(pagAnterior);
+/*  removerEventoClic(pagAnterior);
+  agregarEventoClic(pagAnterior);*/
 
   mostrarArchivoHTML("listProjectsManager.html").then(text =>{
       document.querySelector(".main-container").innerHTML = text;
