@@ -49,7 +49,7 @@
     height: fit-content;
     border: solid 1px #496D17;
     border-radius: 5px;
-    background-color: #74AC24;
+    background-color: #496D17;
     color: #FFFFFF;
     width: 20%;
 }
@@ -59,18 +59,17 @@
 }
 
 .notificaciones {
-    padding: 0 1.5%;
     height: 60vh;
     overflow-y: scroll;
 }
 
 .notificaciones > article {
-    margin: 2% 0 0 0;
+    padding: 2%;
     border-bottom: #FFFFFF solid 1px;
 }
 
 .notificaciones > article.notReaded {
-    background-color: #496D17;
+    background-color: #74AC24;
 }
 
 .notificaciones > article > p:last-child {
