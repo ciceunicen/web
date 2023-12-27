@@ -44,8 +44,12 @@ function mostrarHomeEmprendedor(){
           const notificacionesContainer = document.querySelector(".notificaciones-container");
           const iconoNotificacion = document.querySelector(".icono-notificacion");
 
-          iconoNotificacion.addEventListener("click", () => {
+          iconoNotificacion.addEventListener("click", async () => {
               notificacionesContainer.classList.toggle("hidden");
+              if (notificacionesContainer.classList.contains("hidden")) {
+                const notifications = await setEntrepreneurNotificationsAsRead(user);
+                showNotifications(notifications);
+              }
           });
 
           const notifications = await getEntrepreneurNotifications(user);
@@ -89,6 +93,12 @@ function showNotifications(notifications) {
       <p>${notification.message}</p>
       <p>${formattedDate}</p>
     </article>`
+
+    let lastNotification = null;
+    if (!notification.isRead) {
+      lastNotification = notificationsSection.lastElementChild;
+      lastNotification.setAttribute("class", "notReaded");
+    }
   }
 }
 

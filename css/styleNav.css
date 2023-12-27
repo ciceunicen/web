@@ -69,6 +69,10 @@
     border-bottom: #FFFFFF solid 1px;
 }
 
+.notificaciones > article.notReaded {
+    background-color: #496D17;
+}
+
 .notificaciones > article > p:last-child {
     padding: 3% 0 0 0;
     font-size: 0.9rem;
