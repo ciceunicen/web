@@ -353,6 +353,9 @@ function mostrarTabla(json, borrados, pagAnterior, projectManager = false) {
     }
     var cell4 = row.insertCell(cellsCount++);
     if (borrados) {
+      pagAnterior = "proyectos";
+      removerEventoClic(pagAnterior);
+      agregarEventoClic(pagAnterior);
       var cell5 = row.insertCell(cellsCount++);
       cell1.innerHTML = proyecto.project.title;
       cell2.innerHTML = proyecto.project.projectManager.name + " " + proyecto.project.projectManager.surname;

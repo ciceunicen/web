@@ -10,7 +10,7 @@ function cargarPaginaAnterior(pagAnterior) {
       mostrarEmprendedor( pagAnterior);
     } else if (pagAnterior === "dashboard") { // navbar
       window.location.replace("./dashboard.html");
-    }else if(pagAnterior === "proyectos"){ //estoy en detalle proyecto
+    }else if(pagAnterior === "proyectos"){ //estoy en detalles proyecto
       getAllProjects().then(json => mostrarProyectos(json, "dashboard"));
     }else if(pagAnterior === "emprendedores"){ //estoy en detalle emprendedor
       mostrarListaEmprendedores("dashboard");
