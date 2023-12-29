@@ -255,7 +255,8 @@ function mostrarCargaProyecto(pagAnterior) {
       getNeeds(URLNeeds, null);
       getAssistances(URLAssitances, null);
       getStages(URLStages, null);
-      getAdmins(URLUsers, null)
+      getAdmins(URLUsers + "/rol/2", null);
+      getUsers(URLUsers);
       document.querySelector("#saveNeed").addEventListener('click', saveNewNeed);
       document.querySelector("#saveAssistance").addEventListener('click', saveNewAssistance);
       document.querySelector("#projectForm").addEventListener('submit', (e) =>{

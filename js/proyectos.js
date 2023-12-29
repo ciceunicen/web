@@ -105,8 +105,8 @@ function getAllProjectsByEntrepreneur(entrepreneurId) {
     },
 
   })
-      .then(response => response.json())
-      .then(json => { return json });
+    .then(response => response.json())
+    .then(json => { return json });
 }
 
 //GET DE TODOS LOS PROYECTOS BORRADOS
@@ -595,48 +595,80 @@ function innerHTML(json, elementDOM) {
 
 //COMPRUEBA LOS CAMPOS DE CARGA DE PROYECTOS
 
-  //Metodos para cargar checkboxs disponibles en cargar proyecto
-  function saveNewProject(){
-    let form = document.querySelector("#projectForm");
-    let formData = new FormData(form);
-    let user = JSON.parse(localStorage.getItem('usuario'));
-    let needs = [];
-    let assistances = [];
-    let title = formData.get('title');
-    let description = formData.get('description');
-    let needsCheckboxes = document.querySelectorAll('input[name="need-checkbox"]:checked');
-    needsCheckboxes.forEach((checkbox) => {
-        needs.push(checkbox.value);
-    });
-    let assistancesCheckboxes = document.querySelectorAll('input[name="assistance-checkbox"]:checked');
-    assistancesCheckboxes.forEach((checkbox) => {
-        assistances.push(checkbox.value);
-    });
-    let stage = formData.get('stage-select');   
-    let admin = formData.get('admin-select');   
+//Metodos para cargar checkboxs disponibles en cargar proyecto
+function saveNewProject() {
+  let form = document.querySelector("#projectForm");
+  let referentForm = document.querySelector("#referentForm");
+  let formData = new FormData();
+  new FormData(form).forEach((value, key) => formData.append(key, value));
+  new FormData(referentForm).forEach((value, key) => formData.append(key, value));
 
-    if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
-    assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
-      document.querySelector("#titleError").innerHTML = "";
-      document.querySelector("#descriptionError").innerHTML = "";
-      document.querySelector("#needError").innerHTML = "";
-      document.querySelector("#assistanceError").innerHTML = "";
-      document.querySelector("#stageError").innerHTML = "";
-      document.querySelector("#adminError").innerHTML = "";
+  //datos del referente
+  let referent = formData.get('referent-select');
+  let referent_telefono = formData.get('referent-telefono');
+  let referent_localidad = formData.get('referent-localidad');
+  let referent_mail = formData.get('referent-mail');
+  let referent_ocupacion = formData.get('referent-ocupacion');
+  let referent_vinculacion = formData.get('referent-vinculacion');
+  let referent_facultad = formData.get('referent-facultad');
+  let referent_conocimiento = formData.get('referent-conocimiento');
+  let referent_organizacion = formData.get('referent-organizacion');
+  //
 
-      let data = {
-          "id_ProjectManager": user.id,
-          "title": title,
-          "description": description,
-          "stage": stage,
-          "assistanceType": assistances,
-          "files": null,
-          "needs": needs,
-          "id_Admin": admin
-      }
-      saveProject(data);
-      needs = [];
-      assistances = [];
+  //datos del proyecto
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  let needs = [];
+  let assistances = [];
+  let title = formData.get('title');
+  let description = formData.get('description');
+  let needsCheckboxes = document.querySelectorAll('input[name="need-checkbox"]:checked');
+  needsCheckboxes.forEach((checkbox) => {
+    needs.push(checkbox.value);
+  });
+  let assistancesCheckboxes = document.querySelectorAll('input[name="assistance-checkbox"]:checked');
+  assistancesCheckboxes.forEach((checkbox) => {
+    assistances.push(checkbox.value);
+  });
+  let stage = formData.get('stage-select');
+  let admin = formData.get('admin-select');
+  //fin de datos del proyecto
+
+  if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
+    assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")
+    && (referent != "" && referent != "undefined") && (referent_telefono != "" && referent_telefono != "undefined") && (referent_localidad != "" && referent_localidad != "undefined")
+    && (referent_mail != "" && referent_mail != "undefined") && (referent_vinculacion != "" && referent_vinculacion != "undefined") && (referent_facultad != "" && referent_facultad != "undefined")
+    && (referent_organizacion != "" && referent_organizacion != "undefined")) {
+    document.querySelector("#titleError").innerHTML = "";
+    document.querySelector("#descriptionError").innerHTML = "";
+    document.querySelector("#needError").innerHTML = "";
+    document.querySelector("#assistanceError").innerHTML = "";
+    document.querySelector("#stageError").innerHTML = "";
+    document.querySelector("#adminError").innerHTML = "";
+
+    let data = {
+      "id_ProjectManager": user.id,
+      "title": title,
+      "description": description,
+      "stage": stage,
+      "assistanceType": assistances,
+      "files": null,
+      "needs": needs,
+      "id_Admin": admin,
+      "referent_userId": referent,
+      "referent_telefono": referent_telefono,
+      "referent_localidad": referent_localidad,
+      "referent_mail": referent_mail,
+      "referent_ocupacion": referent_ocupacion,
+      "referent_vinculacion": referent_vinculacion,
+      "referent_facultad": referent_facultad,
+      "referent_conocimiento": referent_conocimiento,
+      "referent_organizacion": referent_organizacion
+    }
+
+    console.log(data)
+    saveProject(data);
+    needs = [];
+    assistances = [];
 
     }else {
       if (title == "" || title == "undefined") {
@@ -803,27 +835,29 @@ async function saveNewNeed() {
   document.querySelector("#needError").innerHTML = "";
   let token = localStorage.getItem("token");
   let input = document.getElementById("save-need");
-  if(input.value != "" && input.value != "undefined") {
-    let data = { 
-      "needType" : input.value
+  if (input.value != "" && input.value != "undefined") {
+    let data = {
+      "needType": input.value
     };
-    try{
+    try {
       await fetch(URLNeeds, {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify(data),
-        headers: {"Content-type" : "application/json",
-                  "Authorization": "Bearer " + token,
-                  "Access-Control-Allow-Origin": "*"},
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer " + token,
+          "Access-Control-Allow-Origin": "*"
+        },
       })
         .then(response => response.json())
         .then(json => updateCheckbox(json.id_Need, json.needType, "#needsData", "need-checkbox"));
-    }catch(error) {
+    } catch (error) {
       console.log(error)
     }
-    input.value = ""; 
-  }else{
-    if(input.value == "" || input.value == "undefined") {
+    input.value = "";
+  } else {
+    if (input.value == "" || input.value == "undefined") {
       document.querySelector("#needError").innerHTML = "Escriba su necesidad antes de guardar";
     } else {
       document.querySelector("#needError").innerHTML = "";
@@ -837,11 +871,11 @@ async function saveNewAssistance() {
   document.querySelector("#assistanceError").innerHTML = "";
   let token = localStorage.getItem("token");
   let input = document.getElementById("save-assistance");
-  if(input.value != "" && input.value != "undefined") {
-    let data = { 
-      "type": input.value 
+  if (input.value != "" && input.value != "undefined") {
+    let data = {
+      "type": input.value
     };
-    try{
+    try {
       await fetch(URLAssitances, {
         method: "POST",
         mode: 'cors',
@@ -961,7 +995,7 @@ function updateProject(id_project) {
     isActive = false;
   }
   if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
-  assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
+    assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
     document.querySelector("#titleError").innerHTML = "";
     document.querySelector("#descriptionError").innerHTML = "";
     document.querySelector("#needError").innerHTML = "";
@@ -1232,6 +1266,26 @@ async function getAdmins(url, project) {
   }
 }
 
+async function getUsers(url, project) {
+  let token = localStorage.getItem("token");
+  try {
+    let res = await fetch(url, {
+      "method": "GET",
+      "headers": { "Authorization": "Bearer " + token }
+    })
+
+    if (res.ok) {
+      let array = await res.json();
+      if (array) {
+        showUsers(array, project);
+      }
+    }
+  } catch (error) {
+    console.log("Fallo al obtener el JSON de la API.");
+    console.log(error);
+  }
+}
+
 function showNeeds(array, project) {
   let needContainer = document.querySelector("#needsData");
   array.forEach(need => {
@@ -1261,17 +1315,17 @@ function showNeeds(array, project) {
 function showAssistances(array, project) {
   let assistanceContainer = document.querySelector("#assistancesData");
   array.forEach(assistance => {
-      let article = document.createElement('article');
-      let input = document.createElement('input');
-      input.classList.add('checkbox-input');
-      input.type = 'checkbox';
-      input.name = "assistance-checkbox"
-      input.value = assistance.id_Assistance;
-      let label = document.createElement('label');
-      label.classList.add("checkbox-label");
-      label.textContent = assistance.type;
-      article.appendChild(input);
-      article.appendChild(label);
+    let article = document.createElement('article');
+    let input = document.createElement('input');
+    input.classList.add('checkbox-input');
+    input.type = 'checkbox';
+    input.name = "assistance-checkbox"
+    input.value = assistance.id_Assistance;
+    let label = document.createElement('label');
+    label.classList.add("checkbox-label");
+    label.textContent = assistance.type;
+    article.appendChild(input);
+    article.appendChild(label);
 
       if(project != null){ 
         for (let i = 0; i < project.assistances.length; i++) {
@@ -1311,4 +1365,29 @@ function showAdmins(array, project) {
   if(project != null) {
     adminSelect.value = project.administrador;
   }
+}
+
+
+function showUsers(array, project) {
+  console.log(array, project)
+  let referentSelect = document.querySelector("#referentSelect");
+  array.forEach(referent => {
+    let option = document.createElement('option');
+    option.value = referent.id;
+    option.label = referent.username;
+    referentSelect.appendChild(option);
+  })
+
+  if (project != null) {
+    referentSelect.value = null;
+  }
+}
+
+//Toggle Acoordion en Cargar Proyecto
+function toggleAccordion(button) {
+  const accordionContent = button.nextElementSibling;
+
+  button.classList.toggle('accordion--expanded');
+  accordionContent.style.maxHeight =
+    accordionContent.style.maxHeight ? null : `${accordionContent.scrollHeight}px`;
 }
