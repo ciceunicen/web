@@ -120,7 +120,7 @@ flex-direction: column;
     height: 100px;
     background-color: aqua;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
 
     background-color: #74AC24;  

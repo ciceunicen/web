@@ -41,29 +41,7 @@ function mostrarHomeEmprendedor(){
         async text => {
           document.querySelector(".navbar").innerHTML = text;
 
-          const notificacionesContainer = document.querySelector(".notificaciones-container");
-          const iconoNotificacion = document.querySelector(".icono-notificacion");
-
-          iconoNotificacion.addEventListener("click", async () => {
-              notificacionesContainer.classList.toggle("hidden");
-              if (notificacionesContainer.classList.contains("hidden")) {
-                const DTONotifications = await setEntrepreneurNotificationsAsRead(user);
-                showNotifications(DTONotifications.notifications);
-
-                if (DTONotifications.readQuantity > 0) {
-                  iconoNotificacion.setAttribute("src", "../img/Icono-notificacion2.svg");
-                } else {
-                  iconoNotificacion.setAttribute("src", "../img/Icono-notificacion1.svg");
-                }
-              }
-          });
-
-          const DTONotifications = await getEntrepreneurNotifications(user);
-          showNotifications(DTONotifications.notifications);
-
-          if (DTONotifications.readQuantity > 0) {
-            iconoNotificacion.setAttribute("src", "../img/Icono-notificacion2.svg");
-          }
+          manageNotifications();
 
           getAllProjectsByEntrepreneur(emprendedorId).then(json => mostrarProyectosDeEmprendedor(json));
           logout();
@@ -75,36 +53,6 @@ function mostrarHomeEmprendedor(){
     );
   } else {
     console.error('Error al obtener el ID del emprendedor desde el local storage.');
-  }
-}
-
-function showNotifications(notifications) {
-  const notificationsSection = document.querySelector(".notificaciones");
-  let dateFromDatabase = null;
-  let formattedDate = null;
-
-  notificationsSection.innerHTML = "";
-  for (let notification of notifications) {
-    dateFromDatabase = new Date(notification.date);
-    formattedDate = dateFromDatabase.toLocaleString('es-AR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
-
-    notificationsSection.innerHTML += `<article>
-      <p>${notification.message}</p>
-      <p>${formattedDate}</p>
-    </article>`
-
-    let lastNotification = null;
-    if (!notification.isRead) {
-      lastNotification = notificationsSection.lastElementChild;
-      lastNotification.setAttribute("class", "notReaded");
-    }
   }
 }
 
