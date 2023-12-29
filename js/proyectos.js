@@ -1236,12 +1236,14 @@ async function getDiagnosticById(idRecord) {
 function showDiagnostic(id) {
   let modal = document.querySelector('#modal');
   modal.classList.add('modal-flex');
+  document.querySelector("body").style.overflow = "hidden";
   if(modal.classList.contains('modal-flex')) {
     getDiagnosticById(id);
   }
-  modal.onclick = function(){
-      modal.classList.remove('modal-flex');
-  } 
+  document.querySelector('#closeModal').addEventListener('click', ()=>{
+    document.querySelector("body").style.overflow = "";
+    modal.classList.remove('modal-flex');
+  });
 }
 
 function showDiagnosticInModal(array) {

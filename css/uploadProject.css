@@ -208,6 +208,12 @@ input {
     display: flex;
   }
 
+  .flex-modal-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   .modal-content-diagnostic{
     width: 680px;
     height: auto;
