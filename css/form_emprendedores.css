@@ -220,7 +220,8 @@ select {
 }
 
 .nav-item:hover,
-.closeSession:hover {
+.closeSession:hover,
+ #btn-back:hover {
     background-color: #5b881d;
 }
 
@@ -228,6 +229,22 @@ select {
 
     width: 70%;
     height: auto;
+}
+
+#btn-back{
+    font-weight: normal;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF !important;
+    padding-top: 0 !important;
+    padding-bottom: 0;
+    height: 100px;
+    width: 100px;
+}
+
+#btn-back svg {
+    margin-right: 1%;
 }
 
 .closeSession {
