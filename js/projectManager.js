@@ -75,7 +75,12 @@ function showDataProjectManager(projectManager) {
 }
 
 //TODO LISTA EMPRENDEDORES
-function generarTablaEmprendedores(json) {
+function generarTablaEmprendedores(json, pagAnterior) {
+    window.location.hash = 'emprendedores';
+    console.log("generarTablaEmprendedores: "+ pagAnterior );
+    removerEventoClic(pagAnterior);
+    agregarEventoClic(pagAnterior);
+
     let array = json.content;
     let container = document.querySelector(".projectManagersTable");
     container.innerHTML = "";
@@ -93,7 +98,7 @@ function generarTablaEmprendedores(json) {
         input.setAttribute("id", projectManager.id_ProjectManager);
         input.setAttribute("class", "btn_save_green verMas");
         cell5.appendChild(input);
-        document.querySelector(".verMas").addEventListener("click", () => { getProjectManager(projectManager.id_ProjectManager).then(json => mostrarEmprendedor(json)) });
+        document.querySelector(".verMas").addEventListener("click", () => { getProjectManager(projectManager.id_ProjectManager).then(json => mostrarEmprendedor(json, "emprendedores")) });
         cell1.innerHTML = projectManager.name;
         //cambiar cuando este la entidad administrador, utilizar nombre y apellido
         cell2.innerHTML = projectManager.surname;

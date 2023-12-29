@@ -8,6 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const tokin = localStorage.getItem("token");
     obtenerUsuarios(URL_ROL_USER);
 
+    document.querySelector("#btn-back").addEventListener("click", ()=>{
+        window.location.replace('./dashboard.html');
+    });
+
     function buttons_action() {
         let btnsRol = document.querySelectorAll('.btn-detalles');
         btnsRol.forEach(btn => {

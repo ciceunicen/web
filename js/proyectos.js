@@ -60,7 +60,7 @@ function borrarProyecto(id_Project, id_Admin, projectManager = 0) {
 
 //GET PROYECTO
 function getProyecto(id) {
-  return fetch(URLProject + "/" + id, {
+  return fetch(URLProject + "/" + id,{
     mode: 'cors',
 
     "headers": {
@@ -111,7 +111,7 @@ function getAllProjectsByEntrepreneur(entrepreneurId) {
 
 //GET DE TODOS LOS PROYECTOS BORRADOS
 function getAllDeleteProjects(page = 1) {
-  return fetch(URLProject + "/removed/page/" + page, {
+  return fetch(URLProject + "/removed/page/" + page,{
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
@@ -129,7 +129,7 @@ function getAllDeleteProjects(page = 1) {
 function getFilterProjects(datos, pagina) {
   let url = new URL(URLProject + "/filters/page/" + pagina);
   let params = new URLSearchParams(datos);
-  return fetch(url + "?" + params, {
+  return fetch(url + "?" + params,{
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
@@ -148,13 +148,13 @@ function getFilterProjects(datos, pagina) {
 function getEntrepreneurFilterProjects(datos, pagina, radioButtonEstado) {
   let url = new URL(URLProject + "/entrepreneur/filters/page/" + pagina);
   let params = new URLSearchParams(datos);
-
+  
   let estadoParam = "";
   if (radioButtonEstado != "") {
     estadoParam = `&active=${radioButtonEstado}`;
   }
 
-  return fetch(url + `?${params}${estadoParam}`, {
+  return fetch(url + `?${params}${estadoParam}`,{
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
@@ -169,7 +169,7 @@ function getEntrepreneurFilterProjects(datos, pagina, radioButtonEstado) {
 
 //GET HISTORIAL DE PROYECTO
 function getProjectHistory(id) {
-  return fetch(URLProject + "/" + id + "/administrationRecords/page/" + page, {
+  return fetch(URLProject + "/" + id + "/administrationRecords/page/" + page,{
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
@@ -273,14 +273,14 @@ function cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages)
     })
   } else if (tablaUtilizada == "proyectosEmprendedor") {
     getAllProjectsByProjectManager(datosFiltro[0]).then(json => {
-      mostrarTabla(json, false);
+      mostrarTabla(json, false, "dashboard");
       comportamientoBotonesPaginado(pages);
     });
-  } else if (tablaUtilizada == "proyectos") {
-    getAllProjectsByEntrepreneur(page).then(json => {
-      mostrarTablaProyectosEmprendedor(json);
-      comportamientoBotonesPaginado(pages);
-    });
+    }else if (tablaUtilizada == "proyectos") {
+      getAllProjectsByEntrepreneur(page).then(json => {
+        mostrarTablaProyectosEmprendedor(json);
+        comportamientoBotonesPaginado(pages);
+      });
   } else if (tablaUtilizada == "proyectosEmprendedorFiltrados") {
     getEntrepreneurFilterProjects(datosFiltro, page, estadoFiltro).then(json => {
       mostrarTablaProyectosEmprendedor(json.content);
@@ -315,8 +315,11 @@ function comportamientoBotonesPaginado(pages) {
     document.querySelector("#nextPage").removeAttribute("disabled");
   }
 }
+
 //Generar tabla de proyectos
-function mostrarTabla(json, borrados, projectManager = false) {
+//function mostrarTabla(json, borrados, projectManager = false, pagAnterior) {
+function mostrarTabla(json, borrados, pagAnterior, projectManager = false) {
+  console.log("mostrarTabla: " + pagAnterior)
   let user = JSON.parse(localStorage.getItem('usuario'));
   if (user.rolType.toLowerCase() == 'personal del cice') {
     listadoHTML = "listProjectsPersonalCICE.html";
@@ -351,6 +354,9 @@ function mostrarTabla(json, borrados, projectManager = false) {
     }
     var cell4 = row.insertCell(cellsCount++);
     if (borrados) {
+      pagAnterior = "proyectos";
+      removerEventoClic(pagAnterior);
+      agregarEventoClic(pagAnterior);
       var cell5 = row.insertCell(cellsCount++);
       cell1.innerHTML = proyecto.project.title;
       cell2.innerHTML = proyecto.project.projectManager.name + " " + proyecto.project.projectManager.surname;
@@ -367,7 +373,10 @@ function mostrarTabla(json, borrados, projectManager = false) {
       input.setAttribute("id", proyecto.id_Project);
       input.setAttribute("class", "btn_save_green verMas");
       cell4.appendChild(input);
-      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
+      //let pagAnterior = "proyectos";
+      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json, pagAnterior));
+        window.location.hash = `detallesProyecto`;
+      });
       //creo botón de borrar para cada proyecto
       var btn_delete = document.createElement("input");
       btn_delete.setAttribute("type", "button");
@@ -391,6 +400,9 @@ function mostrarTabla(json, borrados, projectManager = false) {
 function mostrarTablaProyectosEmprendedor(json) {
   let array = json;
 
+  removerEventoClic("dashboard");
+  agregarEventoClic("dashboard");
+
   if (Array.isArray(array)) {
     let container = document.querySelector(".list");
     container.innerHTML = "";
@@ -412,40 +424,7 @@ function mostrarTablaProyectosEmprendedor(json) {
       input.setAttribute("class", "btn_save_green verMas");
       cell4.appendChild(input);
 
-      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
-    }
-  } else {
-    console.error("El array de proyectos está vacío o no está definido.");
-  }
-}
-
-//muestra los proyectos de un emprendedor
-function mostrarTablaProyectosEmprendedor(json) {
-  console.log(json);
-  let array = json;
-
-  if (Array.isArray(array) && array.length > 0) {
-    let container = document.querySelector(".list");
-    container.innerHTML = "";
-    for (let i = array.length - 1; i >= 0; i--) {
-      const proyecto = array[i];
-      var row = container.insertRow(0);
-      var cell1 = row.insertCell(0);
-      var cell2 = row.insertCell(1);
-      var cell3 = row.insertCell(2);
-      var cell4 = row.insertCell(3);
-
-      cell1.innerHTML = proyecto.title;
-      cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
-      cell3.innerHTML = proyecto.stage.stage_type;
-      let input = document.createElement("input");
-      input.setAttribute("type", "button");
-      input.setAttribute("value", "Ver más");
-      input.setAttribute("id", proyecto.id_Project);
-      input.setAttribute("class", "btn_save_green verMas");
-      cell4.appendChild(input);
-
-      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
+      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json, "proyectosEmprendedor")) });
     }
   } else {
     console.error("El array de proyectos está vacío o no está definido.");
@@ -524,7 +503,7 @@ function updateCheckbox(checkboxValue, checkboxLabel, containerType, checkboxNam
   input.value = checkboxValue
   let label = document.createElement('label');
   label.classList.add("checkbox-label");
-  label.textContent = checkboxLabel;
+  label.textContent = checkboxLabel;        
   article.appendChild(input);
   article.appendChild(label);
   input.checked = true;
@@ -660,89 +639,39 @@ function saveNewProject() {
     needs = [];
     assistances = [];
 
-  } else {
-    if (title == "" || title == "undefined") {
-      document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
-    } else {
-      document.querySelector("#titleError").innerHTML = "";
+    }else {
+      if (title == "" || title == "undefined") {
+        document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
+      } else {
+        document.querySelector("#titleError").innerHTML = "";
+      }
+      if (description == "" || description == "undefined") {
+        document.querySelector("#descriptionError").innerHTML = "Ingrese una descripción al proyecto";
+      } else {
+        document.querySelector("#descriptionError").innerHTML = "";
+      }
+      if (needs.length == 0) {
+        document.querySelector("#needError").innerHTML = "Seleccione al menos una necesidad";
+      } else {
+        document.querySelector("#needError").innerHTML = "";
+      }
+      if (assistances.length == 0) {
+        document.querySelector("#assistanceError").innerHTML = "Seleccione al menos un tipo de asistencia";
+      } else {
+        document.querySelector("#assistanceError").innerHTML = "";
+      }
+      if (stage == "no-select" || stage == "undefined") {
+        document.querySelector("#stageError").innerHTML = "Seleccione un estadio";
+      } else {
+        document.querySelector("#stageError").innerHTML = "";
+      }
+      if (admin == "no-select" || admin == "undefined") {
+        document.querySelector("#adminError").innerHTML = "Seleccione un administrador";
+      } else {
+        document.querySelector("#adminError").innerHTML = "";
+      }
     }
-    if (description == "" || description == "undefined") {
-      document.querySelector("#descriptionError").innerHTML = "Ingrese una descripción al proyecto";
-    } else {
-      document.querySelector("#descriptionError").innerHTML = "";
-    }
-    if (needs.length == 0) {
-      document.querySelector("#needError").innerHTML = "Seleccione al menos una necesidad";
-    } else {
-      document.querySelector("#needError").innerHTML = "";
-    }
-    if (assistances.length == 0) {
-      document.querySelector("#assistanceError").innerHTML = "Seleccione al menos un tipo de asistencia";
-    } else {
-      document.querySelector("#assistanceError").innerHTML = "";
-    }
-    if (stage == "no-select" || stage == "undefined") {
-      document.querySelector("#stageError").innerHTML = "Seleccione un estadio";
-    } else {
-      document.querySelector("#stageError").innerHTML = "";
-    }
-    if (admin == "no-select" || admin == "undefined") {
-      document.querySelector("#adminError").innerHTML = "Seleccione un administrador";
-    } else {
-      document.querySelector("#adminError").innerHTML = "";
-    }
-
-    // Validar campos del referente
-    if (referent === 'no-select' || referent === 'undefined') {
-      document.querySelector("#referentError").innerHTML = "Seleccione un usuario para el rol de referente";
-      referentError = true;
-    } else {
-      document.querySelector("#referentError").innerHTML = "";
-    }
-    if (referent_mail === '' || referent_mail === 'undefined') {
-      document.querySelector("#referent-mail-error").innerHTML = "Ingrese el correo del referente";
-      referentError = true;
-    } else {
-      document.querySelector("#referent-mail-error").innerHTML = "";
-    }
-    if (referent_telefono === '' || referent_telefono === 'undefined') {
-      document.querySelector("#referent-telefono-error").innerHTML = "Ingrese el teléfono del referente";
-      referentError = true;
-    } else {
-      document.querySelector("#referent-telefono-error").innerHTML = "";
-    }
-    if (referent_localidad === '' || referent_localidad === 'undefined') {
-      document.querySelector("#referent-localidad-error").innerHTML = "Ingrese localidad del referente";
-      referentError = true;
-    } else {
-      document.querySelector("#referent-localidad-error").innerHTML = "";
-    }
-    if (referent_ocupacion === '' || referent_ocupacion === 'undefined') {
-      document.querySelector("#referent-ocupacion-error").innerHTML = "Ingrese la ocupación del referente";
-      referentError = true;
-    } else {
-      document.querySelector("#referent-ocupacion-error").innerHTML = "";
-    }
-    if (referent_vinculacion === '' || referent_vinculacion === 'undefined') {
-      document.querySelector("#referent-vinculacion-error").innerHTML = "Ingrese la vinculación con UNICEN del referente";
-      referentError = true;
-    } else {
-      document.querySelector("#referent-vinculacion-error").innerHTML = "";
-    }
-    if (referent_facultad === '' || referent_facultad === 'undefined') {
-      document.querySelector("#referent-facultad-error").innerHTML = "Ingrese la facultad de UNICEN a la que pertenece el referente";
-      referentError = true;
-    } else {
-      document.querySelector("#referent-facultad-error").innerHTML = "";
-    }
-    if (referent_organizacion === '' || referent_organizacion === 'undefined') {
-      document.querySelector("#referent-organizacion-error").innerHTML = "Ingrese la organización asociativa a la que pertenece el referente";
-      referentError = true;
-    } else {
-      document.querySelector("#referent-organizacion-error").innerHTML = "";
-    }
-  }
-}
+  }  
 
 //GUARDAR NECESIDADES EN EDITAR PROYECTO
 function guardarNecesidades() {
@@ -752,11 +681,9 @@ function guardarNecesidades() {
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(json),
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Authorization": "Bearer " + token,
-      "Access-Control-Allow-Origin": "*"
-    },
+    headers : {"Content-Type" : "application/json; charset=utf-8",
+                "Authorization" : "Bearer " + token,
+                "Access-Control-Allow-Origin": "*"},
   })
     .then(response => response.json())
     .then(json => actualizacionSelect(json.id_Need, json.needType, "needs_created", "multiSelectsNeedsCreated"));
@@ -770,11 +697,9 @@ function guardarAsistencias() {
     method: "POST",
     mode: 'cors',
     body: JSON.stringify(json),
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Authorization": "Bearer " + token,
-      "Access-Control-Allow-Origin": "*"
-    },
+    headers : {"Content-Type" : "application/json; charset=utf-8",
+                "Authorization" : "Bearer " + token,
+                "Access-Control-Allow-Origin": "*"},
   })
     .then(response => response.json())
     .then(json => actualizacionSelect(json.id_Assistance, json.type, "assistances_created", "multiSelectsAssistancesCreated"));
@@ -831,20 +756,18 @@ async function saveNewAssistance() {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify(data),
-        headers: {
-          "Content-type": "application/json",
-          "Authorization": "Bearer " + token,
-          "Access-Control-Allow-Origin": "*"
-        },
+        headers: {"Content-type" : "application/json",
+                  "Authorization": "Bearer " + token,
+                  "Access-Control-Allow-Origin": "*"},
       })
         .then(response => response.json())
         .then(json => updateCheckbox(json.id_Assistance, json.type, "#assistancesData", "assistance-checkbox"));
-    } catch (error) {
+    }catch(error) {
       console.log(error)
     }
-    input.value = "";
-  } else {
-    if (input.value == "" || input.value == "undefined") {
+    input.value = "";  
+  }else{
+    if(input.value == "" || input.value == "undefined") {
       document.querySelector("#assistanceError").innerHTML = "Escriba su asistencia antes de guardar";
     } else {
       document.querySelector("#assistanceError").innerHTML = "";
@@ -888,10 +811,6 @@ function selectOnlyOneStage() {
 
 //CONVIERTE ARRAY A LISTA PARA MOSTRARLA EN LOS DATOS DEL PROYECTO
 function mostrarArray(contenedor, arreglo, dato, proyecto) {
-  console.log("En mostrarProyecto arreglo: " + arreglo) //undefined
-  console.log("En mostrarProyecto proyecto: " + proyecto) //undefined
-  console.log("Tipo de arreglo:", typeof arreglo);
-  console.log("Propiedad en elemento:", dato);
   for (let i = 0; i < arreglo.length; i++) {
     var elemento = arreglo[i];
     if (contenedor == "#files" || contenedor == "#files_edit") {//para adjuntos
@@ -947,13 +866,13 @@ function updateProject(id_project) {
   let description = formData.get('description');
   let needsCheckboxes = document.querySelectorAll('input[name="need-checkbox"]:checked');
   needsCheckboxes.forEach((checkbox) => {
-    needs.push(checkbox.value);
+      needs.push(checkbox.value);
   });
   let assistancesCheckboxes = document.querySelectorAll('input[name="assistance-checkbox"]:checked');
   assistancesCheckboxes.forEach((checkbox) => {
-    assistances.push(checkbox.value);
+      assistances.push(checkbox.value);
   });
-  let stage = formData.get('stage-select');
+  let stage = formData.get('stage-select');   
   let admin = formData.get('admin-select');
   let isActive = document.querySelector('input[name="estado"]:checked').value;
   if (isActive === "true") {
@@ -971,19 +890,19 @@ function updateProject(id_project) {
     document.querySelector("#adminError").innerHTML = "";
 
     let data = {
-      "title": title,
-      "description": description,
-      "stage": stage,
-      //"is_active": isActive,
-      "assistances": assistances,
-      "files": null,
-      "needs": needs,
-      "newFiles": null
+      "title" : title,
+      "description" : description,
+      "stage" : stage,
+      "is_active": isActive,
+      "assistances" : assistances,
+      "files" : null,       
+      "needs" : needs,       
+      "newFiles" : null
     }
     modificarProyecto(id_project, data);
     needs = [];
     assistances = [];
-  } else {
+  }else {
     if (title == "" || title == "undefined") {
       document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
     } else {
@@ -1065,77 +984,77 @@ function selectedOptions(idSelect, multiSelect) {
 async function getNeeds(url, project) {
   let token = localStorage.getItem("token");
   try {
-    let res = await fetch(url, {
-      "method": "GET",
-      "headers": { "Authorization": "Bearer " + token }
-    })
-    if (res.ok) {
-      let array = await res.json();
-      if (array) {
-        showNeeds(array, project);
+      let res = await fetch(url, {
+          "method": "GET",
+          "headers": {"Authorization": "Bearer " + token}
+      })
+      if (res.ok) {
+          let array = await res.json();
+          if (array) {
+              showNeeds(array, project);
+          }
       }
-    }
   } catch (error) {
-    console.log("Fallo al obtener el JSON de la API.");
-    console.log(error);
+      console.log("Fallo al obtener el JSON de la API.");
+      console.log(error);
   }
 }
 
 async function getAssistances(url, project) {
   let token = localStorage.getItem("token");
   try {
-    let res = await fetch(url, {
-      "method": "GET",
-      "headers": { "Authorization": "Bearer " + token }
-    })
-    if (res.ok) {
-      let array = await res.json();
-      if (array) {
-        showAssistances(array, project);
+      let res = await fetch(url, {
+          "method": "GET",
+          "headers" : {"Authorization": "Bearer " + token}
+      })
+      if (res.ok) {
+          let array = await res.json();
+          if (array) {
+              showAssistances(array, project);
+          }
       }
-    }
   } catch (error) {
-    console.log("Fallo al obtener el JSON de la API.");
-    console.log(error);
+      console.log("Fallo al obtener el JSON de la API.");
+      console.log(error);
   }
 }
 
 async function getStages(url, project) {
   let token = localStorage.getItem("token");
   try {
-    let res = await fetch(url, {
-      "method": "GET",
-      "headers": { "Authorization": "Bearer " + token }
-    })
-    if (res.ok) {
-      let array = await res.json();
-      if (array) {
-        showStages(array, project);
+      let res = await fetch(url, {
+          "method": "GET",
+          "headers" : {"Authorization": "Bearer " + token}
+      })
+      if (res.ok) {
+          let array = await res.json();
+          if (array) {
+              showStages(array, project);
+          }
       }
-    }
   } catch (error) {
-    console.log("Fallo al obtener el JSON de la API.");
-    console.log(error);
+      console.log("Fallo al obtener el JSON de la API.");
+      console.log(error);
   }
 }
 
 async function getAdmins(url, project) {
   let token = localStorage.getItem("token");
   try {
-    let res = await fetch(url, {
-      "method": "GET",
-      "headers": { "Authorization": "Bearer " + token }
-    })
-
-    if (res.ok) {
-      let array = await res.json();
-      if (array) {
-        showAdmins(array, project);
+      let res = await fetch(url, {
+          "method": "GET",
+          "headers" : {"Authorization": "Bearer " + token}
+      })
+      
+      if (res.ok) {
+          let array = await res.json();
+          if (array) {
+              showAdmins(array, project);
+          }
       }
-    }
   } catch (error) {
-    console.log("Fallo al obtener el JSON de la API.");
-    console.log(error);
+      console.log("Fallo al obtener el JSON de la API.");
+      console.log(error);
   }
 }
 
@@ -1162,26 +1081,26 @@ async function getUsers(url, project) {
 function showNeeds(array, project) {
   let needContainer = document.querySelector("#needsData");
   array.forEach(need => {
-    let article = document.createElement('article');
-    let input = document.createElement('input');
-    input.classList.add('checkbox-input');
-    input.type = 'checkbox';
-    input.name = "need-checkbox"
-    input.value = need.id_Need;
-    let label = document.createElement('label');
-    label.classList.add("checkbox-label");
-    label.textContent = need.needType;
-    article.appendChild(input);
-    article.appendChild(label);
+      let article = document.createElement('article');
+      let input = document.createElement('input');
+      input.classList.add('checkbox-input');
+      input.type = 'checkbox';
+      input.name = "need-checkbox"
+      input.value = need.id_Need;
+      let label = document.createElement('label');
+      label.classList.add("checkbox-label");
+      label.textContent = need.needType;        
+      article.appendChild(input);
+      article.appendChild(label);
 
-    if (project != null) {
-      for (let i = 0; i < project.needs.length; i++) {
-        if (project.needs[i].id_Need == input.value) {
-          input.checked = true;
+      if(project != null) {
+        for (let i = 0; i < project.needs.length; i++) {
+          if (project.needs[i].id_Need == input.value) {
+            input.checked = true;
+          }
         }
       }
-    }
-    needContainer.appendChild(article);
+      needContainer.appendChild(article);  
   });
 }
 
@@ -1199,16 +1118,15 @@ function showAssistances(array, project) {
     label.textContent = assistance.type;
     article.appendChild(input);
     article.appendChild(label);
-
+    
     if (project != null) {
       for (let i = 0; i < project.assistanceType.length; i++) {
         if (project.assistanceType[i].id_Assistance == input.value) {
           input.checked = true;
         }
       }
-    }
-
-    assistanceContainer.appendChild(article);
+    
+      assistanceContainer.appendChild(article);      
   });
 }
 
@@ -1218,10 +1136,10 @@ function showStages(array, project) {
     let option = document.createElement('option');
     option.value = stage.id_Stage;
     option.label = stage.stage_type;
-    stagesContainer.appendChild(option);
+    stagesContainer.appendChild(option);   
   });
 
-  if (project != null) {
+  if(project != null) {
     stagesContainer.value = project.stage.id_Stage;
   }
 }
@@ -1235,7 +1153,7 @@ function showAdmins(array, project) {
     adminSelect.appendChild(option);
   })
 
-  if (project != null) {
+  if(project != null) {
     adminSelect.value = project.administrador;
   }
 }

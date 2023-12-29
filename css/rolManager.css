@@ -14,6 +14,11 @@ button {
 
 
 /*------------INICIO HEADER-NAVBAR-------------*/
+#navBack {
+    align-items: center; /* Cambiado a "center" para centrar verticalmente */
+    margin-right: auto; /* Mueve el botón "Volver" a la izquierda */
+}
+
 
 .user-logout {
     display: flex;
