@@ -423,44 +423,14 @@ function mostrarTablaProyectosEmprendedor(json) {
       input.setAttribute("class", "btn_save_green verMas");
       cell4.appendChild(input);
 
-      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
-    }
-  } else {
-    console.error("El array de proyectos está vacío o no está definido.");
-  }
-}
-
-//muestra los proyectos de un emprendedor
-function mostrarTablaProyectosEmprendedor(json) {
-  let array = json;
-
-  if (Array.isArray(array) && array.length > 0) {
-    let container = document.querySelector(".list");
-    container.innerHTML = "";
-    for (let i = array.length - 1; i >= 0; i--) {
-      const proyecto = array[i];
-      var row = container.insertRow(0);
-      var cell1 = row.insertCell(0);
-      var cell2 = row.insertCell(1);
-      var cell3 = row.insertCell(2);
-      var cell4 = row.insertCell(3);
-
-      cell1.innerHTML = proyecto.title;
-      cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
-      cell3.innerHTML = proyecto.stage;
-      let input = document.createElement("input");
-      input.setAttribute("type", "button");
-      input.setAttribute("value", "Ver más");
-      input.setAttribute("id", proyecto.id_Project);
-      input.setAttribute("class", "btn_save_green verMas");
-      cell4.appendChild(input);
-
       document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json, "proyectosEmprendedor")) });
     }
   } else {
     console.error("El array de proyectos está vacío o no está definido.");
   }
 }
+
+
 
 //CAPTURA LAS OPCIONES SELECCIONADAS DEL FILTRO DE PROYECTOS
 function captureSelectedOptions() {
