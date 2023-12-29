@@ -1,3 +1,38 @@
+.project-section .accordion {
+    cursor: pointer;
+    margin:  0.5rem 0.5rem 0 0.5rem;
+  }
+    
+  .accordion + .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  
+
+/* Aquí puedes agregar tus estilos CSS */
+.form-container {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+}
+.form-field {
+    margin: 20px 0;
+}
+.form-field label {
+    display: block;
+    margin-bottom: 10px;
+}
+.form-field input, .form-field textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+
 .project-section {
     width: 80%;
     margin: 0% 10%;
