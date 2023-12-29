@@ -58,6 +58,10 @@
     display: none;
 }
 
+.notificaciones-container.dashboard {
+    right: 2.5rem;
+}
+
 .notificaciones {
     height: 60vh;
     overflow-y: scroll;
@@ -82,15 +86,6 @@
 .notificaciones > article span {
     font-weight: 700;
 }
-
-/* .notificaciones article {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 1%;
-    border-bottom: solid 1px #FFFFFF;
-} */
 
 .notificaciones-top, .notificaciones-bottom {
     padding: 1%;
@@ -125,6 +120,9 @@
     .notificaciones-container {
         right: 10rem;
     }
+    .notificaciones-container.dashboard {
+        right: 3rem;
+    }
 }
 @media screen and (min-width: 1366px){
     .nav-item{
@@ -134,5 +132,9 @@
 @media only screen and (min-width: 1800px) {
     .notificaciones-container {
         right: 12rem;
+    }
+
+    .notificaciones-container.dashboard {
+        right: 4.5rem;
     }
 }

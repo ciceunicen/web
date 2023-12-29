@@ -101,7 +101,7 @@ function showNotificationIcon() {
       const dashboardHeader = document.querySelector(".dashboard-header");
       if (dashboardHeader != null) {
         dashboardHeader.innerHTML += `<img class="icono-notificacion" src="../img/Icono-notificacion1.svg" alt="notificacion">
-        <div class="notificaciones-container hidden">
+        <div class="notificaciones-container dashboard hidden">
             <div class="notificaciones-top">
                 <p>Notificaciones</p>
             </div>
