@@ -21,7 +21,7 @@ function mostrarHome(actualPage = 1, seccion = "emprendedores"){
         drawClickNav("crearProyecto");
         mostrarCargaProyecto();
       });
-      //HOME TEMPORAL
+      
       document.querySelector(`#${seccion}`).click();
 
       logout(); //Una vez cargado el NAV (se carga con parcial render), le agrego funcionalidad al boton creado
@@ -205,7 +205,8 @@ function mostrarCargaProyecto() {
       getNeeds(URLNeeds, null);
       getAssistances(URLAssitances, null);
       getStages(URLStages, null);
-      getAdmins(URLUsers, null)
+      getAdmins(URLUsers + "/rol/2", null);
+      getUsers(URLUsers);
       document.querySelector("#saveNeed").addEventListener('click', saveNewNeed);
       document.querySelector("#saveAssistance").addEventListener('click', saveNewAssistance);
       document.querySelector("#projectForm").addEventListener('submit', (e) =>{

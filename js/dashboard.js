@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     /*Admin / Superadmin */
     if(document.getElementById('listProjectsManager')!=null){
         let BtnListProjectsManager = document.getElementById('listProjectsManager').addEventListener('click', ()=>{
-            window.location.href = "./home.html";
+            window.location.href = "./home.html?proyectos";
         })
     }
 
