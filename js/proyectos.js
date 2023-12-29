@@ -196,11 +196,12 @@ async function modificarProyecto(id_proyecto, proyecto) {
       "Access-Control-Allow-Origin": "*",
     }
   });
-
   if (response.ok) {
     let json = await response.json();
-    console.log("Updated", json);
-    mostrarProyecto(json);
+    showSucess(".project-save", "Se han editado los datos exitosamente!");
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    } , 1500)
   } else {
     console.error("No se pudo editar el proyecto");
   }
@@ -403,7 +404,7 @@ function mostrarTablaProyectosEmprendedor(json) {
 
       cell1.innerHTML = proyecto.title;
       cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
-      cell3.innerHTML = proyecto.stage;
+      cell3.innerHTML = proyecto.stage.stage_type;
       let input = document.createElement("input");
       input.setAttribute("type", "button");
       input.setAttribute("value", "Ver más");
@@ -436,7 +437,7 @@ function mostrarTablaProyectosEmprendedor(json) {
 
       cell1.innerHTML = proyecto.title;
       cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
-      cell3.innerHTML = proyecto.stage;
+      cell3.innerHTML = proyecto.stage.stage_type;
       let input = document.createElement("input");
       input.setAttribute("type", "button");
       input.setAttribute("value", "Ver más");
@@ -973,7 +974,7 @@ function updateProject(id_project) {
       "title": title,
       "description": description,
       "stage": stage,
-      "is_active": isActive,
+      //"is_active": isActive,
       "assistances": assistances,
       "files": null,
       "needs": needs,
@@ -1200,8 +1201,8 @@ function showAssistances(array, project) {
     article.appendChild(label);
 
     if (project != null) {
-      for (let i = 0; i < project.assistances.length; i++) {
-        if (project.assistances[i].id_Assistance == input.value) {
+      for (let i = 0; i < project.assistanceType.length; i++) {
+        if (project.assistanceType[i].id_Assistance == input.value) {
           input.checked = true;
         }
       }

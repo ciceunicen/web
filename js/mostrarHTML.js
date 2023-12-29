@@ -143,10 +143,10 @@ function mostrarProyecto(proyecto){
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#titulo").innerHTML += proyecto.title;
     document.querySelector("#descripcion").innerHTML += proyecto.description;
-    document.querySelector("#estadio").innerHTML += proyecto.stage;
+    document.querySelector("#estadio").innerHTML += proyecto.stage.stage_type;
     document.querySelector("#adminUsername").innerHTML += proyecto.adminUsername;
     document.querySelector("#adminEmail").innerHTML += proyecto.adminEmail;
-    mostrarArray("#asistencia", proyecto.assistanceType, "elemento.type");
+    //mostrarArray("#asistencia", proyecto.assistanceType, "elemento.type");
     if (user.rolType.toLowerCase() == "personal del cice" || user.rolType.toLowerCase() == "emprendedor") {
       let estadoDiv = document.querySelector("#estadoDiv");
       estadoDiv.classList.remove("hide");
@@ -221,8 +221,8 @@ function mostrarCargaProyecto() {
 function mostrarCargaDiagnostico() {
   let dataBtn = document.querySelector("#projectData");
   let diagnosticBtn = document.querySelector("#projectDiagnostic");
-  let dataForm = document.querySelector(".project-loading");
-  let diagnosticFrom = document.querySelector(".diagnostic-loading");
+  let dataForm = document.querySelector(".project-loading-form");
+  let diagnosticFrom = document.querySelector(".diagnostic-loading-form");
   let user = JSON.parse(localStorage.getItem('usuario'));
   addProjectsToSelectInput();
 
