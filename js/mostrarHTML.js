@@ -47,15 +47,21 @@ function mostrarHomeEmprendedor(){
           iconoNotificacion.addEventListener("click", async () => {
               notificacionesContainer.classList.toggle("hidden");
               if (notificacionesContainer.classList.contains("hidden")) {
-                const notifications = await setEntrepreneurNotificationsAsRead(user);
-                showNotifications(notifications);
+                const DTONotifications = await setEntrepreneurNotificationsAsRead(user);
+                showNotifications(DTONotifications.notifications);
+
+                if (DTONotifications.readQuantity > 0) {
+                  iconoNotificacion.setAttribute("src", "../img/Icono-notificacion2.svg");
+                } else {
+                  iconoNotificacion.setAttribute("src", "../img/Icono-notificacion1.svg");
+                }
               }
           });
 
-          const notifications = await getEntrepreneurNotifications(user);
-          showNotifications(notifications);
+          const DTONotifications = await getEntrepreneurNotifications(user);
+          showNotifications(DTONotifications.notifications);
 
-          if (notifications.length > 0) {
+          if (DTONotifications.readQuantity > 0) {
             iconoNotificacion.setAttribute("src", "../img/Icono-notificacion2.svg");
           }
 
