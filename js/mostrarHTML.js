@@ -198,7 +198,7 @@ function mostrarProyecto(proyecto, pagAnterior){
     document.querySelector("#estadio").innerHTML += proyecto.stage;
     document.querySelector("#adminUsername").innerHTML += proyecto.adminUsername;
     document.querySelector("#adminEmail").innerHTML += proyecto.adminEmail;
-    mostrarArray("#asistencia", proyecto.assistanceType, "elemento.type");
+    //mostrarArray("#asistencia", proyecto.assistanceType, "elemento.type");
     if (user.rolType.toLowerCase() == "personal del cice" || user.rolType.toLowerCase() == "emprendedor") {
       let estadoDiv = document.querySelector("#estadoDiv");
       estadoDiv.classList.remove("hide");
@@ -221,7 +221,6 @@ function mostrarProyecto(proyecto, pagAnterior){
       //evento para poder descargar todos sus archivos adjuntos
       downloadAllAttachmentsByProject(proyecto.title);
     });
-
     if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
       // ocultar el botón de editar
       let editarProyectoBtn = document.querySelector("#editarProyecto");
@@ -245,13 +244,17 @@ function mostrarCargaProyecto(pagAnterior) {
 
   mostrarArchivoHTML("cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
-      //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
-      // inicializarCargaProyecto(id_ProjectManager);
-      // cargaRenderNecesidades();
-      // cargaRenderAsistencia();
-      // partialRendercargaDatosEmprendedor(".datosEmprendedor",id_ProjectManager);
-      //Configuro Ckeckboxs dinamico de estadios
-      // getAllBaseURL(URLStages, 'estadios_checks');
+      let user = JSON.parse(localStorage.getItem('usuario'));
+      if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
+        // ocultar el botón registro de encuentros
+        let projectRegistryBtn = document.querySelector("#projectRegistry");
+        let mainBtns = document.querySelector('.mainBtns');
+        if (projectRegistryBtn) {
+          projectRegistryBtn.style.display = 'none';
+          mainBtns.style.gridTemplateColumns = "50% 50%";
+        }
+      }
+      document.querySelector("#projectData").classList.add('focus');
       getNeeds(URLNeeds, null);
       getAssistances(URLAssitances, null);
       getStages(URLStages, null);
@@ -263,7 +266,41 @@ function mostrarCargaProyecto(pagAnterior) {
         e.preventDefault();
         saveNewProject();
       })
+      mostrarCargaDiagnostico();
   });
+  
+}
+
+function mostrarCargaDiagnostico() {
+  let dataBtn = document.querySelector("#projectData");
+  let diagnosticBtn = document.querySelector("#projectDiagnostic");
+  let dataForm = document.querySelector(".project-loading-form");
+  let diagnosticFrom = document.querySelector(".diagnostic-loading-form");
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  addProjectsToSelectInput();
+
+  diagnosticBtn.addEventListener('click', ()=>{
+    if(dataBtn.classList.contains('focus')) {
+      dataBtn.classList.remove('focus');
+      diagnosticBtn.classList.add('focus');
+      dataForm.style.display = 'none';
+      diagnosticFrom.style.display = 'flex';
+    }
+  })
+  dataBtn.addEventListener('click', ()=>{
+    if(diagnosticBtn.classList.contains('focus')) {
+      diagnosticBtn.classList.remove('focus');
+      dataBtn.classList.add('focus');
+      diagnosticFrom.style.display = 'none';
+      dataForm.style.display = 'flex';
+    }
+  })
+  if(user) {
+    document.querySelector("#diagnosticForm").addEventListener('submit', (e) =>{
+      e.preventDefault();
+      saveNewDiagnostic(user.id);
+    })
+  }
 }
 
 function partialRendercargaDatosEmprendedor(div,id_emprendedor){

@@ -58,11 +58,11 @@
     </div>
     <div class="accordion-content">
         <div class="mainBtns">
-            <button class="btn-project-green" id="datos">Datos</button>
-            <button class="btn-project-green" id="diagnostico">Diagnóstico</button>
-            <button class="btn-project-green" id="diagnostico">Registro de encuentros</button>
+            <button class="btn-project-green" id="projectData">Datos</button>
+            <button class="btn-project-green" id="projectDiagnostic">Diagnóstico</button>
+            <button class="btn-project-green" id="projectRegistry">Registro de encuentros</button>
         </div>
-        <div class="project-loading">
+        <div class="project-loading-form">
             <form id="projectForm" action="#" method="POST">
                 <div class="input-section">
                     <label class="input-label" for="title" required>Título*</label>
@@ -80,7 +80,7 @@
                     <div class="save-input">
                         <div>
                             <label class="input-label" for="save-need">Otra</label>
-                        </div>
+                        </div>     
                         <input type="text" id="save-need" name="save-need">
                         <button id="saveNeed" class="btn-project-green">Guardar</button>
                     </div>
@@ -112,10 +112,41 @@
                     </select>
                     <p class="error" id="adminError"></p>
                 </div>
+                <!-- <div class="adjuntos">
+                    <label for="otra" >Adjuntar archivos</label>
+                    <input type="file" name="file-7" id="file-7" class="inputfile inputfile-7" data-multiple-caption="{count} archivos seleccionados" multiple />
+                    <label for="file-7" class="iborrainputfile">
+                        <strong class="iborrainputfile">Seleccionar archivo/s</strong>
+                        <span class="selectedFiles" id="count_files"></span>
+                    </label>
+                    <div id="div_paintBadFileAlert"></div>
+                    //CARGA DE VISTA PREVIA DE ADJUNTOS
+                    <div class="div_adjuntos" id="div_adjuntos"></div>
+                </div>  -->                              
                 <div class="saveContainer">
                     <input class="btn-project-blue" type="submit" value="Guardar">
-                    <div class="generalSave"></div>
+                    <div class="project-save"></div>
+                </div>     
+            </form>
+        </div>
+        <div class="diagnostic-loading-form">
+            <form id="diagnosticForm" action="#" method="POST">
+                <div class="input-section">
+                    <label class="input-label">Proyecto*</label>
+                    <select class="input-select" name="project-select" id="projectSelect">
+                        <option value="no-select">Seleccionar un proyecto</option>
+                    </select>
+                    <p class="error" id="projectError"></p>
                 </div>
+                <div class="input-section">
+                    <label class="input-label" for="description" required>Diagnostico*</label>
+                    <textarea type="text" id="diagnostic" name="diagnostic" placeholder="diagnóstico"></textarea>
+                    <p class="error" id="diagnosticError"></p>
+                </div>
+                <div class="saveContainer">
+                    <input class="btn-project-blue" type="submit" value="Guardar">
+                    <div class="diagnostic-save"></div>
+                </div>  
             </form>
         </div>
     </div>
