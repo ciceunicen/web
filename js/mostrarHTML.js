@@ -198,7 +198,7 @@ function mostrarProyecto(proyecto, pagAnterior){
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#titulo").innerHTML += proyecto.title;
     document.querySelector("#descripcion").innerHTML += proyecto.description;
-    document.querySelector("#estadio").innerHTML += proyecto.stage;
+    document.querySelector("#estadio").innerHTML += proyecto.stage.stage_type;
     document.querySelector("#adminUsername").innerHTML += proyecto.adminUsername;
     document.querySelector("#adminEmail").innerHTML += proyecto.adminEmail;
     
