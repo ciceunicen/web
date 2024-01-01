@@ -1104,6 +1104,7 @@ function showNeeds(array, project) {
 }
 
 function showAssistances(array, project) {
+  console.log("ASSISTANCES", array);
   let assistanceContainer = document.querySelector("#assistancesData");
   array.forEach(assistance => {
     let article = document.createElement('article');
@@ -1119,8 +1120,8 @@ function showAssistances(array, project) {
     article.appendChild(label);
     
     if (project != null) {
-      for (let i = 0; i < project.assistanceType.length; i++) {
-        if (project.assistanceType[i].id_Assistance == input.value) {
+      for (let i = 0; i < project.assistances.length; i++) {
+        if (project.assistances[i].id_Assistance == input.value) {
           input.checked = true;
         }
       }
