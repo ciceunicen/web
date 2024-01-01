@@ -116,6 +116,14 @@ button.closeSession{
     width: auto;
 }
 
+#btn-back{
+    font-weight: normal;
+}
+
+#btn-back svg {
+    margin-right: 1%;
+}
+
 @media only screen and (min-width: 1260px) {
     .notificaciones-container {
         right: 10rem;

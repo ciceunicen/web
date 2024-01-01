@@ -1,97 +1,170 @@
+<section class="project-section">
+    <div class="accordion project-title" tabindex="0" onclick="toggleAccordion(this)"> <p>Responsable del proyecto</p></div>
+    <div class="accordion-content">
+        <div class="project-loading">
+            <form id="referentForm" action="#" action="POST">
+                <div class="input-section">
+                    <label class="input-label">Nombre</label>
+                    <select class="input-select" name="referent-select" id="referentSelect">
+                        <option value="no-select">Seleccionar representante</option>
+                    </select>
+                    <p class="error" id="referentError"></p>
+                </div>
+                <div class="input-section">
+                    <label class="input-label" for="referent-telefono">Teléfono</label>
+                    <input class="form-input" type="text" id="referent-telefono" name="referent-telefono" value="">
+                    <p class="error" id="referent-telefono-error"></p>
+                </div>
+                <div class="input-section">
+                    <label class="input-label" for="referent-localidad">Localidad</label>
+                    <input class="form-input" type="text" id="referent-localidad" name="referent-localidad" value="">
+                    <p class="error" id="referent-localidad-error"></p>
+                </div>
+                <div class="input-section">
+                    <label class="input-label" for="referent-mail">Mail</label>
+                    <input class="form-input" type="email" id="referent-mail" name="referent-mail" value="">
+                    <p class="error" id="referent-mail-error"></p>
+                </div>
+                <div class="input-section">
+                    <label class="input-label" for="referent-ocupacion">Ocupación</label>
+                    <input class="form-input" type="text" id="referent-ocupacion" name="referent-ocupacion" value="">
+                    <p class="error" id="referent-ocupacion-error"></p>
+                </div>
+                <div class="input-section">
+                    <label class="input-label" for="referent-vinculacion">Vinculación con UNICEN</label>
+                    <input class="form-input" type="text" id="referent-vinculacion" name="referent-vinculacion" value="">
+                    <p class="error" id="referent-vinculacion-error"></p>
+                </div>
+                <div class="input-section">
+                    <label class="input-label" for="referent-facultad">Facultad a la que pertenece</label>
+                    <input class="form-input" type="text" id="referent-facultad" name="referent-facultad" value="">
+                    <p class="error" id="referent-facultad-error"></p>
+                </div>
+                <div class="input-section">
+                    <label class="input-label" for="referent-conocimiento">Medio de conocimiento del CICE</label>
+                    <input class="form-input" type="text" id="referent-conocimiento" name="referent-conocimiento" value="">
+                </div>
+                <div class="input-section">
+                    <label class="input-label" for="referent-organizacion">Organización asociativa</label>
+                    <input class="form-input" type="text" id="referent-organizacion" name="referent-organizacion" value="">
+                    <p class="error" id="referent-organizacion-error"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="historyProject" tabindex="0" onclick="toggleAccordion(this)"></div>
+    <div class="accordion project-title" tabindex="0" onclick="toggleAccordion(this)">
+        <p>PROYECTO</p>
+    </div>
+    <div class="accordion-content">
+        <div class="mainBtns">
+            <button class="btn-project-green" id="datos">Datos</button>
+            <button class="btn-project-green" id="diagnostico">Diagnóstico</button>
+            <button class="btn-project-green" id="diagnostico">Registro de encuentros</button>
+        </div>
+    </div>
+    <div class="project-loading">   
+        <form id="projectForm" action="#" method="POST">
+            <div class="input-section">
+                <label class="input-label" for="title" required>Título*</label>                                    
+                <input class="form-input" type="text" id="title" name="title" placeholder="titulo">
+                <p class="error" id="titleError"></p>
+            </div>
+            <div class="input-section">
+                <label class="input-label" for="description" required>Descripción*</label>
+                <textarea type="text" id="description" name="description" placeholder="descripción"></textarea>
+                <p class="error" id="descriptionError"></p>
+            </div>
 
-                    <section class="project-section">
-                        <div class="datosEmprendedor"></div>
-                        <div class="historyProject"></div>
-                        <div class="project-title">
-                            <p>PROYECTO</p>
-                        </div>
-                        <div class="mainBtns">
-                            <button class="btn-project-green" id="datos">Datos</button>
-                            <button class="btn-project-green" id="diagnostico">Diagnóstico</button>
-                            <button class="btn-project-green" id="diagnostico">Registro de encuentros</button>
-                        </div>
-                        <div class="project-loading">   
-                            <form id="projectForm" action="#" method="POST">
-                                <div class="input-section">
-                                    <label class="input-label" for="title" required>Título*</label>                                    
-                                    <input class="form-input" type="text" id="title" name="title" placeholder="titulo">
-                                    <p class="error" id="titleError"></p>
-                                </div>
-                                <div class="input-section">
-                                    <label class="input-label" for="description" required>Descripción*</label>
-                                    <textarea type="text" id="description" name="description" placeholder="descripción"></textarea>
-                                    <p class="error" id="descriptionError"></p>
-                                </div>
+            <!--Partial render checkboxs necesidades-->
+            <div class="input-section">
+                <label class="input-label">Necesidades*</label>
+                <div id="needsData"></div>
+                <div class="save-input">
+                    <div>
+                        <label class="input-label" for="save-need">Otra</label>
+                    </div>
+                    <input type="text" id="save-need" name="save-need">
+                    <button id="saveNeed" class="btn-project-green">Guardar</button>
+                </div>
+                <p class="error" id="needError"></p>
+            </div>
+            <!--Partial render checkboxs asistencias-->
+            <div class="input-section">
+                <label class="input-label">Asistencias*</label>
+                <div id="assistancesData"></div>
+                <div class="save-input">
+                    <div>
+                        <label class="input-label" for="save-assistance">Otra</label>
+                    </div>
+                    <input type="text" id="save-assistance" name="save-assistance">
+                    <button id="saveAssistance" class="btn-project-green">Guardar</button>
+                </div>
+                <p class="error" id="assistanceError"></p>
+            </div>
 
-                                <!--Partial render checkboxs necesidades-->
-                                <div class="input-section">
-                                    <label class="input-label">Necesidades*</label>
-                                    <div id="needsData"></div>
-                                    <div class="save-input">
-                                        <div>
-                                            <label class="input-label" for="save-need">Otra</label>
-                                        </div>
-                                        <input type="text" id="save-need" name="save-need">
-                                        <button id="saveNeed" class="btn-project-green">Guardar</button>
-                                    </div>
-                                    <p class="error" id="needError"></p>
-                                </div>
-                                <!--Partial render checkboxs asistencias-->
-                                <div class="input-section">
-                                    <label class="input-label">Asistencias*</label>
-                                    <div id="assistancesData"></div>
-                                    <div class="save-input">
-                                        <div>
-                                            <label class="input-label" for="save-assistance">Otra</label>
-                                        </div>
-                                        <input type="text" id="save-assistance" name="save-assistance">
-                                        <button id="saveAssistance" class="btn-project-green">Guardar</button>
-                                    </div>
-                                    <p class="error" id="assistanceError"></p>
-                                </div>
-
-                                <div class="input-section">
-                                    <label class="input-label">Estadio*</label>
-                                    <select class="input-select" name="stage-select" id="stageSelect">
-                                        <option value="no-select">Seleccionar estadio</option>
-                                    </select>
-                                    <p class="error" id="stageError"></p>
-                                </div>
-                                <label for="estados" class="estadosLabel">Estado*</label>
-                                <div class="estados" id="estados">
-                                    <!--Partial render radio buttons estados-->
-                                    <div>
-                                        <input type="radio" id="activo" name="estado" value=true />
-                                        <label for="activo">Activo</label>
-                                      </div>
-                                  
-                                      <div>
-                                        <input type="radio" id="noActivo" name="estado" value=false />
-                                        <label for="noActivo">No activo</label>
-                                      </div>
-                                </div>
-                                <div class="input-section">
-                                    <label class="input-label">Administrador*</label>
-                                    <select class="input-select" name="admin-select" id="adminSelect">
-                                        <option value="no-select">Seleccionar administrador</option>
-                                    </select>
-                                    <p class="error" id="adminError"></p>
-                                </div>
-                                <!-- <div class="adjuntos">
-                                    <label for="otra" >Adjuntar archivos</label>
-                                    <input type="file" name="file-7" id="file-7" class="inputfile inputfile-7" data-multiple-caption="{count} archivos seleccionados" multiple />
-                                    <label for="file-7" class="iborrainputfile">
-                                        <strong class="iborrainputfile">Seleccionar archivo/s</strong>
-                                        <span class="selectedFiles" id="count_files"></span>
-                                    </label>
-                                    <div id="div_paintBadFileAlert"></div>
-                                    //CARGA DE VISTA PREVIA DE ADJUNTOS
-                                    <div class="div_adjuntos" id="div_adjuntos"></div>
-                                </div>  -->                              
-                                <div class="saveContainer">
-                                    <input class="btn-project-blue" type="submit" value="Guardar">
-                                    <div class="generalSave"></div>
-                                </div>     
-                            </form>
-                        </div>
-                    </section>                   
+            <div class="input-section">
+                <label class="input-label">Estadio*</label>
+                <select class="input-select" name="stage-select" id="stageSelect">
+                    <option value="no-select">Seleccionar estadio</option>
+                </select>
+                <p class="error" id="stageError"></p>
+            </div>
+            <label for="estados" class="estadosLabel">Estado*</label>
+            <div class="estados" id="estados">
+                <!--Partial render radio buttons estados-->
+                <div>
+                    <input type="radio" id="activo" name="estado" value=true />
+                    <label for="activo">Activo</label>
+                </div>
+                
+                <div>
+                    <input type="radio" id="noActivo" name="estado" value=false />
+                    <label for="noActivo">No activo</label>
+                </div>
+            </div>
+            <div class="input-section">
+                <label class="input-label">Administrador*</label>
+                <select class="input-select" name="admin-select" id="adminSelect">
+                    <option value="no-select">Seleccionar administrador</option>
+                </select>
+                <p class="error" id="adminError"></p>
+            </div>
+            <!-- <div class="adjuntos">
+                <label for="otra" >Adjuntar archivos</label>
+                <input type="file" name="file-7" id="file-7" class="inputfile inputfile-7" data-multiple-caption="{count} archivos seleccionados" multiple />
+                <label for="file-7" class="iborrainputfile">
+                    <strong class="iborrainputfile">Seleccionar archivo/s</strong>
+                    <span class="selectedFiles" id="count_files"></span>
+                </label>
+                <div id="div_paintBadFileAlert"></div>
+                //CARGA DE VISTA PREVIA DE ADJUNTOS
+                <div class="div_adjuntos" id="div_adjuntos"></div>
+            </div>  -->                              
+            <div class="saveContainer">
+                <input class="btn-project-blue" type="submit" value="Guardar">
+                <div class="generalSave"></div>
+            </div>     
+        </form>
+    </div>
+    <div class="diagnostic-loading-form">
+        <form id="diagnosticForm" action="#" method="POST">
+            <div class="input-section">
+                <label class="input-label">Proyecto*</label>
+                <select class="input-select" name="project-select" id="projectSelect">
+                    <option value="no-select">Seleccionar un proyecto</option>
+                </select>
+                <p class="error" id="projectError"></p>
+            </div>
+            <div class="input-section">
+                <label class="input-label" for="description" required>Diagnostico*</label>
+                <textarea type="text" id="diagnostic" name="diagnostic" placeholder="diagnóstico"></textarea>
+                <p class="error" id="diagnosticError"></p>
+            </div>
+            <div class="saveContainer">
+                <input class="btn-project-blue" type="submit" value="Guardar">
+                <div class="diagnostic-save"></div>
+            </div>  
+        </form>
+    </div>
+</section>

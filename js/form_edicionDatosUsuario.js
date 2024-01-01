@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let textPasswordLength = document.getElementById('status-length');
     let btn_confirmar = document.querySelector('.form-submit-btn input');
 
+    document.querySelector("#btn-back").addEventListener("click", ()=>{
+        window.location.replace('./dashboard.html');
+    });
+
     const checkEditarUsuarioInput = () => {
         let inputs = formEditarUsuario.querySelectorAll('input');
         return Array.from(inputs).every(input => {

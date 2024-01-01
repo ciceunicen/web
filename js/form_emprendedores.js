@@ -29,6 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
         register();
     })
 
+    document.querySelector("#btn-back").addEventListener("click", ()=>{
+        window.location.replace('./dashboard.html');
+    });
 
     async function register() {
 

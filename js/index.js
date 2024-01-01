@@ -3,7 +3,7 @@ const URLProjectManager = "http://localhost:8080/projectmanagers";
 const URLNeeds = "http://localhost:8080/needs";
 const URLAssistances = "http://localhost:8080/assistances";
 const URLStages = "http://localhost:8080/stages";
-const URLUsers = "http://localhost:8080/usuarios/rol/2";
+const URLUsers = "http://localhost:8080/usuarios";
 let necesidades = [];
 let asistencias = [];
 let attachments = [];
@@ -26,7 +26,15 @@ document.addEventListener("DOMContentLoaded", function () {
     mostrarHomeEmprendedor();
   } else {
     // Para otros roles (admin/super admin)
-    mostrarHome();
+    const urlPath = location.pathname;
+    const urlSearch = location.search.substring(1);
+
+    if (urlSearch) {
+      window.history.replaceState(null, null, urlPath);
+      mostrarHome(1, urlSearch);
+    } else {
+      mostrarHome();
+    }
   }
 })
 

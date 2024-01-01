@@ -18,7 +18,7 @@ async function saveProject(data) {
                       "Access-Control-Allow-Origin": "*"},                     
       });
       if(res.ok) {
-          showSucess("Se han cargado los datos exitosamente!");
+          showSucess(".project-save", "Se han cargado los datos exitosamente!");
           setTimeout(() => {
             window.location.href = "dashboard.html";
           } , 1500)
@@ -105,8 +105,8 @@ function getAllProjectsByEntrepreneur(entrepreneurId) {
     },
 
   })
-      .then(response => response.json())
-      .then(json => { return json });
+    .then(response => response.json())
+    .then(json => { return json });
 }
 
 //GET DE TODOS LOS PROYECTOS BORRADOS
@@ -196,11 +196,12 @@ async function modificarProyecto(id_proyecto, proyecto) {
       "Access-Control-Allow-Origin": "*",
     }
   });
-
   if (response.ok) {
     let json = await response.json();
-    console.log("Updated", json);
-    mostrarProyecto(json);
+    showSucess(".project-save", "Se han editado los datos exitosamente!");
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    } , 1500)
   } else {
     console.error("No se pudo editar el proyecto");
   }
@@ -272,7 +273,7 @@ function cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages)
     })
   } else if (tablaUtilizada == "proyectosEmprendedor") {
     getAllProjectsByProjectManager(datosFiltro[0]).then(json => {
-      mostrarTabla(json, false);
+      mostrarTabla(json, false, "dashboard");
       comportamientoBotonesPaginado(pages);
     });
     }else if (tablaUtilizada == "proyectos") {
@@ -314,8 +315,11 @@ function comportamientoBotonesPaginado(pages) {
     document.querySelector("#nextPage").removeAttribute("disabled");
   }
 }
+
 //Generar tabla de proyectos
-function mostrarTabla(json, borrados, projectManager = false) {
+//function mostrarTabla(json, borrados, projectManager = false, pagAnterior) {
+function mostrarTabla(json, borrados, pagAnterior, projectManager = false) {
+  console.log("mostrarTabla: " + pagAnterior)
   let user = JSON.parse(localStorage.getItem('usuario'));
   if (user.rolType.toLowerCase() == 'personal del cice') {
     listadoHTML = "listProjectsPersonalCICE.html";
@@ -350,6 +354,9 @@ function mostrarTabla(json, borrados, projectManager = false) {
     }
     var cell4 = row.insertCell(cellsCount++);
     if (borrados) {
+      pagAnterior = "proyectos";
+      removerEventoClic(pagAnterior);
+      agregarEventoClic(pagAnterior);
       var cell5 = row.insertCell(cellsCount++);
       cell1.innerHTML = proyecto.project.title;
       cell2.innerHTML = proyecto.project.projectManager.name + " " + proyecto.project.projectManager.surname;
@@ -366,7 +373,10 @@ function mostrarTabla(json, borrados, projectManager = false) {
       input.setAttribute("id", proyecto.id_Project);
       input.setAttribute("class", "btn_save_green verMas");
       cell4.appendChild(input);
-      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
+      //let pagAnterior = "proyectos";
+      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json, pagAnterior));
+        window.location.hash = `detallesProyecto`;
+      });
       //creo botón de borrar para cada proyecto
       var btn_delete = document.createElement("input");
       btn_delete.setAttribute("type", "button");
@@ -390,6 +400,9 @@ function mostrarTabla(json, borrados, projectManager = false) {
 function mostrarTablaProyectosEmprendedor(json) {
   let array = json;
 
+  removerEventoClic("dashboard");
+  agregarEventoClic("dashboard");
+
   if (Array.isArray(array)) {
     let container = document.querySelector(".list");
     container.innerHTML = "";
@@ -403,7 +416,7 @@ function mostrarTablaProyectosEmprendedor(json) {
 
       cell1.innerHTML = proyecto.title;
       cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
-      cell3.innerHTML = proyecto.stage;
+      cell3.innerHTML = proyecto.stage.stage_type;
       let input = document.createElement("input");
       input.setAttribute("type", "button");
       input.setAttribute("value", "Ver más");
@@ -411,40 +424,7 @@ function mostrarTablaProyectosEmprendedor(json) {
       input.setAttribute("class", "btn_save_green verMas");
       cell4.appendChild(input);
 
-      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
-    }
-  } else {
-    console.error("El array de proyectos está vacío o no está definido.");
-  }
-}
-
-//muestra los proyectos de un emprendedor
-function mostrarTablaProyectosEmprendedor(json) {
-  console.log(json);
-  let array = json;
-
-  if (Array.isArray(array) && array.length > 0) {
-    let container = document.querySelector(".list");
-    container.innerHTML = "";
-    for (let i = array.length - 1; i >= 0; i--) {
-      const proyecto = array[i];
-      var row = container.insertRow(0);
-      var cell1 = row.insertCell(0);
-      var cell2 = row.insertCell(1);
-      var cell3 = row.insertCell(2);
-      var cell4 = row.insertCell(3);
-
-      cell1.innerHTML = proyecto.title;
-      cell2.innerHTML = proyecto.projectManager.name + " " + proyecto.projectManager.surname;
-      cell3.innerHTML = proyecto.stage;
-      let input = document.createElement("input");
-      input.setAttribute("type", "button");
-      input.setAttribute("value", "Ver más");
-      input.setAttribute("id", proyecto.id_Project);
-      input.setAttribute("class", "btn_save_green verMas");
-      cell4.appendChild(input);
-
-      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json)) });
+      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json, "proyectosEmprendedor")) });
     }
   } else {
     console.error("El array de proyectos está vacío o no está definido.");
@@ -584,48 +564,79 @@ function innerHTML(json, elementDOM) {
 
 //COMPRUEBA LOS CAMPOS DE CARGA DE PROYECTOS
 
-  //Metodos para cargar checkboxs disponibles en cargar proyecto
-  function saveNewProject(){
-    let form = document.querySelector("#projectForm");
-    let formData = new FormData(form);
-    let user = JSON.parse(localStorage.getItem('usuario'));
-    let needs = [];
-    let assistances = [];
-    let title = formData.get('title');
-    let description = formData.get('description');
-    let needsCheckboxes = document.querySelectorAll('input[name="need-checkbox"]:checked');
-    needsCheckboxes.forEach((checkbox) => {
-        needs.push(checkbox.value);
-    });
-    let assistancesCheckboxes = document.querySelectorAll('input[name="assistance-checkbox"]:checked');
-    assistancesCheckboxes.forEach((checkbox) => {
-        assistances.push(checkbox.value);
-    });
-    let stage = formData.get('stage-select');   
-    let admin = formData.get('admin-select');   
+//Metodos para cargar checkboxs disponibles en cargar proyecto
+function saveNewProject() {
+  let form = document.querySelector("#projectForm");
+  let referentForm = document.querySelector("#referentForm");
+  let formData = new FormData();
+  new FormData(form).forEach((value, key) => formData.append(key, value));
+  new FormData(referentForm).forEach((value, key) => formData.append(key, value));
 
-    if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
-    assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
-      document.querySelector("#titleError").innerHTML = "";
-      document.querySelector("#descriptionError").innerHTML = "";
-      document.querySelector("#needError").innerHTML = "";
-      document.querySelector("#assistanceError").innerHTML = "";
-      document.querySelector("#stageError").innerHTML = "";
-      document.querySelector("#adminError").innerHTML = "";
+  //datos del referente
+  let referent = formData.get('referent-select');
+  let referent_telefono = formData.get('referent-telefono');
+  let referent_localidad = formData.get('referent-localidad');
+  let referent_mail = formData.get('referent-mail');
+  let referent_ocupacion = formData.get('referent-ocupacion');
+  let referent_vinculacion = formData.get('referent-vinculacion');
+  let referent_facultad = formData.get('referent-facultad');
+  let referent_conocimiento = formData.get('referent-conocimiento');
+  let referent_organizacion = formData.get('referent-organizacion');
 
-      let data = {
-          "id_ProjectManager": user.id,
-          "title": title,
-          "description": description,
-          "stage": stage,
-          "assistances": assistances,
-          "files": null,
-          "needs": needs,
-          "id_Admin": admin
-      }
-      saveProject(data);
-      needs = [];
-      assistances = [];
+  //datos del proyecto
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  let needs = [];
+  let assistances = [];
+  let title = formData.get('title');
+  let description = formData.get('description');
+  let needsCheckboxes = document.querySelectorAll('input[name="need-checkbox"]:checked');
+  needsCheckboxes.forEach((checkbox) => {
+    needs.push(checkbox.value);
+  });
+  let assistancesCheckboxes = document.querySelectorAll('input[name="assistance-checkbox"]:checked');
+  assistancesCheckboxes.forEach((checkbox) => {
+    assistances.push(checkbox.value);
+  });
+  let stage = formData.get('stage-select');
+  let admin = formData.get('admin-select');
+  //fin de datos del proyecto
+
+  if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
+    assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")
+    && (referent != "" && referent != "undefined") && (referent_telefono != "" && referent_telefono != "undefined") && (referent_localidad != "" && referent_localidad != "undefined")
+    && (referent_mail != "" && referent_mail != "undefined") && (referent_vinculacion != "" && referent_vinculacion != "undefined") && (referent_facultad != "" && referent_facultad != "undefined")
+    && (referent_organizacion != "" && referent_organizacion != "undefined")) {
+    document.querySelector("#titleError").innerHTML = "";
+    document.querySelector("#descriptionError").innerHTML = "";
+    document.querySelector("#needError").innerHTML = "";
+    document.querySelector("#assistanceError").innerHTML = "";
+    document.querySelector("#stageError").innerHTML = "";
+    document.querySelector("#adminError").innerHTML = "";
+
+    let data = {
+      "id_ProjectManager": user.id,
+      "title": title,
+      "description": description,
+      "stage": stage,
+      "assistances": assistances,
+      "files": null,
+      "needs": needs,
+      "id_Admin": admin,
+      "referent_userId": referent,
+      "referent_telefono": referent_telefono,
+      "referent_localidad": referent_localidad,
+      "referent_mail": referent_mail,
+      "referent_ocupacion": referent_ocupacion,
+      "referent_vinculacion": referent_vinculacion,
+      "referent_facultad": referent_facultad,
+      "referent_conocimiento": referent_conocimiento,
+      "referent_organizacion": referent_organizacion
+    }
+
+    console.log(data)
+    saveProject(data);
+    needs = [];
+    assistances = [];
 
     }else {
       if (title == "" || title == "undefined") {
@@ -660,99 +671,6 @@ function innerHTML(json, elementDOM) {
       }
     }
   }  
-
-
-// function inicializarCargaProyecto(id_ProjectManager) {
-//     changeCountInputFile();//comportamiento de input file, siempre activo, cuenta cuantos archivos hay seleccionados
-//     //validación de typo de archivos admitidos
-//     validFileType();
-//     let id = (id) => document.getElementById(id);
-//     let classes = (classes) => document.getElementsByClassName(classes);
-//     let title = id("title"),
-//     description = id("description"), errorMsg = document.getElementsByClassName("error"),
-//     successIcon = classes("success-icon"),
-//     failureIcon = classes("failure-icon");
-//     document.getElementById("save").addEventListener("click", (e) => {
-//     e.preventDefault();
-//     let necesidadesCheckboxes = document.querySelectorAll('input[name="necesidadesCheckboxes"]:checked');
-//     necesidadesCheckboxes.forEach((checkbox) => {
-//       necesidades.push(checkbox.value);
-//     });
-
-//     let otraNecesidad = document.querySelector("#needs_created");
-//     for (var option of otraNecesidad.options) {
-//       if (option.selected) {
-//         necesidades.push(option.value);
-//       }
-//     }
-//     let asistenciasCheckboxes = document.querySelectorAll('input[name="asistenciaCheckboxes"]:checked');
-//     asistenciasCheckboxes.forEach((checkbox) => {
-//       asistencias.push(checkbox.value);
-//     });
-//     let otraAsistencia = document.querySelector("#assistances_created");
-//     for (var option of otraAsistencia.options) {
-//       if (option.selected) {
-//         asistencias.push(option.value);
-//       }
-//     }
-//     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
-//     if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
-//       asistencias.length > 0 && estadio != null && statusFile) {
-//       document.querySelector("#titleError").innerHTML = "";
-//       document.querySelector("#descriptionError").innerHTML = "";
-//       document.querySelector("#necesidadesError").innerHTML = "";
-//       document.querySelector("#asistenciasError").innerHTML = "";
-//       document.querySelector("#estadioError").innerHTML = "";
-//       let successImg = document.getElementsByClassName("success-icon");
-//       successImg[0].style.opacity = "1";
-//       successImg[1].style.opacity = "1";
-//       let datos = {
-//         "id_ProjectManager": id_ProjectManager,
-//         "title": title.value,
-//         "description": description.value,
-//         "stage": estadio.value,
-//         "assistances":
-//           asistencias,
-//         "files":
-//           attachments,
-//         "needs":
-//           necesidades,
-//         "id_Admin": 1
-//       }
-//       saveAttachments(title.value);
-//       saveProject(datos);
-//       necesidades = [];
-//       asistencias = [];
-//       attachments = [];
-//     } else {
-//       if (title.value == "" || title.value == "undefined") {
-//         document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
-//       } else {
-//         document.querySelector("#titleError").innerHTML = "";
-//       }
-//       if (description.value == "" || description.value == "undefined") {
-//         document.querySelector("#descriptionError").innerHTML = "Ingrese una descripción al proyecto";
-//       } else {
-//         document.querySelector("#descriptionError").innerHTML = "";
-//       }
-//       if (necesidades.length == 0) {
-//         document.querySelector("#necesidadesError").innerHTML = "Seleccione al menos una necesidad";
-//       } else {
-//         document.querySelector("#necesidadesError").innerHTML = "";
-//       }
-//       if (asistencias.length == 0) {
-//         document.querySelector("#asistenciasError").innerHTML = "Seleccione al menos un tipo de asistencia";
-//       } else {
-//         document.querySelector("#asistenciasError").innerHTML = "";
-//       }
-//       if (estadio == null) {
-//         document.querySelector("#estadioError").innerHTML = "Seleccione un estadio";
-//       } else {
-//         document.querySelector("#estadioError").innerHTML = "";
-//       }
-//     }
-//   });
-// }
 
 //GUARDAR NECESIDADES EN EDITAR PROYECTO
 function guardarNecesidades() {
@@ -792,27 +710,29 @@ async function saveNewNeed() {
   document.querySelector("#needError").innerHTML = "";
   let token = localStorage.getItem("token");
   let input = document.getElementById("save-need");
-  if(input.value != "" && input.value != "undefined") {
-    let data = { 
-      "needType" : input.value
+  if (input.value != "" && input.value != "undefined") {
+    let data = {
+      "needType": input.value
     };
-    try{
+    try {
       await fetch(URLNeeds, {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify(data),
-        headers: {"Content-type" : "application/json",
-                  "Authorization": "Bearer " + token,
-                  "Access-Control-Allow-Origin": "*"},
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer " + token,
+          "Access-Control-Allow-Origin": "*"
+        },
       })
         .then(response => response.json())
         .then(json => updateCheckbox(json.id_Need, json.needType, "#needsData", "need-checkbox"));
-    }catch(error) {
+    } catch (error) {
       console.log(error)
     }
-    input.value = ""; 
-  }else{
-    if(input.value == "" || input.value == "undefined") {
+    input.value = "";
+  } else {
+    if (input.value == "" || input.value == "undefined") {
       document.querySelector("#needError").innerHTML = "Escriba su necesidad antes de guardar";
     } else {
       document.querySelector("#needError").innerHTML = "";
@@ -826,9 +746,9 @@ async function saveNewAssistance() {
   document.querySelector("#assistanceError").innerHTML = "";
   let token = localStorage.getItem("token");
   let input = document.getElementById("save-assistance");
-  if(input.value != "" && input.value != "undefined") {
-    let data = { 
-      "type": input.value 
+  if (input.value != "" && input.value != "undefined") {
+    let data = {
+      "type": input.value
     };
     try{
       await fetch(URLAssistances, {
@@ -856,10 +776,10 @@ async function saveNewAssistance() {
 
 
 //MUESTRA MENSAJE VERDE CUANDO TODO SE CARGO BIEN
-  function showSucess(string) {
-   document.querySelector(".generalSave").innerHTML =
-    `<p style='color:green;font-size:14px;'>${string}</p>`;
-  }
+function showSucess(container ,string) {
+   document.querySelector(container).innerHTML =
+    `<p>${string}</p>`; 
+}
 
 //SELECCIONAR SOLO UN ESTADIO
 function selecionarSoloUnEstadio() {
@@ -890,10 +810,6 @@ function selectOnlyOneStage() {
 
 //CONVIERTE ARRAY A LISTA PARA MOSTRARLA EN LOS DATOS DEL PROYECTO
 function mostrarArray(contenedor, arreglo, dato, proyecto) {
-  console.log("En mostrarProyecto arreglo: "+ arreglo) //undefined
-  console.log("En mostrarProyecto proyecto: "+proyecto) //undefined
-  console.log("Tipo de arreglo:", typeof arreglo);
-  console.log("Propiedad en elemento:", dato);
   for (let i = 0; i < arreglo.length; i++) {
     var elemento = arreglo[i];
     if (contenedor == "#files" || contenedor == "#files_edit") {//para adjuntos
@@ -925,6 +841,16 @@ function generarTablaHistorial(json) {
     //cambiar cuando este la entidad administrador, utilizar nombre y apellido
     cell2.innerHTML = "Admin default";
     cell3.innerHTML = historial.action;
+    if(historial.action == "Diagnostico"){
+      let link = document.createElement("a");
+      link.setAttribute("href", "#")
+      link.setAttribute("data-id", historial.id_record);
+      let linkText = document.createTextNode("Ver mas");
+      link.appendChild(linkText);
+      link.classList.add("diagnostic-button");
+      cell3.appendChild(link);
+      link.addEventListener("click", function() {showDiagnostic(link.dataset.id)});
+    }
     cell4.innerHTML = historial.date;
   }
 }
@@ -954,7 +880,7 @@ function updateProject(id_project) {
     isActive = false;
   }
   if ((title != "" && title != "undefined") && (description != "" && description != "undefined") && needs.length > 0 &&
-  assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
+    assistances.length > 0 && (stage != "no-select" && stage != "undefined") && (admin != "no-select" && admin != "undefined")) {
     document.querySelector("#titleError").innerHTML = "";
     document.querySelector("#descriptionError").innerHTML = "";
     document.querySelector("#needError").innerHTML = "";
@@ -1010,100 +936,6 @@ function updateProject(id_project) {
     assistances = [];
   }
 }
-
-// function saveNewData(id_proyecto, proyecto) {
-//   let id = (id) => document.getElementById(id);
-//   let classes = (classes) => document.getElementsByClassName(classes);
-//   let title = id("title"),
-//     description = id("description"), errorMsg = document.getElementsByClassName("error"),
-//     successIcon = classes("success-icon"),
-//     failureIcon = classes("failure-icon");
-//   document.getElementById("save").addEventListener("click", (e) => {
-//     e.preventDefault();
-//     let necesidadesCheckboxes = document.querySelectorAll('input[name="necesidadesCheckboxes"]:checked');
-//     necesidadesCheckboxes.forEach((checkbox) => {
-//       necesidades.push(checkbox.value);
-//     });
-
-//     let otraNecesidad = document.querySelector("#needs_created");
-//     for (var option of otraNecesidad.options) {
-//       if (option.selected) {
-//         necesidades.push(option.value);
-//       }
-//     }
-//     let asistenciasCheckboxes = document.querySelectorAll('input[name="asistenciaCheckboxes"]:checked');
-//     asistenciasCheckboxes.forEach((checkbox) => {
-//       asistencias.push(checkbox.value);
-//     });
-//     let otraAsistencia = document.querySelector("#assistances_created");
-//     for (var option of otraAsistencia.options) {
-//       if (option.selected) {
-//         asistencias.push(option.value);
-//       }
-//     }
-//     let estadio = document.querySelector('input[name="estadiosCheckboxes"]:checked');
-//     let files = [];
-//     proyecto.files.forEach(element => {
-//       if (element != null) {
-//         files.push(element.id_File);
-//       }
-//     });
-//     if ((title.value != "" && title.value != "undefined") && (description.value != "" && description.value != "undefined") && necesidades.length > 0 &&
-//       asistencias.length > 0 && estadio != null && statusFile) {
-//       document.querySelector("#titleError").innerHTML = "";
-//       document.querySelector("#descriptionError").innerHTML = "";
-//       document.querySelector("#necesidadesError").innerHTML = "";
-//       document.querySelector("#asistenciasError").innerHTML = "";
-//       document.querySelector("#estadioError").innerHTML = "";
-//       let successImg = document.getElementsByClassName("success-icon");
-//       successImg[0].style.opacity = "1";
-//       successImg[1].style.opacity = "1";
-//       let datos = {
-//         "title" : title.value,
-//         "description" : description.value,
-//         "stage" : estadio.value,
-//         "assistances" : asistencias,
-//         "files" : files,       
-//         "needs" : necesidades,       
-//         "newFiles" : attachments
-//       }
-//       saveAttachments(title.value);
-//       modificarProyecto(id_proyecto, datos);
-//       necesidades = [];
-//       asistencias = [];
-//       attachments = [];
-//     } else {
-//       if (title.value == "" || title.value == "undefined") {
-//         document.querySelector("#titleError").innerHTML = "Ingrese un título al proyecto";
-//       } else {
-//         document.querySelector("#titleError").innerHTML = "";
-//       }
-//       if (description.value == "" || description.value == "undefined") {
-//         document.querySelector("#descriptionError").innerHTML = "Ingrese una descripción al proyecto";
-//       } else {
-//         document.querySelector("#descriptionError").innerHTML = "";
-//       }
-//       if (necesidades.length == 0) {
-//         document.querySelector("#necesidadesError").innerHTML = "Seleccione al menos una necesidad";
-//       } else {
-//         document.querySelector("#necesidadesError").innerHTML = "";
-//       }
-//       if (asistencias.length == 0) {
-//         document.querySelector("#asistenciasError").innerHTML = "Seleccione al menos un tipo de asistencia";
-//       } else {
-//         document.querySelector("#asistenciasError").innerHTML = "";
-//       }
-//       if (estadio == null) {
-//         document.querySelector("#estadioError").innerHTML = "Seleccione un estadio";
-//       } else {
-//         document.querySelector("#estadioError").innerHTML = "";
-//       }
-//       necesidades = [];
-//       asistencias = [];
-//       attachments = [];
-//     }
-//   });
-// }
 
 function cargarCheckboxes(URL, proyecto, dato) {
   getAllBaseURL(URL, dato).then(() => {
@@ -1225,6 +1057,26 @@ async function getAdmins(url, project) {
   }
 }
 
+async function getUsers(url, project) {
+  let token = localStorage.getItem("token");
+  try {
+    let res = await fetch(url, {
+      "method": "GET",
+      "headers": { "Authorization": "Bearer " + token }
+    })
+
+    if (res.ok) {
+      let array = await res.json();
+      if (array) {
+        showUsers(array, project);
+      }
+    }
+  } catch (error) {
+    console.log("Fallo al obtener el JSON de la API.");
+    console.log(error);
+  }
+}
+
 function showNeeds(array, project) {
   let needContainer = document.querySelector("#needsData");
   array.forEach(need => {
@@ -1254,27 +1106,27 @@ function showNeeds(array, project) {
 function showAssistances(array, project) {
   let assistanceContainer = document.querySelector("#assistancesData");
   array.forEach(assistance => {
-      let article = document.createElement('article');
-      let input = document.createElement('input');
-      input.classList.add('checkbox-input');
-      input.type = 'checkbox';
-      input.name = "assistance-checkbox"
-      input.value = assistance.id_Assistance;
-      let label = document.createElement('label');
-      label.classList.add("checkbox-label");
-      label.textContent = assistance.type;
-      article.appendChild(input);
-      article.appendChild(label);
-
-      if(project != null){ 
-        for (let i = 0; i < project.assistances.length; i++) {
-          if (project.assistances[i].id_Assistance == input.value) {
-            input.checked = true;
-          }
+    let article = document.createElement('article');
+    let input = document.createElement('input');
+    input.classList.add('checkbox-input');
+    input.type = 'checkbox';
+    input.name = "assistance-checkbox"
+    input.value = assistance.id_Assistance;
+    let label = document.createElement('label');
+    label.classList.add("checkbox-label");
+    label.textContent = assistance.type;
+    article.appendChild(input);
+    article.appendChild(label);
+    
+    if (project != null) {
+      for (let i = 0; i < project.assistanceType.length; i++) {
+        if (project.assistanceType[i].id_Assistance == input.value) {
+          input.checked = true;
         }
       }
     
-      assistanceContainer.appendChild(article);      
+      assistanceContainer.appendChild(article);
+    }
   });
 }
 
@@ -1304,4 +1156,150 @@ function showAdmins(array, project) {
   if(project != null) {
     adminSelect.value = project.administrador;
   }
+}
+
+async function addProjectsToSelectInput() {
+  let token = localStorage.getItem("token");
+  try {
+      let res = await fetch(URLProject, {
+          "method": "GET",
+          "headers" : {"Authorization": "Bearer " + token}
+      })
+      if (res.ok) {
+          let array = await res.json();
+          if (array) {
+              showProjects(array);
+          }
+      }
+  } catch (error) {
+      console.log("Fallo al obtener el JSON de la API.");
+      console.log(error);
+  }
+}
+
+function showProjects(array) {
+  let select = document.querySelector('#projectSelect');
+  array.forEach(project => {
+    let option = document.createElement('option');
+    option.value = project.id_Project;
+    option.label = project.title;
+    select.appendChild(option);
+  })
+}
+
+function saveNewDiagnostic(idAdmin) {
+  let form = document.querySelector("#diagnosticForm");
+  let formData = new FormData(form);
+  let project = formData.get('project-select');
+  let diagnostic = formData.get('diagnostic');
+
+  if ((project != "no-select" && project != "undefined") && (diagnostic != "" && diagnostic.length < 255)) {
+    document.querySelector("#projectError").innerHTML = "";
+    document.querySelector("#diagnosticError").innerHTML = "";
+
+    let data = {
+      "idProject" : project,
+      "idAdmin" : idAdmin,
+      "diagnostic" : diagnostic 
+    }
+    
+    addDiagnosticToProject(data)
+    
+  }else{
+    if(project == "no-select" || project == "undefined") {
+      document.querySelector("#projectError").innerHTML = "Elija un proyecto";
+    }else {
+      document.querySelector("#projectError").innerHTML = "";
+    }
+    if(diagnostic == "") {
+      document.querySelector("#diagnosticError").innerHTML = "Ingrese un diagnostico al proyecto";
+    } else if(diagnostic.length > 255) {
+      document.querySelector("#diagnosticError").innerHTML = "Texto muy largo, ingrese menos caracteres";
+    }else {
+      document.querySelector("#diagnosticError").innerHTML = "";
+    }
+  }
+}
+
+async function addDiagnosticToProject(data) {
+  let token = localStorage.getItem("token");
+  try{
+    let res = await fetch(URLProject+"/diagnostic",{
+      method : "POST",
+      mode : 'cors',
+      body : JSON.stringify(data),
+      headers : {"Content-type": "application/json",
+                  "Authorization": "Bearer " + token,
+                  "Access-Control-Allow-Origin": "*"},                     
+    });
+    if(res.ok) {
+        showSucess(".diagnostic-save", "Diagnostico cargado con exito!");
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        } , 1500)
+    }
+  }catch(error){
+    console.log(error);
+  }
+}
+
+async function getDiagnosticById(idRecord) {
+  let token = localStorage.getItem("token");
+  try {
+      let res = await fetch(URLProject+"/diagnostic/"+idRecord, {
+          "method": "GET",
+          "headers" : {"Authorization": "Bearer " + token}
+      })
+      if (res.ok) {
+          let array = await res.json();
+          if (array) {
+            showDiagnosticInModal(array);
+          }
+      }
+  } catch (error) {
+      console.log("Fallo al obtener el JSON de la API.");
+      console.log(error);
+  }
+}
+
+function showDiagnostic(id) {
+  let modal = document.querySelector('#modal');
+  modal.classList.add('modal-flex');
+  document.querySelector("body").style.overflow = "hidden";
+  if(modal.classList.contains('modal-flex')) {
+    getDiagnosticById(id);
+  }
+  document.querySelector('#closeModal').addEventListener('click', ()=>{
+    document.querySelector("body").style.overflow = "";
+    modal.classList.remove('modal-flex');
+  });
+}
+
+function showDiagnosticInModal(array) {
+  let diagnosticText = document.querySelector("#diagnosticText");
+  diagnosticText.innerHTML = array.diagnostic;
+}
+
+function showUsers(array, project) {
+  console.log(array, project)
+  let referentSelect = document.querySelector("#referentSelect");
+  array.forEach(referent => {
+    let option = document.createElement('option');
+    option.value = referent.id;
+    option.label = referent.username;
+    referentSelect.appendChild(option);
+  })
+
+  if (project != null) {
+    referentSelect.value = null;
+  }
+}
+
+//Toggle Acoordion en Cargar Proyecto
+function toggleAccordion(button) {
+  const accordionContent = button.nextElementSibling;
+
+  button.classList.toggle('accordion--expanded');
+  accordionContent.style.maxHeight =
+    accordionContent.style.maxHeight ? null : `${accordionContent.scrollHeight}px`;
 }

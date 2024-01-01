@@ -4,24 +4,54 @@ function mostrarArchivoHTML(rutaArchivo){
   .then(text => {return text});
 }
 
+function cargarPaginaAnterior(pagAnterior) {
+  console.log("cargarPaginaAnterior: " + pagAnterior)
+    if (pagAnterior === "detallesEmprendedor") { //estoy en detalles proyecto o carga proyecto
+      mostrarEmprendedor( pagAnterior);
+    } else if (pagAnterior === "dashboard") { // navbar
+      window.location.replace("./dashboard.html");
+    }else if(pagAnterior === "proyectos"){ //estoy en detalles proyecto
+      getAllProjects().then(json => mostrarProyectos(json, "dashboard"));
+    }else if(pagAnterior === "emprendedores"){ //estoy en detalle emprendedor
+      mostrarListaEmprendedores("dashboard");
+    }
+}
+
+let cargarPaginaAnteriorHandler;
+
+function agregarEventoClic(pagAnterior) {
+  console.log("agregarEventoClic: "+ pagAnterior);
+  cargarPaginaAnteriorHandler = function() {
+    console.log("agregarEventoClic: "+ pagAnterior);
+    cargarPaginaAnterior(pagAnterior);
+  };
+  document.querySelector("#btn-back").addEventListener("click", cargarPaginaAnteriorHandler);
+}
+
+function removerEventoClic(pagAnterior) {
+  document.querySelector("#btn-back").removeEventListener("click", cargarPaginaAnteriorHandler);
+}
+
 //Muestra el home de la pagina
 function mostrarHome(actualPage = 1, seccion = "emprendedores"){
+
   mostrarArchivoHTML("navbar.html",".navbar").then(text => {
+      let pagAnterior = "dashboard";
       document.querySelector(".navbar").innerHTML = text;
       document.querySelector("#proyectos").addEventListener("click", ()=>{
         drawClickNav("proyectos");
         page=actualPage;
-        getAllProjects().then(json=>mostrarProyectos(json));
+        getAllProjects().then(json=>mostrarProyectos(json, pagAnterior));
       });
       document.querySelector("#emprendedores").addEventListener("click", ()=>{
         drawClickNav("emprendedores");
-        mostrarListaEmprendedores();
+        mostrarListaEmprendedores(pagAnterior);
       });
       document.querySelector("#crearProyecto").addEventListener("click", ()=>{
         drawClickNav("crearProyecto");
-        mostrarCargaProyecto();
+        mostrarCargaProyecto(pagAnterior);
       });
-      //HOME TEMPORAL
+      
       document.querySelector(`#${seccion}`).click();
 
       logout(); //Una vez cargado el NAV (se carga con parcial render), le agrego funcionalidad al boton creado
@@ -29,8 +59,7 @@ function mostrarHome(actualPage = 1, seccion = "emprendedores"){
 }
 
 function mostrarHomeEmprendedor(){
-
-  //let emprendedor = JSON.parse(localStorage.getItem('emprendedor'));
+  let pagAnterior = "dashboard";
   let user = JSON.parse(localStorage.getItem('usuario'));
 
   // Verifica si el usuario es un emprendedor y obtener su ID
@@ -47,7 +76,7 @@ function mostrarHomeEmprendedor(){
           logout();
           document.querySelector("#crearProyecto").addEventListener("click", ()=>{
             drawClickNav("crearProyecto");
-            mostrarCargaProyecto();
+            mostrarCargaProyecto(pagAnterior);
           });
         }
     );
@@ -65,14 +94,20 @@ function showTableProjectsRemoved(){
       configDropdown(id_btn_change_screen, "projects")
       page=1;
       getAllDeleteProjects(page).then(json => {
-        mostrarTabla(json,true);
+        mostrarTabla(json,true, "proyectos");
         mostrarPaginado(json.totalPages,"proyectosEliminados");
       });
     });
 }
 
 //muestra la lista de proyectos
-function mostrarProyectos(json) {
+function mostrarProyectos(json, pagAnterior) {
+  window.location.hash = `proyectos`;
+  console.log("mostrarProyectos: "+ pagAnterior); //dashboard
+
+  removerEventoClic(pagAnterior);
+  agregarEventoClic(pagAnterior);
+
   let user = JSON.parse(localStorage.getItem('usuario'));
   
   let listadoHTML = "";
@@ -81,7 +116,6 @@ function mostrarProyectos(json) {
   } else {
     listadoHTML = "listProjects.html";
   }
-
   mostrarArchivoHTML(listadoHTML).then(text =>{
     document.querySelector(".main-container").innerHTML = text;
     //AGREGO DROPDOWN DE PROYECTOS ELIMINADOS Y EVENTOS DE CAMBIOS DE PANTALLA
@@ -100,11 +134,15 @@ function mostrarProyectos(json) {
     //...
     });
     mostrarPaginado(json.totalPages,"proyectos");
-    mostrarTabla(json,false);
+    mostrarTabla(json,false, pagAnterior);
   });
 }
 
 function mostrarProyectosDeEmprendedor(json) {
+
+  removerEventoClic("dashboard");
+  agregarEventoClic("dashboard");
+
   mostrarArchivoHTML("listProjectsEntrepreneur.html").then(text =>{
     document.querySelector(".main-container").innerHTML = text;
 
@@ -140,8 +178,22 @@ function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [], estadoFiltro = "
 
 
 //MOSTRAR PROYECTO
-function mostrarProyecto(proyecto){
+function mostrarProyecto(proyecto, pagAnterior){
+  console.log("mostrarProyecto: "+ pagAnterior);
+
+  if(pagAnterior === "dashboard"){ //si viene del listado de proyectos
+    pagAnterior = "proyectos"
+  }else if(pagAnterior === "proyectosEmprendedor"){ //temporal
+    pagAnterior = "dashboard"
+  }else{
+    pagAnterior = "emprendedores";
+  }
+
   let user = JSON.parse(localStorage.getItem('usuario'));
+
+  removerEventoClic(pagAnterior);
+  agregarEventoClic(pagAnterior);
+
   mostrarArchivoHTML("proyecto.html").then(text=> {
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#titulo").innerHTML += proyecto.title;
@@ -191,27 +243,70 @@ function mostrarProyecto(proyecto){
 }
 
 //MUESTRA FORMULARIO CARGA PROYECTOS
-function mostrarCargaProyecto() {
+function mostrarCargaProyecto(pagAnterior) {
+
+  removerEventoClic(pagAnterior);
+  agregarEventoClic(pagAnterior);
+
   mostrarArchivoHTML("cargarProjects.html").then(text=>{
       document.querySelector(".main-container").innerHTML = text;
-      //document.querySelector(".iborrainputfile").addEventListener("click", saveAttachments);
-      // inicializarCargaProyecto(id_ProjectManager);
-      // cargaRenderNecesidades();
-      // cargaRenderAsistencia();
-      // partialRendercargaDatosEmprendedor(".datosEmprendedor",id_ProjectManager);
-      //Configuro Ckeckboxs dinamico de estadios
-      // getAllBaseURL(URLStages, 'estadios_checks');
+      let user = JSON.parse(localStorage.getItem('usuario'));
+      if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
+        // ocultar el botón registro de encuentros
+        let projectRegistryBtn = document.querySelector("#projectRegistry");
+        let mainBtns = document.querySelector('.mainBtns');
+        if (projectRegistryBtn) {
+          projectRegistryBtn.style.display = 'none';
+          mainBtns.style.gridTemplateColumns = "50% 50%";
+        }
+      }
+      document.querySelector("#projectData").classList.add('focus');
       getNeeds(URLNeeds, null);
       getAssistances(URLAssistances, null);
       getStages(URLStages, null);
-      getAdmins(URLUsers, null)
+      getAdmins(URLUsers + "/rol/2", null);
+      getUsers(URLUsers);
       document.querySelector("#saveNeed").addEventListener('click', saveNewNeed);
       document.querySelector("#saveAssistance").addEventListener('click', saveNewAssistance);
       document.querySelector("#projectForm").addEventListener('submit', (e) =>{
         e.preventDefault();
         saveNewProject();
       })
+      mostrarCargaDiagnostico();
   });
+  
+}
+
+function mostrarCargaDiagnostico() {
+  let dataBtn = document.querySelector("#projectData");
+  let diagnosticBtn = document.querySelector("#projectDiagnostic");
+  let dataForm = document.querySelector(".project-loading-form");
+  let diagnosticFrom = document.querySelector(".diagnostic-loading-form");
+  let user = JSON.parse(localStorage.getItem('usuario'));
+  addProjectsToSelectInput();
+
+  diagnosticBtn.addEventListener('click', ()=>{
+    if(dataBtn.classList.contains('focus')) {
+      dataBtn.classList.remove('focus');
+      diagnosticBtn.classList.add('focus');
+      dataForm.style.display = 'none';
+      diagnosticFrom.style.display = 'flex';
+    }
+  })
+  dataBtn.addEventListener('click', ()=>{
+    if(diagnosticBtn.classList.contains('focus')) {
+      diagnosticBtn.classList.remove('focus');
+      dataBtn.classList.add('focus');
+      diagnosticFrom.style.display = 'none';
+      dataForm.style.display = 'flex';
+    }
+  })
+  if(user) {
+    document.querySelector("#diagnosticForm").addEventListener('submit', (e) =>{
+      e.preventDefault();
+      saveNewDiagnostic(user.id);
+    })
+  }
 }
 
 function partialRendercargaDatosEmprendedor(div,id_emprendedor){
@@ -242,12 +337,17 @@ function cargaRenderAsistencia(){
   });  
 }
 //MUESTRA LA LISTA DE EMPRENDEDORES
-function mostrarListaEmprendedores(){//recibe un json por parametro
+function mostrarListaEmprendedores(pagAnterior){
+  console.log("mostrarListaEmprendedores: "+ pagAnterior);
+
+/*  removerEventoClic(pagAnterior);
+  agregarEventoClic(pagAnterior);*/
+
   mostrarArchivoHTML("listProjectsManager.html").then(text =>{
       document.querySelector(".main-container").innerHTML = text;
       page=1;
       getAllProjectManagers().then(json => {
-        generarTablaEmprendedores(json);
+        generarTablaEmprendedores(json, pagAnterior);
         mostrarPaginado(json.totalPages,"emprendedores",[],".footer-list-emprendedores")
       });
   });
@@ -263,18 +363,24 @@ function partialRenderHistorialProject(div, id_project){
 }
 
 //muestra un emprendedor
-function mostrarEmprendedor(emprendedor){
+function mostrarEmprendedor(emprendedor, pagAnterior){ //emprendedor es un json
+  window.location.hash = 'detallesEmprendedor';
+  console.log("mostrarEmprendedor: "+pagAnterior)
+  removerEventoClic(pagAnterior);
+  agregarEventoClic(pagAnterior);
+
+  //cargarPaginaAnterior("emprendedores");
   mostrarArchivoHTML("projectManager.html").then(text =>{
     document.querySelector(".main-container").innerHTML=text;
     //cargo tabla de datos del emprendedor
     showDataProjectManager(emprendedor);
     //evento cambio de pantalla a formulario de crear proyecto
     document.getElementById("btn_add_project").addEventListener("click", ()=>{
-      mostrarCargaProyecto(emprendedor.id_ProjectManager);
+      mostrarCargaProyecto(pagAnterior);
     });
     page=1;
     getAllProjectsByProjectManager(emprendedor.id_ProjectManager).then(json=>{
-      mostrarTabla(json,false,true);
+      mostrarTabla(json,false, pagAnterior,true, emprendedor.id_ProjectManager);
       mostrarPaginado(json.totalPages,"proyectosEmprendedor",[emprendedor.id_ProjectManager]);
     });
   });
@@ -408,8 +514,3 @@ function mostrarAdjuntos(proyecto){
   }); 
   
 }
-
-
-
-
-

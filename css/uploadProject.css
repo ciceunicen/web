@@ -1,3 +1,41 @@
+.project-section .accordion {
+    cursor: pointer;
+    margin:  0.5rem 0.5rem 0 0.5rem;
+  }
+    
+  .accordion + .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  
+
+/* Aquí puedes agregar tus estilos CSS */
+.form-container {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+}
+.form-field {
+    margin: 20px 0;
+}
+.form-field label {
+    display: block;
+    margin-bottom: 10px;
+}
+.form-field input, .form-field textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#referentForm{
+    width: 80%;
+    margin: 16px 10%;
+}
+
 .project-section {
     width: 80%;
     margin: 0% 10%;
@@ -9,7 +47,7 @@
     background-color: #6B9E22;
     padding: 10px;
     border-radius: 10px 10px 0px 0px;
-    
+    margin: 10px 60px 0px 60px;
 }
 
 .project-title p {
@@ -18,6 +56,7 @@
 }
 
 .btn-project-blue {
+    width: 130px;
     cursor: pointer;
     background: none;
     border: 0;
@@ -56,7 +95,7 @@
     background-color: #649421;
 }
 
-.btn-project-green:focus {
+.focus {
     background-color: #496D17;
 }
 
@@ -66,18 +105,31 @@
     flex-direction: row;
 }
 
-.project-loading{
+.project-loading-form{
     background-color: #EAF7D8;
     border-radius: 0px 0px 10px 10px;
     display: flex;
+    margin: 0;
 }
 
-.project-loading form {
+.diagnostic-loading-form{
+    background-color: #EAF7D8;
+    border-radius: 0px 0px 10px 10px;
+    display: none;
+    margin: 0;
+}
+
+.diagnostic-loading-form form{
     width: 80%;
     margin: 16px 10%;
 }
 
-.project-loading form .input-section {
+.project-loading-form form {
+    width: 80%;
+    margin: 16px 10%;
+}
+
+.input-section {
     display: flex;
     flex-direction: column;
     margin-bottom:18px;
@@ -92,7 +144,7 @@ input {
     outline: none;
 }
 
-.project-loading form .input-section .form-input {
+.project-loading-form form .input-section .form-input {
     border: 1px solid #74AC24;
     padding: 7px;
     border-radius: 5px;
@@ -151,7 +203,7 @@ input {
 }
 
 #needsData, #assistancesData, #stagesData{
-    padding: 5px 10px;
+    padding: 0px 10px 5px 10px;
 }
 
 .checkbox-label {
@@ -166,10 +218,57 @@ input {
 }
 
 .input-select {
-    width: 200px;
+    width: 300px;
     background-color: #FFFFFF;
     padding: 7px;
     border: 1px solid #74AC24;
     border-radius: 5px;
-    
 }
+
+.diagnostic-button{
+    margin-left: 10px;
+}
+
+.modal-container-diagnostic{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: #00000094;
+    z-index: 300;
+  }
+
+  .modal-container-diagnostic.modal-flex{
+    display: flex;
+  }
+
+  .flex-modal-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .modal-content-diagnostic{
+    width: 680px;
+    height: auto;
+    border-radius: 10px;
+    background-color: #ffffff;
+    padding: 20px;
+  }
+
+  .modal-content-diagnostic h2{
+    font-size: 30px;
+    font-weight: 380;
+    text-align: center;
+    color: #496D17;
+  }
+
+  .modal-content-diagnostic .diagnostic-line{
+    width: 640px;
+    border-top: 1px solid #0000001f;
+    margin-bottom: 10px;
+  }
