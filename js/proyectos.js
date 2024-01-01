@@ -1057,7 +1057,7 @@ async function getAdmins(url, project) {
   }
 }
 
-async function getUsers(url, project) {
+async function getUsers(url, project = null) {
   let token = localStorage.getItem("token");
   try {
     let res = await fetch(url, {
