@@ -1,7 +1,7 @@
 //VARIABLES GLOBALES
 const URLProjectManager = "http://localhost:8080/projectmanagers";
 const URLNeeds = "http://localhost:8080/needs";
-const URLAssitances = "http://localhost:8080/assistances";
+const URLAssistances = "http://localhost:8080/assistances";
 const URLStages = "http://localhost:8080/stages";
 const URLUsers = "http://localhost:8080/usuarios";
 let necesidades = [];

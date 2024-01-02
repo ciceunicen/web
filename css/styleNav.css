@@ -35,7 +35,76 @@
     width: 70%;
     height:auto;
 }
-.closeSession{
+
+.icono-notificacion {
+    margin: 0 5% 0 0;
+    cursor: pointer;
+}
+
+.notificaciones-container {
+    position: absolute;
+    top: 4rem;
+    right: 9.3rem;
+    z-index: 5;
+    height: fit-content;
+    border: solid 1px #496D17;
+    border-radius: 5px;
+    background-color: #496D17;
+    color: #FFFFFF;
+    width: 20%;
+}
+
+.notificaciones-container.hidden {
+    display: none;
+}
+
+.notificaciones-container.dashboard {
+    right: 2.5rem;
+}
+
+.notificaciones {
+    height: 60vh;
+    overflow-y: scroll;
+}
+
+.notificaciones > article {
+    padding: 2%;
+    border-bottom: #FFFFFF solid 1px;
+}
+
+.notificaciones > article.notReaded {
+    background-color: #74AC24;
+}
+
+.notificaciones > article > p:last-child {
+    padding: 3% 0 0 0;
+    font-size: 0.9rem;
+    color: #FFFFFF;
+    opacity: 0.9;
+}
+
+.notificaciones > article span {
+    font-weight: 700;
+}
+
+.notificaciones-top, .notificaciones-bottom {
+    padding: 1%;
+    background-color: #496D17;
+}
+
+.notificaciones-top {
+    font-weight: bold;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.notificaciones-bottom {
+    padding: 3.5%;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+button.closeSession{
     background-color: transparent;
     color:#FFFFFF;
     height: 100px;
@@ -55,8 +124,25 @@
     margin-right: 1%;
 }
 
+@media only screen and (min-width: 1260px) {
+    .notificaciones-container {
+        right: 10rem;
+    }
+    .notificaciones-container.dashboard {
+        right: 3rem;
+    }
+}
 @media screen and (min-width: 1366px){
     .nav-item{
         width: 15%;
+    }
+}
+@media only screen and (min-width: 1800px) {
+    .notificaciones-container {
+        right: 12rem;
+    }
+
+    .notificaciones-container.dashboard {
+        right: 4.5rem;
     }
 }

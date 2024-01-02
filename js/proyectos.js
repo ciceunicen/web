@@ -342,7 +342,7 @@ function mostrarTabla(json, borrados, pagAnterior, projectManager = false) {
     var cell2 = row.insertCell(cellsCount++);
     var cell3 = row.insertCell(cellsCount++);
     if (user.rolType.toLowerCase() == 'personal del cice') {
-      const isActive = proyecto._active;
+      const isActive = proyecto.is_active;
       let cellState = row.insertCell(cellsCount++)
       if (isActive) {
         cellState.innerHTML = "Activo";
@@ -582,7 +582,6 @@ function saveNewProject() {
   let referent_facultad = formData.get('referent-facultad');
   let referent_conocimiento = formData.get('referent-conocimiento');
   let referent_organizacion = formData.get('referent-organizacion');
-  //
 
   //datos del proyecto
   let user = JSON.parse(localStorage.getItem('usuario'));
@@ -619,7 +618,7 @@ function saveNewProject() {
       "title": title,
       "description": description,
       "stage": stage,
-      "assistanceType": assistances,
+      "assistances": assistances,
       "files": null,
       "needs": needs,
       "id_Admin": admin,
@@ -751,8 +750,8 @@ async function saveNewAssistance() {
     let data = {
       "type": input.value
     };
-    try {
-      await fetch(URLAssitances, {
+    try{
+      await fetch(URLAssistances, {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify(data),
@@ -1058,7 +1057,7 @@ async function getAdmins(url, project) {
   }
 }
 
-async function getUsers(url, project) {
+async function getUsers(url, project = null) {
   let token = localStorage.getItem("token");
   try {
     let res = await fetch(url, {
@@ -1105,6 +1104,7 @@ function showNeeds(array, project) {
 }
 
 function showAssistances(array, project) {
+  console.log("ASSISTANCES", array);
   let assistanceContainer = document.querySelector("#assistancesData");
   array.forEach(assistance => {
     let article = document.createElement('article');
@@ -1120,13 +1120,14 @@ function showAssistances(array, project) {
     article.appendChild(label);
     
     if (project != null) {
-      for (let i = 0; i < project.assistanceType.length; i++) {
-        if (project.assistanceType[i].id_Assistance == input.value) {
+      for (let i = 0; i < project.assistances.length; i++) {
+        if (project.assistances[i].id_Assistance == input.value) {
           input.checked = true;
         }
       }
     
-      assistanceContainer.appendChild(article);      
+      assistanceContainer.appendChild(article);
+    }
   });
 }
 

@@ -60,94 +60,111 @@
         <div class="mainBtns">
             <button class="btn-project-green" id="projectData">Datos</button>
             <button class="btn-project-green" id="projectDiagnostic">Diagnóstico</button>
-            <button class="btn-project-green" id="projectRegistry">Registro de encuentros</button>
+            <button class="btn-project-green" id="projectDiagnostic">Registro de encuentros</button>
         </div>
-        <div class="project-loading-form">
-            <form id="projectForm" action="#" method="POST">
-                <div class="input-section">
-                    <label class="input-label" for="title" required>Título*</label>
-                    <input class="form-input" type="text" id="title" name="title" placeholder="titulo">
-                    <p class="error" id="titleError"></p>
-                </div>
-                <div class="input-section">
-                    <label class="input-label" for="description" required>Descripción*</label>
-                    <textarea type="text" id="description" name="description" placeholder="descripción"></textarea>
-                    <p class="error" id="descriptionError"></p>
-                </div>
-                <div class="input-section">
-                    <label class="input-label">Necesidades*</label>
-                    <div id="needsData"></div>
-                    <div class="save-input">
-                        <div>
-                            <label class="input-label" for="save-need">Otra</label>
-                        </div>     
-                        <input type="text" id="save-need" name="save-need">
-                        <button id="saveNeed" class="btn-project-green">Guardar</button>
+    </div>
+    <div class="project-loading-form">   
+        <form id="projectForm" action="#" method="POST">
+            <div class="input-section">
+                <label class="input-label" for="title" required>Título*</label>                                    
+                <input class="form-input" type="text" id="title" name="title" placeholder="titulo">
+                <p class="error" id="titleError"></p>
+            </div>
+            <div class="input-section">
+                <label class="input-label" for="description" required>Descripción*</label>
+                <textarea type="text" id="description" name="description" placeholder="descripción"></textarea>
+                <p class="error" id="descriptionError"></p>
+            </div>
+
+            <!--Partial render checkboxs necesidades-->
+            <div class="input-section">
+                <label class="input-label">Necesidades*</label>
+                <div id="needsData"></div>
+                <div class="save-input">
+                    <div>
+                        <label class="input-label" for="save-need">Otra</label>
                     </div>
-                    <p class="error" id="needError"></p>
+                    <input type="text" id="save-need" name="save-need">
+                    <button id="saveNeed" class="btn-project-green">Guardar</button>
                 </div>
-                <div class="input-section">
-                    <label class="input-label">Asistencias*</label>
-                    <div id="assistancesData"></div>
-                    <div class="save-input">
-                        <div>
-                            <label class="input-label" for="save-assistance">Otra</label>
-                        </div>
-                        <input type="text" id="save-assistance" name="save-assistance">
-                        <button id="saveAssistance" class="btn-project-green">Guardar</button>
+                <p class="error" id="needError"></p>
+            </div>
+            <!--Partial render checkboxs asistencias-->
+            <div class="input-section">
+                <label class="input-label">Asistencias*</label>
+                <div id="assistancesData"></div>
+                <div class="save-input">
+                    <div>
+                        <label class="input-label" for="save-assistance">Otra</label>
                     </div>
-                    <p class="error" id="assistanceError"></p>
+                    <input type="text" id="save-assistance" name="save-assistance">
+                    <button id="saveAssistance" class="btn-project-green">Guardar</button>
                 </div>
-                <div class="input-section">
-                    <label class="input-label">Estadio*</label>
-                    <select class="input-select" name="stage-select" id="stageSelect">
-                        <option value="no-select">Seleccionar estadio</option>
-                    </select>
-                    <p class="error" id="stageError"></p>
+                <p class="error" id="assistanceError"></p>
+            </div>
+
+            <div class="input-section">
+                <label class="input-label">Estadio*</label>
+                <select class="input-select" name="stage-select" id="stageSelect">
+                    <option value="no-select">Seleccionar estadio</option>
+                </select>
+                <p class="error" id="stageError"></p>
+            </div>
+            <label for="estados" class="estadosLabel">Estado*</label>
+            <div class="estados" id="estados">
+                <!--Partial render radio buttons estados-->
+                <div>
+                    <input type="radio" id="activo" name="estado" value=true />
+                    <label for="activo">Activo</label>
                 </div>
-                <div class="input-section">
-                    <label class="input-label">Administrador*</label>
-                    <select class="input-select" name="admin-select" id="adminSelect">
-                        <option value="no-select">Seleccionar administrador</option>
-                    </select>
-                    <p class="error" id="adminError"></p>
+                
+                <div>
+                    <input type="radio" id="noActivo" name="estado" value=false />
+                    <label for="noActivo">No activo</label>
                 </div>
-                <!-- <div class="adjuntos">
-                    <label for="otra" >Adjuntar archivos</label>
-                    <input type="file" name="file-7" id="file-7" class="inputfile inputfile-7" data-multiple-caption="{count} archivos seleccionados" multiple />
-                    <label for="file-7" class="iborrainputfile">
-                        <strong class="iborrainputfile">Seleccionar archivo/s</strong>
-                        <span class="selectedFiles" id="count_files"></span>
-                    </label>
-                    <div id="div_paintBadFileAlert"></div>
-                    //CARGA DE VISTA PREVIA DE ADJUNTOS
-                    <div class="div_adjuntos" id="div_adjuntos"></div>
-                </div>  -->                              
-                <div class="saveContainer">
-                    <input class="btn-project-blue" type="submit" value="Guardar">
-                    <div class="project-save"></div>
-                </div>     
-            </form>
-        </div>
-        <div class="diagnostic-loading-form">
-            <form id="diagnosticForm" action="#" method="POST">
-                <div class="input-section">
-                    <label class="input-label">Proyecto*</label>
-                    <select class="input-select" name="project-select" id="projectSelect">
-                        <option value="no-select">Seleccionar un proyecto</option>
-                    </select>
-                    <p class="error" id="projectError"></p>
-                </div>
-                <div class="input-section">
-                    <label class="input-label" for="description" required>Diagnostico*</label>
-                    <textarea type="text" id="diagnostic" name="diagnostic" placeholder="diagnóstico"></textarea>
-                    <p class="error" id="diagnosticError"></p>
-                </div>
-                <div class="saveContainer">
-                    <input class="btn-project-blue" type="submit" value="Guardar">
-                    <div class="diagnostic-save"></div>
-                </div>  
-            </form>
-        </div>
+            </div>
+            <div class="input-section">
+                <label class="input-label">Administrador*</label>
+                <select class="input-select" name="admin-select" id="adminSelect">
+                    <option value="no-select">Seleccionar administrador</option>
+                </select>
+                <p class="error" id="adminError"></p>
+            </div>
+            <!-- <div class="adjuntos">
+                <label for="otra" >Adjuntar archivos</label>
+                <input type="file" name="file-7" id="file-7" class="inputfile inputfile-7" data-multiple-caption="{count} archivos seleccionados" multiple />
+                <label for="file-7" class="iborrainputfile">
+                    <strong class="iborrainputfile">Seleccionar archivo/s</strong>
+                    <span class="selectedFiles" id="count_files"></span>
+                </label>
+                <div id="div_paintBadFileAlert"></div>
+                //CARGA DE VISTA PREVIA DE ADJUNTOS
+                <div class="div_adjuntos" id="div_adjuntos"></div>
+            </div>  -->                              
+            <div class="saveContainer">
+                <input class="btn-project-blue" type="submit" value="Guardar">
+                <div class="project-save"></div>
+            </div>     
+        </form>
+    </div>
+    <div class="diagnostic-loading-form">
+        <form id="diagnosticForm" action="#" method="POST">
+            <div class="input-section">
+                <label class="input-label">Proyecto*</label>
+                <select class="input-select" name="project-select" id="projectSelect">
+                    <option value="no-select">Seleccionar un proyecto</option>
+                </select>
+                <p class="error" id="projectError"></p>
+            </div>
+            <div class="input-section">
+                <label class="input-label" for="description" required>Diagnostico*</label>
+                <textarea type="text" id="diagnostic" name="diagnostic" placeholder="diagnóstico"></textarea>
+                <p class="error" id="diagnosticError"></p>
+            </div>
+            <div class="saveContainer">
+                <input class="btn-project-blue" type="submit" value="Guardar">
+                <div class="diagnostic-save"></div>
+            </div>  
+        </form>
     </div>
 </section>
