@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return {
             email: email,
             password: pass,
-            name: name,
+            username: name,
             surname: surname,
         }
       }  
