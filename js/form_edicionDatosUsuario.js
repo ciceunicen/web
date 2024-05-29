@@ -65,6 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    precargarDatos();
+
     function checkInputs() {
         document.querySelectorAll('.editar_usuario').forEach(i => {
             let inputs = i.querySelectorAll('input');
@@ -134,7 +136,53 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+
+    /**
+     * Permite mostrarle al usuario sus datos precargados.
+     */
+    async function precargarDatos(){        
+        // Busco en el localstorage la info del usuario
+        let res = localStorage.getItem('usuario');
+        // Almaceno el email del usuario en la variable localStorageEmail
+        let { email: localStorageEmail } = JSON.parse(res);
+        
+        // Busco los datos del usuario en base a su email
+        let urlGetData = `http://localhost:8080/usuarios/email/${localStorageEmail}`;
+        let data;
+        
+        try {
+            let response = await fetch(urlGetData, {
+                "method": "GET",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`,
+                }
+            });
+
+            data = await response.json();
+
+            // En caso de que el status no fue un 200 tira el error.
+            if (!response.ok) { throw new Error({ error: data.error, status: data.status });} 
+        }
+        catch (e) {
+            console.error("Error al precargar la data del usuario:", e);
+            let errorMessage = e.error || 'Hubo un error al precargar los datos del usuario. Por favor, intentelo nuevamente';
+            alert(errorMessage);
+            return ;
+        }
+        
+        // Saco los atributos del objeto data
+        let { name, surname, email } = data;
+        
+        // actualizo el valor de los inputs en el formulario
+        document.getElementById("username").value = name;
+        document.getElementById("email").value = email;
+    }
+
     function getDatos() {
+        // TODO: Agarrar los valores con el FormData y devolverlos
+        // let form = new FormData(document.getElementById("editar-datos-usuario"));
+
         let username = document.getElementById("username").value;
         let email = document.getElementById("email").value;
         let currentPassword = document.getElementById("currentPassword").value;
