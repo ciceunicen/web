@@ -47,7 +47,9 @@
 
             <form action="#" id="register-emprendedor">
                 <div class="main-user-info">
-
+                    <div>
+                    <h6 class="aclaracion_campos_obligatorios">Los campos que contengan "<span class="requerido">*</span>" son obligatorios</h6>
+                    </div>
                     <div class="container-checkbox">
                         <div class="container-check">
                             <label for="fisica">Persona Física</label>
@@ -61,7 +63,7 @@
                     </div>
                     <div class="contenedor_grupos">
                         <div class="container-input">
-                            <label for="name" id="tipo_razon">Nombre</label>
+                            <label for="name" id="tipo_razon">Nombre <span class="requerido">*</span></label>
                             <input type="text" id="name" name="name" value=""
                                 placeholder="Ingrese su Nombre/Razón Social" required/>
                         </div>
@@ -73,7 +75,7 @@
 
                     <div class="contenedor_grupos">
                         <div class="container-input">
-                            <label for="email">Email</label>
+                            <label for="email">Email<span class="requerido">*</span></label>
                             <input type="email" id="email" name="email" placeholder="Ingrese su Email" required/>
                         </div>
                         <div class="container-input">
@@ -84,7 +86,7 @@
                     </div>
                     <div class="contenedor_grupos">
                         <div class="container-input">
-                            <label for="cuit_cuil">CUIT - CUIL</label>
+                            <label for="cuit_cuil">CUIT - CUIL<span class="requerido">*</span></label>
                             <input type="text" id="cuit_cuil" name="cuit_cuil" placeholder="Ingrese CUIT O CUIL" required/>
                         </div>
 

@@ -4,7 +4,21 @@ document.addEventListener("DOMContentLoaded", () => {
     logout();
 
     const URL_EMPRENDEDORES = "http://localhost:8080/emprendedores";
-    
+    const form = document.getElementById('register-emprendedor');
+    const submitButton = document.querySelector('.form-submit-btn input');
+    // Deshabilitar el botón al cargar la página
+    submitButton.disabled = true;
+    // Escuchar eventos de entrada en todos los campos del formulario
+    form.addEventListener('input', checkFormValidity);
+
+    function checkFormValidity() {
+        // Verifica la validez del formulario
+        if (form.checkValidity()) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
 
     document.getElementById("fisica").addEventListener("click", () => {
 
@@ -89,4 +103,5 @@ document.addEventListener("DOMContentLoaded", () => {
             "id_user":1
         }
     }
+
 })

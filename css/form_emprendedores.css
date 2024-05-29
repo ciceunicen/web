@@ -149,7 +149,6 @@ select {
 .container-checkbox input,
 .form-submit-btn input {
     cursor: pointer;
-
 }
 
 .form-submit-btn {
@@ -258,8 +257,17 @@ select {
     height: 25%;
     width: auto;
 }
-
-
+.requerido{
+    color: red;
+}
+.aclaracion_campos_obligatorios{
+    margin-bottom: 40px;
+}
+.form-submit-btn input:disabled {
+    background: rgba(0, 91, 143, 0.5); /* Color con opacidad */
+    color: rgba(255, 255, 255, 0.5); /* Texto con opacidad */
+    cursor: not-allowed; /* Cursor de no permitido */
+}
 
 
 
@@ -317,6 +325,7 @@ select {
         background: #87cdf5;
         overflow: hidden;
     }
+
 
 
 
