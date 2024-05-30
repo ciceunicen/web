@@ -119,7 +119,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
             let response = await fetch(URL_LOGIN, {
                 "method": "POST",
-
                 "headers": {
                     "Content-Type": "application/json",
                 },

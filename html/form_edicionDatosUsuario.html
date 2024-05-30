@@ -61,7 +61,7 @@
                     <div class="container-input">
                         <label for="currentPassword">Contraseña actual</label>
                         <div class="eye-password">
-                            <input class="input-eye-current-pw" type="password" name="" id="currentPassword" minlength="8" maxlength="20"
+                            <input class="input-eye-current-pw" type="password" name="currentPassword" id="currentPassword" minlength="8" maxlength="20"
                                    placeholder="Ingrese su contraseña actual">
                             <svg class="eyes" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
                                  stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -84,19 +84,19 @@
                     <div class="container-input">
                         <label for="newPassword">Nueva contraseña</label>
                         <div class="eye-password">
-                            <input class="input-eye" type="password" name="" id="newPassword" minlength="8" maxlength="20"
+                            <input class="input-eye" type="password" name="newPassword" id="newPassword" minlength="8" maxlength="20"
                                    placeholder="Ingrese su nueva contraseña">
                             <svg class="eyes" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
                                  stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
                             </svg>
-                        </div>
+                        </div>  
                     </div>
                     <div class="container-input">
                         <label class="label pd-t" for="password2">Confirmar contraseña</label>
                         <div class="eye-password">
-                            <input class="input-eye" type="password" name="" id="password2" minlength="8" maxlength="20"
+                            <input class="input-eye" type="password" name="newPasswordCorfirmed" id="password2" minlength="8" maxlength="20"
                                    placeholder="Repita su nueva contraseña">
                             <svg class="eyes" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
                                  stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -130,4 +130,6 @@
 </body>
 <script src="../js/form_edicionDatosUsuario.js"></script>
 <script src="../js/closeSession.js"></script>
+<!-- Script que permite obtener el payload del JWT del usuario (En nuestro caso el id y el email) -->
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 </html>

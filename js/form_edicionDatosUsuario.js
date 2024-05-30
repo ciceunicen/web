@@ -85,54 +85,63 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+
+    /**
+     * Busca en el localstorage el token y en caso 
+     * de encontrarlo recupera el id del usuario.
+     */
+    function extraerIdDelToken(){
+        let token = localStorage.getItem('token');
+        
+        //si el usuario tiene un token y tiene datos en el form procede
+        if(!token){ throw new Error("No se encontró ningun token!"); }
+        
+        // Decodificamos el token del usuario para obtener su payload (la data)
+        // El payload del token se encuentra en el atributo "sub" del objeto (id,email)
+        let decodedToken = jwt_decode(token);
+        console.log(decodedToken);
+        return decodedToken.sub.split(",")[0];
+    }
+
     async function editarUsuario() {
+        let formValues = getDatosDelForm();
+        
+        let idUsuario = extraerIdDelToken(); 
+        console.log(idUsuario);
+        let urlEditarUsuario = `http://localhost:8080/usuarios/${idUsuario}/datos`;
+        
+        try {
+            let response = await fetch(urlEditarUsuario, {
+                "method": "PUT",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`,
+                },
+                "body": formDataToJSON(formValues),
+            });
+            let data = await response.json();
+            console.log(data);
+            // if (!response.ok) {
+            //     throw { error: data.error, status: data.status }
+            // } else {
+            //     // TODO: Aca está lo que tenes que charlar en la dayly de hoy
+            //     // Actualiza el email en el objeto del usuario en el localStorage para que
+            //     // se muestre correctamente en dashboard al redirigir
+            //     let usuarioActualizado = localStorage.getItem('usuario');
+            //     usuarioActualizado = usuarioActualizado ? JSON.parse(usuarioActualizado) : null;
 
-        let valoresInputs = getDatos();
-        let datosEditarUsuario = JSON.stringify(valoresInputs);
-
-        let usuarioGuardado = localStorage.getItem('usuario');
-        let usuarioLogueado = usuarioGuardado ? JSON.parse(usuarioGuardado) : null;
-
-        //si existe usuarioLogueado y si tiene un id procede
-        if (usuarioLogueado && usuarioLogueado.id) {
-            let id_usuario = usuarioLogueado.id;
-            url_editar_usuario = `http://localhost:8080/usuarios/${id_usuario}`;
-
-            try {
-                let response = await fetch(url_editar_usuario, {
-                    "method": "PUT",
-                    "headers": {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`,
-                    },
-                    "body": datosEditarUsuario,
-                });
-                let data = await response.json();
-
-                if (!response.ok) {
-                    throw { error: data.error, status: data.status }
-                } else {
-                    // Actualiza el email en el objeto del usuario en el localStorage para que
-                    // se muestre correctamente en dashboard al redirigir
-                    let usuarioActualizado = localStorage.getItem('usuario');
-                    usuarioActualizado = usuarioActualizado ? JSON.parse(usuarioActualizado) : null;
-
-                    if (usuarioActualizado) {
-                        usuarioActualizado.email = valoresInputs.email;
-                        localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
-                    }
-                    alert("Datos actualizados con exito");
-                    window.location.href = "./dashboard.html";
-                }
-            }
-            catch (e) {
-                console.error("Error en editarUsuario:", e);
-                let errorMessage = e.error || 'Hubo un error al actualizar los datos. Por favor, intentelo nuevamente';
-                alert(errorMessage);
-            }
-        } else {
-            console.error('No se pudo obtener el ID del usuario.');
-            window.location.href = "./login.html";
+            //     if (usuarioActualizado) {
+            //         usuarioActualizado.email = valoresInputs.email;
+            //         localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+            //     }
+            //     alert("Datos actualizados con exito");
+            //     window.location.href = "./dashboard.html";
+            // }
+        }
+        catch (e) {
+            console.error("Error en editarUsuario:", e);
+            let errorMessage = e.error || 'Hubo un error al actualizar los datos. Por favor, intentelo nuevamente';
+            alert(errorMessage);
         }
     }
 
@@ -140,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /**
      * Permite mostrarle al usuario sus datos precargados.
      */
-    async function precargarDatos(){        
+    async function precargarDatos(){
         // Busco en el localstorage la info del usuario
         let res = localStorage.getItem('usuario');
         // Almaceno el email del usuario en la variable localStorageEmail
@@ -179,21 +188,19 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("email").value = email;
     }
 
-    function getDatos() {
-        // TODO: Agarrar los valores con el FormData y devolverlos
-        // let form = new FormData(document.getElementById("editar-datos-usuario"));
+    function getDatosDelForm() {
+        let form = document.querySelector("#editar-datos-usuario");
+        
+        return new FormData(form);
+    }
 
-        let username = document.getElementById("username").value;
-        let email = document.getElementById("email").value;
-        let currentPassword = document.getElementById("currentPassword").value;
-        let newPassword = document.getElementById("newPassword").value;
-
-        return {
-            "username": username,
-            "email": email,
-            "currentPassword": currentPassword,
-            "newPassword": newPassword,
-        };
+    function formDataToJSON(formData){
+        const jsonObject = {};
+        formData.forEach((value, key) => {
+            jsonObject[key] = value;
+        });
+        
+        return JSON.stringify(jsonObject);
     }
 
 });
