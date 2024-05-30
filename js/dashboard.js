@@ -20,9 +20,12 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     /* user.rolType.toLowerCase() */
     let rolUser = user.rolType.toLowerCase()
 
+    let titulo= document.getElementById("bienvenido");
 
-    user_name.innerHTML = user.username
-    user_email.innerHTML = user.email
+    titulo.innerHTML+= user.username + "!";
+
+    user_name.innerHTML = user.username;
+    user_email.innerHTML = user.email;
     
     if(rolUser == "defecto"){ 
         container.innerHTML += USER

@@ -123,7 +123,7 @@ flex-direction: column;
     width: 100%;
     height: 100px;
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
     background-color: #74AC24;  
     color: #FFFFFF;
@@ -144,4 +144,12 @@ header > p {
     margin: 1rem;
     width: 96%;
     background-color: #BADEA9;
+}
+.bienvenido{
+    font-size: 28px;
+    margin-left: 20px;
+}
+header .img-cice{
+    margin-left: 285.225px;
+    width: 110px;
 }
