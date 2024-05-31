@@ -99,15 +99,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // Decodificamos el token del usuario para obtener su payload (la data)
         // El payload del token se encuentra en el atributo "sub" del objeto (id,email)
         let decodedToken = jwt_decode(token);
-        console.log(decodedToken);
+
         return decodedToken.sub.split(",")[0];
     }
 
     async function editarUsuario() {
         let formValues = getDatosDelForm();
-        
         let idUsuario = extraerIdDelToken(); 
-        console.log(idUsuario);
+        
         let urlEditarUsuario = `http://localhost:8080/usuarios/${idUsuario}/datos`;
         
         try {
@@ -120,23 +119,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 "body": formDataToJSON(formValues),
             });
             let data = await response.json();
+            
             console.log(data);
-            // if (!response.ok) {
-            //     throw { error: data.error, status: data.status }
-            // } else {
-            //     // TODO: Aca está lo que tenes que charlar en la dayly de hoy
-            //     // Actualiza el email en el objeto del usuario en el localStorage para que
-            //     // se muestre correctamente en dashboard al redirigir
-            //     let usuarioActualizado = localStorage.getItem('usuario');
-            //     usuarioActualizado = usuarioActualizado ? JSON.parse(usuarioActualizado) : null;
+            
+            if (!response.ok) {
+                throw { error: data.error, status: data.status }
+            } else {
+                // TODO: Aca está lo que tenes que charlar en la dayly de hoy
+                // Actualiza el email en el objeto del usuario en el localStorage para que
+                // se muestre correctamente en dashboard al redirigir
+                let usuarioActualizado = localStorage.getItem('usuario');
+                usuarioActualizado = usuarioActualizado ? JSON.parse(usuarioActualizado) : null;
 
-            //     if (usuarioActualizado) {
-            //         usuarioActualizado.email = valoresInputs.email;
-            //         localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
-            //     }
-            //     alert("Datos actualizados con exito");
-            //     window.location.href = "./dashboard.html";
-            // }
+                if (usuarioActualizado) {
+                    usuarioActualizado.email = formValues.get("email");
+                    usuarioActualizado.name = formValues.get("name");
+                    localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+                }
+                alert("Datos actualizados con exito");
+                window.location.href = "./dashboard.html";
+            }
         }
         catch (e) {
             console.error("Error en editarUsuario:", e);
