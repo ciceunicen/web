@@ -84,8 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${usuario.email}</td>
                 <td>${usuario.role.type}</td>`;
 
-                datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Remover Admin</button>";
-                datosUsuario += "<button class='btn_delete_user'  data-id = '" + usuario.id + "'>Eliminar admin</button>";
+                datosUsuario += "<td > <button class='btn_save_rol btn-detalles'  data-id = '" + usuario.id + "'>Agregar Adminr</button>";
+                datosUsuario += "<button class='btn_delete_user'  data-id = '" + usuario.id + "'>Eliminar usuario</button>";
             } else if (usuario.role.id == 4) {
                 datosUsuario =
                     `<td>${usuario.username}</td>

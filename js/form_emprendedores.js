@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let valoresInputs = getDatos();
         let datosRegister = JSON.stringify(valoresInputs);
         try {
-
+            console.log(localStorage.getItem('token'));
             let response = await fetch(URL_EMPRENDEDORES, {
                 "method": "POST",
                 "headers": {
