@@ -8,9 +8,10 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     logout(); //Debido a que para hacer andar el logout en el resto de la pagina que tiene PR, se tuvo que poner la funcionalidad en una funcion
     //y dicha func se llama desde otros js que se cargan siempre en distintas paginas
 
-    const URL_EMPRENDEDORES = "http://localhost:8080/emprendedores"
+    const URL_EMPRENDEDORES_ConSolicitudPendiente = "http://localhost:8080/emprendedores/Solicitudes";
+    const URL_ROL_USER = "http://localhost:8080/usuarios";
     const tokin = localStorage.getItem("token");
-    obtenerUsuarios(URL_EMPRENDEDORES);
+    obtenerUsuarios(URL_EMPRENDEDORES_ConSolicitudPendiente);
 
     document.querySelector("#btn-back").addEventListener("click", ()=>{
         window.location.replace('./dashboard.html');
@@ -43,5 +44,66 @@ document.addEventListener("DOMContentLoaded", (e) =>{
             console.log("Fallo al obtener el JSON de la API.");
             console.log(error);
         }
+    }
+    let tabla = document.querySelector("#lista"); ////
+    function cargarUsuarios(arregloUsuarios) {
+        tabla.innerHTML = "";
+        let datosUsuario = "";
+        arregloUsuarios.forEach(usuario => {
+            datosUsuario = "";
+            if (!usuario.is_deleted) {
+                datosUsuario =
+                    `<td>${usuario.cuil_cuit}</td>
+                <td>${usuario.email}</td>
+                <td>${usuario.name+ " "+usuario.surname}</td>;
+                <td>${usuario.phone}</td>`
+                datosUsuario += "<td > <button class='btn_save_rol btn-detalles' id='btnAceptar' data-id = '" + usuario.id + "'>Aceptar solicitud</button>";
+            } 
+            tabla.innerHTML += `<tr>${datosUsuario}</tr>`
+        });
+    }
+    let btnAceptarSolicitud= document.getElementById("btnAceptar");
+    btnAceptarSolicitud.addEventListener("click",changeRol);
+    async function changeRol(idUser, btnLabel) {
+
+        /* btnText = document.getAttribute("data-id");
+        console.log(btnText); */
+
+        let newId;
+        if (btnLabel == "Remover Admin")
+            newId = 4; // ID usuario defecto
+        else
+            newId = 2; // ID admin
+
+        try {
+            let response = await fetch(URL_ROL_USER + "/" + idUser + "/rol", {
+                "method": "PUT",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + tokin
+                },
+                "body": JSON.stringify({
+
+
+                    "id": newId
+
+                })
+
+                
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                console.log(json);
+                obtenerUsuarios(URL_ROL_USER);
+            } else if (response.status == 401) { // Unathorized
+                console.error("No tiene los permisos para realizar esta acción");
+            }
+        } catch (e) {
+            console.log(e)
+        }
+
+
+
     }
 });
