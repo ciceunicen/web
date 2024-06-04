@@ -23,8 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     formEditarUsuario.addEventListener("submit", (e) => {
         e.preventDefault();
+        quitarMensajesDeErrores();
         editarUsuario();
     });
+
+    function quitarMensajesDeErrores(){
+        // Obtenemos todos posibles mensajes de error
+        const mensajes = document.querySelectorAll(".errorMessage");
+        // Desactivamos todos
+        mensajes.forEach(mensaje => mensaje.classList.add("hidden"));
+    }
 
     document.querySelectorAll('.input-eye').forEach(fieldPassword => {
         fieldPassword.addEventListener("input", () => {
@@ -104,7 +112,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function editarUsuario() {
-        let formValues = getDatosDelForm();
+        let formValues;
+
+        // Al intentar enviar el form se verifica que info sea valida, sino ni siquiera se envia el form.
+        formValues = getDatosDelForm();
+        if(!formValues) return;
+        
         let idUsuario = extraerIdDelToken(); 
         
         let urlEditarUsuario = `http://localhost:8080/usuarios/${idUsuario}/datos`;
@@ -123,7 +136,10 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(data);
             
             if (!response.ok) {
+                // TODO: Reflejar por el frontend los errores que vienen desde el backend
+                console.log(response);
                 throw { error: data.error, status: data.status }
+                // Anexo 1 y plan de trabajo, enviarselo a camila.
             } else {
                 // TODO: Aca está lo que tenes que charlar en la dayly de hoy
                 // Actualiza el email en el objeto del usuario en el localStorage para que
@@ -192,8 +208,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function getDatosDelForm() {
         let form = document.querySelector("#editar-datos-usuario");
-        
-        return new FormData(form);
+        let err = false;
+        const formData = new FormData(form);
+        if(!formData.get("name")){ document.querySelector("#emptyName").classList.remove("hidden"); err = true; }
+        if(!formData.get("email")){ document.querySelector("#emptyEmail").classList.remove("hidden"); err = true; }
+        if(!formData.get("email").match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)){ document.querySelector("#invalidEmail").classList.remove("hidden"); err = true; }
+        if(!formData.get("currentPassword").match(/^[\s\S]{8,20}$/)){ document.querySelector("#invalidPassword").classList.remove("hidden"); err = true; }
+        if(formData.get("newPassword") || formData.get("newPasswordConfirmed")){
+            console.log(formData.get("newPassword"));
+            console.log(formData.get("newPasswordConfirmed"));
+            if(!(formData.get("newPassword") == (formData.get("newPasswordConfirmed")))){document.querySelector("#notMatchingPasswords").classList.remove("hidden"); err = true;}
+        }
+
+        // Si hay almenos 1 error devuelve falso
+        return err ? false : formData;
     }
 
     function formDataToJSON(formData){

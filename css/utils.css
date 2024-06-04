@@ -1,0 +1,8 @@
+.errorMessage{
+  color: rgb(239, 12, 12);
+  font-size: 1rem;
+}
+
+.hidden{
+  display: none;
+}

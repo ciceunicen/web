@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/form_emprendedores.css">
     <link rel="stylesheet" href="../css/form_edicionDatosUsuario.css">
+    <link rel="stylesheet" href="../css/utils.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!---LINK PARA ICONOS DE BOOTSTRAP-->
@@ -55,8 +56,8 @@
 
                     <div class="container-input">
                         <label for="username" id="nombreusuario">Nombre de usuario</label>
-                        <input type="text" id="username" name="name" value=""
-                               placeholder="Ingrese su nuevo nombre de usuario" required/>
+                        <input type="text" id="username" name="name" value=""placeholder="Ingrese su nuevo nombre de usuario" required/>
+                        <span class="errorMessage hidden" id="emptyName">El nombre no puede estar vacio!</span>
                     </div>
                     <div class="container-input">
                         <label for="currentPassword">Contraseña actual</label>
@@ -69,6 +70,7 @@
                                 <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
                             </svg>
                         </div>
+                        <span class="errorMessage hidden" id="invalidPassword">La contraseña debe contener entre 8 a 20 caracteres!</span>
                     </div>
 
                 </div>
@@ -77,6 +79,8 @@
                     <div class="container-input" id="div_email">
                         <label for="email">Email</label>
                         <input type="text" id="email" name="email" placeholder="Ingrese su nuevo email" />
+                        <span class="errorMessage hidden" id="emptyEmail">El mail no puede estar vacio!</span>
+                        <span class="errorMessage hidden" id="invalidEmail">Ingrese un mail valido!</span>
                     </div>
                 </div>
 
@@ -92,11 +96,12 @@
                                 <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
                             </svg>
                         </div>  
+                        <span class="errorMessage hidden" id="notMatchingPasswords">Las contraseñas no coinciden!</span>
                     </div>
                     <div class="container-input">
                         <label class="label pd-t" for="password2">Confirmar contraseña</label>
                         <div class="eye-password">
-                            <input class="input-eye" type="password" name="newPasswordCorfirmed" id="password2" minlength="8" maxlength="20"
+                            <input class="input-eye" type="password" name="newPasswordConfirmed" id="password2" minlength="8" maxlength="20"
                                    placeholder="Repita su nueva contraseña">
                             <svg class="eyes" width="30" height="30" fill="none" stroke="currentColor" stroke-linecap="round"
                                  stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
