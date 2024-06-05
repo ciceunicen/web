@@ -200,10 +200,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         // Saco los atributos del objeto data
-        let { name, surname, email } = data;
+        let { username, email } = data;
         
         // actualizo el valor de los inputs en el formulario
-        document.getElementById("username").value = name;
+        document.getElementById("username").value = username;
         document.getElementById("email").value = email;
     }
 
