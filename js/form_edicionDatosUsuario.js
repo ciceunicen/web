@@ -122,6 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
         
         let urlEditarUsuario = `http://localhost:8080/usuarios/${idUsuario}/datos`;
         
+        const formContainer = document.querySelector(".container_form_input");
+        const popup = document.createElement("div");
+        popup.classList.add("popup");
+
         try {
             let response = await fetch(urlEditarUsuario, {
                 "method": "PUT",
@@ -131,19 +135,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 "body": formDataToJSON(formValues),
             });
-            let data = await response.json();
-            
-            console.log(data);
             
             if (!response.ok) {
-                // TODO: Reflejar por el frontend los errores que vienen desde el backend
-                console.log(response);
-                throw { error: data.error, status: data.status }
-                // Anexo 1 y plan de trabajo, enviarselo a camila.
+                popup.classList.add("popupError");
+                let errorMessage = await response.text(); 
+                popup.innerText = errorMessage;
+                console.error(`Error (${response.status}): ${errorMessage}`);
             } else {
-                // TODO: Aca está lo que tenes que charlar en la dayly de hoy
-                // Actualiza el email en el objeto del usuario en el localStorage para que
-                // se muestre correctamente en dashboard al redirigir
+                popup.classList.add("popupSuccess");
+                popup.innerText = "Datos editados exitosamente!";
+                
                 let usuarioActualizado = localStorage.getItem('usuario');
                 usuarioActualizado = usuarioActualizado ? JSON.parse(usuarioActualizado) : null;
 
@@ -152,15 +153,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     usuarioActualizado.name = formValues.get("name");
                     localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
                 }
-                alert("Datos actualizados con exito");
-                window.location.href = "./dashboard.html";
             }
         }
         catch (e) {
-            console.error("Error en editarUsuario:", e);
-            let errorMessage = e.error || 'Hubo un error al actualizar los datos. Por favor, intentelo nuevamente';
-            alert(errorMessage);
+            console.error("Error en editar los datos del usuario:", e);
+            let errorMessage = e.error || 'Hubo un error desconocido al actualizar los datos. Por favor, intentelo nuevamente';
+            popup.innerText = errorMessage;
         }
+
+        formContainer.appendChild(popup);
     }
 
 

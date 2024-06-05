@@ -3,6 +3,52 @@
   font-size: 1rem;
 }
 
+
+.popup{
+  position: absolute;
+  padding: 1rem 2rem;
+  max-height: 18rem;
+  background-color: rgba(255, 53, 53, 0.4);
+  color: rgb(144, 0, 0);
+  right: 1rem;
+  bottom: 0;
+  font-weight: 800;
+  animation: 4s ease-out forwards appear;
+  border-radius: .3rem;
+}
+
+@keyframes appear{
+  0%{
+    scale: .99;
+    opacity: 0;
+  }
+
+  30%{
+    scale: 1;
+    opacity: 1;
+  }
+
+  80%{
+    scale: 1;
+    opacity: 1;
+  }
+
+  100%{
+    opacity: 0;
+  }
+}
+
+.popupError{
+  background-color: rgba(255, 53, 53, 0.4);
+  color: rgb(144, 0, 0);
+}
+
+.popupSuccess{
+  background-color: rgba(116, 172, 36, .4);
+  color: rgb(116, 172, 36);
+}
+
+
 .hidden{
   display: none;
 }
