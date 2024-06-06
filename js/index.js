@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (urlSearch) {
       window.history.replaceState(null, null, urlPath);
-      mostrarHome(1, urlSearch);
+      mostrarHome(urlSearch);
     } else {
       mostrarHome();
     }

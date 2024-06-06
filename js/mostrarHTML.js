@@ -33,14 +33,13 @@ function removerEventoClic(pagAnterior) {
 }
 
 //Muestra el home de la pagina
-function mostrarHome(actualPage = 1, seccion = "emprendedores"){
+function mostrarHome(seccion = "emprendedores"){
 
-  mostrarArchivoHTML("navbar.html",".navbar").then(text => {
+  mostrarArchivoHTML("navbar.html").then(text => {
       let pagAnterior = "dashboard";
       document.querySelector(".navbar").innerHTML = text;
       document.querySelector("#proyectos").addEventListener("click", ()=>{
         drawClickNav("proyectos");
-        page=actualPage;
         getAllProjects().then(json=>mostrarProyectos(json, pagAnterior));
       });
       document.querySelector("#emprendedores").addEventListener("click", ()=>{
