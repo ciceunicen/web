@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
 
     const ADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li><li id='crearProject'>Crear Proyecto</li></ul><h2>Emprendedores</h2><ul><li id='listEntrepreneur'>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li></ul>"
 
-    const SUPERADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li></ul><h2>Emprendedores</h2><ul><li id='listEntrepreneur'>Listar emprendedores</li><li id='NuevosEmprendedores'>Nuevos Emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li id='AdmUsuariosRol'>Listar usuarios</li></ul>"
+    const SUPERADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li></ul><h2>Emprendedores</h2><ul><li id='listEntrepreneur'>Listar emprendedores</li><li id='NuevosEmprendedores'>Solicitudes Emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li id='AdmUsuariosRol'>Listar usuarios</li></ul>"
 
     const PERSONAL_CICE = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li></ul>"
 

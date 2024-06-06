@@ -8,10 +8,10 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     logout(); //Debido a que para hacer andar el logout en el resto de la pagina que tiene PR, se tuvo que poner la funcionalidad en una funcion
     //y dicha func se llama desde otros js que se cargan siempre en distintas paginas
 
-    const URL_EMPRENDEDORES_ConSolicitudPendiente = "http://localhost:8080/emprendedores/Solicitudes";
+    const URL_EMPRENDEDORES = "http://localhost:8080/emprendedores";
     const URL_ROL_USER = "http://localhost:8080/usuarios";
     const tokin = localStorage.getItem("token");
-    obtenerUsuarios(URL_EMPRENDEDORES_ConSolicitudPendiente);
+    obtenerUsuarios(URL_EMPRENDEDORES);
 
     document.querySelector("#btn-back").addEventListener("click", ()=>{
         window.location.replace('./dashboard.html');
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
 
         console.log("El token es: " + tokin)
         try {
-            let respuesta = await fetch(url, {
+            let respuesta = await fetch(url+"/Solicitudes", {
                 "method": "GET",
                 "headers": {
                     "Authorization": "Bearer " + tokin
@@ -34,9 +34,6 @@ document.addEventListener("DOMContentLoaded", (e) =>{
 
                 if (arreglo) {
                     cargarUsuarios(arreglo); ///
-
-
-
                     buttons_action();
                 }
             }
@@ -55,39 +52,48 @@ document.addEventListener("DOMContentLoaded", (e) =>{
                 datosUsuario =
                     `<td>${usuario.cuil_cuit}</td>
                 <td>${usuario.email}</td>
-                <td>${usuario.name+ " "+usuario.surname}</td>;
+                <td>${usuario.name+ " "+usuario.surname}</td>
                 <td>${usuario.phone}</td>`
-                datosUsuario += "<td > <button class='btn_save_rol btn-detalles' id='btnAceptar' data-id = '" + usuario.id + "'>Aceptar solicitud</button>";
+                datosUsuario += "<td > <button class='btn_save_rol btn-detalles btn-Aceptar' id='btnAceptar' data-id = '" + usuario.id + "'>Aceptar solicitud</button>";
             } 
             tabla.innerHTML += `<tr>${datosUsuario}</tr>`
         });
     }
-    let btnAceptarSolicitud= document.getElementById("btnAceptar");
-    btnAceptarSolicitud.addEventListener("click",changeRol);
-    async function changeRol(idUser, btnLabel) {
+    function buttons_action(){
+        let btnsAceptarSolicitud= document.querySelectorAll(".btn-Aceptar");
+        btnsAceptarSolicitud.forEach(btn=>{
+            btn.addEventListener('click',e=>{
+                 changeRol(btn.getAttribute("data-id"),btn);
+            })
+        })
+    }
+   
+    
+    //Modificar metodo para setear la columna is aceptada en entrepreneur y cambiar el rol del usuario a 3(emprendedor);
 
-        /* btnText = document.getAttribute("data-id");
-        console.log(btnText); */
+    async function changeRol(idUser,btn) {
 
-        let newId;
-        if (btnLabel == "Remover Admin")
-            newId = 4; // ID usuario defecto
+       
+
+       
+        if (btn.textContent == 'Aceptar solicitud')
+           btn.textContent='Deshacer cambios';
         else
-            newId = 2; // ID admin
+          btn.textContent='Aceptar solicitud';
 
         try {
-            let response = await fetch(URL_ROL_USER + "/" + idUser + "/rol", {
+            let response = await fetch(URL_EMPRENDEDORES + "/" + idUser + "/validado", {
                 "method": "PUT",
                 "headers": {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + tokin
                 },
-                "body": JSON.stringify({
+                // "body": JSON.stringify({
 
 
-                    "id": newId
+                //     "id": newId
 
-                })
+                // })
 
                 
             });
@@ -95,7 +101,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
             if (response.ok) {
                 const json = await response.json();
                 console.log(json);
-                obtenerUsuarios(URL_ROL_USER);
+                obtenerUsuarios(URL_EMPRENDEDORES);
             } else if (response.status == 401) { // Unathorized
                 console.error("No tiene los permisos para realizar esta acción");
             }
