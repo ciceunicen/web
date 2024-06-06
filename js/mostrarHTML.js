@@ -59,22 +59,32 @@ function mostrarHome(seccion = "emprendedores"){
 
 function mostrarHomeEmprendedor(){
   let pagAnterior = "dashboard";
+  // Obtiene el id del usuario para buscar sus proyectos
   let user = JSON.parse(localStorage.getItem('usuario'));
 
   // Verifica si el usuario es un emprendedor y obtener su ID
   if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor' && user.id) {
     let emprendedorId = user.id;
-
-    mostrarArchivoHTML("navbarEntrepreneur.html", ".navbar").then(
+    // Obtiene el navbar del emprendedor
+    mostrarArchivoHTML("navbarEntrepreneur.html").then(
         async text => {
+          // Agrega el navbar emprendedor al navbar por defecto
           document.querySelector(".navbar").innerHTML = text;
 
           manageNotifications();
-
+          // Carga por default el los proyectos de x emprendedor
           getAllProjectsByEntrepreneur(emprendedorId).then(json => mostrarProyectosDeEmprendedor(json));
           logout();
+
+          document.querySelector("#misProyectos").addEventListener("click", ()=>{
+            drawClickNav("misProyectos");
+            // Muestra todos los proyectos del usuario
+            getAllProjectsByEntrepreneur(emprendedorId).then(json => mostrarProyectosDeEmprendedor(json));
+          });
+
           document.querySelector("#crearProyecto").addEventListener("click", ()=>{
             drawClickNav("crearProyecto");
+            // Carga el formulario para crear un nuevo proyecto
             mostrarCargaProyecto(pagAnterior);
           });
         }
