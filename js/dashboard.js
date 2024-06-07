@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     document.getElementById('editarDatosUsuario')?.addEventListener('click', ()=> window.location.href = "./form_edicionDatosUsuario.html");
     
     /*Emprendedor */
-    document.getElementById('crearProject')?.addEventListener('click', ()=> window.location.href = "./home.html");
-    document.getElementById('listProjectsEntrepreneur')?.addEventListener('click', ()=> window.location.href = "./home.html");   
+    document.getElementById('crearProject')?.addEventListener('click', ()=> window.location.href = "./home.html?crearProyecto");
+    document.getElementById('listProjectsEntrepreneur')?.addEventListener('click', ()=> window.location.href = "./home.html?misProyectos");   
     
     /*Admin / Superadmin */
     document.getElementById('listEntrepreneur')?.addEventListener('click', ()=> window.location.href = "./home.html");   

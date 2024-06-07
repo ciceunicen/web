@@ -23,7 +23,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Muestra contenido según el rol del usuario
   if (rolUser === "emprendedor") {
-    mostrarHomeEmprendedor();
+    // Recupera lo que hay luego del home.html?
+    const urlSearch = location.search.substring(1);
+    mostrarHomeEmprendedor(urlSearch);
+    
   } else {
     // Para otros roles (admin/super admin)
     const urlPath = location.pathname;
