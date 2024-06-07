@@ -49,11 +49,14 @@ document.addEventListener("DOMContentLoaded", (e) =>{
         arregloUsuarios.forEach(usuario => {
             datosUsuario = "";
             if (!usuario.is_deleted) {
+                if(usuario.phone==null){
+                    usuario.phone="--"
+                }
                 datosUsuario =
                     `<td>${usuario.cuil_cuit}</td>
-                <td>${usuario.email}</td>
-                <td>${usuario.name+ " "+usuario.surname}</td>
-                <td>${usuario.phone}</td>`
+                     <td>${usuario.email}</td>
+                     <td>${usuario.name+ " "+usuario.surname}</td>
+                     <td>${usuario.phone}</td>`
                 datosUsuario += "<td > <button class='btn_save_rol btn-detalles btn-Aceptar' id='btnAceptar' data-id = '" + usuario.id + "'>Aceptar solicitud</button>";
             } 
             tabla.innerHTML += `<tr>${datosUsuario}</tr>`
