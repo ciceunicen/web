@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     document.getElementById('listProjectsEntrepreneur')?.addEventListener('click', ()=> window.location.href = "./home.html?misProyectos");   
     
     /*Admin / Superadmin */
-    document.getElementById('listEntrepreneur')?.addEventListener('click', ()=> window.location.href = "./home.html");   
+    document.getElementById('listEntrepreneur')?.addEventListener('click', ()=> window.location.href = "./home.html?emprendedores");   
     
     // Se supone que estos 3 son para admins/superadmins pero por el momento no hacen nada (ya que nunca se crean en el HTML) 
     document.getElementById('listProjectsManager')?.addEventListener('click', ()=> window.location.href = "./home.html?proyectos");   

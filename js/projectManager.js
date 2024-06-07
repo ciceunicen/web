@@ -75,11 +75,8 @@ function showDataProjectManager(projectManager) {
 }
 
 //TODO LISTA EMPRENDEDORES
-function generarTablaEmprendedores(json, pagAnterior) {
-    window.location.hash = 'emprendedores';
-    console.log("generarTablaEmprendedores: "+ pagAnterior );
-    removerEventoClic(pagAnterior);
-    agregarEventoClic(pagAnterior);
+function generarTablaEmprendedores(json) {
+    // window.location.hash = 'emprendedores';
 
     let array = json.content;
     let container = document.querySelector(".projectManagersTable");

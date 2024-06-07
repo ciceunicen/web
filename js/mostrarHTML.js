@@ -33,29 +33,58 @@ function removerEventoClic(pagAnterior) {
 }
 
 //Muestra el home de la pagina
-function mostrarHome(seccion = "emprendedores"){
+function mostrarHome(urlSearch){
 
   mostrarArchivoHTML("navbar.html").then(text => {
-      let pagAnterior = "dashboard";
-      document.querySelector(".navbar").innerHTML = text;
-      document.querySelector("#proyectos").addEventListener("click", ()=>{
-        drawClickNav("proyectos");
-        getAllProjects().then(json=>mostrarProyectos(json, pagAnterior));
-      });
-      document.querySelector("#emprendedores").addEventListener("click", ()=>{
-        drawClickNav("emprendedores");
-        mostrarListaEmprendedores(pagAnterior);
-      });
-      document.querySelector("#crearProyecto").addEventListener("click", ()=>{
-        drawClickNav("crearProyecto");
-        mostrarCargaProyecto(pagAnterior);
-      });
+      // La primera vez que se ejecuta necesitamos pintar el boton del nav superior
+      // en base al btn del nav izquierdo que clickearon
+      drawClickNav(`${urlSearch}`);
       
-      document.querySelector(`#${seccion}`).click();
+      document.querySelector(".navbar").innerHTML = text;
 
-      logout(); //Una vez cargado el NAV (se carga con parcial render), le agrego funcionalidad al boton creado
-    })
+      // Le agrega la funcionalidad al boton de logout que se acaba de generar en el navbar superior  
+      logout();       
+      
+      // En vaso de presionar el boton ir hacia atras nos manda al dashboard.html
+      agregarEventoClic("dashboard");
+
+      // Agregamos los eventListeners al nav superior
+      document.querySelector("#proyectos").addEventListener("click", seleccionarVerProyectos);
+      document.querySelector("#emprendedores").addEventListener("click", seleccionarVerEmprendedores);
+      document.querySelector("#crearProyecto").addEventListener("click", seleccionarCrearProyecto);
+
+
+      // Para la primera vez que se ejecuta
+      // En base al id del boton que se clickeo desde el dashboard se ajusta el contenido a 
+      // mostrar en el body y la url del sitio 
+      switch(urlSearch){
+        case "proyectos": seleccionarVerProyectos();break;
+        case "emprendedores": seleccionarVerEmprendedores();break;
+        case "crearProyecto": seleccionarCrearProyecto();break;
+      }
+
+    });
 }
+
+
+// Pinta el navbar del boton clickeado y ademas carga el ajax de mostrar todos los proyectos
+function seleccionarVerEmprendedores(){
+  drawClickNav("emprendedores");
+  // Carga todos los emprendedores
+  mostrarListaEmprendedores("dashboard.html");
+  // Cambia la url para que muestre la que le estamos pasando
+  window.history.replaceState(null, null, `home.html?emprendedores`);
+}
+
+// Pinta el navbar del boton clickeado y ademas carga el ajax de mostrar todos los proyectos
+function seleccionarVerProyectos(){
+  drawClickNav("proyectos");
+  // Carga todos los proyectos
+  getAllProjects().then(json=>mostrarProyectos(json, "dashboard.html"));
+  // Cambia la url para que muestre la que le estamos pasando
+  window.history.replaceState(null, null, `home.html?proyectos`);
+}
+
 
 function mostrarHomeEmprendedor(urlSearch){
   let pagAnterior = "dashboard";
@@ -73,7 +102,7 @@ function mostrarHomeEmprendedor(urlSearch){
       // Agregamos los eventListeners a los botones del nav superior
       document.querySelector("#misProyectos").addEventListener("click", seleccionarVerMisProyectos);
       document.querySelector("#crearProyecto").addEventListener("click", seleccionarCrearProyecto);
-
+      
       // Para la primera vez que se ejecuta
       // En base al id del boton que se clickeo desde el dashboard se ajusta el contenido a 
       // mostrar en el body y la url del sitio 
@@ -123,12 +152,6 @@ function showTableProjectsRemoved(){
 
 //muestra la lista de proyectos
 function mostrarProyectos(json, pagAnterior) {
-  window.location.hash = `proyectos`;
-  console.log("mostrarProyectos: "+ pagAnterior); //dashboard
-
-  removerEventoClic(pagAnterior);
-  agregarEventoClic(pagAnterior);
-
   let user = JSON.parse(localStorage.getItem('usuario'));
   
   let listadoHTML = "";
@@ -356,11 +379,6 @@ function cargaRenderAsistencia(){
 }
 //MUESTRA LA LISTA DE EMPRENDEDORES
 function mostrarListaEmprendedores(pagAnterior){
-  console.log("mostrarListaEmprendedores: "+ pagAnterior);
-
-/*  removerEventoClic(pagAnterior);
-  agregarEventoClic(pagAnterior);*/
-
   mostrarArchivoHTML("listProjectsManager.html").then(text =>{
       document.querySelector(".main-container").innerHTML = text;
       page=1;

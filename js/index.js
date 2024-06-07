@@ -18,26 +18,16 @@ var multiSelectsAssistancesCreated;
 
 document.addEventListener("DOMContentLoaded", function () {
   let user = JSON.parse(localStorage.getItem('usuario'));
-  console.log(user);
   let rolUser = user.rolType.toLowerCase();
 
+  // Recupera lo que hay luego del home.html? (la referencia está en dashboard.js)
+  const urlSearch = location.search.substring(1);
+  
   // Muestra contenido según el rol del usuario
   if (rolUser === "emprendedor") {
-    // Recupera lo que hay luego del home.html?
-    const urlSearch = location.search.substring(1);
     mostrarHomeEmprendedor(urlSearch);
-    
   } else {
-    // Para otros roles (admin/super admin)
-    const urlPath = location.pathname;
-    const urlSearch = location.search.substring(1);
-
-    if (urlSearch) {
-      window.history.replaceState(null, null, urlPath);
-      mostrarHome(urlSearch);
-    } else {
-      mostrarHome();
-    }
+    mostrarHome(urlSearch);
   }
 })
 
