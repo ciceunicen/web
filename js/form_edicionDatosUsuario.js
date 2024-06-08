@@ -23,8 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     formEditarUsuario.addEventListener("submit", (e) => {
         e.preventDefault();
+        quitarMensajesDeErrores();
         editarUsuario();
     });
+
+    function quitarMensajesDeErrores(){
+        // Obtenemos todos posibles mensajes de error
+        const mensajes = document.querySelectorAll(".errorMessage");
+        // Desactivamos todos
+        mensajes.forEach(mensaje => mensaje.classList.add("hidden"));
+    }
 
     document.querySelectorAll('.input-eye').forEach(fieldPassword => {
         fieldPassword.addEventListener("input", () => {
@@ -65,6 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    precargarDatos();
+
     function checkInputs() {
         document.querySelectorAll('.editar_usuario').forEach(i => {
             let inputs = i.querySelectorAll('input');
@@ -83,69 +93,145 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    async function editarUsuario() {
 
-        let valoresInputs = getDatos();
-        let datosEditarUsuario = JSON.stringify(valoresInputs);
+    /**
+     * Busca en el localstorage el token y en caso 
+     * de encontrarlo recupera el id del usuario.
+     */
+    function extraerIdDelToken(){
+        let token = localStorage.getItem('token');
+        
+        //si el usuario tiene un token y tiene datos en el form procede
+        if(!token){ throw new Error("No se encontró ningun token!"); }
+        
+        // Decodificamos el token del usuario para obtener su payload (la data)
+        // El payload del token se encuentra en el atributo "sub" del objeto (id,email)
+        let decodedToken = jwt_decode(token);
 
-        let usuarioGuardado = localStorage.getItem('usuario');
-        let usuarioLogueado = usuarioGuardado ? JSON.parse(usuarioGuardado) : null;
-
-        //si existe usuarioLogueado y si tiene un id procede
-        if (usuarioLogueado && usuarioLogueado.id) {
-            let id_usuario = usuarioLogueado.id;
-            url_editar_usuario = `http://localhost:8080/usuarios/${id_usuario}`;
-
-            try {
-                let response = await fetch(url_editar_usuario, {
-                    "method": "PUT",
-                    "headers": {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`,
-                    },
-                    "body": datosEditarUsuario,
-                });
-                let data = await response.json();
-
-                if (!response.ok) {
-                    throw { error: data.error, status: data.status }
-                } else {
-                    // Actualiza el email en el objeto del usuario en el localStorage para que
-                    // se muestre correctamente en dashboard al redirigir
-                    let usuarioActualizado = localStorage.getItem('usuario');
-                    usuarioActualizado = usuarioActualizado ? JSON.parse(usuarioActualizado) : null;
-
-                    if (usuarioActualizado) {
-                        usuarioActualizado.email = valoresInputs.email;
-                        localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
-                    }
-                    alert("Datos actualizados con exito");
-                    window.location.href = "./dashboard.html";
-                }
-            }
-            catch (e) {
-                console.error("Error en editarUsuario:", e);
-                let errorMessage = e.error || 'Hubo un error al actualizar los datos. Por favor, intentelo nuevamente';
-                alert(errorMessage);
-            }
-        } else {
-            console.error('No se pudo obtener el ID del usuario.');
-            window.location.href = "./login.html";
-        }
+        return decodedToken.sub.split(",")[0];
     }
 
-    function getDatos() {
-        let username = document.getElementById("username").value;
-        let email = document.getElementById("email").value;
-        let currentPassword = document.getElementById("currentPassword").value;
-        let newPassword = document.getElementById("newPassword").value;
+    async function editarUsuario() {
+        let formValues;
 
-        return {
-            "username": username,
-            "email": email,
-            "currentPassword": currentPassword,
-            "newPassword": newPassword,
-        };
+        // Al intentar enviar el form se verifica que info sea valida, sino ni siquiera se envia el form.
+        formValues = getDatosDelForm();
+        if(!formValues) return;
+        
+        let idUsuario = extraerIdDelToken(); 
+        
+        let urlEditarUsuario = `http://localhost:8080/usuarios/${idUsuario}/datos`;
+        
+        const formContainer = document.querySelector(".container_form_input");
+        const popup = document.createElement("div");
+        popup.classList.add("popup");
+
+        try {
+            let response = await fetch(urlEditarUsuario, {
+                "method": "PUT",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`,
+                },
+                "body": formDataToJSON(formValues),
+            });
+            
+            if (!response.ok) {
+                popup.classList.add("popupError");
+                let errorMessage = await response.text(); 
+                popup.innerText = errorMessage;
+                console.error(`Error (${response.status}): ${errorMessage}`);
+            } else {
+                popup.classList.add("popupSuccess");
+                popup.innerText = "Datos editados exitosamente!";
+                
+                let usuarioActualizado = localStorage.getItem('usuario');
+                usuarioActualizado = usuarioActualizado ? JSON.parse(usuarioActualizado) : null;
+
+                if (usuarioActualizado) {
+                    usuarioActualizado.email = formValues.get("email");
+                    usuarioActualizado.name = formValues.get("name");
+                    localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+                }
+            }
+        }
+        catch (e) {
+            console.error("Error en editar los datos del usuario:", e);
+            let errorMessage = e.error || 'Hubo un error desconocido al actualizar los datos. Por favor, intentelo nuevamente';
+            popup.innerText = errorMessage;
+        }
+
+        formContainer.appendChild(popup);
+    }
+
+
+    /**
+     * Permite mostrarle al usuario sus datos precargados.
+     */
+    async function precargarDatos(){
+        // Busco en el localstorage la info del usuario
+        let res = localStorage.getItem('usuario');
+        // Almaceno el email del usuario en la variable localStorageEmail
+        let { email: localStorageEmail } = JSON.parse(res);
+        
+        // Busco los datos del usuario en base a su email
+        let urlGetData = `http://localhost:8080/usuarios/email/${localStorageEmail}`;
+        let data;
+        
+        try {
+            let response = await fetch(urlGetData, {
+                "method": "GET",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`,
+                }
+            });
+
+            data = await response.json();
+
+            // En caso de que el status no fue un 200 tira el error.
+            if (!response.ok) { throw new Error({ error: data.error, status: data.status });} 
+        }
+        catch (e) {
+            console.error("Error al precargar la data del usuario:", e);
+            let errorMessage = e.error || 'Hubo un error al precargar los datos del usuario. Por favor, intentelo nuevamente';
+            alert(errorMessage);
+            return ;
+        }
+        
+        // Saco los atributos del objeto data
+        let { username, email } = data;
+        
+        // actualizo el valor de los inputs en el formulario
+        document.getElementById("username").value = username;
+        document.getElementById("email").value = email;
+    }
+
+    function getDatosDelForm() {
+        let form = document.querySelector("#editar-datos-usuario");
+        let err = false;
+        const formData = new FormData(form);
+        if(!formData.get("name")){ document.querySelector("#emptyName").classList.remove("hidden"); err = true; }
+        if(!formData.get("email")){ document.querySelector("#emptyEmail").classList.remove("hidden"); err = true; }
+        if(!formData.get("email").match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)){ document.querySelector("#invalidEmail").classList.remove("hidden"); err = true; }
+        if(!formData.get("currentPassword").match(/^[\s\S]{8,20}$/)){ document.querySelector("#invalidPassword").classList.remove("hidden"); err = true; }
+        if(formData.get("newPassword") || formData.get("newPasswordConfirmed")){
+            console.log(formData.get("newPassword"));
+            console.log(formData.get("newPasswordConfirmed"));
+            if(!(formData.get("newPassword") == (formData.get("newPasswordConfirmed")))){document.querySelector("#notMatchingPasswords").classList.remove("hidden"); err = true;}
+        }
+
+        // Si hay almenos 1 error devuelve falso
+        return err ? false : formData;
+    }
+
+    function formDataToJSON(formData){
+        const jsonObject = {};
+        formData.forEach((value, key) => {
+            jsonObject[key] = value;
+        });
+        
+        return JSON.stringify(jsonObject);
     }
 
 });
