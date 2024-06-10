@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
 
     const ADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li><li id='crearProject'>Crear Proyecto</li></ul><h2>Emprendedores</h2><ul><li id='listEntrepreneur'>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li></ul>"
 
-    const SUPERADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li></ul><h2>Emprendedores</h2><ul><li id='listEntrepreneur'>Listar emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li id='AdmUsuariosRol'>Listar usuarios</li></ul>"
+    const SUPERADMIN = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li></ul><h2>Emprendedores</h2><ul><li id='listEntrepreneur'>Listar emprendedores</li><li id='NuevosEmprendedores'>Solicitudes Emprendedores</li></ul><h2>Utilidades</h2><ul><li>Turnos solicitados</li><li>Solicitar reporte</li><li id='AdmUsuariosRol'>Listar usuarios</li></ul>"
 
     const PERSONAL_CICE = "<h2>Proyectos</h2><ul><li id='listProjectsManager'>Listar proyectos</li></ul>"
 
@@ -20,9 +20,12 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     /* user.rolType.toLowerCase() */
     let rolUser = user.rolType.toLowerCase()
 
+    let titulo= document.getElementById("bienvenido");
 
-    user_name.innerHTML = user.username
-    user_email.innerHTML = user.email
+    titulo.innerHTML+= user.username + "!";
+
+    user_name.innerHTML = user.username;
+    user_email.innerHTML = user.email;
     
     if(rolUser == "defecto"){ 
         container.innerHTML += USER
@@ -50,7 +53,8 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     
     /*Admin / Superadmin */
     document.getElementById('listEntrepreneur')?.addEventListener('click', ()=> window.location.href = "./home.html?emprendedores");   
-    
+    document.getElementById('NuevosEmprendedores')?.addEventListener('click', ()=> window.location.href = "./solicitudesEmprendedores.html");    
+
     // Se supone que estos 3 son para admins/superadmins pero por el momento no hacen nada (ya que nunca se crean en el HTML) 
     document.getElementById('listProjectsManager')?.addEventListener('click', ()=> window.location.href = "./home.html?proyectos");   
     document.getElementById('cambioDeRol')?.addEventListener('click', ()=> window.location.href = "./cambioDeRol.html");   
