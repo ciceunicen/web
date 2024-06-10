@@ -44,69 +44,19 @@ document.addEventListener("DOMContentLoaded", (e) =>{
 
     /*Interactions*/
     /*Default */
-    if(document.getElementById('serEmprendedor')!=null){
-        let BtnSerEmprededor = document.getElementById('serEmprendedor').addEventListener('click', ()=>{
-            window.location.href = "./form_emprendedores.html";
-        })
-    }
-
-    if(document.getElementById('editarDatosUsuario')!=null){
-        let BtnEditarDatosUsuario = document.getElementById('editarDatosUsuario').addEventListener('click', ()=>{
-            window.location.href = "./form_edicionDatosUsuario.html";
-        })
-    }
+    document.getElementById('serEmprendedor')?.addEventListener('click', ()=> window.location.href = "./form_emprendedores.html");
+    document.getElementById('editarDatosUsuario')?.addEventListener('click', ()=> window.location.href = "./form_edicionDatosUsuario.html");
     
-
     /*Emprendedor */
-    if(document.getElementById('crearProject')!=null){
-        let BtnCrearProject = document.getElementById('crearProject').addEventListener('click', ()=>{
-            window.location.href = "./home.html";
-        })
-    }
-
-    if(document.getElementById('listProjectsEntrepreneur')!=null){
-        let BtnListEntrepreneurProjects = document.getElementById('listProjectsEntrepreneur').addEventListener('click', ()=>{
-            window.location.href = "./home.html";
-        })
-    }
-    //codigo Repetido?
-    if(document.getElementById('listProjectsEntrepreneur')!=null){
-        let BtnListEntrepreneurProjects = document.getElementById('listProjectsEntrepreneur').addEventListener('click', ()=>{
-            window.location.href = "./home.html";
-        })
-    }
+    document.getElementById('crearProject')?.addEventListener('click', ()=> window.location.href = "./home.html?crearProyecto");
+    document.getElementById('listProjectsEntrepreneur')?.addEventListener('click', ()=> window.location.href = "./home.html?misProyectos");   
     
-
     /*Admin / Superadmin */
-    if(document.getElementById('listProjectsManager')!=null){
-        let BtnListProjectsManager = document.getElementById('listProjectsManager').addEventListener('click', ()=>{
-            window.location.href = "./home.html?proyectos";
-        })
-    }
+    document.getElementById('listEntrepreneur')?.addEventListener('click', ()=> window.location.href = "./home.html?emprendedores");   
+    document.getElementById('NuevosEmprendedores')?.addEventListener('click', ()=> window.location.href = "./solicitudesEmprendedores.html");    
 
-    if(document.getElementById('listEntrepreneur')!=null){
-        let BtnListProjectsManager = document.getElementById('listEntrepreneur').addEventListener('click', ()=>{
-            window.location.href = "./home.html";
-        })
-    }
-
-    if(document.getElementById('cambioDeRol')!=null){
-        let BtnListProjectsManager = document.getElementById('cambioDeRol').addEventListener('click', ()=>{
-            window.location.href = "./cambioDeRol.html";
-        })
-    }
-
-    if(document.getElementById('AdmUsuariosRol')!=null){
-        let BtnListProjectsManager = document.getElementById('AdmUsuariosRol').addEventListener('click', ()=>{
-            window.location.href = "./cambioDeRol.html";
-        })
-    }
-
-    if(document.getElementById('NuevosEmprendedores')!=null){
-        document.getElementById('NuevosEmprendedores').addEventListener('click',()=>{
-            window.location.href="./solicitudesEmprendedores.html"
-        });
-    }
-    
-
+    // Se supone que estos 3 son para admins/superadmins pero por el momento no hacen nada (ya que nunca se crean en el HTML) 
+    document.getElementById('listProjectsManager')?.addEventListener('click', ()=> window.location.href = "./home.html?proyectos");   
+    document.getElementById('cambioDeRol')?.addEventListener('click', ()=> window.location.href = "./cambioDeRol.html");   
+    document.getElementById('AdmUsuariosRol')?.addEventListener('click', ()=> window.location.href = "./cambioDeRol.html");
 })
