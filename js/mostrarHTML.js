@@ -34,12 +34,12 @@ function removerEventoClic(pagAnterior) {
 
 //Muestra el home de la pagina
 function mostrarHome(urlSearch){
-
+  console.log(1);
   mostrarArchivoHTML("navbar.html").then(text => {
+    console.log(2);
       // La primera vez que se ejecuta necesitamos pintar el boton del nav superior
       // en base al btn del nav izquierdo que clickearon
       drawClickNav(`${urlSearch}`);
-      
       document.querySelector(".navbar").innerHTML = text;
 
       // Le agrega la funcionalidad al boton de logout que se acaba de generar en el navbar superior  

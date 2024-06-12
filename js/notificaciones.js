@@ -39,11 +39,14 @@ async function manageNotifications() {
   const iconoNotificacion = document.querySelector(".icono-notificacion");
 
   // Verificamos que ambos elementos hayan sido seleccionados del DOM
+  console.log(notificacionesContainer);
+  console.log(iconoNotificacion);
+  // TODO: Hay uno de los 2 elementos que no los logra reconocer
   if(notificacionesContainer == null || iconoNotificacion == null){ return ;}
-
   let user = JSON.parse(localStorage.getItem('usuario'));
   
   iconoNotificacion.addEventListener("click", async () => {
+      console.log("aca");
       notificacionesContainer.classList.toggle("hidden");
       if (notificacionesContainer.classList.contains("hidden")) {
         const DTONotifications = await setNotificationsAsRead(user);
@@ -95,4 +98,22 @@ function showNotifications(notifications) {
   }
 }
 
-manageNotifications();
+/*
+  Hay una razon por la cual se encerró en un addEventListener "DOMContentLoaded" y ademas un setTimeout.
+
+  Al intentar cargar el home.html se llama a mostrar HTML.js, function mostrarHome(urlSearch).
+  En "mostrarHome" se tambien se utiliza un addEventListener "DOMContentLoaded", para recien ahi
+  cargar los elementos de la pagina, cual es el problema? Para poder agregar los eventListeners de 
+  las notificaciones primero debe existir el elemento en la pagina, de esta forma nos aseguramos que 
+  cargue el elemento en home.html, y recien ahi le agregamos los eventListeners. Lamentablemente tambien
+  tenemos que poner un setTimeout ya que dentro de "mostrarHome" carga los elementos html una vez se haya
+  cumplido una promesa, es por eso que sin el setTimeout siempre se va a ejecutar primero notificaciones.js.
+  
+  Si se quita el setTimeout o el eventListener "DOMContentLoaded" el usuario admin/superadmin no va a ser capaz 
+  desde "proyectos", "emprendedores" o "crear proyecto" de interactuar con las notificaciones  
+*/
+document.addEventListener("DOMContentLoaded", ()=>{
+  setTimeout(() => {
+    manageNotifications();
+  }, 100); // 100 milisegundos
+})
