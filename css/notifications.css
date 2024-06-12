@@ -1,5 +1,6 @@
 .icono-notificacion {
-  margin: 0 5% 0 40%;
+  /* margin: 0 5% 0 40%; */
+  padding: 1rem;
   cursor: pointer;
 }
 
