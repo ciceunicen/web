@@ -39,10 +39,8 @@ async function manageNotifications() {
   const iconoNotificacion = document.querySelector(".icono-notificacion");
 
   // Verificamos que ambos elementos hayan sido seleccionados del DOM
-  console.log(notificacionesContainer);
-  console.log(iconoNotificacion);
-  // TODO: Hay uno de los 2 elementos que no los logra reconocer
   if(notificacionesContainer == null || iconoNotificacion == null){ return ;}
+  
   let user = JSON.parse(localStorage.getItem('usuario'));
   
   iconoNotificacion.addEventListener("click", async () => {

@@ -92,8 +92,6 @@ function mostrarHomeEmprendedor(urlSearch){
   mostrarArchivoHTML("navbarEntrepreneur.html").then(async text => {
       // Agrega el navbar emprendedor al navbar por defecto
       document.querySelector(".navbar").innerHTML = text;
-      // Carga la funcionalidad de las notificaciones
-      manageNotifications();
       // Carga la funcionalidad de poder desloguearse con el boton de la esquina superior derecha
       logout();
       // Setteamos que si van para atras los mande al dashboard
