@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("fisica").addEventListener("click", () => {
 
         document.getElementById("div_apellido").style.display = "block";
-        document.getElementById("tipo_razon").innerHTML = "Nombre";
+        document.getElementById("tipo_razon").innerHTML = 'Nombre <span class="requerido">*</span>';
         document.getElementById("name").setAttribute("value", "carga default de nombre de la persona");
         document.getElementById("surname").setAttribute("value", "carga default de apellido de la persona");
         document.getElementById("email").setAttribute("value", "carga default de email de la persona");
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("juridica").addEventListener("click", () => {
         document.getElementById("div_apellido").style.display = "none";
-        document.getElementById("tipo_razon").innerHTML = "Razon Social";
+        document.getElementById("tipo_razon").innerHTML = 'Razon Social <span class="requerido">*</span>';
         document.getElementById("name").setAttribute("value", "carga default de razon social de la persona");
     });
 
