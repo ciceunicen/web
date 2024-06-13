@@ -59,13 +59,15 @@ document.addEventListener("DOMContentLoaded", () => {
         // Se obtienen los datos (o no)
         let valoresInputs = getDatos();
         // Si los datos estan mal entonces ni siquiera se envia el form
-        if(!valoresInputs){ return ; }
+        if(!valoresInputs){ return }
 
         let datosRegister = JSON.stringify(valoresInputs);
-        console.log(datosRegister);
+
+        const formContainer = document.querySelector(".container_form_input");
+        const popup = document.createElement("div");
+        popup.classList.add("popup");
 
         try {
-            console.log(localStorage.getItem('token'));
             let response = await fetch(URL_EMPRENDEDORES, {
                 "method": "POST",
                 "headers": {
@@ -74,16 +76,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 "body": datosRegister,
             });
-            let data = await response.json();
+            let data;
+            try {
+                data = await response.json();
+            } catch (error) {
+                throw new Error("La respuesta no es un JSON valido!");
+            }
+            
+
             if (!response.ok) {
-                throw { error: data.error, status: data.status }
+                popup.classList.add("popupError");
+                popup.innerText = data.error; // TODO: Falta el manejo manejo de errores desde el back. El como tirar errores en JSON
+                throw new Error ({ error: data.error, status: data.status });
             } else {
-                window.location.href = "./dashboard.html";
+                popup.classList.add("popupSuccess");
+                popup.innerText = "Formulario enviado exitosamente!";
             }
         }
         catch (e) {
             console.log(e)
         }
+
+        formContainer.appendChild(popup);
     }
 
 

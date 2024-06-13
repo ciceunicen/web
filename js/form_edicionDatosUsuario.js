@@ -138,7 +138,9 @@ document.addEventListener("DOMContentLoaded", () => {
             
             if (!response.ok) {
                 popup.classList.add("popupError");
-                let errorMessage = await response.text(); 
+                // TODO: Aca se va a romper, ya que ahora los errores desde el back los envia como un JSON, no como un texto
+                // TODO: cambiar el response.text() por un response.json();
+                let errorMessage = await response.text();
                 popup.innerText = errorMessage;
                 console.error(`Error (${response.status}): ${errorMessage}`);
             } else {
