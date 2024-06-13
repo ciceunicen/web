@@ -48,8 +48,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     async function register() {
-
+        // Cada vez que se envia el form se eliminan todos los errores
+        quitarMensajesDeErrores();
+        // Se obtienen los datos (o no)
         let valoresInputs = getDatos();
+        // Si los datos estan mal entonces ni siquiera se envia el form
+        if(!valoresInputs){ return ; }
+        
         let datosRegister = JSON.stringify(valoresInputs);
         console.log(datosRegister);
 
@@ -78,35 +83,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
     
     function getDatos() {
-        /* let id = getUserId() */
         let name = document.getElementById("name").value;
         let surname= document.getElementById("surname").value;
         let email= document.getElementById("email").value;
         let phone= document.getElementById("phoneNumber").value;
         let cuil_cuit = document.getElementById("cuit_cuil").value;
         let howimeetcice= document.getElementById("como_conociste").value;
-        let ispf = true
         let fisica = document.getElementById("fisica");
-        if(fisica.checked){
-            ispf = true
-        }else{
-            ispf = false
-            surname = ""
+        
+        if (!fisica.checked){
+            surname = "";
         }
+        let err = false;
+        if(!name){ document.querySelector("#emptyName").classList.remove("hidden"); err = true; }
+        if(name && name.length > 20){ document.querySelector("#longName").classList.remove("hidden"); err = true; }
+        if(!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)){ document.querySelector("#invalidEmail").classList.remove("hidden"); err = true; }
+        if(!email.length > 45){ document.querySelector("#longEmail").classList.remove("hidden"); err = true; }
+        if(surname && surname.length > 20){ document.querySelector("#longSurname").classList.remove("hidden"); err = true; }
+        if(!cuil_cuit){ document.querySelector("#emptyCuilCuit").classList.remove("hidden"); err = true; }
+        if(cuil_cuit && cuil_cuit.length > 20){ document.querySelector("#longCuilCuit").classList.remove("hidden"); err = true; }
+        if(phone && phone.length > 20){ document.querySelector("#longPhone").classList.remove("hidden"); err = true; }
 
-        // TODO: Checkear antes de siquiera mandar el form que los campos dni, name, surname, cuil_cuit y phone tengan maximo 20 caracteres.
-        // TODO: Checkear antes de siquiera mandar el form que el campo email tenga como maximo 45 caracteres y que la RegEx checkee que email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)
+        phone = phone ? Number(phone) : "";
 
-        return {
-            "name":name ,
-            "surname":surname || null, // En caso de que apellido esté vacio con persona juridica, guarda un null
+        return err ? null : {
+            "name": name,
+            "surname": surname,
             "email": email,
             "cuil_cuit": cuil_cuit,
-            "phone":phone,
-            "howimeetcice":howimeetcice,
-            "ispf":ispf,
-            "id_user":1
+            "phone": phone,
+            "howimeetcice": howimeetcice,
+            "ispf": fisica.checked,
         }
+    }
+
+    function quitarMensajesDeErrores(){
+        // Obtenemos todos posibles mensajes de error
+        const mensajes = document.querySelectorAll(".errorMessage");
+        // Desactivamos todos
+        mensajes.forEach(mensaje => mensaje.classList.add("hidden"));
     }
 
 })

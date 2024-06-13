@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/form_emprendedores.css">
+    <link rel="stylesheet" href="../css/utils.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!---LINK PARA ICONOS DE BOOTSTRAP-->
@@ -53,8 +54,7 @@
                     <div class="container-checkbox">
                         <div class="container-check">
                             <label for="fisica">Persona Física</label>
-                            <input
-                            type="radio" name="tipo_persona" value="persona_fisica" id="fisica" checked >
+                            <input type="radio" name="tipo_persona" value="persona_fisica" id="fisica" checked >
                         </div>
                         <div class="container-check">
                             <label for="juridica">Persona Jurídica</label>
@@ -64,12 +64,14 @@
                     <div class="contenedor_grupos">
                         <div class="container-input">
                             <label for="name" id="tipo_razon">Nombre <span class="requerido">*</span></label>
-                            <input type="text" id="name" name="name" value=""
-                                placeholder="Ingrese su Nombre/Razón Social" required/>
+                            <input type="text" id="name" name="name" value="" placeholder="Ingrese su Nombre/Razón Social" required/>
+                            <span class="errorMessage hidden" id="emptyName">Campo requerido!</span>
+                            <span class="errorMessage hidden" id="longName">El maximo es de 20 caracteres!</span>
                         </div>
                         <div class="container-input" id="div_apellido">
                             <label for="surname">Apellido</label>
                             <input type="text" id="surname" name="surname" placeholder="Ingrese su Apellido" />
+                            <span class="errorMessage hidden" id="longSurname">El maximo es de 20 caracteres!</span>
                         </div>
                     </div>
 
@@ -77,17 +79,21 @@
                         <div class="container-input">
                             <label for="email">Email<span class="requerido">*</span></label>
                             <input type="email" id="email" name="email" placeholder="Ingrese su Email" required/>
+                            <span class="errorMessage hidden" id="invalidEmail">Formato de Email invalido!</span>
+                            <span class="errorMessage hidden" id="longEmail">El maximo es de 45 caracteres!</span>
                         </div>
                         <div class="container-input">
                             <label for="phoneNumber">Telefono</label>
-                            <input type="text" id="phoneNumber" name="phoneNumber"
-                                placeholder="Ingrese Numero Telefónico" />
+                            <input type="number" inputmode="tel" id="phoneNumber" name="phoneNumber" placeholder="Ingrese Numero Telefónico" />
+                            <span class="errorMessage hidden" id="longPhone">El maximo es de 20 numeros!</span>
                         </div>
                     </div>
                     <div class="contenedor_grupos">
                         <div class="container-input">
                             <label for="cuit_cuil">CUIT - CUIL<span class="requerido">*</span></label>
-                            <input type="text" id="cuit_cuil" name="cuit_cuil" placeholder="Ingrese CUIT O CUIL" required/>
+                            <input type="number" inputmode="numeric" id="cuit_cuil" name="cuit_cuil" placeholder="Ingrese CUIT O CUIL" required/>
+                            <span class="errorMessage hidden" id="emptyCuilCuit">Campo requerido!</span>
+                            <span class="errorMessage hidden" id="longCuilCuit">El maximo es de 20 numeros!</span>
                         </div>
 
                         <div class="container-input">
