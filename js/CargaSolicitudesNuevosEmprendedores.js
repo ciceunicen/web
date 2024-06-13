@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     const URL_EMPRENDEDORES = "http://localhost:8080/emprendedores";
     const URL_ROL_USER = "http://localhost:8080/usuarios";
     const tokin = localStorage.getItem("token");
+    let offset=0;
+    let totalpag=0; 
+    let page=1;
+    obtenerTatalpag();
     obtenerUsuarios(URL_EMPRENDEDORES);
 
     document.querySelector("#btn-back").addEventListener("click", ()=>{
@@ -21,7 +25,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
 
         console.log("El token es: " + tokin)
         try {
-            let respuesta = await fetch(url+"/Solicitudes", {
+            let respuesta = await fetch(url+"/Solicitudes"+"/"+offset, {
                 "method": "GET",
                 "headers": {
                     "Authorization": "Bearer " + tokin
@@ -35,6 +39,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
                 if (arreglo) {
                     cargarUsuarios(arreglo); ///
                     buttons_action();
+                    paginar();
                 }
             }
         } catch (error) {
@@ -72,7 +77,6 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     }
    
     
-    //Modificar metodo para setear la columna is aceptada en entrepreneur y cambiar el rol del usuario a 3(emprendedor);
 
     async function changeRol(idUser,btn) {
 
@@ -91,13 +95,6 @@ document.addEventListener("DOMContentLoaded", (e) =>{
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + tokin
                 },
-                // "body": JSON.stringify({
-
-
-                //     "id": newId
-
-                // })
-
                 
             });
 
@@ -114,5 +111,37 @@ document.addEventListener("DOMContentLoaded", (e) =>{
 
 
 
+    }
+    async  function obtenerTatalpag(){
+        try {
+            let respuesta = await fetch(URL_EMPRENDEDORES+"/Solicitudes/totalpages", {
+                "method": "GET",
+                "headers": {
+                    "Authorization": "Bearer " + tokin
+
+                },
+            })
+            if (respuesta.ok) {
+                let total = await respuesta.text();
+                console.log(total);
+                console.log("hola");
+                if (total) {
+                    totalpag=  total;
+                }
+            } else {
+                console.error("Error en la respuesta de la API:", respuesta.status);
+                // Puedes lanzar un error o manejar el caso según tus necesidades
+                throw new Error("Error en la respuesta de la API");
+            }
+        } catch (error) {
+            console.log("Fallo al obtener el JSON de la API.", error);
+            console.log(error);
+        }
+    }
+    function paginar(){
+        let pagActual=document.getElementById("pagActual");
+        let total= document.getElementById("totalPages");
+        pagActual.innerHTML=page;
+        total.innerHTML="/"+totalpag;
     }
 });

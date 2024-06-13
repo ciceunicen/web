@@ -1,0 +1,28 @@
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.arrow {
+    background-color: #74AC24;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px;
+}
+
+.arrow:hover {
+    background-color: #0056b3;
+}
+
+.page-info {
+    font-size: 16px;
+}
