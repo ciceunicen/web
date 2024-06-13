@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return {
             "name":name ,
-            "surname":surname,
+            "surname":surname || null, // En caso de que apellido esté vacio con persona juridica, guarda un null
             "email": email,
             "cuil_cuit": cuil_cuit,
             "phone":phone,
