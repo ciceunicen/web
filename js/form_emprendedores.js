@@ -20,22 +20,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    document.getElementById("fisica").addEventListener("click", () => {
+    function resetearForm(){
+        document.getElementById("name").value = "";
+        document.getElementById("surname").value = "";
+        document.getElementById("phoneNumber").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("cuit_cuil").value = "";
 
+    }
+
+    document.getElementById("fisica").addEventListener("click", () => {
         document.getElementById("div_apellido").style.display = "block";
         document.getElementById("tipo_razon").innerHTML = 'Nombre <span class="requerido">*</span>';
-        document.getElementById("name").setAttribute("value", "carga default de nombre de la persona");
-        document.getElementById("surname").setAttribute("value", "carga default de apellido de la persona");
-        document.getElementById("email").setAttribute("value", "carga default de email de la persona");
-
+        document.getElementById("name").setAttribute("placeholder", "Ingrese su Nombre");
+        resetearForm();
     });
 
     document.getElementById("juridica").addEventListener("click", () => {
         document.getElementById("div_apellido").style.display = "none";
         document.getElementById("tipo_razon").innerHTML = 'Razon Social <span class="requerido">*</span>';
-        document.getElementById("name").setAttribute("value", "carga default de razon social de la persona");
+        document.getElementById("name").setAttribute("placeholder", "Ingrese su Razon Social");
+        resetearForm();
     });
-
 
 
     document.getElementById("register-emprendedor")?.addEventListener("submit", (e) => {
@@ -54,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let valoresInputs = getDatos();
         // Si los datos estan mal entonces ni siquiera se envia el form
         if(!valoresInputs){ return ; }
-        
+
         let datosRegister = JSON.stringify(valoresInputs);
         console.log(datosRegister);
 
