@@ -51,6 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let valoresInputs = getDatos();
         let datosRegister = JSON.stringify(valoresInputs);
+        console.log(datosRegister);
+
         try {
             console.log(localStorage.getItem('token'));
             let response = await fetch(URL_EMPRENDEDORES, {
@@ -91,6 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
             ispf = false
             surname = ""
         }
+
+        // TODO: Checkear antes de siquiera mandar el form que los campos dni, name, surname, cuil_cuit y phone tengan maximo 20 caracteres.
+        // TODO: Checkear antes de siquiera mandar el form que el campo email tenga como maximo 45 caracteres y que la RegEx checkee que email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)
 
         return {
             "name":name ,
