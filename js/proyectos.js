@@ -2,11 +2,13 @@ let page = 1;
 const URLProject = "http://localhost:8080/projects";
 const URLEntrepreneurProjects = "http://localhost:8080/emprendedores";
 const URLFiles = "http://localhost:8080/files";
+// const URLUsers= "http://localhost:8080/usuarios"
 let statusFile = true;//guarda si los archivos cargados tienen una estención válida.
 
 //METODOS DE ABM
 //POST
 async function saveProject(data) {
+  console.log(data + "data");
   let token = localStorage.getItem("token");
   try{
       let res = await fetch(URLProject,{
@@ -21,6 +23,7 @@ async function saveProject(data) {
           showSucess(".project-save", "Se han cargado los datos exitosamente!");
           setTimeout(() => {
             window.location.href = "dashboard.html";
+            console.log(data + "data");
           } , 1500)
       }
   }catch(error){
@@ -826,7 +829,7 @@ function mostrarArray(contenedor, arreglo, dato, proyecto) {
 }
 
 //Generar tabla de proyectos
-function generarTablaHistorial(json) {
+async function generarTablaHistorial(json) {
   let array = json.content;
   let container = document.querySelector(".projectHistoryTable");
   container.innerHTML = "";
@@ -838,8 +841,14 @@ function generarTablaHistorial(json) {
     var cell3 = row.insertCell(2);
     var cell4 = row.insertCell(3);
     cell1.innerHTML = historial.id_admin;
-    //cambiar cuando este la entidad administrador, utilizar nombre y apellido
-    cell2.innerHTML = "Admin default";
+
+    try {
+      let nombreAdmin = await getUserById(historial.id_admin);
+      cell2.innerHTML = nombreAdmin.username; 
+    } catch (error) {
+      console.error("Error al obtener el nombre del administrador:", error);
+      cell2.innerHTML = "Nombre no disponible";
+    }
     cell3.innerHTML = historial.action;
     if(historial.action == "Diagnostico"){
       let link = document.createElement("a");
@@ -852,6 +861,24 @@ function generarTablaHistorial(json) {
       link.addEventListener("click", function() {showDiagnostic(link.dataset.id)});
     }
     cell4.innerHTML = historial.date;
+  }
+}
+async function getUserById(id){
+  let token = localStorage.getItem("token");
+  try {
+      let res = await fetch(URLUsers +"/"+id, {
+          "method": "GET",
+          "headers" : {"Authorization": "Bearer " + token}
+      })
+      if (res.ok) {
+          let user = await res.json();
+          if (user) {
+              return user;
+          }
+      }
+  } catch (error) {
+      console.log("Fallo al obtener el JSON de la API.");
+      console.log(error);
   }
 }
 
