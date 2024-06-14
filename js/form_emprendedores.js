@@ -54,6 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     async function register() {
+        // Inhabilitamos el boton asi el user no puede hacer multiples requests
+        submitButton.setAttribute("disabled", "disabled");
         // Cada vez que se envia el form se eliminan todos los errores
         quitarMensajesDeErrores();
         // Se obtienen los datos (o no)
@@ -105,7 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         formContainer.appendChild(popup);
-        
+        // Volvemos a habilitar el boton
+        submitButton.removeAttribute("disabled");
+
         // Destruimos el popup una vez termine la animacion del css "utils"
         setTimeout(() => popup.remove(), 4000);
     }
