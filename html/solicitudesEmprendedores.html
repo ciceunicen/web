@@ -76,11 +76,25 @@
                     </thead>
                     <tbody class="userManagersTable" id="lista"></tbody>
                 </table>
-                <div class="pagination">
+                <!-- <div class="pagination">
                     <button class="arrow" id="prev">&#9664;</button>
                     <span class="page-info" id="pagActual">0</span> <span class="page-info" id="totalPages">/0</span>
                     <button class="arrow" id="next">&#9654;</button>
-                </div>
+                </div> -->
+                <ul class="pagination">
+                    <li class="page-item">
+                      <button class="page-link previousPage" id="previousPage" aria-label="Previous" >
+                        <span aria-hidden="true">«</span>
+                      </button>
+                    </li>
+                    <li class="page-item"><a class="page-link pageNumber" id="pageNumber" href="#"><span class="page-info" id="pagActual">0</span><span class="page-info" id="totalPages">/0</span></a></li>
+                    <li class="page-item">
+                      <button class="page-link nextPage" id="nextPage" aria-label="Next">
+                        <span aria-hidden="true">»</span>
+                       
+                      </button>
+                    </li>
+                  </ul>
             </section>
         </div>
     </article>

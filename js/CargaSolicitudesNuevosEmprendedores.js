@@ -13,14 +13,22 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     const tokin = localStorage.getItem("token");
     let offset=0;
     let totalpag=0; 
-    let page=1;
-    obtenerTatalpag();
-    obtenerUsuarios(URL_EMPRENDEDORES);
+    let page=0;
+    let nextpage= document.getElementById("nextPage");
+    let prevpage= document.getElementById("previousPage");
+    async function inicializar() {
+        await obtenerTotalpag();
+        await obtenerUsuarios(URL_EMPRENDEDORES);
+    }
+
+    inicializar();
 
     document.querySelector("#btn-back").addEventListener("click", ()=>{
         window.location.replace('./dashboard.html');
     });
-
+    
+    nextpage.addEventListener("click",nextPag);
+    prevpage.addEventListener("click",prevPage);
     async function obtenerUsuarios(url) {
 
         console.log("El token es: " + tokin)
@@ -112,7 +120,11 @@ document.addEventListener("DOMContentLoaded", (e) =>{
 
 
     }
-    async  function obtenerTatalpag(){
+
+
+
+
+    async  function obtenerTotalpag(){
         try {
             let respuesta = await fetch(URL_EMPRENDEDORES+"/Solicitudes/totalpages", {
                 "method": "GET",
@@ -124,9 +136,11 @@ document.addEventListener("DOMContentLoaded", (e) =>{
             if (respuesta.ok) {
                 let total = await respuesta.text();
                 console.log(total);
-                console.log("hola");
                 if (total) {
                     totalpag=  total;
+                    if(total!="0"){
+                        page=1;
+                    }
                 }
             } else {
                 console.error("Error en la respuesta de la API:", respuesta.status);
@@ -143,5 +157,19 @@ document.addEventListener("DOMContentLoaded", (e) =>{
         let total= document.getElementById("totalPages");
         pagActual.innerHTML=page;
         total.innerHTML="/"+totalpag;
+    }
+    function nextPag(){
+         if(page<totalpag){
+            offset+=10;
+            page+=1;
+            obtenerUsuarios(URL_EMPRENDEDORES);
+        }
+    }
+    function prevPage(){
+        if(page>1){
+            offset-=10;
+            page-=1;
+            obtenerUsuarios(URL_EMPRENDEDORES);
+        }
     }
 });
