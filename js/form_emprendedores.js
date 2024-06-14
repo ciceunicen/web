@@ -82,19 +82,26 @@ document.addEventListener("DOMContentLoaded", () => {
             } catch (error) {
                 throw new Error("La respuesta no es un JSON valido!");
             }
-            
 
             if (!response.ok) {
                 popup.classList.add("popupError");
-                popup.innerText = data.error; // TODO: Falta el manejo manejo de errores desde el back. El como tirar errores en JSON
-                throw new Error ({ error: data.error, status: data.status });
+                console.log(data);
+                console.log(response.status);
+                // Mostramos por pantalla todos los errores (Data es un HashMap, donde los value son los mensajes de error)
+                for (const error of Object.values(data)) {
+                    popup.innerText += error + "\n";
+                }
+                
+                throw new Error ({ error: Object.values(data), status: data.status });
             } else {
                 popup.classList.add("popupSuccess");
                 popup.innerText = "Formulario enviado exitosamente!";
             }
         }
         catch (e) {
-            console.log(e)
+            popup.classList.add("popupError");
+            popup.innerText += e.message;
+            console.log(e);
         }
 
         formContainer.appendChild(popup);
