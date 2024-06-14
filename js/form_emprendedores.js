@@ -85,14 +85,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!response.ok) {
                 popup.classList.add("popupError");
-                console.log(data);
-                console.log(response.status);
                 // Mostramos por pantalla todos los errores (Data es un HashMap, donde los value son los mensajes de error)
                 for (const error of Object.values(data)) {
-                    popup.innerText += error + "\n";
+                    const errMsgElement = document.createElement("span");
+                    errMsgElement.innerText += error + ". ";
+                    popup.appendChild(errMsgElement);
                 }
-                
-                throw new Error ({ error: Object.values(data), status: data.status });
+
+                console.error(Object.values(data));
             } else {
                 popup.classList.add("popupSuccess");
                 popup.innerText = "Formulario enviado exitosamente!";
@@ -105,6 +105,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         formContainer.appendChild(popup);
+        
+        // Destruimos el popup una vez termine la animacion del css "utils"
+        setTimeout(() => popup.remove(), 4000);
     }
 
 
@@ -125,13 +128,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if(!name){ document.querySelector("#emptyName").classList.remove("hidden"); err = true; }
         if(name && name.length > 20){ document.querySelector("#longName").classList.remove("hidden"); err = true; }
         if(!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)){ document.querySelector("#invalidEmail").classList.remove("hidden"); err = true; }
-        if(!email.length > 45){ document.querySelector("#longEmail").classList.remove("hidden"); err = true; }
+        if(email.length > 45){ document.querySelector("#longEmail").classList.remove("hidden"); err = true; }
         if(surname && surname.length > 20){ document.querySelector("#longSurname").classList.remove("hidden"); err = true; }
         if(!cuil_cuit){ document.querySelector("#emptyCuilCuit").classList.remove("hidden"); err = true; }
         if(cuil_cuit && cuil_cuit.length > 20){ document.querySelector("#longCuilCuit").classList.remove("hidden"); err = true; }
         if(phone && phone.length > 20){ document.querySelector("#longPhone").classList.remove("hidden"); err = true; }
-
-        phone = phone ? Number(phone) : "";
 
         return err ? null : {
             "name": name,

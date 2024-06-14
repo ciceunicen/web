@@ -7,7 +7,7 @@
 .popup{
   position: absolute;
   padding: 1rem 2rem;
-  max-height: 18rem;
+  max-width: 30rem;
   background-color: rgba(255, 53, 53, 0.4);
   color: rgb(144, 0, 0);
   right: 1rem;
