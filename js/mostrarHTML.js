@@ -181,7 +181,7 @@ function mostrarProyectos(json, pagAnterior) {
 }
 
 function mostrarProyectosDeEmprendedor(json) {
-
+ console.log(json+"aca");
   removerEventoClic("dashboard");
   agregarEventoClic("dashboard");
 
@@ -189,7 +189,7 @@ function mostrarProyectosDeEmprendedor(json) {
     document.querySelector(".main-container").innerHTML = text;
 
     mostrarPaginado(json.totalPages,"proyectos");
-    mostrarTablaProyectosEmprendedor(json);
+    mostrarTablaProyectosEmprendedor(json.content);
     comportamientoBtnsFiltros()
   });
 }
@@ -213,7 +213,11 @@ function comportamientoBtnsFiltros() {
 function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [], estadoFiltro = "", div=".footer-list-projects"){
   mostrarArchivoHTML("pagination.html").then(text =>{
     document.querySelector(div).innerHTML=text;
-    document.querySelector("#pageNumber").innerHTML=page;
+    if(pages==-1||pages==0){
+      document.querySelector("#pageNumber").innerHTML=0+"/"+0;
+    }else{
+      document.querySelector("#pageNumber").innerHTML=page+"/"+pages;
+    }
     comportamientoPaginado(pages,datosFiltro,estadoFiltro,tablaUtilizada);
   });
 }

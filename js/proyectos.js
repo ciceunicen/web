@@ -97,7 +97,7 @@ function getAllProjects() {
 function getAllProjectsByEntrepreneur(entrepreneurId) {
   let token = localStorage.getItem("token")
   console.log(token)
-  return fetch(URLEntrepreneurProjects + `/${entrepreneurId}/mis_proyectos`, {
+  return fetch(URLEntrepreneurProjects + `/${entrepreneurId}/mis_proyectos/page/`+ page, {
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
@@ -252,7 +252,7 @@ function comportamientoPaginado(pages, datosFiltro, estadoFiltro, tablaUtilizada
 
 //Cambia el numero que se muestra en la seccion de paginado
 function cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages) {
-  document.querySelector("#pageNumber").innerHTML = page;
+  document.querySelector("#pageNumber").innerHTML = page+"/"+pages;
   if (tablaUtilizada == "proyectosFiltrados") {
     getFilterProjects(datosFiltro, page).then(json => {
       mostrarTabla(json, false);
