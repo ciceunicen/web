@@ -98,6 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 popup.classList.add("popupSuccess");
                 popup.innerText = "Formulario enviado exitosamente!";
+                // Una vez se muestre se termine de mostra el mensaje del popup success se redirige al usuario al dashboard
+                setTimeout(() => window.location.href = "dashboard.html", 4000)
             }
         }
         catch (e) {
