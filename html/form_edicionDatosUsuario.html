@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../css/form_edicionDatosUsuario.css">
     <link rel="stylesheet" href="../css/utils.css">
     <link rel="stylesheet" href="../css/notifications.css">
+    <link rel="stylesheet" href="../css/rolManager.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!---LINK PARA ICONOS DE BOOTSTRAP-->
@@ -29,11 +30,11 @@
             Volver
         </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ">
-                <li class="nav-item">
-                    <a class="nav-link active click_nav" href="#" id="name_user">Nombre Usuario</a>
-                </li>
-            </ul>
+            <div class="nombre-avatar">
+                <img src="../img/avatarIcon.jpg" alt="Icono de Usuario">
+                <p id="name"></p>
+                <span id="mail"></span>
+            </div>
             <img class="icono-notificacion" src="../img/Icono-notificacion1.svg" alt="notificacion">
                 <div class="notificaciones-container dashboard hidden">
                     <div class="notificaciones-top">
@@ -148,6 +149,7 @@
 <script src="../js/form_edicionDatosUsuario.js"></script>
 <script src="../js/closeSession.js"></script>
 <script src="../js/notificaciones.js"></script>
+<script src="../js/CargaUsuario.js"></script>
 <!-- Script que permite obtener el payload del JWT del usuario (En nuestro caso el id y el email) -->
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 </html>
