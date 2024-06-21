@@ -464,7 +464,7 @@ function captureSelectedOptions() {
   page = 1;
   getFilterProjects(json_filters, page).then(json => {
     mostrarTabla(json, false);
-    mostrarPaginado(json.totalPages - 1, "proyectosFiltrados", json_filters);
+    mostrarPaginado(json.totalPages , "proyectosFiltrados", json_filters);
   });
 }
 
