@@ -7,9 +7,10 @@
 
 .container_general {
     width: 100%;
-    margin: auto auto;
+    display: grid;
+    grid-template-rows: min-content 1fr;
     background-color: #EAF7D8;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 
@@ -22,6 +23,14 @@
     color: #FFFFFF;
     background-color: #496D17;
     padding: 5px;
+}
+
+.pendingRequestContainer{
+    max-width: 30rem;
+    margin-inline: auto;
+}
+.pendingRequestContainer img{
+    width: 100%;
 }
 
 .container_form_input {

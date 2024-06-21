@@ -6,7 +6,7 @@
    
 }
 
-.img-cice{
+.info .img-cice{
     margin-top: 0.5rem;
     width: 70px;
 }
@@ -123,7 +123,7 @@ flex-direction: column;
     width: 100%;
     height: 100px;
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: space-between;
     align-items: center;
     background-color: #74AC24;  
     color: #FFFFFF;
@@ -150,6 +150,5 @@ header > p {
     margin-left: 20px;
 }
 header .img-cice{
-    margin-left: 285.225px;
     width: 110px;
 }
