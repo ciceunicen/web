@@ -2,7 +2,6 @@ let page = 1;
 const URLProject = "http://localhost:8080/projects";
 const URLEntrepreneurProjects = "http://localhost:8080/emprendedores";
 const URLFiles = "http://localhost:8080/files";
-// const URLUsers= "http://localhost:8080/usuarios"
 let statusFile = true;//guarda si los archivos cargados tienen una estención válida.
 
 //METODOS DE ABM
@@ -98,7 +97,7 @@ function getAllProjects() {
 function getAllProjectsByEntrepreneur(entrepreneurId) {
   let token = localStorage.getItem("token")
   console.log(token)
-  return fetch(URLEntrepreneurProjects + `/${entrepreneurId}/mis_proyectos`, {
+  return fetch(URLEntrepreneurProjects + `/${entrepreneurId}/mis_proyectos/page/`+ page, {
     mode: 'cors',
     "headers": {
       "Access-Control-Allow-Origin": "*",
@@ -253,7 +252,7 @@ function comportamientoPaginado(pages, datosFiltro, estadoFiltro, tablaUtilizada
 
 //Cambia el numero que se muestra en la seccion de paginado
 function cambiarNumeroPaginado(datosFiltro, estadoFiltro, tablaUtilizada, pages) {
-  document.querySelector("#pageNumber").innerHTML = page;
+  document.querySelector("#pageNumber").innerHTML = page+"/"+pages;
   if (tablaUtilizada == "proyectosFiltrados") {
     getFilterProjects(datosFiltro, page).then(json => {
       mostrarTabla(json, false);
@@ -465,7 +464,7 @@ function captureSelectedOptions() {
   page = 1;
   getFilterProjects(json_filters, page).then(json => {
     mostrarTabla(json, false);
-    mostrarPaginado(json.totalPages - 1, "proyectosFiltrados", json_filters);
+    mostrarPaginado(json.totalPages , "proyectosFiltrados", json_filters);
   });
 }
 

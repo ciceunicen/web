@@ -11,17 +11,29 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     const URL_EMPRENDEDORES = "http://localhost:8080/emprendedores";
     const URL_ROL_USER = "http://localhost:8080/usuarios";
     const tokin = localStorage.getItem("token");
-    obtenerUsuarios(URL_EMPRENDEDORES);
+    let offset=0;
+    let totalpag=0; 
+    let page=0;
+    let nextpage= document.getElementById("nextPage");
+    let prevpage= document.getElementById("previousPage");
+    async function inicializar() {
+        await obtenerTotalpag();
+        await obtenerUsuarios(URL_EMPRENDEDORES);
+    }
+
+    inicializar();
 
     document.querySelector("#btn-back").addEventListener("click", ()=>{
         window.location.replace('./dashboard.html');
     });
-
+    
+    nextpage.addEventListener("click",nextPag);
+    prevpage.addEventListener("click",prevPage);
     async function obtenerUsuarios(url) {
 
         console.log("El token es: " + tokin)
         try {
-            let respuesta = await fetch(url+"/Solicitudes", {
+            let respuesta = await fetch(url+"/Solicitudes"+"/"+offset, {
                 "method": "GET",
                 "headers": {
                     "Authorization": "Bearer " + tokin
@@ -35,6 +47,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
                 if (arreglo) {
                     cargarUsuarios(arreglo); ///
                     buttons_action();
+                    paginar();
                 }
             }
         } catch (error) {
@@ -72,7 +85,6 @@ document.addEventListener("DOMContentLoaded", (e) =>{
     }
    
     
-    //Modificar metodo para setear la columna is aceptada en entrepreneur y cambiar el rol del usuario a 3(emprendedor);
 
     async function changeRol(idUser,btn) {
 
@@ -91,13 +103,6 @@ document.addEventListener("DOMContentLoaded", (e) =>{
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + tokin
                 },
-                // "body": JSON.stringify({
-
-
-                //     "id": newId
-
-                // })
-
                 
             });
 
@@ -114,5 +119,57 @@ document.addEventListener("DOMContentLoaded", (e) =>{
 
 
 
+    }
+
+
+
+
+    async  function obtenerTotalpag(){
+        try {
+            let respuesta = await fetch(URL_EMPRENDEDORES+"/Solicitudes/totalpages", {
+                "method": "GET",
+                "headers": {
+                    "Authorization": "Bearer " + tokin
+
+                },
+            })
+            if (respuesta.ok) {
+                let total = await respuesta.text();
+                console.log(total);
+                if (total) {
+                    totalpag=  total;
+                    if(total!="0"){
+                        page=1;
+                    }
+                }
+            } else {
+                console.error("Error en la respuesta de la API:", respuesta.status);
+                // Puedes lanzar un error o manejar el caso según tus necesidades
+                throw new Error("Error en la respuesta de la API");
+            }
+        } catch (error) {
+            console.log("Fallo al obtener el JSON de la API.", error);
+            console.log(error);
+        }
+    }
+    function paginar(){
+        let pagActual=document.getElementById("pagActual");
+        let total= document.getElementById("totalPages");
+        pagActual.innerHTML=page;
+        total.innerHTML="/"+totalpag;
+    }
+    function nextPag(){
+         if(page<totalpag){
+            offset+=10;
+            page+=1;
+            obtenerUsuarios(URL_EMPRENDEDORES);
+        }
+    }
+    function prevPage(){
+        if(page>1){
+            offset-=10;
+            page-=1;
+            obtenerUsuarios(URL_EMPRENDEDORES);
+        }
     }
 });

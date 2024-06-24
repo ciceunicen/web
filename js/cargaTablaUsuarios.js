@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const URL_ROL_USER = "http://localhost:8080/usuarios"
     const tokin = localStorage.getItem("token");
     obtenerUsuarios(URL_ROL_USER);
+    let page=1;
 
     document.querySelector("#btn-back").addEventListener("click", ()=>{
         window.location.replace('./dashboard.html');
