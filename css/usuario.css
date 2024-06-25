@@ -1,0 +1,21 @@
+.nombre-avatar img {
+    width: 35px;
+    border-radius: 50%;
+    /* margin-bottom: 2%; */
+}
+.nombre-avatar p {
+    color: white;
+}
+.nombre-avatar:hover #mail {
+    display: block;
+}
+
+#mail {
+    display: none;
+    position: absolute;
+    right: 7rem;
+    top: 1.8rem;
+}
+#nombre-avatar-form-emprendedores{
+    margin-left: 80%;
+}
