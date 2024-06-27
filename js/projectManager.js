@@ -48,10 +48,10 @@ function getAllProjectsByProjectManager(idProjectManager) {
 }
 
 //MOSTRAR RESPONSABLE DEL PROYECTO
-function mostrarResponsableProyecto(id) {
+function mostrarResponsableProyecto(id_project) {
     let btn = document.getElementById('projectManagerData')
     if (btn.className === 'hiddenData') {
-        getProjectManager(id).then(json => showDataProjectManager(json));
+        getReferentByID_project(id_project).then(json => showDataProjectManager(json));
         btn.className = 'showProjectManagerData';
         document.querySelector(".slideDownResponsible").innerHTML = "<img src='../img/icons8-flecha-contraer-50.png' class='slideDown'/>";
     } else {
@@ -61,16 +61,40 @@ function mostrarResponsableProyecto(id) {
 }
 
 //carga datos en la tabla de datos de un emprendedor
-function showDataProjectManager(projectManager) {
+ async function showDataProjectManager(referent) {
     //llamo a contenido donde se muestran los datos del emprendedor.
-    mostrarArchivoHTML("dataProjectManager.html").then(text_pm => {
+   await mostrarArchivoHTML("dataProjectManager.html").then(text_pm => {
         document.getElementById("projectManagerData").innerHTML = text_pm;
         //Completo datos del emprendedor
-        document.querySelector("#fullName").innerHTML = projectManager.name + " " + projectManager.surname;
-        document.querySelector("#email").innerHTML = projectManager.email;
-        document.querySelector("#linkUnicen").innerHTML = projectManager.linkUnicen;
-        document.querySelector("#phone").innerHTML = projectManager.phone;
-        document.querySelector("#medioConocimientoCice").innerHTML = projectManager.medioConocimientoCice;
+        console.log(referent);
+        if(referent==undefined){
+            document.querySelector("#fullName").innerHTML = "Por alguna razon no existe el referente de este proyecto";
+            document.querySelector("#fullName").style.backgroundColor = "red";
+        }else{
+            let user=  getUserById(referent.id_user);
+            if (user==undefined||user==null){
+                document.querySelector("#fullName").innerHTML = "No es un usuario registrado";
+            }else{
+                getUserById(referent.id_user).then(user => {
+                    if (user == undefined || user == null) {
+                        document.querySelector("#fullName").innerHTML = "No es un usuario registrado";
+                    } else {
+                        document.querySelector("#fullName").innerHTML = user.username;
+                        console.log(user);
+                    }
+                });
+            }
+            // document.querySelector("#fullName").innerHTML = "NOMBRE Y APELLIDO COMPLETO";
+            // projectManager.name + " " + projectManager.surname;
+            document.getElementById("localidad").innerHTML = referent.localidad;
+            document.getElementById("ocupacion").innerHTML = referent.ocupacion;
+            document.querySelector("#email").innerHTML = referent.mail;
+            document.querySelector("#linkUnicen").innerHTML = referent.vinculacion;
+            document.getElementById("FacultadPertenece").innerHTML = referent.facultad;
+            document.querySelector("#phone").innerHTML = referent.telefono;
+            document.querySelector("#medioConocimientoCice").innerHTML = referent.conocimiento;
+            document.getElementById("organizacionAsociativa").innerHTML = referent.organizacion;
+        }
     });
 }
 

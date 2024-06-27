@@ -261,7 +261,7 @@ function mostrarProyecto(proyecto, pagAnterior){
     mostrarArray("#asistencia", proyecto.assistances, "elemento.type");
 
     mostrarArray("#necesidades", proyecto.needs, "elemento.needType");
-    partialRendercargaDatosEmprendedor(".datosEmprendedor", proyecto.projectManager.id_ProjectManager);
+    partialRendercargaDatosEmprendedor(".datosEmprendedor", proyecto.id_Project);
     partialRenderHistorialProject(".historyProject", proyecto.id_Project);
     //carga sección de archivos adjuntos
     mostrarArchivoHTML("files.html").then(text => {
@@ -352,11 +352,11 @@ function mostrarCargaDiagnostico() {
   }
 }
 
-function partialRendercargaDatosEmprendedor(div,id_emprendedor){
+function partialRendercargaDatosEmprendedor(div,id_project){
   mostrarArchivoHTML("datosEmprendedor.html").then(text=>{
     document.querySelector(div).innerHTML = text;
     document.querySelector('.slideDownResponsible').addEventListener("click",()=>{
-      mostrarResponsableProyecto(id_emprendedor);
+      mostrarResponsableProyecto(id_project);
     });
     //document.querySelector('.slideDownHistory').addEventListener("click", mostrarHistorialProyecto);
   });

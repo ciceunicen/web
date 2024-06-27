@@ -2,6 +2,7 @@ let page = 1;
 const URLProject = "http://localhost:8080/projects";
 const URLEntrepreneurProjects = "http://localhost:8080/emprendedores";
 const URLFiles = "http://localhost:8080/files";
+const URLReferent="http://localhost:8080/Referent"
 let statusFile = true;//guarda si los archivos cargados tienen una estención válida.
 
 //METODOS DE ABM
@@ -878,6 +879,7 @@ async function getUserById(id){
   } catch (error) {
       console.log("Fallo al obtener el JSON de la API.");
       console.log(error);
+      return null;
   }
 }
 
@@ -1329,4 +1331,22 @@ function toggleAccordion(button) {
   button.classList.toggle('accordion--expanded');
   accordionContent.style.maxHeight =
     accordionContent.style.maxHeight ? null : `${accordionContent.scrollHeight}px`;
+}
+async function getReferentByID_project(id_project){
+  let token = localStorage.getItem("token");
+  try {
+      let res = await fetch(URLReferent +"/ID/"+id_project, {
+          "method": "GET",
+          "headers" : {"Authorization": "Bearer " + token}
+      })
+      if (res.ok) {
+          let referent = await res.json();
+          if (referent) {
+              return referent;
+          }
+      }
+  } catch (error) {
+      console.log("Fallo al obtener el JSON de la API.");
+      console.log(error);
+  }
 }
