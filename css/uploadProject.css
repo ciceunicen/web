@@ -111,17 +111,32 @@
     display: flex;
     margin: 0;
 }
-
+.diagnosticForm__exitBtn{
+    position: absolute;
+    right: 1rem;
+}
 .diagnostic-loading-form{
-    background-color: #EAF7D8;
-    border-radius: 0px 0px 10px 10px;
+    box-shadow: 0 0 .8rem 0px black;
     display: none;
-    margin: 0;
+    position: fixed; /* Cambiado de absolute a fixed para cubrir toda la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    z-index: 1000; /* Asegurar que esté encima de todos los demás elementos */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
 }
 
 .diagnostic-loading-form form{
-    width: 80%;
-    margin: 16px 10%;
+    background: white;
+    position: relative;
+    padding: 20px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 30rem;
+    z-index: 1001; /* Asegurar que el formulario esté encima del fondo */
 }
 
 .project-loading-form form {

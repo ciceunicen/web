@@ -25,6 +25,7 @@
     }
     /*Div que contiene todo el formulario de cargar proyecto*/
     .projectLoading{
+        position: relative;
         display: flex;
         flex-direction: column;
         background-color: #EAF7D8;

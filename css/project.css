@@ -67,3 +67,9 @@
 .fa-check-circle{
     margin-right: 2%;
 }
+
+.contenedorBotones{
+    padding-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}

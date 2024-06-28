@@ -338,7 +338,7 @@ function mostrarTabla(json, borrados, pagAnterior, projectManager = false) {
   container.innerHTML = "";
   for (let i = array.length - 1; i >= 0; i--) {
     const proyecto = array[i];
-    console.log(proyecto);
+    
     var row = container.insertRow(0);
     var cell1 = row.insertCell(cellsCount++);
     var cell2 = row.insertCell(cellsCount++);
@@ -376,7 +376,13 @@ function mostrarTabla(json, borrados, pagAnterior, projectManager = false) {
       input.setAttribute("class", "btn_save_green verMas");
       cell4.appendChild(input);
       //let pagAnterior = "proyectos";
-      document.querySelector(".verMas").addEventListener("click", () => { getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json, pagAnterior));
+      document.querySelector(".verMas").addEventListener("click", () => { 
+        /*
+         Al clickear en ver mas de alguno de los proyectos, redirige la barra de busqueda a detallesProyecto, 
+         ademas de mandar un json con la informacion del proyecto a una funcion que se encargará de mostrarlos 
+         datos que le estamos pasando por json.
+        */
+        getProyecto(proyecto.id_Project).then(json => mostrarProyecto(json, pagAnterior));
         window.location.hash = `detallesProyecto`;
       });
       //creo botón de borrar para cada proyecto
@@ -1214,36 +1220,24 @@ function showProjects(array) {
   })
 }
 
-function saveNewDiagnostic(idAdmin) {
-  let form = document.querySelector("#diagnosticForm");
-  let formData = new FormData(form);
-  let project = formData.get('project-select');
-  let diagnostic = formData.get('diagnostic');
-
-  if ((project != "no-select" && project != "undefined") && (diagnostic != "" && diagnostic.length < 255)) {
-    document.querySelector("#projectError").innerHTML = "";
+function saveNewDiagnostic(idProject, idAdmin, diagnostic) {
+  if (diagnostic != "" && diagnostic.length < 255) {
     document.querySelector("#diagnosticError").innerHTML = "";
 
     let data = {
-      "idProject" : project,
+      "idProject" : idProject,
       "idAdmin" : idAdmin,
       "diagnostic" : diagnostic 
     }
     
     addDiagnosticToProject(data)
-    
   }else{
-    if(project == "no-select" || project == "undefined") {
-      document.querySelector("#projectError").innerHTML = "Elija un proyecto";
-    }else {
-      document.querySelector("#projectError").innerHTML = "";
-    }
     if(diagnostic == "") {
       document.querySelector("#diagnosticError").innerHTML = "Ingrese un diagnostico al proyecto";
     } else if(diagnostic.length > 255) {
       document.querySelector("#diagnosticError").innerHTML = "Texto muy largo, ingrese menos caracteres";
     }else {
-      document.querySelector("#diagnosticError").innerHTML = "";
+      document.querySelector("#diagnosticError").innerHTML = "Problema indefinido, intentelo nuevamente";
     }
   }
 }
@@ -1262,6 +1256,7 @@ async function addDiagnosticToProject(data) {
     if(res.ok) {
         showSucess(".diagnostic-save", "Diagnostico cargado con exito!");
         setTimeout(() => {
+          // TODO: Al agregar un nuevo diagnostico que te deje en proyect/id, para mejor "user experience".
           window.location.href = "dashboard.html";
         } , 1500)
     }
