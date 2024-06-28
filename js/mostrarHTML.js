@@ -469,8 +469,28 @@ function showDataProjectManager(projectManager){
 //     validFileType();
 //   })
 // }
-function mostrarEditarProyecto(id_project, project) {
-  mostrarArchivoHTML("cargarProjects.html").then(text=>{
+ async function mostrarEditarProyecto(id_project, project) {
+  let referent= await getReferentByID_project(id_project);
+  let user= await getUserById(referent.id_user)
+   mostrarArchivoHTML("cargarProjects.html").then(text=>{
+    
+    console.log(referent);
+    setTimeout(()=>{
+      getUsers(URLUsers);
+      document.getElementById("defecto").value= user.id;
+      document.getElementById("defecto").innerHTML= user.username;
+      document.getElementById("referent-telefono").value=referent.telefono;
+      document.getElementById("referent-localidad").value=referent.localidad;
+      document.getElementById("referent-mail").value= referent.mail;
+      document.getElementById("referent-ocupacion").value=referent.ocupacion;
+      document.getElementById("referent-vinculacion").value=referent.vinculacion;
+      document.getElementById("referent-facultad").value=referent.facultad;
+      document.getElementById("referent-conocimiento").value=referent.conocimiento;
+      document.getElementById("referent-organizacion").value=referent.organizacion;
+      
+
+    },100);
+    
     document.querySelector(".main-container").innerHTML = text;
     document.querySelector("#title").value = project.title;
     document.querySelector("#description").value = project.description;
