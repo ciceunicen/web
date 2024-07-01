@@ -469,25 +469,38 @@ function showDataProjectManager(projectManager){
 //     validFileType();
 //   })
 // }
+
+
+
+
  async function mostrarEditarProyecto(id_project, project) {
   let referent= await getReferentByID_project(id_project);
-  let user= await getUserById(referent.id_user)
+  let user;
+  if(referent!==undefined&&referent.id_user!==null){
+    user= await getUserById(referent.id_user);
+  }
+  
    mostrarArchivoHTML("cargarProjects.html").then(text=>{
     
     console.log(referent);
     setTimeout(()=>{
       getUsers(URLUsers);
-      document.getElementById("defecto").value= user.id;
-      document.getElementById("defecto").innerHTML= user.username;
-      document.getElementById("referent-telefono").value=referent.telefono;
-      document.getElementById("referent-localidad").value=referent.localidad;
-      document.getElementById("referent-mail").value= referent.mail;
-      document.getElementById("referent-ocupacion").value=referent.ocupacion;
-      document.getElementById("referent-vinculacion").value=referent.vinculacion;
-      document.getElementById("referent-facultad").value=referent.facultad;
-      document.getElementById("referent-conocimiento").value=referent.conocimiento;
-      document.getElementById("referent-organizacion").value=referent.organizacion;
-      
+      if(user!==undefined&&referent.id_user!==null){
+         document.getElementById("defecto").value= user.id;
+         document.getElementById("defecto").innerHTML= user.username;
+      }
+        
+      if(referent!==undefined){
+        
+        document.getElementById("referent-telefono").value=referent.telefono;
+        document.getElementById("referent-localidad").value=referent.localidad;
+        document.getElementById("referent-mail").value= referent.mail;
+        document.getElementById("referent-ocupacion").value=referent.ocupacion;
+        document.getElementById("referent-vinculacion").value=referent.vinculacion;
+        document.getElementById("referent-facultad").value=referent.facultad;
+        document.getElementById("referent-conocimiento").value=referent.conocimiento;
+        document.getElementById("referent-organizacion").value=referent.organizacion;
+      }
 
     },100);
     
@@ -502,37 +515,40 @@ function showDataProjectManager(projectManager){
     getAdmins(URLUsers, project)
     document.querySelector("#projectForm").addEventListener('submit', (e) =>{
       e.preventDefault();
-      updateProject(id_project);
-    })
-    //document.querySelector("#title").value=proyecto.title;
-    //document.querySelector("#description").value=proyecto.description;
-    //selecionarSoloUnEstadio();
-    //cargarCheckboxes(URLStages, proyecto,'estadios_checks');
-    //mostrarArchivoHTML("cargaDeNecesidades.html").then(text =>{
-    //  document.querySelector(".datosNecesidades").innerHTML = text;
-    //  document.querySelector("#saveNecesidad").addEventListener("click", guardarNecesidades);
-      //Configuro Dropdown de necesidades
-    //  cargarCheckboxes(URLNeeds, proyecto,'needs_created');
-      //getNecesidadesoAsistenciasCreadas(URLNeeds);
+      let dataReferent;
+      let id_referent;
+      if(referent!==undefined){
+        id_referent=referent.id;
+      }
+      dataReferent={
+        "id" : id_referent,
+        "id_user" : document.getElementById('referentSelect').value,
+        "telefono" : document.getElementById("referent-telefono").value,
+        "localidad": document.getElementById("referent-localidad").value,
+        "mail" : document.getElementById("referent-mail").value,
+        "ocupacion" : document.getElementById("referent-ocupacion").value,       
+        "vinculacion" : document.getElementById("referent-vinculacion").value,       
+        "facultad" : document.getElementById("referent-facultad").value,
+        "conocimiento":document.getElementById("referent-conocimiento").value,
+        "organizacion":document.getElementById("referent-organizacion").value
+      }
+      updateReferent(dataReferent,id_project);
+      // setTimeout(()=>{
+      //   if (response==true){
+      //   updateProject(id_project);
+      // }else{
+      //   showSucess("Parece que hay un error con los datos del Referente, intentalo nuevamente");
+      //   document.getElementById("CartelUpdate").style.color='red';
+      // }
+  
+      // },200);
     
-    //});
-    //mostrarArchivoHTML("cargaDeAsistencias.html").then(text =>{
-    //  document.querySelector(".datosAsistencias").innerHTML = text;
-    //  document.querySelector("#saveAsistencia").addEventListener("click", guardarAsistencias);
-      //Configuro Dropdown de asistencias
-    //  cargarCheckboxes(URLAssitances, proyecto,'assistances_created');
-      //getNecesidadesoAsistenciasCreadas(URLAssitances);
-    //});
-    /* document.querySelector("#estados").innerHTML =
-    `<div>
-      <input type="radio" id="activo" name="estado" value=true />
-      <label for="activo">Activo</label>
-    </div>
-
-    <div>
-      <input type="radio" id="noActivo" name="estado" value=false />
-      <label for="noActivo">No activo</label>
-    </div>` */
+     
+      
+    
+      
+    })
+  
 
     const radioActivo = document.querySelector("#activo");
     const radioNoActivo = document.querySelector("#noActivo");
@@ -541,15 +557,28 @@ function showDataProjectManager(projectManager){
     } else {
       radioNoActivo.setAttribute("checked", "true");
     }
-
-    //carga sección de archivos adjuntos
-    //mostrarFilesEditar(proyecto);
-    //changeCountInputFile();
-    //partialRendercargaDatosEmprendedor(".datosEmprendedor",proyecto.projectManager.id_ProjectManager);
-    //partialRenderHistorialProject(".historyProject", proyecto.id_Project);
-    //saveNewData(id_proyecto, proyecto);
-    //validFileType();
   })
+}
+async function updateReferent(dataReferent,id_project) {
+  let response = await fetch(URLReferent+"/IDproject/"+id_project, {
+    method: "PUT",
+    mode: 'cors',
+    body: JSON.stringify(dataReferent),
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      "Access-Control-Allow-Origin": "*",
+    }
+  });
+  if (response.ok) {
+    updateProject(id_project);
+    let json = await response.json();
+     
+    return true;
+  } else {
+    showSucess(".project-save", "Hay un error en la carga de datos del referente, vuelve a intentar nuevamente");
+    document.getElementById("CartelUpdate").style.color='red';
+  }
 }
 
 function mostrarFilesEditar(proyecto){
