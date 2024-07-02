@@ -34,8 +34,26 @@
     <div class="separator_line"></div>
     <!--CARGA DE VISTA PREVIA DE ADJUNTOS-->
     <div class="div_adjuntos" id="div_adjuntos"></div>
-    <div>
+    <div class="contenedorBotones">
         <button class="btn btn-primary" id="editarProyecto">Editar</button>
+        <button class="btn btn-primary" id="agregarDiagnostico">Agregar diagnóstico</button>
     </div>
-    
+    <div class="diagnostic-loading-form">
+        <form id="diagnosticForm" class="diagnosticForm" action="#" method="POST">
+            <button class="diagnosticForm__exitBtn"><img src="../img/cerrar.png" width="20px" height="20px" alt=""></button>
+            <div class="input-section">
+                <label class="input-label">Proyecto "<span id="nombreProyecto"></span>"</label>
+                <p class="error" id="projectError"></p>
+            </div>
+            <div class="input-section">
+                <label class="input-label" for="description" required>Diagnostico *</label>
+                <textarea type="text" id="diagnostic" name="diagnostic" placeholder="diagnóstico"></textarea>
+                <p class="error" id="diagnosticError"></p>
+            </div>
+            <div class="saveContainer">
+                <input class="btn-project-blue" type="submit" value="Guardar">
+                <div class="diagnostic-save"></div>
+            </div>  
+        </form>
+    </div>
 </div>

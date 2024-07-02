@@ -20,9 +20,7 @@ function cargarPaginaAnterior(pagAnterior) {
 let cargarPaginaAnteriorHandler;
 
 function agregarEventoClic(pagAnterior) {
-  console.log("agregarEventoClic: "+ pagAnterior);
   cargarPaginaAnteriorHandler = function() {
-    console.log("agregarEventoClic: "+ pagAnterior);
     cargarPaginaAnterior(pagAnterior);
   };
   document.querySelector("#btn-back").addEventListener("click", cargarPaginaAnteriorHandler);
@@ -34,9 +32,7 @@ function removerEventoClic(pagAnterior) {
 
 //Muestra el home de la pagina
 function mostrarHome(urlSearch){
-  console.log(1);
   mostrarArchivoHTML("navbar.html").then(text => {
-    console.log(2);
       // La primera vez que se ejecuta necesitamos pintar el boton del nav superior
       // en base al btn del nav izquierdo que clickearon
       drawClickNav(`${urlSearch}`);
@@ -225,8 +221,6 @@ function mostrarPaginado(pages,tablaUtilizada,datosFiltro = [], estadoFiltro = "
 
 //MOSTRAR PROYECTO
 function mostrarProyecto(proyecto, pagAnterior){
-  console.log("mostrarProyecto: "+ pagAnterior);
-
   if(pagAnterior === "dashboard"){ //si viene del listado de proyectos
     pagAnterior = "proyectos"
   }else if(pagAnterior === "proyectosEmprendedor"){ //temporal
@@ -236,7 +230,6 @@ function mostrarProyecto(proyecto, pagAnterior){
   }
 
   let user = JSON.parse(localStorage.getItem('usuario'));
-
   removerEventoClic(pagAnterior);
   agregarEventoClic(pagAnterior);
 
@@ -271,18 +264,27 @@ function mostrarProyecto(proyecto, pagAnterior){
       downloadAllAttachmentsByProject(proyecto.title);
     });
 
-    console.log(user);
-    console.log(user.rolType);
+    const btnEditarProyecto = document.querySelector("#editarProyecto");
+    const btnAgregarDiagnostico = document.querySelector("#agregarDiagnostico");
+
     if (user && user.rolType && user.rolType.toLowerCase() === 'emprendedor') {
-      // ocultar el botón de editar
-      let editarProyectoBtn = document.querySelector("#editarProyecto");
-      if (editarProyectoBtn) {
-        editarProyectoBtn.style.display = 'none';
-      }
+      // ocultar el botón de "editar" y de "agregar diagnostico"
+      if(btnEditarProyecto){ btnEditarProyecto.style.display = 'none'; }
+      if(btnAgregarDiagnostico){ btnAgregarDiagnostico.style.display = 'none'; }
     }
     else {
-      document.querySelector("#editarProyecto").addEventListener("click", () => {
-        mostrarEditarProyecto(proyecto.id_Project, proyecto);
+      // Agregamos las funcionalidades
+      btnEditarProyecto?.addEventListener("click", () => mostrarEditarProyecto(proyecto.id_Project, proyecto));
+      btnAgregarDiagnostico?.addEventListener("click", () => mostrarCargaDiagnostico(proyecto.title));
+      document.querySelector(".diagnosticForm__exitBtn").addEventListener('click', (e)=> {
+        e.preventDefault();
+        document.querySelector(".diagnostic-loading-form").style.display = "none";
+      });
+
+      document.getElementById("diagnosticForm").addEventListener("submit", (e) =>{  
+        e.preventDefault();
+        const diagnostic = document.getElementById("diagnostic").value;
+        saveNewDiagnostic(proyecto.id_Project, user.id, diagnostic);
       });
     }
   });
@@ -315,41 +317,12 @@ function mostrarCargaProyecto() {
         e.preventDefault();
         saveNewProject();
       })
-      mostrarCargaDiagnostico();
   });
-  
 }
 
-function mostrarCargaDiagnostico() {
-  let dataBtn = document.querySelector("#projectData");
-  let diagnosticBtn = document.querySelector("#projectDiagnostic");
-  let dataForm = document.querySelector(".project-loading-form");
-  let diagnosticFrom = document.querySelector(".diagnostic-loading-form");
-  let user = JSON.parse(localStorage.getItem('usuario'));
-  addProjectsToSelectInput();
-
-  diagnosticBtn.addEventListener('click', ()=>{
-    if(dataBtn.classList.contains('focus')) {
-      dataBtn.classList.remove('focus');
-      diagnosticBtn.classList.add('focus');
-      dataForm.style.display = 'none';
-      diagnosticFrom.style.display = 'flex';
-    }
-  })
-  dataBtn.addEventListener('click', ()=>{
-    if(diagnosticBtn.classList.contains('focus')) {
-      diagnosticBtn.classList.remove('focus');
-      dataBtn.classList.add('focus');
-      diagnosticFrom.style.display = 'none';
-      dataForm.style.display = 'flex';
-    }
-  })
-  if(user) {
-    document.querySelector("#diagnosticForm").addEventListener('submit', (e) =>{
-      e.preventDefault();
-      saveNewDiagnostic(user.id);
-    })
-  }
+function mostrarCargaDiagnostico(nombreProyecto) {
+  document.querySelector(".diagnostic-loading-form").style.display = "flex";
+  document.querySelector("#nombreProyecto").innerHTML = nombreProyecto || "Proyecto";
 }
 
 function partialRendercargaDatosEmprendedor(div,id_project){
@@ -469,6 +442,7 @@ function showDataProjectManager(projectManager){
 //     validFileType();
 //   })
 // }
+
 function mostrarEditarProyecto(id_project, project) {
   mostrarArchivoHTML("cargarProjects.html").then(text=>{
     document.querySelector(".main-container").innerHTML = text;
