@@ -148,12 +148,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function checkFormValidity() {
         // Verifica la validez del formulario
-        if (form.checkValidity()) {
+        if (contenedorForm.checkValidity()) {
             submitButton.disabled = false;
         } else {
             submitButton.disabled = true;
         }
     }
+    // Escuchar eventos de entrada en todos los campos del formulario
+    contenedorForm.addEventListener('input', checkFormValidity);
 
     function resetearForm(){
         document.getElementById("name").value = "";
