@@ -786,8 +786,7 @@ async function saveNewAssistance() {
 
 //MUESTRA MENSAJE VERDE CUANDO TODO SE CARGO BIEN
 function showSucess(container ,string) {
-   document.querySelector(container).innerHTML =
-    `<p>${string}</p>`; 
+  document.querySelector(container).innerHTML = `<p>${string}</p>`;
 }
 
 //SELECCIONAR SOLO UN ESTADIO
@@ -856,7 +855,7 @@ async function generarTablaHistorial(json) {
       cell2.innerHTML = "Nombre no disponible";
     }
     cell3.innerHTML = historial.action;
-    if(historial.action == "Diagnostico"){
+    if(historial.action == "Crear diagnostico"){
       let link = document.createElement("a");
       link.setAttribute("href", "#")
       link.setAttribute("data-id", historial.id_record);
@@ -864,11 +863,64 @@ async function generarTablaHistorial(json) {
       link.appendChild(linkText);
       link.classList.add("diagnostic-button");
       cell3.appendChild(link);
-      link.addEventListener("click", function() {showDiagnostic(link.dataset.id)});
+      link.addEventListener("click", function() {
+        let modal = document.querySelector('#modal');
+        modal.setAttribute("data-record", historial.id_record);
+        modal.setAttribute("data-project", historial.project.id_Project);
+      
+        modal.classList.add('modal-flex');
+        document.querySelector("body").style.overflow = "hidden";
+        if(modal.classList.contains('modal-flex')) {
+          getDiagnosticByIdRecord(historial.id_record);
+        }
+      });
+      
     }
+
     cell4.innerHTML = historial.date;
   }
+  // Agregamos los eventListeners fuera del loop
+  const editarDiagnosticoForm = document.querySelector(".modal-editar-diagnostico");
+  const verDiagnostico = document.querySelector(".modal-ver-diagnostico");
+  const editDiagnosticText = document.querySelector("#nuevoDiagnostico");
+  const diagnosticText = document.querySelector("#diagnosticText");
+  
+  const userId = JSON.parse(localStorage.getItem("usuario")).id;
+
+  editarDiagnosticoForm.addEventListener("submit", async (e)=> {
+    e.preventDefault();
+    let modal = document.querySelector('#modal');
+    await editDiagnostic(modal.getAttribute("data-record"), modal.getAttribute("data-project"), userId, editDiagnosticText.value);
+  });
+
+  
+  
+  // Btn para acceder al formulario de edicion de diagnostico
+  document.querySelector(".modal-ver-diagnostico .btn-primary").addEventListener("click", ()=>{
+    editarDiagnosticoForm.classList.remove("hidden");
+    verDiagnostico.classList.add("hidden");
+
+    editDiagnosticText.value = diagnosticText.innerText;
+  });
+
+  // Btn para cancelar la edicion del diagnóstico y volver al diagnostico en si.      
+  document.querySelector(".modal-editar-diagnostico .btn-secondary").addEventListener("click", (e)=>{
+    e.preventDefault();
+    editarDiagnosticoForm.classList.add("hidden");
+    verDiagnostico.classList.remove("hidden");
+
+    editDiagnosticText.value = diagnosticText.innerText;
+  });
+
+  // Agregamos los listeners a los botones del modal del diagnostico
+  document.querySelector('#closeModal').addEventListener('click', ()=>{
+    document.querySelector("body").style.overflow = "";
+    modal.classList.remove('modal-flex');
+    editarDiagnosticoForm.classList.add("hidden");
+    verDiagnostico.classList.remove("hidden");
+  });
 }
+
 async function getUserById(id){
   let token = localStorage.getItem("token");
   try {
@@ -1222,7 +1274,7 @@ function showProjects(array) {
   })
 }
 
-function saveNewDiagnostic(idProject, idAdmin, diagnostic) {
+async function saveNewDiagnostic(idProject, idAdmin, diagnostic) {
   if (diagnostic != "" && diagnostic.length < 255) {
     document.querySelector("#diagnosticError").innerHTML = "";
 
@@ -1231,8 +1283,9 @@ function saveNewDiagnostic(idProject, idAdmin, diagnostic) {
       "idAdmin" : idAdmin,
       "diagnostic" : diagnostic 
     }
-    
-    addDiagnosticToProject(data)
+    const btn_guardar = document.querySelector(".saveContainer .btn-project-blue");
+    btn_guardar.disabled = true;
+    await addDiagnosticToProject(data);
   }else{
     if(diagnostic == "") {
       document.querySelector("#diagnosticError").innerHTML = "Ingrese un diagnostico al proyecto";
@@ -1255,11 +1308,14 @@ async function addDiagnosticToProject(data) {
                   "Authorization": "Bearer " + token,
                   "Access-Control-Allow-Origin": "*"},                     
     });
-    if(res.ok) {
-        showSucess(".diagnostic-save", "Diagnostico cargado con exito!");
-        setTimeout(() => {
-          // TODO: Al agregar un nuevo diagnostico que te deje en proyect/id, para mejor "user experience".
-          window.location.href = "dashboard.html";
+
+    if(res.ok) {  
+      showSucess("#diagnosticForm .diagnostic-save", "Diagnostico cargado con exito!");
+      setTimeout(() => {
+        // TODO: Al agregar un nuevo diagnostico que te deje en proyect/id, para mejor "user experience".
+        window.location.href = "dashboard.html";
+        const btn_guardar = document.querySelector(".saveContainer .btn-project-blue");
+        btn_guardar.removeAttribute("disabled");
         } , 1500)
     }
   }catch(error){
@@ -1267,17 +1323,64 @@ async function addDiagnosticToProject(data) {
   }
 }
 
-async function getDiagnosticById(idRecord) {
+async function editDiagnostic(idRecord, idProject, idAdmin, diagnostic) {
+  if(diagnostic == "") {
+    document.querySelector("#diagnosticErrorInEditDiagnostic").innerHTML = "Ingrese un diagnostico al proyecto"; return;
+  } else if(diagnostic.length > 255) {
+    document.querySelector("#diagnosticErrorInEditDiagnostic").innerHTML = "Texto muy largo, ingrese menos caracteres"; return;
+  }
+  // Deshabilitamos el boton
+  const btn_guardar = document.querySelector(".modal-editar-diagnostico .btn-primary");
+  btn_guardar.disabled = true;
+
+  document.querySelector("#diagnosticErrorInEditDiagnostic").innerHTML = "";
+
+  let data = {
+    "idRecord" : idRecord,
+    "idProject" : idProject,
+    "idAdmin" : idAdmin,
+    "diagnostic" : diagnostic 
+  }
+
+  // TODO: Ver por que no se guarda ni se edita el diagnostico...
+  
+  let token = localStorage.getItem("token");
+  try{
+    let res = await fetch(URLProject+"/diagnostic",{
+      method : "PUT",
+      body : JSON.stringify(data),
+      headers : {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + token,
+        "Access-Control-Allow-Origin": "*"
+      },                     
+    });
+
+    if(res.ok) {
+        showSucess("#modal .diagnostic-save", "Diagnostico editado con exito!");
+        setTimeout(() => {
+          // TODO: Al agregar un nuevo diagnostico que te deje en proyect/id, para mejor "user experience".
+          window.location.href = "dashboard.html";
+          const btn_guardar = document.querySelector(".modal-editar-diagnostico .btn-primary");
+          btn_guardar.removeAttribute("disabled");
+        } , 1500)
+    }
+  }catch(error){
+    console.log(error);
+  }
+}
+
+async function getDiagnosticByIdRecord(idRecord) {
   let token = localStorage.getItem("token");
   try {
-      let res = await fetch(URLProject+"/diagnostic/"+idRecord, {
+      let res = await fetch(URLProject+"/diagnostic/administrationRecord/"+idRecord, {
           "method": "GET",
           "headers" : {"Authorization": "Bearer " + token}
       })
       if (res.ok) {
-          let array = await res.json();
-          if (array) {
-            showDiagnosticInModal(array);
+          let diagnostic = await res.json();
+          if (diagnostic) {
+            showDiagnosticInModal(diagnostic);
           }
       }
   } catch (error) {
@@ -1286,22 +1389,12 @@ async function getDiagnosticById(idRecord) {
   }
 }
 
-function showDiagnostic(id) {
-  let modal = document.querySelector('#modal');
-  modal.classList.add('modal-flex');
-  document.querySelector("body").style.overflow = "hidden";
-  if(modal.classList.contains('modal-flex')) {
-    getDiagnosticById(id);
-  }
-  document.querySelector('#closeModal').addEventListener('click', ()=>{
-    document.querySelector("body").style.overflow = "";
-    modal.classList.remove('modal-flex');
-  });
-}
-
-function showDiagnosticInModal(array) {
+function showDiagnosticInModal(diagnostic) {
   let diagnosticText = document.querySelector("#diagnosticText");
-  diagnosticText.innerHTML = array.diagnostic;
+  let editDiagnosticText = document.querySelector("#nuevoDiagnostico");
+  
+  diagnosticText.innerHTML = diagnostic.diagnostic;
+  editDiagnosticText.value = diagnostic.diagnostic;
 }
 
 function showUsers(array, project) {

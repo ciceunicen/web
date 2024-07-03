@@ -27,7 +27,18 @@
             <h2>Diagnóstico</h2>
             <a id="closeModal" href="#"><img src="../img/cerrar.png" width="20px" height="20px" alt=""></a> 
         </div>
-        <div class="diagnostic-line"></div>
-        <p id="diagnosticText"></p>
+        <div class="modal-ver-diagnostico">
+            <p id="diagnosticText"></p>
+            <button class="btn btn-primary">Editar</button>
+        </div>
+        <form method="post" class="modal-editar-diagnostico hidden">
+            <textarea name="nuevoDiagnostico" id="nuevoDiagnostico" placeholder="Ingrese el diagnostico"></textarea>
+            <p class="error" id="diagnosticErrorInEditDiagnostic"></p>
+            <div>
+                <button class="btn btn-primary">Guardar</button>
+                <button class="btn btn-secondary">Cancelar</button>
+            </div>
+            <div class="diagnostic-save"></div>
+        </form>
     </div>
 </div>  
