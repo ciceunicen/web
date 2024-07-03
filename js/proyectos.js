@@ -786,7 +786,12 @@ async function saveNewAssistance() {
 
 //MUESTRA MENSAJE VERDE CUANDO TODO SE CARGO BIEN
 function showSucess(container ,string) {
+<<<<<<< HEAD
   document.querySelector(container).innerHTML = `<p>${string}</p>`;
+=======
+   document.querySelector(container).innerHTML =
+    `<p id="CartelUpdate">${string}</p>`; 
+>>>>>>> CICEDEV-229
 }
 
 //SELECCIONAR SOLO UN ESTADIO
@@ -942,7 +947,7 @@ async function getUserById(id){
 }
 
 //TODO DE EDITAR PROYECTOS
-function updateProject(id_project) {
+async function updateProject(id_project) {
   let form = document.querySelector("#projectForm");
   let formData = new FormData(form);
   let needs = [];
