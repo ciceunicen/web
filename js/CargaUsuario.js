@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", (e) =>{
 
 
     function addDatosUsuario(){
-            let user_name = document.getElementById("name");
+            let user_name = document.getElementById("user_name");
             let user = JSON.parse(localStorage.getItem('usuario'));
             let user_email=document.getElementById("mail");
             
