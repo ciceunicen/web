@@ -150,8 +150,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Cada vez que se modifica un input dentro del form se valida si los campos requeridos cumplen sus normas
     // En caso de que sean correctas habilita el boton de enviar
-    contenedorForm.addEventListener("change", ()=> checkFormValidity(contenedorForm, submitButton));
+    contenedorForm.addEventListener("change", ()=> {
 
+        if(!requiredInputsAreInserted()){
+            submitButton.disabled = true;
+            console.log("desactivado");
+            return ;
+        }
+
+        console.log("Activado");
+        submitButton.removeAttribute("disabled");
+    });
+    
     function resetearForm(){
         document.getElementById("name").value = "";
         document.getElementById("surname").value = "";
@@ -176,7 +186,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
 
-    document.getElementById("register-emprendedor")?.addEventListener("submit", async (e) => {
+    contenedorForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         // Checkeamos nuevamente que el usuario no haya enviado el formulario en el pasado
         if(await getEntrepeneurRequest(userID)){ mostrarFormularioYaEnviado(); return;}
@@ -248,7 +258,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         setTimeout(() => popup.remove(), 4000);
     }
 
-
+    function requiredInputsAreInserted(){
+        let name = document.getElementById("name").value;
+        let email= document.getElementById("email").value;
+        let cuil_cuit = document.getElementById("cuit_cuil").value;
+        
+        return (name && email && cuil_cuit);
+    }
     
     function getDatos() {
         let name = document.getElementById("name").value;
