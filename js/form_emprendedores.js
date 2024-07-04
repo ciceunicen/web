@@ -35,10 +35,12 @@ async function getEntrepeneurRequest(id){
             throw new Error("La respuesta no es un JSON válido.");
         }
         
-        if (!response.ok) {
-            console.log("Entró al throw");
-            throw new Error({ error: data.error, status: data.status });
-        } else {
+        if (response.status == 404) {
+            console.log("No existe ese recurso!");
+            return false;
+        } else if(!response.ok){
+            throw new Error("Hubo un error al procesar su informacion, intenteló mas tarde.");
+        }else{
             return true;
         }
     }
@@ -114,6 +116,7 @@ function mostrarFormularioYaEnviado(){
 }
 
 function checkFormValidity(form, submitButton) {
+    console.log("Validando");
     // Verifica la validez del formulario
     if (form.checkValidity()) {
         submitButton.disabled = false;
@@ -141,19 +144,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     contenedorForm.classList.remove("hidden");
     contenedorMensaje.classList.add("hidden");
 
-    // Sino mostramos el formulario para que el usuario lo pueda completar
     const submitButton = document.querySelector('.form-submit-btn input');
     // Deshabilitar el botón al cargar la página
     submitButton.disabled = true;
 
-    function checkFormValidity() {
-        // Verifica la validez del formulario
-        if (form.checkValidity()) {
-            submitButton.disabled = false;
-        } else {
-            submitButton.disabled = true;
-        }
-    }
+    // Cada vez que se modifica un input dentro del form se valida si los campos requeridos cumplen sus normas
+    // En caso de que sean correctas habilita el boton de enviar
+    contenedorForm.addEventListener("change", ()=> checkFormValidity(contenedorForm, submitButton));
 
     function resetearForm(){
         document.getElementById("name").value = "";
@@ -232,7 +229,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 popup.classList.add("popupSuccess");
                 popup.innerText = "Formulario enviado exitosamente!";
                 // Una vez se muestre se termine de mostra el mensaje del popup success se redirige al usuario al dashboard
-                setTimeout(() => window.location.href = "dashboard.html", 4000)
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                    submitButton.removeAttribute("disabled");
+                }, 4000)
             }
         }
         catch (e) {
@@ -243,7 +243,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         formContainer.appendChild(popup);
         // Volvemos a habilitar el boton
-        submitButton.removeAttribute("disabled");
 
         // Destruimos el popup una vez termine la animacion del css "utils"
         setTimeout(() => popup.remove(), 4000);
