@@ -786,12 +786,8 @@ async function saveNewAssistance() {
 
 //MUESTRA MENSAJE VERDE CUANDO TODO SE CARGO BIEN
 function showSucess(container ,string) {
-<<<<<<< HEAD
-  document.querySelector(container).innerHTML = `<p>${string}</p>`;
-=======
    document.querySelector(container).innerHTML =
     `<p id="CartelUpdate">${string}</p>`; 
->>>>>>> CICEDEV-229
 }
 
 //SELECCIONAR SOLO UN ESTADIO
