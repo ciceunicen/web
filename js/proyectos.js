@@ -786,8 +786,7 @@ async function saveNewAssistance() {
 
 //MUESTRA MENSAJE VERDE CUANDO TODO SE CARGO BIEN
 function showSucess(container ,string) {
-   document.querySelector(container).innerHTML =
-    `<p id="CartelUpdate">${string}</p>`; 
+   document.querySelector(container).innerHTML = `<p id="CartelUpdate">${string}</p>`; 
 }
 
 //SELECCIONAR SOLO UN ESTADIO

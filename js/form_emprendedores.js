@@ -53,7 +53,7 @@ async function getEntrepeneurRequest(id){
 
 function getDatos() {
     /* let id = getUserId() */
-    let name = document.getElementById("name").value;
+    let name = document.getElementById("user_name").value;
     let surname= document.getElementById("surname").value;
     let email= document.getElementById("email").value;
     let phone= document.getElementById("phoneNumber").value;
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     
     function resetearForm(){
-        document.getElementById("name").value = "";
+        document.getElementById("user_name").value = "";
         document.getElementById("surname").value = "";
         document.getElementById("phoneNumber").value = "";
         document.getElementById("email").value = "";
@@ -174,14 +174,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("fisica").addEventListener("click", () => {
         document.getElementById("div_apellido").style.display = "block";
         document.getElementById("tipo_razon").innerHTML = 'Nombre <span class="requerido">*</span>';
-        document.getElementById("name").setAttribute("placeholder", "Ingrese su Nombre");
+        document.getElementById("user_name").setAttribute("placeholder", "Ingrese su Nombre");
         resetearForm();
     });
   
     document.getElementById("juridica").addEventListener("click", () => {
         document.getElementById("div_apellido").style.display = "none";
         document.getElementById("tipo_razon").innerHTML = 'Razon Social <span class="requerido">*</span>';
-        document.getElementById("name").setAttribute("placeholder", "Ingrese su Razon Social");
+        document.getElementById("user_name").setAttribute("placeholder", "Ingrese su Razon Social");
         resetearForm();
     });
 
@@ -259,7 +259,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function requiredInputsAreInserted(){
-        let name = document.getElementById("name").value;
+        let name = document.getElementById("user_name").value;
         let email= document.getElementById("email").value;
         let cuil_cuit = document.getElementById("cuit_cuil").value;
         
@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     
     function getDatos() {
-        let name = document.getElementById("name").value;
+        let name = document.getElementById("user_name").value;
         let surname= document.getElementById("surname").value;
         let email= document.getElementById("email").value;
         let phone= document.getElementById("phoneNumber").value;
